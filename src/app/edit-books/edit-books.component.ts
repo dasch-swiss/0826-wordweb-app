@@ -16,7 +16,6 @@ export class EditBooksComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private apiService: ApiService) {
-    console.log("hi", apiService.getBooks());
     this.dataSource = new MatTableDataSource(this.apiService.getBooks());
   }
 
@@ -26,7 +25,6 @@ export class EditBooksComponent implements OnInit {
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    console.log(this.dataSource.filteredData.length);
   }
 
   clear() {
