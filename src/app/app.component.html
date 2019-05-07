@@ -6,6 +6,7 @@
 <button (click)="showPassagesOriginal()">Passagen_Original</button>
 <button (click)="showEditBooks()">Edit Book</button>
 <button (click)="showEditAuthor()">Edit Author</button>
+<button (click)="showEditLanguage()">Edit Language</button>
 
 <div *ngIf="list === 'book'">
   <div *ngFor="let book of bookList" style="border: 1px solid darkgray; margin: 10px;padding: 10px;">
@@ -66,4 +67,8 @@
 
 <div *ngIf="list === 'editAuthors'">
   <app-edit-authors></app-edit-authors>
+</div>
+
+<div *ngIf="list === 'editLanguages'">
+  <app-edit-languages></app-edit-languages>
 </div>

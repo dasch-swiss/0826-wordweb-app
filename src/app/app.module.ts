@@ -18,6 +18,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { EditAuthorsComponent } from "./edit-authors/edit-authors.component";
 import { EditBooksComponent } from "./edit-books/edit-books.component";
 import { InlineEditMultipleComponent } from "./inline-edit-multiple/inline-edit-multiple.component";
+import { EditLanguagesComponent } from "./edit-languages/edit-languages.component";
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { InlineEditMultipleComponent } from "./inline-edit-multiple/inline-edit-
     InlineEditComponent,
     EditAuthorsComponent,
     EditBooksComponent,
-    InlineEditMultipleComponent
+    InlineEditMultipleComponent,
+    EditLanguagesComponent
   ],
   imports: [
     BrowserModule,

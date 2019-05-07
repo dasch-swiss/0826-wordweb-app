@@ -18,14 +18,14 @@ export interface Book {
 export interface EditionOriginal {
   id: number;
   book: Book;
-  language: string;
+  language: Language;
   publicationInfo: string;
 }
 
 export interface Edition {
   id: number;
   book: Book;
-  language: string;
+  language: Language;
   publicationInfo: string;
 }
 
@@ -43,10 +43,40 @@ export interface PassageOriginal {
   page: string;
 }
 
+export interface Language {
+  id: number;
+  language: string;
+}
+
 @Injectable({
   providedIn: "root"
 })
 export class ApiService {
+  lang1: Language = {
+    id: 1,
+    language: "Englisch"
+  };
+
+  lang2: Language = {
+    id: 2,
+    language: "Deutsch"
+  };
+
+  lang3: Language = {
+    id: 3,
+    language: "Französisch"
+  };
+
+  lang4: Language = {
+    id: 4,
+    language: "Italienisch"
+  };
+
+  lang5: Language = {
+    id: 5,
+    language: "Spanisch"
+  };
+
   a1: Author = {
     id: 1,
     firstName: "William",
@@ -249,7 +279,7 @@ export class ApiService {
   e1: Edition = {
     id: 1,
     book: this.b1,
-    language: "English",
+    language: this.lang1,
     publicationInfo: "Romeo and Juliet, W. Spakespeare, [not_original]"
   };
 
@@ -272,7 +302,7 @@ export class ApiService {
   e1_original: EditionOriginal = {
     id: 1,
     book: this.b1,
-    language: "English",
+    language: this.lang1,
     publicationInfo: "Romeo and Juliet, W. Spakespeare, [original]"
   };
 
@@ -302,7 +332,7 @@ export class ApiService {
   e2: Edition = {
     id: 2,
     book: this.b2,
-    language: "English",
+    language: this.lang1,
     publicationInfo: "Hamlet, W. Spakespeare, [not_original]"
   };
 
@@ -334,7 +364,7 @@ export class ApiService {
   e2_original: EditionOriginal = {
     id: 1,
     book: this.b2,
-    language: "English",
+    language: this.lang1,
     publicationInfo: "The Tragedy of Hamlet, W. Spakespeare, [original]"
   };
 
@@ -373,7 +403,7 @@ export class ApiService {
   e3: Edition = {
     id: 3,
     book: this.b3,
-    language: "English",
+    language: this.lang1,
     publicationInfo: "The Comedy of Errors, W. Spakespeare, [not_original]"
   };
 
@@ -404,7 +434,7 @@ export class ApiService {
   e3_original: EditionOriginal = {
     id: 3,
     book: this.b3,
-    language: "English",
+    language: this.lang1,
     publicationInfo: "The Comedy of Errors, W. Spakespeare, [original]"
   };
 
@@ -442,7 +472,7 @@ export class ApiService {
   e4: Edition = {
     id: 4,
     book: this.b4,
-    language: "English",
+    language: this.lang2,
     publicationInfo: "Tamburlaine, C. Marlowe, [not_original]"
   };
 
@@ -464,7 +494,7 @@ export class ApiService {
   e4_original: EditionOriginal = {
     id: 4,
     book: this.b4,
-    language: "English",
+    language: this.lang3,
     publicationInfo: "Tamburlaine, C. Marlowe, [original]"
   };
 
@@ -490,6 +520,7 @@ export class ApiService {
   editionOriginalList: EditionOriginal[];
   passageList: Passage[];
   passageOriginalList: PassageOriginal[];
+  languageList: Language[];
 
   // Converts list to objects with id as keys
   objBooks: any = {};
@@ -498,6 +529,7 @@ export class ApiService {
   objEditionOriginals: any = {};
   objPassages: any = {};
   objPassagesOriginal: any = {};
+  objLanguages: any = {};
 
   constructor() {
     this.bookList = [this.b1, this.b2, this.b3, this.b4];
@@ -536,7 +568,13 @@ export class ApiService {
     this.objPassagesOriginal = this.passageOriginalList.reduce((acc, cur) => {
       acc[cur.id] = cur;
       return acc;
-    });
+    }, {});
+
+    this.languageList = [this.lang1, this.lang2, this.lang3, this.lang4, this.lang5];
+    this.objLanguages = this.languageList.reduce((acc, cur) =>  {
+      acc[cur.id] = cur;
+      return acc;
+    }, {});
   }
 
   getBook(iri: number) {
@@ -552,7 +590,6 @@ export class ApiService {
   }
 
   getAuthors() {
-    console.log("get authors");
     return this.authorList;
   }
 
@@ -586,5 +623,13 @@ export class ApiService {
 
   getPassagesOriginal() {
     return this.passageOriginalList;
+  }
+
+  getLanguage(iri: number) {
+    return this.objLanguages[iri] ? this.objLanguages[iri] : {};
+  }
+
+  getLanguages() {
+    return this.languageList;
   }
 }

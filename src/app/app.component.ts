@@ -74,4 +74,8 @@ export class AppComponent implements OnInit {
     this.list = "editAuthors";
   }
 
+  showEditLanguage() {
+    this.list = "editLanguages";
+  }
+
 }
