@@ -1,0 +1,47 @@
+<mat-card>
+  <mat-card-content>
+    <div class="mat-subheading-2">Autor(en)</div>
+
+    <table>
+      <tr>
+        <th align="left">ID</th>
+        <th align="left">Vorname</th>
+        <th align="left">Nachname</th>
+        <th>Aktion</th>
+      </tr>
+      <tr class="author-to-add" *ngFor="let valu of copyValues">
+        <td>#014678</td>
+        <td>{{valu.firstName}}</td>
+        <td>{{valu.lastName}}</td>
+        <td><button class="remove-button" (click)="removeAuthor(valu.id)">Löschen</button></td>
+      </tr>
+    </table>
+
+    <div *ngIf="!addingModus" style="margin-top:1rem;">
+      <button (click)="addAuthors()">Neue Autoren hinzufügen</button>
+    </div>
+    <div *ngIf="addingModus">
+      <mat-form-field>
+        <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)">
+        <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button (click)="close()">Zuklappen</button>
+      <div style="border: 1px solid black; height: 250px;overflow-y: scroll;">
+          <table>
+            <tr class="author-to-add" *ngFor="let author of filteredList">
+              <td>#014678</td>
+              <td>{{author.firstName}}</td>
+              <td>{{author.lastName}}</td>
+              <td><button class="add-button" [disabled]="isValidToAdd(author.id)" (click)="addAuthor(author)">+</button></td>
+            </tr>
+          </table>
+      </div>
+    </div>
+    <div style="margin-top: 1rem;" align="end">
+      <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
+      <button type="button" [disabled]="!valueChanged" mat-button color="primary" (click)="save()">SPEICHERN</button>
+    </div>
+  </mat-card-content>
+</mat-card>

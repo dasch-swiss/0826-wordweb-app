@@ -1,0 +1,115 @@
+<div class="table-container">
+
+  <div>
+    <mat-form-field>
+      <input [(ngModel)]="value"  matInput (input)="applyFilter($event.target.value)" placeholder="Filter" (keydown.escape)="clear()">
+      <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <button>Autor hinzufügen</button>
+    <span>Anazahl Datensätze: {{rowCount()}}</span>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+    <!-- Position Column -->
+    <!--  <ng-container matColumnDef="id">-->
+    <!--    <th mat-header-cell *matHeaderCellDef> No. </th>-->
+    <!--    <td mat-cell *matCellDef="let element"> {{element.id}} </td>-->
+    <!--  </ng-container>-->
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Vorname </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="edit-value" [satPopoverAnchorFor]="fn" (click)="fn.open()"> {{element.firstName}} </div>
+        <sat-popover #fn hasBackdrop xAlign="start" yAlign="start">
+          <app-inline-edit *ngIf="fn.isOpen()" [value]="element.firstName" [type]="'string'"></app-inline-edit>
+        </sat-popover>
+      </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nachname </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="edit-value" [satPopoverAnchorFor]="ln" (click)="ln.open()"> {{element.lastName}} </div>
+        <sat-popover #ln hasBackdrop xAlign="start" yAlign="start">
+          <app-inline-edit *ngIf="ln.isOpen()" [value]="element.lastName" [type]="'string'"></app-inline-edit>
+        </sat-popover>
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Beschreibung </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="edit-value" [satPopoverAnchorFor]="des" (click)="des.open()"> {{element.description}} </div>
+        <sat-popover #des hasBackdrop xAlign="start" yAlign="start">
+          <app-inline-edit *ngIf="des.isOpen()" [value]="element.description" [type]="'string'"></app-inline-edit>
+        </sat-popover>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="birthDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Geburtsjahr </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="edit-value" [satPopoverAnchorFor]="by" (click)="by.open()">1590</div>
+        <sat-popover #by hasBackdrop xAlign="start" yAlign="start">
+          <app-inline-edit *ngIf="by.isOpen()" [value]="'1590'" [type]="'string'"></app-inline-edit>
+        </sat-popover>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="deathDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Todesjahr </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="edit-value" [satPopoverAnchorFor]="dy" (click)="dy.open()">1621</div>
+        <sat-popover #dy hasBackdrop xAlign="start" yAlign="start">
+          <app-inline-edit *ngIf="dy.isOpen()" [value]="'1621'" [type]="'string'"></app-inline-edit>
+        </sat-popover>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="activeDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Aktivitätsperiode </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="edit-value" [satPopoverAnchorFor]="ay" (click)="ay.open()">1603</div>
+        <sat-popover #ay hasBackdrop xAlign="start" yAlign="start">
+          <app-inline-edit *ngIf="ay.isOpen()" [value]="1603" [type]="'string'"></app-inline-edit>
+        </sat-popover>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="order">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Reihenfolge</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="edit-value" [satPopoverAnchorFor]="or" (click)="or.open()">0</div>
+        <sat-popover #or hasBackdrop xAlign="start" yAlign="start">
+          <app-inline-edit *ngIf="or.isOpen()" [value]="0" [type]="'number'"></app-inline-edit>
+        </sat-popover>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="references">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Referenzen</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="edit-value">{{element.references}}</div>
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> Aktionen </th>
+      <td mat-cell *matCellDef="let element">
+        <button [disabled]="element.references !== 0">Löschen</button>
+        <!--      <button>Details</button>-->
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+</div>

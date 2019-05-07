@@ -1,0 +1,69 @@
+<button (click)="showBooks()">Bücher</button>
+<button (click)="showAuthors()">Autoren</button>
+<button (click)="showEditions()">Ausgaben</button>
+<button (click)="showPassages()">Passagen</button>
+<button (click)="showEditionsOriginal()">Ausgaben_Original</button>
+<button (click)="showPassagesOriginal()">Passagen_Original</button>
+<button (click)="showEditBooks()">Edit Book</button>
+<button (click)="showEditAuthor()">Edit Author</button>
+
+<div *ngIf="list === 'book'">
+  <div *ngFor="let book of bookList" style="border: 1px solid darkgray; margin: 10px;padding: 10px;">
+    <div>Title: {{book.title}}</div>
+    <div>Author: <span *ngFor="let author of book.authors">{{author.firstName}} {{author.lastName}}; </span></div>
+  </div>
+</div>
+
+<div *ngIf="list === 'author'">
+  <div *ngFor="let author of authorList" style="border: 1px solid darkgray; margin: 10px;padding: 10px;">
+    <div>Firstname: {{author.firstName}}</div>
+    <div>Lastname: {{author.lastName}}</div>
+  </div>
+</div>
+
+<div *ngIf="list === 'edition'">
+  <div *ngFor="let edition of editionList" style="border: 1px solid darkgray; margin: 10px;padding: 10px;">
+    <div>Language: {{edition.language}}</div>
+    <div>Publication Info: {{edition.publicationInfo}}</div>
+  </div>
+</div>
+
+<div *ngIf="list === 'passage'">
+  <div *ngFor="let passage of passageList" (click)="collapse(passage)" style="border: 1px solid darkgray; margin: 10px;padding: 10px;">
+    <div>Text: {{passage.text}}</div>
+    <div>Page: {{passage.page}}</div>
+    <div class="box" [class.opened]="passage['collapsed']">
+      Hier kommen Details:
+      <br>
+      <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Neque ornare aenean euismod elementum nisi quis eleifend. Vivamus at augue eget arcu dictum. Dui sapien eget mi proin sed libero enim sed faucibus. Justo laoreet sit amet cursus sit amet dictum sit. Varius sit amet mattis vulputate. Lorem ipsum dolor sit amet consectetur adipiscing elit. Convallis tellus id interdum velit laoreet id donec ultrices. Tempus urna et pharetra pharetra massa massa. Tempor commodo ullamcorper a lacus vestibulum sed arcu non odio. Sagittis eu volutpat odio facilisis mauris sit amet massa vitae. Semper auctor neque vitae tempus quam pellentesque nec nam. Mauris nunc congue nisi vitae suscipit tellus mauris. Eget magna fermentum iaculis eu. Mi in nulla posuere sollicitudin. Nibh mauris cursus mattis molestie a iaculis at erat pellentesque. Nam libero justo laoreet sit amet. Aliquam faucibus purus in massa. Velit ut tortor pretium viverra suspendisse potenti nullam ac.</div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="list === 'editionOriginal'">
+  <div *ngFor="let editionOriginal of editionOriginalList" style="border: 1px solid darkgray; margin: 10px;padding: 10px;">
+    <div>Language: {{editionOriginal.language}}</div>
+    <div>Publication Info: {{editionOriginal.publicationInfo}}</div>
+  </div>
+</div>
+
+<div *ngIf="list === 'passageOriginal'">
+  <div *ngFor="let passageOriginal of passageOriginalList" (click)="collapse(passageOriginal)" style="border: 1px solid darkgray; margin: 10px;padding: 10px;">
+    <div>Text: {{passageOriginal.text}}</div>
+    <div>Page: {{passageOriginal.page}}</div>
+    <div class="box" [class.opened]="passageOriginal['collapsed']">
+      Hier kommen Details:
+      <br>
+      <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Neque ornare aenean euismod elementum nisi quis eleifend. Vivamus at augue eget arcu dictum. Dui sapien eget mi proin sed libero enim sed faucibus. Justo laoreet sit amet cursus sit amet dictum sit. Varius sit amet mattis vulputate. Lorem ipsum dolor sit amet consectetur adipiscing elit. Convallis tellus id interdum velit laoreet id donec ultrices. Tempus urna et pharetra pharetra massa massa. Tempor commodo ullamcorper a lacus vestibulum sed arcu non odio. Sagittis eu volutpat odio facilisis mauris sit amet massa vitae. Semper auctor neque vitae tempus quam pellentesque nec nam. Mauris nunc congue nisi vitae suscipit tellus mauris. Eget magna fermentum iaculis eu. Mi in nulla posuere sollicitudin. Nibh mauris cursus mattis molestie a iaculis at erat pellentesque. Nam libero justo laoreet sit amet. Aliquam faucibus purus in massa. Velit ut tortor pretium viverra suspendisse potenti nullam ac.</div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="list === 'editBooks'">
+  <app-edit-books></app-edit-books>
+</div>
+
+<div *ngIf="list === 'editAuthors'">
+  <app-edit-authors></app-edit-authors>
+</div>
