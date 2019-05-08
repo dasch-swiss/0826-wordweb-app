@@ -56,10 +56,6 @@ export class InlineEditMultipleComponent implements OnInit {
     this.filteredList = [...this.list];
   }
 
-  close() {
-    this.addingModus = false;
-  }
-
   cancel() {
     if (this.popover) {
       this.popover.close();

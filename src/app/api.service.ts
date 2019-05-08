@@ -135,7 +135,8 @@ export class ApiService {
 
   a8: Author = {
     id: 8,
-    firstName: "John",
+    // firstName: "John",
+    firstName: "John Byrne Leicester Warren, Baron de",
     lastName: "Cotgrave",
     description: "English anthologist 1611?-1655?",
     references: 24
