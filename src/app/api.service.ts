@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 
 export interface Author {
   id: number;
+  internal_id: string;
   firstName: string;
   lastName: string;
   description: string;
@@ -79,6 +80,7 @@ export class ApiService {
 
   a1: Author = {
     id: 1,
+    internal_id: "@000001",
     firstName: "William",
     lastName: "Spakespeare",
     description: "English Dramatist",
@@ -87,6 +89,7 @@ export class ApiService {
 
   a2: Author = {
     id: 2,
+    internal_id: "@000002",
     firstName: "Christopher",
     lastName: "Marlowe",
     description: "English playwright and poet",
@@ -95,6 +98,7 @@ export class ApiService {
 
   a3: Author = {
     id: 3,
+    internal_id: "@000003",
     firstName: "Rosina Doyle",
     lastName: "Bulwer-Lytton",
     description: "English novelist",
@@ -103,6 +107,7 @@ export class ApiService {
 
   a4: Author = {
     id: 4,
+    internal_id: "@000004",
     firstName: "Samuel Taylor",
     lastName: "Coleridge",
     description: "English poet",
@@ -111,6 +116,7 @@ export class ApiService {
 
   a5: Author = {
     id: 5,
+    internal_id: "@000005",
     firstName: "William",
     lastName: "Barksted",
     description: "English poet and dramatist fl. 1611",
@@ -119,6 +125,7 @@ export class ApiService {
 
   a6: Author = {
     id: 6,
+    internal_id: "@000006",
     firstName: "George",
     lastName: "Chapman",
     description: "English poet, dramatist and Homer translator 1559?-1634",
@@ -127,6 +134,7 @@ export class ApiService {
 
   a7: Author = {
     id: 7,
+    internal_id: "@000007",
     firstName: "Marcus Tullius",
     lastName: "Cicero",
     description: "Roman politician, orator and philosopher 106-43",
@@ -135,6 +143,7 @@ export class ApiService {
 
   a8: Author = {
     id: 8,
+    internal_id: "@000008",
     // firstName: "John",
     firstName: "John Byrne Leicester Warren, Baron de",
     lastName: "Cotgrave",
@@ -144,6 +153,7 @@ export class ApiService {
 
   a9: Author = {
     id: 9,
+    internal_id: "@000009",
     firstName: "Sir William",
     lastName: "D'Avenant",
     description: "English dramatist 1606-1668",
@@ -152,6 +162,7 @@ export class ApiService {
 
   a10: Author = {
     id: 10,
+    internal_id: "@000010",
     firstName: "Charles",
     lastName: "Dickens",
     description: "English novelist 1812-1870",
@@ -160,6 +171,7 @@ export class ApiService {
 
   a11: Author = {
     id: 11,
+    internal_id: "@000011",
     firstName: "Maria",
     lastName: "Edgeworth",
     description: "Anglo-Irish dramatist and novelist 1767-1849",
@@ -168,6 +180,7 @@ export class ApiService {
 
   a12: Author = {
     id: 12,
+    internal_id: "@000012",
     firstName: "David",
     lastName: "Garrick",
     description: "English actor 1717-1779",
@@ -176,6 +189,7 @@ export class ApiService {
 
   a13: Author = {
     id: 13,
+    internal_id: "@000013",
     firstName: "Elizabeth",
     lastName: "George",
     description: "U.S. crime writer b. 1949, pen-name for Susan Elizabeth George",
@@ -184,6 +198,7 @@ export class ApiService {
 
   a14: Author = {
     id: 14,
+    internal_id: "@000014",
     firstName: "Johann Wolfgang von",
     lastName: "Goethe",
     description: "German poet and dramatist 1748-1832",
@@ -192,6 +207,7 @@ export class ApiService {
 
   a15: Author = {
     id: 15,
+    internal_id: "@000015",
     firstName: "Robert",
     lastName: "Gott",
     description: "Australian cartoonist children's and crime writer b. 1957",
@@ -200,6 +216,7 @@ export class ApiService {
 
   a16: Author = {
     id: 16,
+    internal_id: "@000016",
     firstName: "Paul",
     lastName: "Green",
     description: "U.S. dramatist 1894-1981",
@@ -208,6 +225,7 @@ export class ApiService {
 
   a17: Author = {
     id: 17,
+    internal_id: "@000017",
     firstName: "Martha",
     lastName: "Grimes",
     description: "U.S. crime writer b. 1931",
@@ -216,6 +234,7 @@ export class ApiService {
 
   a18: Author = {
     id: 18,
+    internal_id: "@000018",
     firstName: "Thomas",
     lastName: "Hardy",
     description: "English novelist and poet 1840-1928",
@@ -224,6 +243,7 @@ export class ApiService {
 
   a19: Author = {
     id: 19,
+    internal_id: "@000019",
     firstName: "Gerhart",
     lastName: "Hauptmann",
     description: "German dramatist and novelist 1862-1942",
@@ -232,6 +252,7 @@ export class ApiService {
 
   a20: Author = {
     id: 20,
+    internal_id: "@000020",
     firstName: "William",
     lastName: "Hazlitt",
     description: "English critic and essayist 1778-1830",
@@ -240,6 +261,7 @@ export class ApiService {
 
   a21: Author = {
     id: 21,
+    internal_id: "@000021",
     firstName: "Lewis C.",
     lastName: "Henry",
     description: "U.S. (?) anthologist fl. 1961, real name Lewis Copeland",
@@ -248,6 +270,7 @@ export class ApiService {
 
   a22: Author = {
     id: 22,
+    internal_id: "@000022",
     firstName: "Aaron",
     lastName: "Hill",
     description: "British novelist and poet 1685-1750",
@@ -256,6 +279,7 @@ export class ApiService {
 
   a23: Author = {
     id: 23,
+    internal_id: "@000023",
     firstName: "Vladimír",
     lastName: "Holan",
     description: "Czech poet 1905-1980",
@@ -264,6 +288,7 @@ export class ApiService {
 
   a24: Author = {
     id: 24,
+    internal_id: "@000024",
     firstName: "Zora Neale",
     lastName: "Hurston",
     description: "U.S. novelist 1891-1960",
@@ -514,6 +539,20 @@ export class ApiService {
     page: "4"
   };
 
+  b5: Book = {
+    id: 5,
+    title: "Of Two Evils Choose the Least",
+    authors: [this.a12, this.a19],
+    references: 1
+  };
+
+  b6: Book = {
+    id: 6,
+    title: "The Cruel Brother",
+    authors: [this.a10],
+    references: 1
+  };
+
   // List of resources
   bookList: Book[];
   authorList: Author[];
@@ -533,15 +572,18 @@ export class ApiService {
   objLanguages: any = {};
 
   constructor() {
-    this.bookList = [this.b1, this.b2, this.b3, this.b4];
+    this.bookList = [this.b1, this.b2, this.b3, this.b4, this.b5, this.b6];
     this.objBooks = this.bookList.reduce((acc, cur) => {
       acc[cur.id] = cur;
       return acc;
     }, {});
 
     this.authorList = [
-      this.a1, this.a2, this.a3, this.a4, this.a5, this.a6, this.a7, this.a8, this.a9, this.a10, this.a11, this.a12,
-      this.a13, this.a14, this.a15, this.a16, this.a17, this.a18, this.a19, this.a20, this.a21, this.a22, this.a23, this.a24];
+      this.a1, this.a2, this.a3, this.a4, this.a5, this.a6,
+      this.a7, this.a8, this.a9, this.a10, this.a11, this.a12,
+      this.a13, this.a14, this.a15, this.a16, this.a17, this.a18,
+      this.a19, this.a20, this.a21, this.a22, this.a23, this.a24
+    ];
     this.objAuthors = this.authorList.reduce((acc, cur) => {
       acc[cur.id] = cur;
       return acc;
