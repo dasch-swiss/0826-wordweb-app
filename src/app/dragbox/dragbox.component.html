@@ -3,13 +3,13 @@
 <div [class.author-container]="copyValues.length>=8">
   <table class="authors">
     <tr class="header-row">
-      <th>ID</th>
+      <th>ID Intern</th>
       <th>Vorname</th>
       <th>Nachname</th>
       <th>Aktion</th>
     </tr>
     <tr class="data-row" *ngFor="let author of copyValues">
-      <td>{{author.internal_id}}</td>
+      <td>{{author.internalID}}</td>
       <td>{{author.firstName}}</td>
       <td>{{author.lastName}}</td>
       <td class="delete-cell"><button class="remove-button" (click)="removeAuthor(author.id)">Löschen</button></td>
@@ -23,7 +23,7 @@
 
 <div class="author-list-container" [class.opened]="addingModus">
   <mat-form-field>
-    <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)">
+    <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)" (keydown.escape)="clear()">
     <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
       <mat-icon>close</mat-icon>
     </button>
@@ -31,7 +31,7 @@
   <div class="author-list-table-container">
     <table class="author-list">
       <tr *ngFor="let author of filteredList">
-        <td>{{author.internal_id}}</td>
+        <td>{{author.internalID}}</td>
         <td>{{author.firstName}}</td>
         <td>{{author.lastName}}</td>
         <td><button class="add-button" [disabled]="isUsed(author.id)" (click)="addAuthor(author)">+</button></td>
@@ -42,5 +42,5 @@
 
 <div class="action-buttons">
   <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-  <button type="button" [disabled]="!valueChanged" mat-flat-button color="primary" (click)="save()">SPEICHERN</button>
+  <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">SPEICHERN</button>
 </div>

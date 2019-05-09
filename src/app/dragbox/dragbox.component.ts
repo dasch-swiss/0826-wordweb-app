@@ -43,7 +43,7 @@ export class DragboxComponent implements OnInit {
   }
 
   applyFilter(value: string) {
-    this.filteredList = this.list.filter((author) => (author.firstName.toLowerCase().indexOf(value.toLowerCase()) > -1) || (author.lastName.toLowerCase().indexOf(value.toLowerCase()) > -1) || (author.internal_id.toLowerCase().indexOf(value.toLowerCase()) > -1));
+    this.filteredList = this.list.filter((author) => (author.firstName.toLowerCase().indexOf(value.toLowerCase()) > -1) || (author.lastName.toLowerCase().indexOf(value.toLowerCase()) > -1) || (author.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1));
   }
 
   isUsed(id: number): boolean {
