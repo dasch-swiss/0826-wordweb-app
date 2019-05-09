@@ -5,7 +5,7 @@ import {SatPopover} from "@ncstate/sat-popover";
 @Component({
   selector: "app-inline-edit",
   templateUrl: "./inline-edit.component.html",
-  styleUrls: ["./inline-edit.component.css"]
+  styleUrls: ["./inline-edit.component.scss"]
 })
 export class InlineEditComponent implements OnInit {
   form: FormGroup;

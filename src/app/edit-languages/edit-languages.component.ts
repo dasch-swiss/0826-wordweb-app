@@ -5,7 +5,7 @@ import {ApiService, Language} from "../api.service";
 @Component({
   selector: "app-edit-languages",
   templateUrl: "./edit-languages.component.html",
-  styleUrls: ["./edit-languages.component.css"]
+  styleUrls: ["./edit-languages.component.scss"]
 })
 export class EditLanguagesComponent implements OnInit {
 

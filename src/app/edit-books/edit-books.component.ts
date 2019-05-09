@@ -6,7 +6,7 @@ import {DragboxComponent} from "../dragbox/dragbox.component";
 @Component({
   selector: "app-edit-books",
   templateUrl: "./edit-books.component.html",
-  styleUrls: ["./edit-books.component.css"]
+  styleUrls: ["./edit-books.component.scss"]
 })
 export class EditBooksComponent implements OnInit {
 
@@ -41,14 +41,18 @@ export class EditBooksComponent implements OnInit {
     return authors;
   }
 
-  open(bla: any) {
+  open(authors: any[]) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
-      values: this.copyArray(bla)
+      values: this.copyArray(authors)
     };
     this.testDialog.open(DragboxComponent, dialogConfig);
+  }
+
+  openCreateBook() {
+      console.log("create Book");
   }
 
 }
