@@ -15,7 +15,7 @@ export class CreateAuthorComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form = new FormGroup( {
+        this.form = new FormGroup({
             firstName: new FormControl("", [Validators.required]),
             lastName: new FormControl("", [Validators.required]),
             description: new FormControl("", []),
