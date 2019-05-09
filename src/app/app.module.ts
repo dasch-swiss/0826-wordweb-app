@@ -19,6 +19,8 @@ import { EditAuthorsComponent } from "./edit-authors/edit-authors.component";
 import { EditBooksComponent } from "./edit-books/edit-books.component";
 import { EditLanguagesComponent } from "./edit-languages/edit-languages.component";
 import { DragboxComponent } from "./dragbox/dragbox.component";
+import { CreateAuthorComponent } from "./create-author/create-author.component";
+import { CreateBookComponent } from "./create-book/create-book.component";
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { DragboxComponent } from "./dragbox/dragbox.component";
     EditAuthorsComponent,
     EditBooksComponent,
     EditLanguagesComponent,
-    DragboxComponent
+    DragboxComponent,
+    CreateAuthorComponent,
+    CreateBookComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +52,9 @@ import { DragboxComponent } from "./dragbox/dragbox.component";
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [DragboxComponent]
+  entryComponents: [
+      DragboxComponent,
+      CreateAuthorComponent
+  ]
 })
 export class AppModule { }
