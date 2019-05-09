@@ -17,8 +17,8 @@ import {InlineEditComponent } from "./inline-edit/inline-edit.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { EditAuthorsComponent } from "./edit-authors/edit-authors.component";
 import { EditBooksComponent } from "./edit-books/edit-books.component";
-import { InlineEditMultipleComponent } from "./inline-edit-multiple/inline-edit-multiple.component";
 import { EditLanguagesComponent } from "./edit-languages/edit-languages.component";
+import { DragboxComponent } from "./dragbox/dragbox.component";
 
 @NgModule({
   declarations: [
@@ -26,8 +26,8 @@ import { EditLanguagesComponent } from "./edit-languages/edit-languages.componen
     InlineEditComponent,
     EditAuthorsComponent,
     EditBooksComponent,
-    InlineEditMultipleComponent,
-    EditLanguagesComponent
+    EditLanguagesComponent,
+    DragboxComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +47,7 @@ import { EditLanguagesComponent } from "./edit-languages/edit-languages.componen
     MatDialogModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [DragboxComponent]
 })
 export class AppModule { }

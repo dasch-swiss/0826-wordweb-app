@@ -1,15 +1,14 @@
-import {Component, Host, Input, OnInit} from "@angular/core";
-import {SatPopover} from "@ncstate/sat-popover";
+import {Component, Inject, OnInit} from "@angular/core";
 import {ApiService, Author} from "../api.service";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 @Component({
-  selector: "app-inline-edit-multiple",
-  templateUrl: "./inline-edit-multiple.component.html",
-  styleUrls: ["./inline-edit-multiple.component.css"]
+  selector: "app-dragbox",
+  templateUrl: "./dragbox.component.html",
+  styleUrls: ["./dragbox.component.scss"]
 })
-export class InlineEditMultipleComponent implements OnInit {
+export class DragboxComponent implements OnInit {
 
-  @Input() values: any[];
   copyValues: any[];
   addingModus: boolean;
   list: Author[];
@@ -18,10 +17,11 @@ export class InlineEditMultipleComponent implements OnInit {
   value: string;
   valueChanged: boolean;
 
-  constructor(@Host() public popover: SatPopover, private apiService: ApiService) { }
+  constructor(private dialogRef: MatDialogRef<DragboxComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+    this.copyValues = [...data["values"]];
+  }
 
   ngOnInit() {
-    this.copyValues = [...this.values];
     this.addingModus = false;
     this.list = this.apiService.getAuthors();
     this.filteredList = [...this.list];
@@ -38,16 +38,15 @@ export class InlineEditMultipleComponent implements OnInit {
   }
 
   removeAuthor(id: number) {
-    console.log(id);
     this.copyValues = this.copyValues.filter((author) => author.id !== id);
     this.valueChanged = true;
   }
 
   applyFilter(value: string) {
-    this.filteredList = this.list.filter((author) => (author.firstName.toLowerCase().indexOf(value.toLowerCase()) > -1) || (author.lastName.toLowerCase().indexOf(value.toLowerCase()) > -1));
+    this.filteredList = this.list.filter((author) => (author.firstName.toLowerCase().indexOf(value.toLowerCase()) > -1) || (author.lastName.toLowerCase().indexOf(value.toLowerCase()) > -1) || (author.internal_id.toLowerCase().indexOf(value.toLowerCase()) > -1));
   }
 
-  isValidToAdd(id: number): boolean {
+  isUsed(id: number): boolean {
     return this.copyValues.filter((author) => author.id === id).length !== 0;
   }
 
@@ -57,16 +56,11 @@ export class InlineEditMultipleComponent implements OnInit {
   }
 
   cancel() {
-    if (this.popover) {
-      this.popover.close();
-    }
+    this.dialogRef.close();
   }
 
   save() {
-    console.log("Save");
-    if (this.popover) {
-      this.popover.close();
-    }
+    this.dialogRef.close();
   }
 
 }

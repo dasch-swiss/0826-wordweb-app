@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { InlineEditMultipleComponent } from "./inline-edit-multiple.component";
+import { DragboxComponent } from "./dragbox.component";
 
-describe("InlineEditMultipleComponent", () => {
-  let component: InlineEditMultipleComponent;
-  let fixture: ComponentFixture<InlineEditMultipleComponent>;
+describe("DragboxComponent", () => {
+  let component: DragboxComponent;
+  let fixture: ComponentFixture<DragboxComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InlineEditMultipleComponent ]
+      declarations: [ DragboxComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InlineEditMultipleComponent);
+    fixture = TestBed.createComponent(DragboxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
-import {MatSort, MatTableDataSource} from "@angular/material";
+import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {ApiService, Book, Author} from "../api.service";
+import {DragboxComponent} from "../dragbox/dragbox.component";
 
 @Component({
   selector: "app-edit-books",
@@ -15,7 +16,8 @@ export class EditBooksComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService,
+              private testDialog: MatDialog) {
     this.dataSource = new MatTableDataSource(this.apiService.getBooks());
   }
 
@@ -37,6 +39,16 @@ export class EditBooksComponent implements OnInit {
 
   copyArray(authors: Author[]) {
     return authors;
+  }
+
+  open(bla: any) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      values: this.copyArray(bla)
+    };
+    this.testDialog.open(DragboxComponent, dialogConfig);
   }
 
 }
