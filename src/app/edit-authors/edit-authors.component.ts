@@ -42,6 +42,7 @@ export class EditAuthorsComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.width = "450px";
     this.createAuthorDialog.open(CreateAuthorComponent, dialogConfig);
   }
 

@@ -1,7 +1,11 @@
+.full-width {
+  width: 100%;
+}
+
 .action-buttons {
-  text-align: right;
+  justify-content: flex-end;
 
   button {
-    margin-top: 1rem;
+    margin: 1rem 0 1rem;
   }
 }

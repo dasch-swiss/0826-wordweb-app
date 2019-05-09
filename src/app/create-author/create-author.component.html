@@ -1,8 +1,40 @@
-<form>
+<form [formGroup]="form" (ngSubmit)="create()">
+    <h2>Neuen Autor erstellen</h2>
+
+    <mat-dialog-content>
+
+        <mat-form-field>
+            <input matInput type="text" placeholder="Interne ID">
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+            <input matInput type="text" formControlName="firstName" placeholder="Vorname" required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+            <input matInput type="text" formControlName="lastName" placeholder="Nachname" required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+            <textarea matInput formControlName="description" placeholder="Beschreibung"></textarea>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput type="number" formControlName="birthDate" placeholder="Geburtstjahr">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput type="number" formControlName="deathDate" placeholder="Todesjahr">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput type="number" formControlName="activeDate" placeholder="Aktiv">
+        </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="action-buttons">
+        <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
+        <button type="submit" mat-flat-button color="primary" (click)="create()">ERSTELLEN</button>
+    </mat-dialog-actions>
 
 </form>
-
-<div class="action-buttons">
-  <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-  <button type="button" mat-flat-button color="primary" (click)="create()">ERSTELLEN</button>
-</div>
