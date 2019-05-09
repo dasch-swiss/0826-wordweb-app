@@ -54,7 +54,8 @@ import { CreateBookComponent } from "./create-book/create-book.component";
   bootstrap: [AppComponent],
   entryComponents: [
       DragboxComponent,
-      CreateAuthorComponent
+      CreateAuthorComponent,
+      CreateBookComponent
   ]
 })
 export class AppModule { }
