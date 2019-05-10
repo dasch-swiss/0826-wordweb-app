@@ -57,7 +57,7 @@ export class EditBooksComponent implements OnInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.width = "450px";
+        // dialogConfig.width = "450px";
         this.createBookDialog.open(CreateBookComponent, dialogConfig);
     }
 

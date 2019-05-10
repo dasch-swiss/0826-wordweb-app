@@ -24,7 +24,7 @@
 
 <div *ngIf="list === 'edition'">
   <div *ngFor="let edition of editionList" style="border: 1px solid darkgray; margin: 10px;padding: 10px;">
-    <div>Language: {{edition.language}}</div>
+    <div>Language: {{edition.language.language}}</div>
     <div>Publication Info: {{edition.publicationInfo}}</div>
   </div>
 </div>

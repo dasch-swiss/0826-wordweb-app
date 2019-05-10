@@ -14,6 +14,7 @@ export class CreateBookComponent implements OnInit {
     constructor(private dialogRef: MatDialogRef<CreateBookComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.form = new FormGroup({
             title: new FormControl("", [Validators.required]),
+            author: new FormControl("", []),
             subject: new FormControl("", []),
             genre: new FormControl("", []),
             venue: new FormControl("", []),
@@ -30,5 +31,9 @@ export class CreateBookComponent implements OnInit {
 
     create() {
         this.dialogRef.close();
+    }
+
+    addAuthor() {
+        console.log("add Author");
     }
 }
