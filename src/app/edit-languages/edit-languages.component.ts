@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
-import {MatSort, MatTableDataSource} from "@angular/material";
+import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {ApiService, Language} from "../api.service";
+import {CreateLanguageComponent} from "../create-language/create-language.component";
 
 @Component({
     selector: "app-edit-languages",
@@ -15,7 +16,8 @@ export class EditLanguagesComponent implements OnInit {
 
     @ViewChild(MatSort) sort: MatSort;
 
-    constructor(private apiService: ApiService) {
+    constructor(private apiService: ApiService,
+                private createLanguageDialog: MatDialog) {
         this.dataSource = new MatTableDataSource(this.apiService.getLanguages());
     }
 
@@ -33,6 +35,14 @@ export class EditLanguagesComponent implements OnInit {
 
     rowCount() {
         return this.dataSource.filteredData.length;
+    }
+
+    openCreateLanguage() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = "450px";
+        this.createLanguageDialog.open(CreateLanguageComponent, dialogConfig);
     }
 
 }
