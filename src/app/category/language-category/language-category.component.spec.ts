@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { DragboxComponent } from "./dragbox.component";
+import { LanguageCategoryComponent } from "./language-category.component";
 
-describe("DragboxComponent", () => {
-  let component: DragboxComponent;
-  let fixture: ComponentFixture<DragboxComponent>;
+describe("LanguageCategoryComponent", () => {
+  let component: LanguageCategoryComponent;
+  let fixture: ComponentFixture<LanguageCategoryComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DragboxComponent ]
+      declarations: [ LanguageCategoryComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DragboxComponent);
+    fixture = TestBed.createComponent(LanguageCategoryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

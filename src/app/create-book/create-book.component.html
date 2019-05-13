@@ -1,81 +1,30 @@
 <form [formGroup]="form" (ngSubmit)="create()">
   <h2>Neues Buch erstellen</h2>
 
-  <mat-dialog-content>
-    <mat-form-field class="full-width">
-      <input matInput type="text" formControlName="title" placeholder="Normalised Title" required>
-    </mat-form-field>
+  Normalisierter Titel:
+  <mat-form-field>
+    <input matInput type="text" formControlName="title" required>
+  </mat-form-field>
 
-<!--      <mat-expansion-panel style="margin-bottom:10px;">-->
-<!--        <mat-expansion-panel-header>-->
-<!--          <mat-panel-title>-->
-<!--            Autoren hinzufügen-->
-<!--          </mat-panel-title>-->
-<!--          <mat-panel-description>-->
-<!--            William Shakespeare, Christopher Marlowe, Charles Dickens-->
-<!--          </mat-panel-description>-->
-<!--        </mat-expansion-panel-header>-->
+  <div>
 
-<!--        <p>This is the primary content of the panel.</p>-->
+    <mat-chip-list>
+      Autoren:
+      <mat-chip *ngFor="let author of authorList">
+        <mat-chip-avatar>
+          <mat-icon>account_circle</mat-icon>
+        </mat-chip-avatar>
+        {{author.firstName}} {{author.lastName}}
+      </mat-chip>
 
-<!--      </mat-expansion-panel>-->
+      <button mat-flat-button color="accent" (click)="addAuthor()">Bearbeiten</button>
 
-  </mat-dialog-content>
+    </mat-chip-list>
 
-  <mat-dialog-actions>
+  </div>
+
+  <div class="button-actions">
     <button mat-button type="button" color="primary" (click)="cancel()">ABBRECHEN</button>
     <button mat-flat-button type="submit" color="primary">ERSTELLEN</button>
-  </mat-dialog-actions>
+  </div>
 </form>
-
-
-
-<!--<div  style="display:inline-block; border: 1px solid blue;">-->
-<!--  <h2>Neue Autoren hinzufügen</h2>-->
-
-<!--  <table style="width:100%;">-->
-<!--    <tr align="left">-->
-<!--      <th>ID</th>-->
-<!--      <th>Vorname</th>-->
-<!--      <th>Nachname</th>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--      <td>02</td>-->
-<!--      <td>William</td>-->
-<!--      <td>Shakespeare</td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--      <td>12</td>-->
-<!--      <td>Christopher</td>-->
-<!--      <td>Marlowe</td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--      <td>06</td>-->
-<!--      <td>Charles</td>-->
-<!--      <td>Dickens</td>-->
-<!--    </tr>-->
-<!--  </table>-->
-<!--</div>-->
-
-<!--<div  style="display:inline-block; border: 1px solid green;">-->
-<!--  <h2>Neue Genre hinzufügen</h2>-->
-
-<!--  <table style="width:100%;">-->
-<!--    <tr align="left">-->
-<!--      <th>ID</th>-->
-<!--      <th>Genre</th>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--      <td>01</td>-->
-<!--      <td>Drama</td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--      <td>02</td>-->
-<!--      <td>Komödie</td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--      <td>03</td>-->
-<!--      <td>Fiction</td>-->
-<!--    </tr>-->
-<!--  </table>-->
-<!--</div>-->

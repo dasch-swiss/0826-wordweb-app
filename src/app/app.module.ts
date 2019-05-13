@@ -15,27 +15,33 @@ import {SatPopoverModule} from "@ncstate/sat-popover";
 import {MatFormFieldModule} from "@angular/material";
 import {InlineEditComponent} from "./inline-edit/inline-edit.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {EditAuthorsComponent} from "./edit-authors/edit-authors.component";
-import {EditBooksComponent} from "./edit-books/edit-books.component";
-import {EditLanguagesComponent} from "./edit-languages/edit-languages.component";
-import {DragboxComponent} from "./dragbox/dragbox.component";
+import {AuthorCategoryComponent} from "./category/author-category/author-category.component";
+import {BookCategoryComponent} from "./category/book-category/book-category.component";
+import {LanguageCategoryComponent} from "./category/language-category/language-category.component";
+import {AuthorSetComponent} from "./author-set/author-set.component";
 import {CreateAuthorComponent} from "./create-author/create-author.component";
 import {CreateBookComponent} from "./create-book/create-book.component";
 import { CreateLanguageComponent } from "./create-language/create-language.component";
+import {RouterModule, Routes} from "@angular/router";
+
+const routes: Routes = [
+    {path: "book", component: CreateBookComponent}
+];
 
 @NgModule({
     declarations: [
         AppComponent,
         InlineEditComponent,
-        EditAuthorsComponent,
-        EditBooksComponent,
-        EditLanguagesComponent,
-        DragboxComponent,
+        AuthorCategoryComponent,
+        BookCategoryComponent,
+        LanguageCategoryComponent,
+        AuthorSetComponent,
         CreateAuthorComponent,
         CreateBookComponent,
         CreateLanguageComponent
     ],
     imports: [
+        RouterModule.forRoot(routes),
         BrowserModule,
         MatProgressSpinnerModule,
         BrowserAnimationsModule,
@@ -56,7 +62,7 @@ import { CreateLanguageComponent } from "./create-language/create-language.compo
     providers: [],
     bootstrap: [AppComponent],
     entryComponents: [
-        DragboxComponent,
+        AuthorSetComponent,
         CreateAuthorComponent,
         CreateBookComponent,
         CreateLanguageComponent

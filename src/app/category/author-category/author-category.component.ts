@@ -1,14 +1,14 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
-import {ApiService, Author} from "../api.service";
-import {CreateAuthorComponent} from "../create-author/create-author.component";
+import {ApiService, Author} from "../../api.service";
+import {CreateAuthorComponent} from "../../create-author/create-author.component";
 
 @Component({
     selector: "app-edit-authors",
-    templateUrl: "./edit-authors.component.html",
-    styleUrls: ["./edit-authors.component.scss"]
+    templateUrl: "./author-category.component.html",
+    styleUrls: ["./author-category.component.scss"]
 })
-export class EditAuthorsComponent implements OnInit {
+export class AuthorCategoryComponent implements OnInit {
 
     displayedColumns: string[] = ["internalID", "firstName", "lastName", "description", "birthDate", "deathDate", "activeDate", "order", "references", "action"];
     dataSource: MatTableDataSource<Author>;

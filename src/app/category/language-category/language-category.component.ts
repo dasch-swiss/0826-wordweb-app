@@ -1,14 +1,14 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
-import {ApiService, Language} from "../api.service";
-import {CreateLanguageComponent} from "../create-language/create-language.component";
+import {ApiService, Language} from "../../api.service";
+import {CreateLanguageComponent} from "../../create-language/create-language.component";
 
 @Component({
     selector: "app-edit-languages",
-    templateUrl: "./edit-languages.component.html",
-    styleUrls: ["./edit-languages.component.scss"]
+    templateUrl: "./language-category.component.html",
+    styleUrls: ["./language-category.component.scss"]
 })
-export class EditLanguagesComponent implements OnInit {
+export class LanguageCategoryComponent implements OnInit {
 
     displayedColumns: string[] = ["language", "order", "references", "action"];
     dataSource: MatTableDataSource<Language>;

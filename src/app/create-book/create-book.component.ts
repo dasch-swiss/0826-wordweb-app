@@ -1,7 +1,8 @@
-import {Component, Inject, OnInit} from "@angular/core";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {Component, OnInit} from "@angular/core";
 import {ApiService} from "../api.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {MatDialog, MatDialogConfig} from "@angular/material";
+import {AuthorSetComponent} from "../author-set/author-set.component";
 
 @Component({
     selector: "app-create-book",
@@ -10,8 +11,10 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class CreateBookComponent implements OnInit {
     form: FormGroup;
+    authorList: any[];
 
-    constructor(private dialogRef: MatDialogRef<CreateBookComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+    constructor(private apiService: ApiService,
+                private authorDialog: MatDialog) {
         this.form = new FormGroup({
             title: new FormControl("", [Validators.required]),
             author: new FormControl("", []),
@@ -23,17 +26,28 @@ export class CreateBookComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.authorList = [];
     }
 
     cancel() {
-        this.dialogRef.close();
     }
 
     create() {
-        this.dialogRef.close();
     }
 
     addAuthor() {
-        console.log("add Author");
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            values: this.authorList,
+            editMod: false,
+        };
+        const dialogRef = this.authorDialog.open(AuthorSetComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (!data.cancel) {
+                this.authorList = data.data;
+            }
+        });
     }
 }

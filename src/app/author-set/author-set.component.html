@@ -6,19 +6,15 @@
       <th>ID Intern</th>
       <th>Vorname</th>
       <th>Nachname</th>
-      <th>Aktion</th>
+      <th>Löschen</th>
     </tr>
     <tr class="data-row" *ngFor="let author of copyValues">
       <td>{{author.internalID}}</td>
       <td>{{author.firstName}}</td>
       <td>{{author.lastName}}</td>
-      <td class="delete-cell"><button class="remove-button" (click)="removeAuthor(author.id)">Löschen</button></td>
+      <td class="delete-cell"><button class="remove-button" (click)="removeAuthor(author.id)">-</button></td>
     </tr>
   </table>
-</div>
-
-<div class="new-author-container" *ngIf="!addingModus">
-  <button (click)="addAuthors()">Neue Autoren hinzufügen</button>
 </div>
 
 <div class="author-list-container" [class.opened]="addingModus">
@@ -38,6 +34,14 @@
       </tr>
     </table>
   </div>
+</div>
+
+<div class="new-author-container" *ngIf="!addingModus">
+  <button mat-flat-button color="accent" (click)="openList()"><mat-icon>keyboard_arrow_down</mat-icon>Autoren hinzufügen</button>
+</div>
+
+<div class="new-author-container" *ngIf="addingModus">
+  <button mat-flat-button color="accent" (click)="closeList()"><mat-icon>keyboard_arrow_up</mat-icon>Zuklappen</button>
 </div>
 
 <div class="action-buttons">

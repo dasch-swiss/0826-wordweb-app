@@ -2,6 +2,14 @@
   width: 100%;
 }
 
-mat-dialog-actions {
-  justify-content: flex-end;
+.authors {
+  border-radius: 0.4rem;
+  background-color: lightgray;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  display: inline-block;
+}
+
+.button-actions {
+  text-align: right;
 }

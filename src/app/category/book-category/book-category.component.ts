@@ -1,15 +1,14 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
-import {ApiService, Book, Author} from "../api.service";
-import {DragboxComponent} from "../dragbox/dragbox.component";
-import {CreateBookComponent} from "../create-book/create-book.component";
+import {ApiService, Book, Author} from "../../api.service";
+import {AuthorSetComponent} from "../../author-set/author-set.component";
 
 @Component({
     selector: "app-edit-books",
-    templateUrl: "./edit-books.component.html",
-    styleUrls: ["./edit-books.component.scss"]
+    templateUrl: "./book-category.component.html",
+    styleUrls: ["./book-category.component.scss"]
 })
-export class EditBooksComponent implements OnInit {
+export class BookCategoryComponent implements OnInit {
 
     displayedColumns: string[] = ["title", "authors", "order", "references", "action"];
     dataSource: MatTableDataSource<Book>;
@@ -18,8 +17,7 @@ export class EditBooksComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
 
     constructor(private apiService: ApiService,
-                private authorDialog: MatDialog,
-                private createBookDialog: MatDialog) {
+                private authorDialog: MatDialog) {
         this.dataSource = new MatTableDataSource(this.apiService.getBooks());
     }
 
@@ -43,22 +41,18 @@ export class EditBooksComponent implements OnInit {
         return authors;
     }
 
-    open(authors: any[]) {
+    editAuthor(authors: any[]) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            values: this.copyArray(authors)
+            values: this.copyArray(authors),
+            editMod: true
         };
-        this.authorDialog.open(DragboxComponent, dialogConfig);
-    }
-
-    openCreateBook() {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
-        // dialogConfig.width = "450px";
-        this.createBookDialog.open(CreateBookComponent, dialogConfig);
+        const dialogRef = this.authorDialog.open(AuthorSetComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+           console.log(data);
+        });
     }
 
 }

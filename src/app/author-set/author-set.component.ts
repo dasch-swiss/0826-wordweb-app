@@ -4,10 +4,10 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 @Component({
     selector: "app-dragbox",
-    templateUrl: "./dragbox.component.html",
-    styleUrls: ["./dragbox.component.scss"]
+    templateUrl: "./author-set.component.html",
+    styleUrls: ["./author-set.component.scss"]
 })
-export class DragboxComponent implements OnInit {
+export class AuthorSetComponent implements OnInit {
 
     copyValues: any[];
     addingModus: boolean;
@@ -17,8 +17,13 @@ export class DragboxComponent implements OnInit {
     value: string;
     valueChanged: boolean;
 
-    constructor(private dialogRef: MatDialogRef<DragboxComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
-        this.copyValues = [...data["values"]];
+    constructor(private dialogRef: MatDialogRef<AuthorSetComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+        console.log(data["editMod"], data["values"]);
+        if (data["editMod"]) {
+            this.copyValues = [...data["values"]];
+        } else {
+            this.copyValues = data["values"].length !== 0 ? [...data["values"]] : [];
+        }
     }
 
     ngOnInit() {
@@ -28,13 +33,18 @@ export class DragboxComponent implements OnInit {
         this.valueChanged = false;
     }
 
-    addAuthors() {
+    openList() {
         this.addingModus = true;
+    }
+
+    closeList() {
+        this.addingModus = false;
     }
 
     addAuthor(author: Author) {
         this.copyValues.push(author);
         this.valueChanged = true;
+        console.log(this.copyValues);
     }
 
     removeAuthor(id: number) {
@@ -56,11 +66,11 @@ export class DragboxComponent implements OnInit {
     }
 
     cancel() {
-        this.dialogRef.close();
+        this.dialogRef.close({ cancel: true, data: null});
     }
 
     save() {
-        this.dialogRef.close();
+        this.dialogRef.close({ cancel: false, data: [...this.copyValues]});
     }
 
 }

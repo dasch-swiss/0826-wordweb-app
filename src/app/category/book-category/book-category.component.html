@@ -1,0 +1,75 @@
+<div class="table-container">
+
+    <div>
+        <mat-form-field>
+            <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter"
+                   (keydown.escape)="clear()">
+            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <button mat-flat-button type="button" color="primary" [routerLink]="['/book']">Buch hinzufügen</button>
+        <span>Anzahl Datensätze: {{rowCount()}}</span>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <!-- Position Column -->
+        <!--  <ng-container matColumnDef="id">-->
+        <!--    <th mat-header-cell *matHeaderCellDef> No. </th>-->
+        <!--    <td mat-cell *matCellDef="let element"> {{element.id}} </td>-->
+        <!--  </ng-container>-->
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Title</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="edit-value" [satPopoverAnchorFor]="fn" (click)="fn.open()"> {{element.title}} </div>
+                <sat-popover #fn hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit [value]="element.title" [type]="'string'"></app-inline-edit>
+                </sat-popover>
+            </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="authors">
+            <th mat-header-cell *matHeaderCellDef> Autor</th>
+            <td mat-cell *matCellDef="let element">
+                <ul class="edit-value" (click)="editAuthor(element.authors)" style="padding-left: 0; list-style-type: none">
+                    <li *ngFor="let author of element.authors">{{author.firstName}} {{author.lastName}}</li>
+                </ul>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="order">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Reihenfolge</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="edit-value" [satPopoverAnchorFor]="or" (click)="or.open()">0</div>
+                <sat-popover #or hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit [value]="0" [type]="'number'"></app-inline-edit>
+                </sat-popover>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="references">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Referenzen</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="edit-value">{{element.references}}</div>
+            </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> Aktionen</th>
+            <td mat-cell *matCellDef="let element">
+                <button type="button" mat-flat-button color="warn" [disabled]="element.references !== 0">Löschen
+                </button>
+                <!--      <button>Details</button>-->
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+</div>

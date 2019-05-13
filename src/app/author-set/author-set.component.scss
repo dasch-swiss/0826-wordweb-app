@@ -13,7 +13,7 @@ button {
 
 .authors {
     th {
-        background-color: darkgray;
+        background-color: lightgray;
         text-align: left;
     }
 
@@ -21,12 +21,8 @@ button {
         padding: 0.3rem;
     }
 
-    .data-row:nth-child(even) {
+    .data-row {
         background-color:whitesmoke;
-    }
-
-    .data-row:nth-child(odd) {
-        background-color: lightgray;
     }
 
     .delete-cell {
@@ -43,7 +39,7 @@ button {
 
     max-height: 0px;
     overflow-y: hidden;
-    transition: ease-in-out 300ms max-height;
+    transition: ease-in-out 200ms max-height;
 
     mat-form-field {
         width: 100%;
