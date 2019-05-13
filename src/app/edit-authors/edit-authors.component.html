@@ -114,7 +114,7 @@
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>Aktionen</th>
             <td mat-cell *matCellDef="let element">
-                <button [disabled]="element.references !== 0">Löschen</button>
+                <button type="button" mat-flat-button color="warn" [disabled]="element.references !== 0">Löschen</button>
                 <!--      <button>Details</button>-->
             </td>
         </ng-container>
