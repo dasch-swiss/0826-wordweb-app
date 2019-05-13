@@ -47,6 +47,7 @@ export interface PassageOriginal {
 export interface Language {
   id: number;
   language: string;
+  references: number;
 }
 
 @Injectable({
@@ -55,27 +56,32 @@ export interface Language {
 export class ApiService {
   lang1: Language = {
     id: 1,
-    language: "Englisch"
+    language: "Englisch",
+    references: 10
   };
 
   lang2: Language = {
     id: 2,
-    language: "Deutsch"
+    language: "Deutsch",
+    references: 1
   };
 
   lang3: Language = {
     id: 3,
-    language: "Französisch"
+    language: "Französisch",
+    references: 0
   };
 
   lang4: Language = {
     id: 4,
-    language: "Italienisch"
+    language: "Italienisch",
+    references: 0
   };
 
   lang5: Language = {
     id: 5,
-    language: "Spanisch"
+    language: "Spanisch",
+    references: 0
   };
 
   a1: Author = {
