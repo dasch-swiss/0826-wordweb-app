@@ -28,6 +28,14 @@ button {
     .delete-cell {
         text-align: center;
     }
+
+    .empty-row {
+        background-color: whitesmoke;
+
+        td {
+            text-align: center;
+        }
+    }
 }
 
 .new-author-container {
@@ -53,6 +61,14 @@ button {
         .author-list {
             tr:hover {
                 background-color: whitesmoke;
+            }
+
+            .empty-row {
+                background-color: whitesmoke;
+
+                td {
+                    text-align: center;
+                }
             }
         }
     }

@@ -14,6 +14,9 @@
       <td>{{author.lastName}}</td>
       <td class="delete-cell"><button class="remove-button" (click)="removeAuthor(author.id)">-</button></td>
     </tr>
+    <tr class="empty-row" *ngIf="copyValues.length === 0">
+      <td colspan="4">Noch keine Autoren hinzugefügt</td>
+    </tr>
   </table>
 </div>
 
@@ -32,12 +35,15 @@
         <td>{{author.lastName}}</td>
         <td><button class="add-button" [disabled]="isUsed(author.id)" (click)="addAuthor(author)">+</button></td>
       </tr>
+      <tr class="empty-row" *ngIf="filteredList.length === 0">
+        <td colspan="4">Autorenliste ist leer!</td>
+      </tr>
     </table>
   </div>
 </div>
 
 <div class="new-author-container" *ngIf="!addingModus">
-  <button mat-flat-button color="accent" (click)="openList()"><mat-icon>keyboard_arrow_down</mat-icon>Autoren hinzufügen</button>
+  <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Autoren hinzufügen</button>
 </div>
 
 <div class="new-author-container" *ngIf="addingModus">
