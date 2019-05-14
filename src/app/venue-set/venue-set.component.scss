@@ -1,0 +1,89 @@
+table {
+  min-width: 100%;
+}
+
+button {
+  cursor: pointer;
+}
+
+.venue-container {
+  max-height: 15rem;
+  overflow-y: scroll;
+}
+
+.venues {
+  th {
+    background-color: lightgray;
+    text-align: left;
+  }
+
+  th, td {
+    padding: 0.3rem;
+  }
+
+  .data-row {
+    background-color:whitesmoke;
+  }
+
+  .delete-cell {
+    text-align: center;
+  }
+
+  .empty-row {
+    background-color: whitesmoke;
+
+    td {
+      text-align: center;
+    }
+  }
+}
+
+.new-venue-container {
+  margin-top: 1rem;
+}
+
+.venue-list-container {
+  margin-top:1rem;
+
+  max-height: 0px;
+  overflow-y: hidden;
+  transition: ease-in-out 200ms max-height;
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .venue-list-table-container{
+    border: 1px solid black;
+    height: 14rem;
+    overflow-y: scroll;
+
+    .venue-list {
+      tr:hover {
+        background-color: whitesmoke;
+      }
+
+      .empty-row {
+        background-color: whitesmoke;
+
+        td {
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+.venue-list-container.opened {
+  max-height: 450px;
+  //height: 100%;
+  transition: ease-in-out 600ms max-height;
+}
+
+.action-buttons {
+  text-align: right;
+
+  button {
+    margin-top: 1rem;
+  }
+}

@@ -50,6 +50,12 @@ export interface Language {
   references: number;
 }
 
+export interface Venue {
+  id: number;
+  name: string;
+  city: string;
+}
+
 @Injectable({
   providedIn: "root"
 })
@@ -559,6 +565,48 @@ export class ApiService {
     references: 1
   };
 
+  v1: Venue = {
+    id: 1,
+    name: "Blackfriars",
+    city: "London"
+  };
+
+  v2: Venue = {
+    id: 2,
+    name: "The Theatre",
+    city: "London"
+  };
+
+  v3: Venue = {
+    id: 3,
+    name: "Cockpit",
+    city: "London"
+  };
+
+  v4: Venue = {
+    id: 4,
+    name: "The Curtain",
+    city: "London"
+  };
+
+  v5: Venue = {
+    id: 5,
+    name: "Whitefriars",
+    city: "London"
+  };
+
+  v6: Venue = {
+    id: 6,
+    name: "Red Bull",
+    city: "London"
+  };
+
+  v7: Venue = {
+    id: 7,
+    name: "Then Rose",
+    city: "London"
+  };
+
   // List of resources
   bookList: Book[];
   authorList: Author[];
@@ -567,6 +615,7 @@ export class ApiService {
   passageList: Passage[];
   passageOriginalList: PassageOriginal[];
   languageList: Language[];
+  venueList: Venue[];
 
   // Converts list to objects with id as keys
   objBooks: any = {};
@@ -576,6 +625,7 @@ export class ApiService {
   objPassages: any = {};
   objPassagesOriginal: any = {};
   objLanguages: any = {};
+  objVenues: any = {};
 
   constructor() {
     this.bookList = [this.b1, this.b2, this.b3, this.b4, this.b5, this.b6];
@@ -624,6 +674,12 @@ export class ApiService {
       acc[cur.id] = cur;
       return acc;
     }, {});
+
+    this.venueList = [this.v1, this.v2, this.v3, this.v4, this.v5, this.v6, this.v7];
+    this.objVenues = this.venueList.reduce((acc, cur) => {
+      acc[cur.id] = cur;
+      return acc;
+    });
   }
 
   getBook(iri: number) {
@@ -680,6 +736,14 @@ export class ApiService {
 
   getLanguages() {
     return this.languageList;
+  }
+
+  getVenue(iri: number) {
+    return this.objVenues[iri] ? this.objVenues[iri] : {};
+  }
+
+  getVenues() {
+    return this.venueList;
   }
 
   createAuthor() {

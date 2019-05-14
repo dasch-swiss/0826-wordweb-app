@@ -7,7 +7,7 @@ import {
     MatCardModule,
     MatChipsModule, MatDialogModule, MatExpansionModule,
     MatIconModule, MatInputModule,
-    MatProgressSpinnerModule, MatSortModule,
+    MatProgressSpinnerModule, MatSelectModule, MatSortModule,
     MatTableModule
 } from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -23,6 +23,7 @@ import {CreateAuthorComponent} from "./create-author/create-author.component";
 import {CreateBookComponent} from "./create-book/create-book.component";
 import { CreateLanguageComponent } from "./create-language/create-language.component";
 import {RouterModule, Routes} from "@angular/router";
+import { VenueSetComponent } from "./venue-set/venue-set.component";
 
 const routes: Routes = [
     {path: "book", component: CreateBookComponent}
@@ -38,7 +39,8 @@ const routes: Routes = [
         AuthorSetComponent,
         CreateAuthorComponent,
         CreateBookComponent,
-        CreateLanguageComponent
+        CreateLanguageComponent,
+        VenueSetComponent
     ],
     imports: [
         RouterModule.forRoot(routes),
@@ -57,12 +59,14 @@ const routes: Routes = [
         FormsModule,
         ReactiveFormsModule,
         MatDialogModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatSelectModule
     ],
     providers: [],
     bootstrap: [AppComponent],
     entryComponents: [
         AuthorSetComponent,
+        VenueSetComponent,
         CreateAuthorComponent,
         CreateBookComponent,
         CreateLanguageComponent

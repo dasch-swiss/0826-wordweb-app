@@ -1,0 +1,53 @@
+<h2>Venue</h2>
+
+<div [class.venue-container]="copyValues.length>=8">
+  <table class="venues">
+    <tr class="header-row">
+      <th>Name</th>
+      <th>Stadt</th>
+      <th>Löschen</th>
+    </tr>
+    <tr class="data-row" *ngFor="let venue of copyValues">
+      <td>{{venue.name}}</td>
+      <td>{{venue.city}}</td>
+      <td class="delete-cell"><button class="remove-button" (click)="removeVenue(venue.id)">-</button></td>
+    </tr>
+    <tr class="empty-row" *ngIf="copyValues.length === 0">
+      <td colspan="4">Noch keine Venues hinzugefügt</td>
+    </tr>
+  </table>
+</div>
+
+<div class="venue-list-container" [class.opened]="addingModus">
+  <mat-form-field>
+    <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)" (keydown.escape)="clear()">
+    <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <div class="venue-list-table-container">
+    <table class="venue-list">
+      <tr *ngFor="let venue of filteredList">
+        <td>{{venue.name}}</td>
+        <td>{{venue.city}}</td>
+        <td><button class="add-button" [disabled]="isUsed(venue.id)" (click)="addVenue(venue)">+</button></td>
+      </tr>
+      <tr class="empty-row" *ngIf="filteredList.length === 0">
+        <td colspan="4">Venueliste ist leer!</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="new-venue-container" *ngIf="!addingModus">
+  <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Venues hinzufügen</button>
+</div>
+
+<div class="new-venue-container" *ngIf="addingModus">
+  <button mat-flat-button color="accent" (click)="closeList()"><mat-icon>keyboard_arrow_up</mat-icon>Zuklappen</button>
+</div>
+
+<div class="action-buttons">
+  <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
+  <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">SPEICHERN</button>
+</div>

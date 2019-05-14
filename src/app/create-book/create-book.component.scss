@@ -1,15 +1,35 @@
-.full-width {
-  width: 100%;
-}
+.container {
+  margin: 2rem;
+  //border: 1px solid red;
 
-.authors {
-  border-radius: 0.4rem;
-  background-color: lightgray;
-  padding: 0.5rem;
-  margin: 0.5rem;
-  display: inline-block;
-}
+  table {
+    width: 100%;
 
-.button-actions {
-  text-align: right;
+    .title-column {
+      width: 160px;
+    }
+
+    td {
+      //border: 1px solid black;
+      button {
+        margin: 4px;
+      }
+
+      mat-form-field {
+        //width: 100%;
+      }
+    }
+  }
+
+  .authors {
+    border-radius: 0.4rem;
+    background-color: lightgray;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    display: inline-block;
+  }
+
+  .button-actions {
+    text-align: right;
+  }
 }
