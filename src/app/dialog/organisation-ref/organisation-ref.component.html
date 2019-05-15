@@ -1,19 +1,17 @@
-<h2>Venue</h2>
+<h2>Organisation</h2>
 
 <div [class.result-container]="copyValues.length>=8">
   <table class="chosen-data-table">
     <tr class="header-row">
       <th>Name</th>
-      <th>Stadt</th>
       <th>Löschen</th>
     </tr>
-    <tr class="data-row" *ngFor="let venue of copyValues">
-      <td>{{venue.name}}</td>
-      <td>{{venue.city}}</td>
-      <td class="delete-cell"><button class="remove-button" (click)="remove(venue.id)">-</button></td>
+    <tr class="data-row" *ngFor="let organisation of copyValues">
+      <td>{{organisation.name}}</td>
+      <td class="delete-cell"><button class="remove-button" (click)="remove(organisation.id)">-</button></td>
     </tr>
     <tr class="empty-row" *ngIf="copyValues.length === 0">
-      <td colspan="4">Noch keine Venues hinzugefügt</td>
+      <td colspan="4">Noch keine Organisationen hinzugefügt</td>
     </tr>
   </table>
 </div>
@@ -27,20 +25,19 @@
   </mat-form-field>
   <div class="full-data-table-container">
     <table class="full-data-table">
-      <tr *ngFor="let venue of filteredList">
-        <td>{{venue.name}}</td>
-        <td>{{venue.city}}</td>
-        <td><button class="add-button" [disabled]="isUsed(venue.id)" (click)="add(venue)">+</button></td>
+      <tr *ngFor="let organisation of filteredList">
+        <td>{{organisation.name}}</td>
+        <td><button class="add-button" [disabled]="isUsed(organisation.id)" (click)="add(organisation)">+</button></td>
       </tr>
       <tr class="empty-row" *ngIf="filteredList.length === 0">
-        <td colspan="4">Venueliste ist leer!</td>
+        <td colspan="4">Organisationsliste ist leer!</td>
       </tr>
     </table>
   </div>
 </div>
 
 <div class="add-btn-container" *ngIf="!addingModus">
-  <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Venues hinzufügen</button>
+  <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Organisationen hinzufügen</button>
 </div>
 
 <div class="add-btn-container" *ngIf="addingModus">

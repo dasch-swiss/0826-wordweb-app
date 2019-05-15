@@ -1,22 +1,23 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {ApiService, Author, Venue} from "../../api.service";
+import {ApiService, Organisation, Venue} from "../../api.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 @Component({
-  selector: "app-venue-set",
-  templateUrl: "./venue-ref.component.html",
+  selector: "app-organisation-ref",
+  templateUrl: "./organisation-ref.component.html",
   styleUrls: ["../category-ref.component.scss"]
 })
-export class VenueRefComponent implements OnInit {
+export class OrganisationRefComponent implements OnInit {
 
   copyValues: any[];
   addingModus: boolean;
-  list: Venue[];
-  filteredList: Venue[];
+  list: Organisation[];
+  filteredList: Organisation[];
 
   value: string;
   valueChanged: boolean;
-  constructor(private dialogRef: MatDialogRef<VenueRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+
+  constructor(private dialogRef: MatDialogRef<OrganisationRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
     if (data["editMod"]) {
       this.copyValues = [...data["values"]];
     } else {
@@ -26,7 +27,7 @@ export class VenueRefComponent implements OnInit {
 
   ngOnInit() {
     this.addingModus = false;
-    this.list = this.apiService.getVenues();
+    this.list = this.apiService.getOrganisations();
     this.filteredList = [...this.list];
     this.valueChanged = false;
   }
@@ -39,23 +40,23 @@ export class VenueRefComponent implements OnInit {
     this.addingModus = false;
   }
 
-  add(venue: Venue) {
-    this.copyValues.push(venue);
+  add(organisation: Organisation) {
+    this.copyValues.push(organisation);
     this.valueChanged = true;
     console.log(this.copyValues);
   }
 
   remove(id: number) {
-    this.copyValues = this.copyValues.filter((venue) => venue.id !== id);
+    this.copyValues = this.copyValues.filter((organisation) => organisation.id !== id);
     this.valueChanged = true;
   }
 
   applyFilter(value: string) {
-    this.filteredList = this.list.filter((venue) => (venue.name.toLowerCase().indexOf(value.toLowerCase()) > -1) || (venue.city.toLowerCase().indexOf(value.toLowerCase()) > -1));
+    this.filteredList = this.list.filter((organisation) => (organisation.name.toLowerCase().indexOf(value.toLowerCase()) > -1));
   }
 
   isUsed(id: number): boolean {
-    return this.copyValues.filter((venue) => venue.id === id).length !== 0;
+    return this.copyValues.filter((organisation) => organisation.id === id).length !== 0;
   }
 
   clear() {
@@ -70,5 +71,6 @@ export class VenueRefComponent implements OnInit {
   save() {
     this.dialogRef.close({ cancel: false, data: [...this.copyValues]});
   }
+
 
 }

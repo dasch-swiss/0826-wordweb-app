@@ -51,9 +51,17 @@
       <tr>
         <td class="title-column">Organisation:</td>
         <td>
+          <mat-chip-list>
+            <mat-chip *ngFor="let organisation of organisationList">
+              <mat-chip-avatar>
+                <mat-icon>business</mat-icon>
+              </mat-chip-avatar>
+              {{organisation.name}}
+            </mat-chip>
+          </mat-chip-list>
         </td>
         <td>
-          <button mat-flat-button color="accent">{{addOrEdit([])}}</button>
+          <button mat-flat-button color="accent" (click)="addOrganisation()">{{addOrEdit(organisationList)}}</button>
         </td>
       </tr>
 

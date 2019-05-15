@@ -4,6 +4,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog, MatDialogConfig} from "@angular/material";
 import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
 import {VenueRefComponent} from "../../dialog/venue-ref/venue-ref.component";
+import {OrganisationRefComponent} from "../../dialog/organisation-ref/organisation-ref.component";
 
 @Component({
     selector: "app-create-book",
@@ -14,6 +15,7 @@ export class CreateBookComponent implements OnInit {
     form: FormGroup;
     authorList: any[];
     venueList: any[];
+    organisationList: any[];
 
     states: string[] = [
         "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
@@ -41,6 +43,7 @@ export class CreateBookComponent implements OnInit {
     ngOnInit() {
         this.authorList = [];
         this.venueList = [];
+        this.organisationList = [];
     }
 
     cancel() {
@@ -77,6 +80,22 @@ export class CreateBookComponent implements OnInit {
         dialogRef.afterClosed().subscribe((data) => {
             if (!data.cancel) {
                 this.venueList = data.data;
+            }
+        });
+    }
+
+    addOrganisation() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            values: this.organisationList,
+            editMod: false,
+        };
+        const dialogRef = this.venueDialog.open(OrganisationRefComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (!data.cancel) {
+                this.organisationList = data.data;
             }
         });
     }

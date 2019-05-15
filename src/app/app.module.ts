@@ -26,6 +26,7 @@ import {RouterModule, Routes} from "@angular/router";
 import { VenueRefComponent } from "./dialog/venue-ref/venue-ref.component";
 import { EditionComponent } from "./category/edition/edition.component";
 import { OrganisationComponent } from "./category/organisation/organisation.component";
+import { OrganisationRefComponent } from "./dialog/organisation-ref/organisation-ref.component";
 
 const routes: Routes = [
     {path: "book", component: CreateBookComponent}
@@ -44,7 +45,8 @@ const routes: Routes = [
         CreateLanguageComponent,
         VenueRefComponent,
         EditionComponent,
-        OrganisationComponent
+        OrganisationComponent,
+        OrganisationRefComponent
     ],
     imports: [
         RouterModule.forRoot(routes),
@@ -71,6 +73,7 @@ const routes: Routes = [
     entryComponents: [
         AuthorRefComponent,
         VenueRefComponent,
+        OrganisationRefComponent,
         CreateAuthorComponent,
         CreateBookComponent,
         CreateLanguageComponent
