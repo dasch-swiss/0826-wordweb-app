@@ -1,12 +1,14 @@
-<button (click)="showBooks()">Bücher</button>
-<button (click)="showAuthors()">Autoren</button>
-<button (click)="showEditions()">Ausgaben</button>
-<button (click)="showPassages()">Passagen</button>
-<button (click)="showEditionsOriginal()">Ausgaben_Original</button>
-<button (click)="showPassagesOriginal()">Passagen_Original</button>
-<button (click)="showEditBooks()">Edit Book</button>
-<button (click)="showEditAuthor()">Edit Author</button>
-<button (click)="showEditLanguage()">Edit Language</button>
+<!--<button (click)="showBooks()">Bücher</button>-->
+<!--<button (click)="showAuthors()">Autoren</button>-->
+<!--<button (click)="showEditions()">Ausgaben</button>-->
+<!--<button (click)="showPassages()">Passagen</button>-->
+<!--<button (click)="showEditionsOriginal()">Ausgaben_Original</button>-->
+<!--<button (click)="showPassagesOriginal()">Passagen_Original</button>-->
+<button (click)="showBookCat()">Book</button>
+<button (click)="showAuthorCat()">Author</button>
+<button (click)="showLanguageCat()">Language</button>
+<button (click)="showEditionCat()">Edition</button>
+<button (click)="showOrganisationCat()">Organisation</button>
 
 <div *ngIf="list === 'book'">
   <div *ngFor="let book of bookList" style="border: 1px solid darkgray; margin: 10px;padding: 10px;">
@@ -61,16 +63,24 @@
 </div>
 
 
-<div *ngIf="list === 'editBooks'">
-  <app-edit-books></app-edit-books>
+<div *ngIf="list === 'bookCategory'">
+  <app-book></app-book>
 </div>
 
-<div *ngIf="list === 'editAuthors'">
-  <app-edit-authors></app-edit-authors>
+<div *ngIf="list === 'authorCategory'">
+  <app-author></app-author>
 </div>
 
-<div *ngIf="list === 'editLanguages'">
-  <app-edit-languages></app-edit-languages>
+<div *ngIf="list === 'languageCategory'">
+  <app-language></app-language>
+</div>
+
+<div *ngIf="list === 'editionCategory'">
+  <app-edition></app-edition>
+</div>
+
+<div *ngIf="list === 'organisationCategory'">
+  <app-organisation></app-organisation>
 </div>
 
 

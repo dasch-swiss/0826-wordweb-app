@@ -4,7 +4,7 @@ import {ApiService, Author} from "../../api.service";
 import {CreateAuthorComponent} from "../../create-resource/create-author/create-author.component";
 
 @Component({
-    selector: "app-edit-authors",
+    selector: "app-author",
     templateUrl: "./author.component.html",
     styleUrls: ["../category.component.scss"]
 })

@@ -4,7 +4,7 @@ import {ApiService, Language} from "../../api.service";
 import {CreateLanguageComponent} from "../../create-resource/create-language/create-language.component";
 
 @Component({
-    selector: "app-edit-languages",
+    selector: "app-language",
     templateUrl: "./language.component.html",
     styleUrls: ["../category.component.scss"]
 })

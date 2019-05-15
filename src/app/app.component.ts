@@ -66,16 +66,24 @@ export class AppComponent implements OnInit {
         passage["collapsed"] = !passage["collapsed"];
     }
 
-    showEditBooks() {
-        this.list = "editBooks";
+    showBookCat() {
+        this.list = "bookCategory";
     }
 
-    showEditAuthor() {
-        this.list = "editAuthors";
+    showAuthorCat() {
+        this.list = "authorCategory";
     }
 
-    showEditLanguage() {
-        this.list = "editLanguages";
+    showLanguageCat() {
+        this.list = "languageCategory";
+    }
+
+    showEditionCat() {
+        this.list = "editionCategory";
+    }
+
+    showOrganisationCat() {
+        this.list = "organisationCategory";
     }
 
 }

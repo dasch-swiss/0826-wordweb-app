@@ -4,7 +4,7 @@ import {ApiService, Book, Author} from "../../api.service";
 import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
 
 @Component({
-    selector: "app-edit-books",
+    selector: "app-book",
     templateUrl: "./book.component.html",
     styleUrls: ["../category.component.scss"]
 })
