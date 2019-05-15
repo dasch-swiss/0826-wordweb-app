@@ -9,6 +9,7 @@
 <button (click)="showLanguageCat()">Language</button>
 <button (click)="showEditionCat()">Edition</button>
 <button (click)="showOrganisationCat()">Organisation</button>
+<button (click)="showGenreCat()">Genre</button>
 
 <div *ngIf="list === 'book'">
   <div *ngFor="let book of bookList" style="border: 1px solid darkgray; margin: 10px;padding: 10px;">
@@ -81,6 +82,10 @@
 
 <div *ngIf="list === 'organisationCategory'">
   <app-organisation></app-organisation>
+</div>
+
+<div *ngIf="list === 'genreCategory'">
+  <app-genre></app-genre>
 </div>
 
 

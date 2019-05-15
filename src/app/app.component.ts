@@ -86,4 +86,8 @@ export class AppComponent implements OnInit {
         this.list = "organisationCategory";
     }
 
+    showGenreCat() {
+        this.list = "genreCategory";
+    }
+
 }

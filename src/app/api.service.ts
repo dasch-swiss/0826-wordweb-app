@@ -818,6 +818,52 @@ export class ApiService {
     return this.organisationList;
   }
 
+  getGenres() {
+    const genres = [{
+      id: 1,
+      name: "Fiction",
+      references: 0,
+      lists: [{
+        id: 1,
+        name: "Prose",
+        references: 0,
+        lists: [
+          {
+            id: 9,
+            name: "Crime Fiction",
+            references: 0,
+            lists: []
+          }, {
+            id: 4,
+            name: "Gothic",
+            references: 2,
+            lists: []
+          }
+        ]
+      }]
+    }, {
+      id: 2,
+      name: "Non-Fiction",
+      references: 0,
+      lists: [
+          {
+            id: 3,
+            name: "Journalism",
+            references: 0,
+            lists: []
+           }, {
+            id: 4,
+            name: "Academic",
+            references: 0,
+            lists: []
+          }
+      ]
+    }
+    ];
+
+    return genres;
+  }
+
   createAuthor() {
 
   }
