@@ -54,6 +54,13 @@ export interface Venue {
   id: number;
   name: string;
   city: string;
+  references: number;
+}
+
+export interface Organisation {
+  id: number;
+  name: string;
+  references: number;
 }
 
 @Injectable({
@@ -568,43 +575,92 @@ export class ApiService {
   v1: Venue = {
     id: 1,
     name: "Blackfriars",
-    city: "London"
+    city: "London",
+    references: 123
   };
 
   v2: Venue = {
     id: 2,
     name: "The Theatre",
-    city: "London"
+    city: "London",
+    references: 21
   };
 
   v3: Venue = {
     id: 3,
     name: "Cockpit",
-    city: "London"
+    city: "London",
+    references: 23
   };
 
   v4: Venue = {
     id: 4,
     name: "The Curtain",
-    city: "London"
+    city: "London",
+    references: 7
   };
 
   v5: Venue = {
     id: 5,
     name: "Whitefriars",
-    city: "London"
+    city: "London",
+    references: 0
   };
 
   v6: Venue = {
     id: 6,
     name: "Red Bull",
-    city: "London"
+    city: "London",
+    references: 3
   };
 
   v7: Venue = {
     id: 7,
     name: "Then Rose",
-    city: "London"
+    city: "London",
+    references: 0
+  };
+
+  o1: Organisation = {
+    id: 1,
+    name: "King's Men",
+    references: 17
+  };
+
+  o2: Organisation = {
+    id: 2,
+    name: "Lord Chamberlain's (Lord Hunsdon's) Men",
+    references: 4
+  };
+
+  o3: Organisation = {
+    id: 3,
+    name: "Children of the Chapel Royal",
+    references: 9
+  };
+
+  o4: Organisation = {
+    id: 4,
+    name: "Worcester's Men",
+    references: 0
+  };
+
+  o5: Organisation = {
+    id: 5,
+    name: "Derby's Men",
+    references: 7
+  };
+
+  o6: Organisation = {
+    id: 6,
+    name: "Oxford's Men",
+    references: 22
+  };
+
+  o7: Organisation = {
+    id: 7,
+    name: "Pembroke's Men",
+    references: 18
   };
 
   // List of resources
@@ -616,6 +672,7 @@ export class ApiService {
   passageOriginalList: PassageOriginal[];
   languageList: Language[];
   venueList: Venue[];
+  organisationList: Organisation[];
 
   // Converts list to objects with id as keys
   objBooks: any = {};
@@ -626,6 +683,7 @@ export class ApiService {
   objPassagesOriginal: any = {};
   objLanguages: any = {};
   objVenues: any = {};
+  objOrganisation: any = {};
 
   constructor() {
     this.bookList = [this.b1, this.b2, this.b3, this.b4, this.b5, this.b6];
@@ -677,6 +735,12 @@ export class ApiService {
 
     this.venueList = [this.v1, this.v2, this.v3, this.v4, this.v5, this.v6, this.v7];
     this.objVenues = this.venueList.reduce((acc, cur) => {
+      acc[cur.id] = cur;
+      return acc;
+    });
+
+    this.organisationList = [this.o1, this.o2, this.o3, this.o4, this.o5, this.o6, this.o7];
+    this.objOrganisation = this.venueList.reduce((acc, cur) => {
       acc[cur.id] = cur;
       return acc;
     });
@@ -744,6 +808,14 @@ export class ApiService {
 
   getVenues() {
     return this.venueList;
+  }
+
+  getOrganisation(iri: number) {
+    return this.objOrganisation[iri] ? this.objOrganisation[iri] : {};
+  }
+
+  getOrganisations() {
+    return this.organisationList;
   }
 
   createAuthor() {
