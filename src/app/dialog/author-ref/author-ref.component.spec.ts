@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { LanguageCategoryComponent } from "./language-category.component";
+import { AuthorRefComponent } from "./author-ref.component";
 
-describe("LanguageCategoryComponent", () => {
-  let component: LanguageCategoryComponent;
-  let fixture: ComponentFixture<LanguageCategoryComponent>;
+describe("AuthorRefComponent", () => {
+  let component: AuthorRefComponent;
+  let fixture: ComponentFixture<AuthorRefComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LanguageCategoryComponent ]
+      declarations: [ AuthorRefComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LanguageCategoryComponent);
+    fixture = TestBed.createComponent(AuthorRefComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

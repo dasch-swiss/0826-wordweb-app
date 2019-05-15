@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { AuthorCategoryComponent } from "./author-category.component";
+import { VenueRefComponent } from "./venue-ref.component";
 
-describe("AuthorCategoryComponent", () => {
-  let component: AuthorCategoryComponent;
-  let fixture: ComponentFixture<AuthorCategoryComponent>;
+describe("VenueRefComponent", () => {
+  let component: VenueRefComponent;
+  let fixture: ComponentFixture<VenueRefComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AuthorCategoryComponent ]
+      declarations: [ VenueRefComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AuthorCategoryComponent);
+    fixture = TestBed.createComponent(VenueRefComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

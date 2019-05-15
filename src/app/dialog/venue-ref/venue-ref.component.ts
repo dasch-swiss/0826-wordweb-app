@@ -1,13 +1,13 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {ApiService, Author, Venue} from "../api.service";
+import {ApiService, Author, Venue} from "../../api.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 @Component({
   selector: "app-venue-set",
-  templateUrl: "./venue-set.component.html",
-  styleUrls: ["./venue-set.component.scss"]
+  templateUrl: "./venue-ref.component.html",
+  styleUrls: ["../category-ref.component.scss"]
 })
-export class VenueSetComponent implements OnInit {
+export class VenueRefComponent implements OnInit {
 
   copyValues: any[];
   addingModus: boolean;
@@ -16,7 +16,7 @@ export class VenueSetComponent implements OnInit {
 
   value: string;
   valueChanged: boolean;
-  constructor(private dialogRef: MatDialogRef<VenueSetComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+  constructor(private dialogRef: MatDialogRef<VenueRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
     if (data["editMod"]) {
       this.copyValues = [...data["values"]];
     } else {

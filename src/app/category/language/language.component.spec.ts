@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { BookCategoryComponent } from "./book-category.component";
+import { LanguageComponent } from "./language.component";
 
-describe("BookCategoryComponent", () => {
-  let component: BookCategoryComponent;
-  let fixture: ComponentFixture<BookCategoryComponent>;
+describe("LanguageComponent", () => {
+  let component: LanguageComponent;
+  let fixture: ComponentFixture<LanguageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BookCategoryComponent ]
+      declarations: [ LanguageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BookCategoryComponent);
+    fixture = TestBed.createComponent(LanguageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

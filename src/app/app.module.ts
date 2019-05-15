@@ -13,17 +13,17 @@ import {
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {SatPopoverModule} from "@ncstate/sat-popover";
 import {MatFormFieldModule} from "@angular/material";
-import {InlineEditComponent} from "./inline-edit/inline-edit.component";
+import {InlineEditComponent} from "./category/inline-edit/inline-edit.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {AuthorCategoryComponent} from "./category/author-category/author-category.component";
-import {BookCategoryComponent} from "./category/book-category/book-category.component";
-import {LanguageCategoryComponent} from "./category/language-category/language-category.component";
-import {AuthorSetComponent} from "./author-set/author-set.component";
-import {CreateAuthorComponent} from "./create-author/create-author.component";
-import {CreateBookComponent} from "./create-book/create-book.component";
-import { CreateLanguageComponent } from "./create-language/create-language.component";
+import {AuthorComponent} from "./category/author/author.component";
+import {BookComponent} from "./category/book/book.component";
+import {LanguageComponent} from "./category/language/language.component";
+import {AuthorRefComponent} from "./dialog/author-ref/author-ref.component";
+import {CreateAuthorComponent} from "./create-resource/create-author/create-author.component";
+import {CreateBookComponent} from "./create-resource/create-book/create-book.component";
+import { CreateLanguageComponent } from "./create-resource/create-language/create-language.component";
 import {RouterModule, Routes} from "@angular/router";
-import { VenueSetComponent } from "./venue-set/venue-set.component";
+import { VenueRefComponent } from "./dialog/venue-ref/venue-ref.component";
 
 const routes: Routes = [
     {path: "book", component: CreateBookComponent}
@@ -33,14 +33,14 @@ const routes: Routes = [
     declarations: [
         AppComponent,
         InlineEditComponent,
-        AuthorCategoryComponent,
-        BookCategoryComponent,
-        LanguageCategoryComponent,
-        AuthorSetComponent,
+        AuthorComponent,
+        BookComponent,
+        LanguageComponent,
+        AuthorRefComponent,
         CreateAuthorComponent,
         CreateBookComponent,
         CreateLanguageComponent,
-        VenueSetComponent
+        VenueRefComponent
     ],
     imports: [
         RouterModule.forRoot(routes),
@@ -65,8 +65,8 @@ const routes: Routes = [
     providers: [],
     bootstrap: [AppComponent],
     entryComponents: [
-        AuthorSetComponent,
-        VenueSetComponent,
+        AuthorRefComponent,
+        VenueRefComponent,
         CreateAuthorComponent,
         CreateBookComponent,
         CreateLanguageComponent

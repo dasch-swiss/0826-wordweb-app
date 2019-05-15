@@ -6,12 +6,12 @@ button {
   cursor: pointer;
 }
 
-.venue-container {
+.result-container {
   max-height: 15rem;
   overflow-y: scroll;
 }
 
-.venues {
+.chosen-data-table {
   th {
     background-color: lightgray;
     text-align: left;
@@ -38,11 +38,7 @@ button {
   }
 }
 
-.new-venue-container {
-  margin-top: 1rem;
-}
-
-.venue-list-container {
+.full-data-container {
   margin-top:1rem;
 
   max-height: 0px;
@@ -53,12 +49,12 @@ button {
     width: 100%;
   }
 
-  .venue-list-table-container{
+  .full-data-table-container{
     border: 1px solid black;
     height: 14rem;
     overflow-y: scroll;
 
-    .venue-list {
+    .full-data-table {
       tr:hover {
         background-color: whitesmoke;
       }
@@ -74,13 +70,17 @@ button {
   }
 }
 
-.venue-list-container.opened {
+.full-data-container.opened {
   max-height: 450px;
   //height: 100%;
   transition: ease-in-out 600ms max-height;
 }
 
-.action-buttons {
+.add-btn-container {
+  margin-top: 1rem;
+}
+
+.action-btn-container {
   text-align: right;
 
   button {

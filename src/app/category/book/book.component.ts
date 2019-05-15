@@ -1,14 +1,14 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {ApiService, Book, Author} from "../../api.service";
-import {AuthorSetComponent} from "../../author-set/author-set.component";
+import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
 
 @Component({
     selector: "app-edit-books",
-    templateUrl: "./book-category.component.html",
-    styleUrls: ["./book-category.component.scss"]
+    templateUrl: "./book.component.html",
+    styleUrls: ["../category.component.scss"]
 })
-export class BookCategoryComponent implements OnInit {
+export class BookComponent implements OnInit {
 
     displayedColumns: string[] = ["title", "authors", "order", "references", "action"];
     dataSource: MatTableDataSource<Book>;
@@ -49,7 +49,7 @@ export class BookCategoryComponent implements OnInit {
             values: this.copyArray(authors),
             editMod: true
         };
-        const dialogRef = this.authorDialog.open(AuthorSetComponent, dialogConfig);
+        const dialogRef = this.authorDialog.open(AuthorRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
            console.log(data);
         });

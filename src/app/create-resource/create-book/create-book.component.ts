@@ -1,9 +1,9 @@
 import {Component, OnInit} from "@angular/core";
-import {ApiService} from "../api.service";
+import {ApiService} from "../../api.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog, MatDialogConfig} from "@angular/material";
-import {AuthorSetComponent} from "../author-set/author-set.component";
-import {VenueSetComponent} from "../venue-set/venue-set.component";
+import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
+import {VenueRefComponent} from "../../dialog/venue-ref/venue-ref.component";
 
 @Component({
     selector: "app-create-book",
@@ -57,7 +57,7 @@ export class CreateBookComponent implements OnInit {
             values: this.authorList,
             editMod: false,
         };
-        const dialogRef = this.authorDialog.open(AuthorSetComponent, dialogConfig);
+        const dialogRef = this.authorDialog.open(AuthorRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (!data.cancel) {
                 this.authorList = data.data;
@@ -73,7 +73,7 @@ export class CreateBookComponent implements OnInit {
             values: this.venueList,
             editMod: false,
         };
-        const dialogRef = this.venueDialog.open(VenueSetComponent, dialogConfig);
+        const dialogRef = this.venueDialog.open(VenueRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (!data.cancel) {
                 this.venueList = data.data;

@@ -1,7 +1,7 @@
 <h2>Venue</h2>
 
-<div [class.venue-container]="copyValues.length>=8">
-  <table class="venues">
+<div [class.result-container]="copyValues.length>=8">
+  <table class="chosen-data-table">
     <tr class="header-row">
       <th>Name</th>
       <th>Stadt</th>
@@ -18,15 +18,15 @@
   </table>
 </div>
 
-<div class="venue-list-container" [class.opened]="addingModus">
+<div class="full-data-container" [class.opened]="addingModus">
   <mat-form-field>
     <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)" (keydown.escape)="clear()">
     <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
-  <div class="venue-list-table-container">
-    <table class="venue-list">
+  <div class="full-data-table-container">
+    <table class="full-data-table">
       <tr *ngFor="let venue of filteredList">
         <td>{{venue.name}}</td>
         <td>{{venue.city}}</td>
@@ -39,15 +39,15 @@
   </div>
 </div>
 
-<div class="new-venue-container" *ngIf="!addingModus">
+<div class="add-btn-container" *ngIf="!addingModus">
   <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Venues hinzufügen</button>
 </div>
 
-<div class="new-venue-container" *ngIf="addingModus">
+<div class="add-btn-container" *ngIf="addingModus">
   <button mat-flat-button color="accent" (click)="closeList()"><mat-icon>keyboard_arrow_up</mat-icon>Zuklappen</button>
 </div>
 
-<div class="action-buttons">
+<div class="action-btn-container">
   <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
   <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">SPEICHERN</button>
 </div>

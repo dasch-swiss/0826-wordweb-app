@@ -1,13 +1,13 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {ApiService, Author} from "../api.service";
+import {ApiService, Author} from "../../api.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 @Component({
     selector: "app-dragbox",
-    templateUrl: "./author-set.component.html",
-    styleUrls: ["./author-set.component.scss"]
+    templateUrl: "./author-ref.component.html",
+    styleUrls: ["../category-ref.component.scss"]
 })
-export class AuthorSetComponent implements OnInit {
+export class AuthorRefComponent implements OnInit {
 
     copyValues: any[];
     addingModus: boolean;
@@ -17,7 +17,7 @@ export class AuthorSetComponent implements OnInit {
     value: string;
     valueChanged: boolean;
 
-    constructor(private dialogRef: MatDialogRef<AuthorSetComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+    constructor(private dialogRef: MatDialogRef<AuthorRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         console.log(data["editMod"], data["values"]);
         if (data["editMod"]) {
             this.copyValues = [...data["values"]];

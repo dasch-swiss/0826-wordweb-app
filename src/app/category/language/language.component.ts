@@ -1,26 +1,25 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
-import {ApiService, Author} from "../../api.service";
-import {CreateAuthorComponent} from "../../create-author/create-author.component";
+import {ApiService, Language} from "../../api.service";
+import {CreateLanguageComponent} from "../../create-resource/create-language/create-language.component";
 
 @Component({
-    selector: "app-edit-authors",
-    templateUrl: "./author-category.component.html",
-    styleUrls: ["./author-category.component.scss"]
+    selector: "app-edit-languages",
+    templateUrl: "./language.component.html",
+    styleUrls: ["../category.component.scss"]
 })
-export class AuthorCategoryComponent implements OnInit {
+export class LanguageComponent implements OnInit {
 
-    displayedColumns: string[] = ["internalID", "firstName", "lastName", "description", "birthDate", "deathDate", "activeDate", "order", "references", "action"];
-    dataSource: MatTableDataSource<Author>;
+    displayedColumns: string[] = ["language", "order", "references", "action"];
+    dataSource: MatTableDataSource<Language>;
     value: string;
 
     @ViewChild(MatSort) sort: MatSort;
 
     constructor(private apiService: ApiService,
-                private createAuthorDialog: MatDialog) {
-        this.dataSource = new MatTableDataSource(this.apiService.getAuthors());
+                private createLanguageDialog: MatDialog) {
+        this.dataSource = new MatTableDataSource(this.apiService.getLanguages());
     }
-
 
     ngOnInit() {
         this.dataSource.sort = this.sort;
@@ -38,12 +37,12 @@ export class AuthorCategoryComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
-    openCreateAuthor() {
+    openCreateLanguage() {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.width = "450px";
-        this.createAuthorDialog.open(CreateAuthorComponent, dialogConfig);
+        this.createLanguageDialog.open(CreateLanguageComponent, dialogConfig);
     }
 
 }

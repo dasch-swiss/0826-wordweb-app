@@ -1,7 +1,7 @@
 <h2>Autor(en)</h2>
 
-<div [class.author-container]="copyValues.length>=8">
-  <table class="authors">
+<div [class.result-container]="copyValues.length>=8">
+  <table class="chosen-data-table">
     <tr class="header-row">
       <th>ID Intern</th>
       <th>Vorname</th>
@@ -20,15 +20,15 @@
   </table>
 </div>
 
-<div class="author-list-container" [class.opened]="addingModus">
+<div class="full-data-container" [class.opened]="addingModus">
   <mat-form-field>
     <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)" (keydown.escape)="clear()">
     <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
-  <div class="author-list-table-container">
-    <table class="author-list">
+  <div class="full-data-table-container">
+    <table class="full-data-table">
       <tr *ngFor="let author of filteredList">
         <td>{{author.internalID}}</td>
         <td>{{author.firstName}}</td>
@@ -42,15 +42,15 @@
   </div>
 </div>
 
-<div class="new-author-container" *ngIf="!addingModus">
+<div class="add-btn-container" *ngIf="!addingModus">
   <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Autoren hinzufügen</button>
 </div>
 
-<div class="new-author-container" *ngIf="addingModus">
+<div class="add-btn-container" *ngIf="addingModus">
   <button mat-flat-button color="accent" (click)="closeList()"><mat-icon>keyboard_arrow_up</mat-icon>Zuklappen</button>
 </div>
 
-<div class="action-buttons">
+<div class="action-btn-container">
   <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
   <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">SPEICHERN</button>
 </div>
