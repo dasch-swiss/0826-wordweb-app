@@ -24,9 +24,9 @@
         <ng-container matColumnDef="language">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Sprache</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchorFor]="fn" (click)="fn.open()"> {{element.language}} </div>
+                <div class="edit-value" [satPopoverAnchorFor]="fn" (click)="fn.open()"> {{element.name}} </div>
                 <sat-popover #fn hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit [value]="element.language" [type]="'string'"></app-inline-edit>
+                    <app-inline-edit [value]="element.name" [type]="'string'"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>

@@ -29,6 +29,7 @@ import { OrganisationComponent } from "./category/organisation/organisation.comp
 import { OrganisationRefComponent } from "./dialog/organisation-ref/organisation-ref.component";
 import { GenreComponent } from "./category/genre/genre.component";
 import {TreetableModule} from "ng-material-treetable";
+import { CreateEditionComponent } from "./create-resource/create-edition/create-edition.component";
 
 const routes: Routes = [
     {path: "book", component: BookComponent},
@@ -38,7 +39,7 @@ const routes: Routes = [
     {path: "language", component: LanguageComponent},
     // {path: "language/new", component: CreateLanguageComponent},
     {path: "edition", component: EditionComponent},
-    // {path: "edition/new", component: CreateEditionComponent},
+    {path: "edition/new", component: CreateEditionComponent},
     {path: "organisation", component: OrganisationComponent},
     // {path: "organisation/new", component: CreateOrganisation},
     {path: "genre", component: GenreComponent},
@@ -62,7 +63,8 @@ const routes: Routes = [
         EditionComponent,
         OrganisationComponent,
         OrganisationRefComponent,
-        GenreComponent
+        GenreComponent,
+        CreateEditionComponent
     ],
     imports: [
         RouterModule.forRoot(routes),
