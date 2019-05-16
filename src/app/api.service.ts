@@ -46,7 +46,7 @@ export interface PassageOriginal {
 
 export interface Language {
   id: number;
-  language: string;
+  name: string;
   references: number;
 }
 
@@ -69,31 +69,31 @@ export interface Organisation {
 export class ApiService {
   lang1: Language = {
     id: 1,
-    language: "Englisch",
+    name: "Englisch",
     references: 10
   };
 
   lang2: Language = {
     id: 2,
-    language: "Deutsch",
+    name: "Deutsch",
     references: 1
   };
 
   lang3: Language = {
     id: 3,
-    language: "Französisch",
+    name: "Französisch",
     references: 0
   };
 
   lang4: Language = {
     id: 4,
-    language: "Italienisch",
+    name: "Italienisch",
     references: 0
   };
 
   lang5: Language = {
     id: 5,
-    language: "Spanisch",
+    name: "Spanisch",
     references: 0
   };
 
