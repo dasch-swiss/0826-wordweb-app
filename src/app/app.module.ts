@@ -28,9 +28,23 @@ import { EditionComponent } from "./category/edition/edition.component";
 import { OrganisationComponent } from "./category/organisation/organisation.component";
 import { OrganisationRefComponent } from "./dialog/organisation-ref/organisation-ref.component";
 import { GenreComponent } from "./category/genre/genre.component";
+import {TreetableModule} from "ng-material-treetable";
 
 const routes: Routes = [
-    {path: "book", component: CreateBookComponent}
+    {path: "book", component: BookComponent},
+    {path: "book/new", component: CreateBookComponent},
+    {path: "author", component: AuthorComponent},
+    // {path: "author/new", component: CreateAuthorComponent},
+    {path: "language", component: LanguageComponent},
+    // {path: "language/new", component: CreateLanguageComponent},
+    {path: "edition", component: EditionComponent},
+    // {path: "edition/new", component: CreateEditionComponent},
+    {path: "organisation", component: OrganisationComponent},
+    // {path: "organisation/new", component: CreateOrganisation},
+    {path: "genre", component: GenreComponent},
+    // {path: "genre/new", component: CreateGenreComponent},
+    // {path: "", component },
+    // {path: "", component },
 ];
 
 @NgModule({
@@ -68,7 +82,8 @@ const routes: Routes = [
         ReactiveFormsModule,
         MatDialogModule,
         MatExpansionModule,
-        MatSelectModule
+        MatSelectModule,
+        TreetableModule
     ],
     providers: [],
     bootstrap: [AppComponent],

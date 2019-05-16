@@ -1,5 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {ApiService, Author, Book, Edition, EditionOriginal, PassageOriginal} from "./api.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: "app-root",
@@ -16,7 +17,8 @@ export class AppComponent implements OnInit {
 
     list: string;
 
-    constructor(private apiService: ApiService) {
+    constructor(private apiService: ApiService,
+                private router: Router) {
         this.bookList = apiService.getBooks();
     }
 
@@ -67,27 +69,27 @@ export class AppComponent implements OnInit {
     }
 
     showBookCat() {
-        this.list = "bookCategory";
+        this.router.navigate(["book"]);
     }
 
     showAuthorCat() {
-        this.list = "authorCategory";
+        this.router.navigate(["author"]);
     }
 
     showLanguageCat() {
-        this.list = "languageCategory";
+        this.router.navigate(["language"]);
     }
 
     showEditionCat() {
-        this.list = "editionCategory";
+        this.router.navigate(["edition"]);
     }
 
     showOrganisationCat() {
-        this.list = "organisationCategory";
+        this.router.navigate(["organisation"]);
     }
 
     showGenreCat() {
-        this.list = "genreCategory";
+        this.router.navigate(["genre"]);
     }
 
 }

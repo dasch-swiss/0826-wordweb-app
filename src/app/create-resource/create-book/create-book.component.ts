@@ -5,6 +5,7 @@ import {MatDialog, MatDialogConfig} from "@angular/material";
 import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
 import {VenueRefComponent} from "../../dialog/venue-ref/venue-ref.component";
 import {OrganisationRefComponent} from "../../dialog/organisation-ref/organisation-ref.component";
+import {Router} from "@angular/router";
 
 @Component({
     selector: "app-create-book",
@@ -29,7 +30,8 @@ export class CreateBookComponent implements OnInit {
 
     constructor(private apiService: ApiService,
                 private authorDialog: MatDialog,
-                private venueDialog: MatDialog) {
+                private venueDialog: MatDialog,
+                private router: Router) {
         this.form = new FormGroup({
             title: new FormControl("", [Validators.required]),
             author: new FormControl("", []),
@@ -47,9 +49,11 @@ export class CreateBookComponent implements OnInit {
     }
 
     cancel() {
+        this.router.navigate(["/book"]);
     }
 
     create() {
+        this.router.navigate(["/book"]);
     }
 
     addAuthor() {
