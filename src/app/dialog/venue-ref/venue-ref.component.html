@@ -1,6 +1,6 @@
 <h2>Venue</h2>
 
-<div [class.result-container]="copyValues.length>=8">
+<div class="result-container" [class.full]="copyValues.length>=8">
   <table class="chosen-data-table">
     <tr class="header-row">
       <th>Name</th>
@@ -17,6 +17,8 @@
     </tr>
   </table>
 </div>
+
+<mat-divider></mat-divider>
 
 <div class="full-data-container" [class.opened]="addingModus">
   <mat-form-field>

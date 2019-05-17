@@ -6,23 +6,29 @@ button {
   cursor: pointer;
 }
 
-.result-container {
-  max-height: 15rem;
+.result-container.full {
+  max-height: 14.3rem;
   overflow-y: scroll;
 }
 
 .chosen-data-table {
+  border-spacing: 0;
   th {
-    background-color: lightgray;
+    border: 1px solid white;
+    background-color: rgb(64, 84, 178);
+    color: white;
     text-align: left;
+    position: sticky;
+    top: 0px;
+    padding: 0.4rem 0.7rem;
   }
 
-  th, td {
-    padding: 0.3rem;
+  td {
+    padding: 0.3rem 0.7rem;
   }
 
   .data-row {
-    background-color:whitesmoke;
+    background-color:white;
   }
 
   .delete-cell {
@@ -30,7 +36,7 @@ button {
   }
 
   .empty-row {
-    background-color: whitesmoke;
+    background-color: white;
 
     td {
       text-align: center;
@@ -39,6 +45,7 @@ button {
 }
 
 .full-data-container {
+  padding: 0 2rem;
   margin-top:1rem;
 
   max-height: 0px;
@@ -50,11 +57,25 @@ button {
   }
 
   .full-data-table-container{
-    border: 1px solid black;
+    border: 1px solid darkgray;
     height: 14rem;
     overflow-y: scroll;
 
     .full-data-table {
+      border-spacing: 0;
+
+      th, td {
+        padding: 0 0.4rem;
+      }
+
+      th {
+        //border: 1px solid white;
+        background-color: lightgray;
+        color: white;
+        position: sticky;
+        top: 0px;
+      }
+
       tr:hover {
         background-color: whitesmoke;
       }

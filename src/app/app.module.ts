@@ -5,7 +5,7 @@ import {AppComponent} from "./app.component";
 import {
     MatButtonModule,
     MatCardModule,
-    MatChipsModule, MatDialogModule, MatExpansionModule,
+    MatChipsModule, MatDialogModule, MatDividerModule, MatExpansionModule,
     MatIconModule, MatInputModule,
     MatProgressSpinnerModule, MatSelectModule, MatSortModule,
     MatTableModule
@@ -85,7 +85,8 @@ const routes: Routes = [
         MatDialogModule,
         MatExpansionModule,
         MatSelectModule,
-        TreetableModule
+        TreetableModule,
+        MatDividerModule
     ],
     providers: [],
     bootstrap: [AppComponent],

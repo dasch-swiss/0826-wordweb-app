@@ -1,24 +1,30 @@
 <h2>Autor(en)</h2>
 
-<div [class.result-container]="copyValues.length>=8">
+<div class="result-container" [class.full]="copyValues.length>=8">
   <table class="chosen-data-table">
-    <tr class="header-row">
-      <th>ID Intern</th>
-      <th>Vorname</th>
-      <th>Nachname</th>
-      <th>Löschen</th>
-    </tr>
-    <tr class="data-row" *ngFor="let author of copyValues">
-      <td>{{author.internalID}}</td>
-      <td>{{author.firstName}}</td>
-      <td>{{author.lastName}}</td>
-      <td class="delete-cell"><button class="remove-button" (click)="removeAuthor(author.id)">-</button></td>
-    </tr>
-    <tr class="empty-row" *ngIf="copyValues.length === 0">
-      <td colspan="4">Noch keine Autoren hinzugefügt</td>
-    </tr>
+    <thead>
+      <tr class="header-row">
+        <th>ID Intern</th>
+        <th>Vorname</th>
+        <th>Nachname</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="data-row" *ngFor="let author of copyValues">
+        <td>{{author.internalID}}</td>
+        <td>{{author.firstName}}</td>
+        <td>{{author.lastName}}</td>
+        <td class="delete-cell"><button class="remove-button" (click)="removeAuthor(author.id)">-</button></td>
+      </tr>
+      <tr class="empty-row" *ngIf="copyValues.length === 0">
+        <td colspan="4">Noch keine Autoren hinzugefügt</td>
+      </tr>
+    </tbody>
   </table>
 </div>
+
+<mat-divider></mat-divider>
 
 <div class="full-data-container" [class.opened]="addingModus">
   <mat-form-field>
@@ -29,15 +35,27 @@
   </mat-form-field>
   <div class="full-data-table-container">
     <table class="full-data-table">
-      <tr *ngFor="let author of filteredList">
-        <td>{{author.internalID}}</td>
-        <td>{{author.firstName}}</td>
-        <td>{{author.lastName}}</td>
-        <td><button class="add-button" [disabled]="isUsed(author.id)" (click)="addAuthor(author)">+</button></td>
+      <thead>
+      <tr>
+        <th>ID Intern</th>
+        <th>Vorname</th>
+        <th>Nachname</th>
+        <th></th>
       </tr>
-      <tr class="empty-row" *ngIf="filteredList.length === 0">
-        <td colspan="4">Autorenliste ist leer!</td>
-      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let author of filteredList">
+          <td>{{author.internalID}}</td>
+          <td>{{author.firstName}}</td>
+          <td>{{author.lastName}}</td>
+          <td>
+            <button type="button" [disabled]="isUsed(author.id)" (click)="addAuthor(author)">+</button>
+          </td>
+        </tr>
+        <tr class="empty-row" *ngIf="filteredList.length === 0">
+          <td colspan="4">Autorenliste ist leer!</td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </div>
