@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {ApiService} from "../../api.service";
+import {ApiService} from "../../services/apiService/api.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog, MatDialogConfig} from "@angular/material";
 import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";

@@ -1,5 +1,6 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {ApiService, Author, Venue} from "../../api.service";
+import {ApiService} from "../../services/apiService/api.service";
+import {Author, Venue} from "../../model/model";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 @Component({

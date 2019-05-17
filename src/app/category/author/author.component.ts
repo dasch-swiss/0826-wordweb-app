@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
-import {ApiService, Author} from "../../api.service";
+import {ApiService} from "../../services/apiService/api.service";
+import {Author} from "../../model/model";
 import {CreateAuthorComponent} from "../../create-resource/create-author/create-author.component";
 
 @Component({

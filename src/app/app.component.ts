@@ -1,5 +1,6 @@
 import {Component, OnInit} from "@angular/core";
-import {ApiService, Author, Book, Edition, EditionOriginal, PassageOriginal} from "./api.service";
+import {Author, Book, Edition, EditionOriginal, PassageOriginal} from "./model/model";
+import {ApiService} from "./services/apiService/api.service";
 import {Router} from "@angular/router";
 
 @Component({

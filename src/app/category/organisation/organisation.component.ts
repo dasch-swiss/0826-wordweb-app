@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
-import {ApiService, Organisation} from "../../api.service";
+import {ApiService} from "../../services/apiService/api.service";
+import {Organisation} from "../../model/model";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 
 @Component({

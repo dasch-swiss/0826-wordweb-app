@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
-import {ApiService, Language} from "../../api.service";
+import {ApiService} from "../../services/apiService/api.service";
+import {Language} from "../../model/model";
 import {CreateLanguageComponent} from "../../create-resource/create-language/create-language.component";
 
 @Component({
