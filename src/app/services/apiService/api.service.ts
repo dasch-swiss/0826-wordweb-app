@@ -81,6 +81,14 @@ export class ApiService {
     return this.backendData.getOrganisations();
   }
 
+  getSubject(iri: number) {
+    return this.backendData.getSubject(iri);
+  }
+
+  getSubjects() {
+    return this.backendData.getSubjects();
+  }
+
   getGenres() {
     return this.backendData.getGenres();
   }

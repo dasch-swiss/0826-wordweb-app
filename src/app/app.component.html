@@ -9,6 +9,7 @@
 <button (click)="showLanguageCat()">Language</button>
 <button (click)="showEditionCat()">Edition</button>
 <button (click)="showOrganisationCat()">Organisation</button>
+<button (click)="showSubjectCat()">Subject</button>
 <button (click)="showGenreCat()">Genre</button>
 
 <div *ngIf="list === 'book'">
@@ -27,7 +28,7 @@
 
 <div *ngIf="list === 'edition'">
   <div *ngFor="let edition of editionList" style="border: 1px solid darkgray; margin: 10px;padding: 10px;">
-    <div>Language: {{edition.language.language}}</div>
+    <div>Language: {{edition.language.name}}</div>
     <div>Publication Info: {{edition.publicationInfo}}</div>
   </div>
 </div>

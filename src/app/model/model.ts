@@ -60,3 +60,9 @@ export interface Organisation {
     name: string;
     references: number;
 }
+
+export interface Subject {
+    id: number;
+    name: string;
+    references: number;
+}

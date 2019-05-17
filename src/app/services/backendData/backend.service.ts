@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Book, Language, Author, Edition, Organisation, Venue, PassageOriginal, EditionOriginal, Passage} from "../../model/model";
+import {Book, Language, Author, Edition, Organisation, Venue, PassageOriginal, EditionOriginal, Passage, Subject} from "../../model/model";
 
 @Injectable({
     providedIn: "root"
@@ -602,6 +602,36 @@ export class BackendService {
         references: 18
     };
 
+    private s1: Subject = {
+        id: 1,
+        name: "Art, architecture, music",
+        references: 0
+    };
+
+    private s2: Subject = {
+        id: 2,
+        name: "History, (auto-)biography",
+        references: 0
+    };
+
+    private s3: Subject = {
+        id: 3,
+        name: "Literary and Cultural Studies",
+        references: 0
+    };
+
+    private s4: Subject = {
+        id: 4,
+        name: "Linguistics",
+        references: 0
+    };
+
+    private s5: Subject = {
+        id: 5,
+        name: "Politics, law, economics",
+        references: 0
+    };
+
     // List of resources
     private readonly bookList: Book[];
     private readonly authorList: Author[];
@@ -612,6 +642,7 @@ export class BackendService {
     private readonly languageList: Language[];
     private readonly venueList: Venue[];
     private readonly organisationList: Organisation[];
+    private readonly subjectList: Subject[];
 
     // Converts list to objects with id as keys
     private readonly objBooks: any = {};
@@ -623,6 +654,7 @@ export class BackendService {
     private readonly objLanguages: any = {};
     private readonly objVenues: any = {};
     private readonly objOrganisation: any = {};
+    private readonly objSubjects: any = {};
 
     constructor() {
         this.bookList = [this.b1, this.b2, this.b3, this.b4, this.b5, this.b6];
@@ -680,6 +712,12 @@ export class BackendService {
 
         this.organisationList = [this.o1, this.o2, this.o3, this.o4, this.o5, this.o6, this.o7];
         this.objOrganisation = this.venueList.reduce((acc, cur) => {
+            acc[cur.id] = cur;
+            return acc;
+        });
+
+        this.subjectList = [this.s1, this.s2, this.s3, this.s4, this.s5];
+        this.objSubjects = this.subjectList.reduce((acc, cur) => {
             acc[cur.id] = cur;
             return acc;
         });
@@ -755,6 +793,14 @@ export class BackendService {
 
     getOrganisations() {
         return this.organisationList;
+    }
+
+    getSubject(iri: number) {
+        return this.objSubjects[iri] ? this.objSubjects[iri] : {};
+    }
+
+    getSubjects() {
+        return this.subjectList;
     }
 
     getGenres() {

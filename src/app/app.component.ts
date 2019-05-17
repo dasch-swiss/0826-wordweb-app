@@ -89,6 +89,10 @@ export class AppComponent implements OnInit {
         this.router.navigate(["organisation"]);
     }
 
+    showSubjectCat() {
+        this.router.navigate(["subject"]);
+    }
+
     showGenreCat() {
         this.router.navigate(["genre"]);
     }
