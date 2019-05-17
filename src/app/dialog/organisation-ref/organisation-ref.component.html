@@ -1,52 +1,56 @@
-<h2>Organisation</h2>
+<div class="dialog">
 
-<div class="result-container" [class.full]="copyValues.length>=8">
-  <table class="chosen-data-table">
-    <tr class="header-row">
-      <th>Name</th>
-      <th>Löschen</th>
-    </tr>
-    <tr class="data-row" *ngFor="let organisation of copyValues">
-      <td>{{organisation.name}}</td>
-      <td class="delete-cell"><button class="remove-button" (click)="remove(organisation.id)">-</button></td>
-    </tr>
-    <tr class="empty-row" *ngIf="copyValues.length === 0">
-      <td colspan="4">Noch keine Organisationen hinzugefügt</td>
-    </tr>
-  </table>
-</div>
+  <h2>Organisation</h2>
 
-<mat-divider></mat-divider>
-
-<div class="full-data-container" [class.opened]="addingModus">
-  <mat-form-field>
-    <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)" (keydown.escape)="clear()">
-    <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
-  <div class="full-data-table-container">
-    <table class="full-data-table">
-      <tr *ngFor="let organisation of filteredList">
-        <td>{{organisation.name}}</td>
-        <td><button class="add-button" [disabled]="isUsed(organisation.id)" (click)="add(organisation)">+</button></td>
+  <div class="result-container" [class.full]="copyValues.length>=8">
+    <table class="chosen-data-table">
+      <tr class="header-row">
+        <th>Name</th>
+        <th>Löschen</th>
       </tr>
-      <tr class="empty-row" *ngIf="filteredList.length === 0">
-        <td colspan="4">Organisationsliste ist leer!</td>
+      <tr class="data-row" *ngFor="let organisation of copyValues">
+        <td>{{organisation.name}}</td>
+        <td class="delete-cell"><button class="remove-button" (click)="remove(organisation.id)">-</button></td>
+      </tr>
+      <tr class="empty-row" *ngIf="copyValues.length === 0">
+        <td colspan="4">Noch keine Organisationen hinzugefügt</td>
       </tr>
     </table>
   </div>
-</div>
 
-<div class="add-btn-container" *ngIf="!addingModus">
-  <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Organisationen hinzufügen</button>
-</div>
+  <mat-divider></mat-divider>
 
-<div class="add-btn-container" *ngIf="addingModus">
-  <button mat-flat-button color="accent" (click)="closeList()"><mat-icon>keyboard_arrow_up</mat-icon>Zuklappen</button>
-</div>
+  <div class="full-data-container" [class.opened]="addingModus">
+    <mat-form-field>
+      <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)" (keydown.escape)="clear()">
+      <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <div class="full-data-table-container">
+      <table class="full-data-table">
+        <tr *ngFor="let organisation of filteredList">
+          <td>{{organisation.name}}</td>
+          <td><button class="add-button" [disabled]="isUsed(organisation.id)" (click)="add(organisation)">+</button></td>
+        </tr>
+        <tr class="empty-row" *ngIf="filteredList.length === 0">
+          <td colspan="4">Organisationsliste ist leer!</td>
+        </tr>
+      </table>
+    </div>
+  </div>
 
-<div class="action-btn-container">
-  <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-  <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">SPEICHERN</button>
+  <div class="add-btn-container" *ngIf="!addingModus">
+    <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Organisationen hinzufügen</button>
+  </div>
+
+  <div class="add-btn-container" *ngIf="addingModus">
+    <button mat-flat-button color="accent" (click)="closeList()"><mat-icon>keyboard_arrow_up</mat-icon>Zuklappen</button>
+  </div>
+
+  <div class="action-btn-container">
+    <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
+    <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">SPEICHERN</button>
+  </div>
+
 </div>

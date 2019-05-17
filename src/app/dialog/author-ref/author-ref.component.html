@@ -1,16 +1,18 @@
-<h2>Autor(en)</h2>
+<div class="dialog">
 
-<div class="result-container" [class.full]="copyValues.length>=8">
-  <table class="chosen-data-table">
-    <thead>
+  <h2>Autor(en)</h2>
+
+  <div class="result-container" [class.full]="copyValues.length>=8">
+    <table class="chosen-data-table">
+      <thead>
       <tr class="header-row">
         <th>ID Intern</th>
         <th>Vorname</th>
         <th>Nachname</th>
         <th></th>
       </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
       <tr class="data-row" *ngFor="let author of copyValues">
         <td>{{author.internalID}}</td>
         <td>{{author.firstName}}</td>
@@ -20,30 +22,30 @@
       <tr class="empty-row" *ngIf="copyValues.length === 0">
         <td colspan="4">Noch keine Autoren hinzugefügt</td>
       </tr>
-    </tbody>
-  </table>
-</div>
+      </tbody>
+    </table>
+  </div>
 
-<mat-divider></mat-divider>
+  <mat-divider></mat-divider>
 
-<div class="full-data-container" [class.opened]="addingModus">
-  <mat-form-field>
-    <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)" (keydown.escape)="clear()">
-    <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
-  <div class="full-data-table-container">
-    <table class="full-data-table">
-      <thead>
-      <tr>
-        <th>ID Intern</th>
-        <th>Vorname</th>
-        <th>Nachname</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
+  <div class="full-data-container" [class.opened]="addingModus">
+    <mat-form-field>
+      <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)" (keydown.escape)="clear()">
+      <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <div class="full-data-table-container">
+      <table class="full-data-table">
+        <thead>
+        <tr>
+          <th>ID Intern</th>
+          <th>Vorname</th>
+          <th>Nachname</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
         <tr *ngFor="let author of filteredList">
           <td>{{author.internalID}}</td>
           <td>{{author.firstName}}</td>
@@ -55,20 +57,22 @@
         <tr class="empty-row" *ngIf="filteredList.length === 0">
           <td colspan="4">Autorenliste ist leer!</td>
         </tr>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 
-<div class="add-btn-container" *ngIf="!addingModus">
-  <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Autoren hinzufügen</button>
-</div>
+  <div class="add-btn-container" *ngIf="!addingModus">
+    <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Autoren hinzufügen</button>
+  </div>
 
-<div class="add-btn-container" *ngIf="addingModus">
-  <button mat-flat-button color="accent" (click)="closeList()"><mat-icon>keyboard_arrow_up</mat-icon>Zuklappen</button>
-</div>
+  <div class="add-btn-container" *ngIf="addingModus">
+    <button mat-flat-button color="accent" (click)="closeList()"><mat-icon>keyboard_arrow_up</mat-icon>Zuklappen</button>
+  </div>
 
-<div class="action-btn-container">
-  <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-  <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">SPEICHERN</button>
+  <div class="action-btn-container">
+    <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
+    <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">SPEICHERN</button>
+  </div>
+
 </div>
