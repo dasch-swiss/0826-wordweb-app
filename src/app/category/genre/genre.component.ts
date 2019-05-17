@@ -14,6 +14,8 @@ export interface Task {
   styleUrls: ["./genre.component.scss"]
 })
 export class GenreComponent implements OnInit {
+  value: string;
+
   data: Node<Task>[];
   btn: HTMLElement;
 
@@ -99,4 +101,18 @@ export class GenreComponent implements OnInit {
 
   }
 
+  applyFilter(filterValue: string) {
+    // this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  clear() {
+    // this.dataSource.filter = this.value = "";
+  }
+
+  rowCount() {
+    // return this.dataSource.filteredData.length;
+  }
+
+  openCreateGenre() {
+  }
 }
