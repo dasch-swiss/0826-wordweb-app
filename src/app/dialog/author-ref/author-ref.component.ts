@@ -19,7 +19,6 @@ export class AuthorRefComponent implements OnInit {
     valueChanged: boolean;
 
     constructor(private dialogRef: MatDialogRef<AuthorRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
-        console.log(data["editMod"], data["values"]);
         if (data["editMod"]) {
             this.copyValues = [...data["values"]];
         } else {

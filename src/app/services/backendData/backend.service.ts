@@ -756,7 +756,7 @@ export class BackendService {
     }
 
     getEditionOriginal(iri: number) {
-        return this.objEditionOriginals[iri] ? this.objEditionOriginals[iri]: {};
+        return this.objEditionOriginals[iri] ? this.objEditionOriginals[iri] : {};
     }
 
     getEditionsOriginal() {
