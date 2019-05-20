@@ -265,7 +265,8 @@ export class BackendService {
         id: 1,
         book: this.b1,
         language: this.lang1,
-        publicationInfo: "Romeo and Juliet, W. Shakespeare, [not_original]"
+        publicationInfo: "Romeo and Juliet, W. Shakespeare, [not_original]",
+        references: 0
     };
 
     private pas1: Passage = {
@@ -319,7 +320,8 @@ export class BackendService {
         id: 2,
         book: this.b2,
         language: this.lang1,
-        publicationInfo: "Hamlet, W. Shakespeare, [not_original]"
+        publicationInfo: "Hamlet, W. Shakespeare, [not_original]",
+        references: 0
     };
 
     private pas3: Passage = {
@@ -391,7 +393,8 @@ export class BackendService {
         id: 3,
         book: this.b3,
         language: this.lang1,
-        publicationInfo: "The Comedy of Errors, W. Shakespeare, [not_original]"
+        publicationInfo: "The Comedy of Errors, W. Shakespeare, [not_original]",
+        references: 0
     };
 
     private pas6: Passage = {
@@ -461,7 +464,8 @@ export class BackendService {
         id: 4,
         book: this.b4,
         language: this.lang2,
-        publicationInfo: "Tamburlaine, C. Marlowe, [not_original]"
+        publicationInfo: "Tamburlaine, C. Marlowe, [not_original]",
+        references: 0
     };
 
     private pas8: Passage = {

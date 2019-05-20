@@ -27,6 +27,7 @@ export interface Edition {
     book: Book;
     language: Language;
     publicationInfo: string;
+    references: number;
 }
 
 export interface Passage {
@@ -38,7 +39,7 @@ export interface Passage {
 
 export interface PassageOriginal {
     id: number;
-    edition: Edition;
+    edition: EditionOriginal;
     text: string;
     page: string;
 }

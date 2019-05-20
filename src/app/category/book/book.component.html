@@ -8,8 +8,8 @@
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
-        <button mat-flat-button type="button" color="primary" [routerLink]="['/book/new']">Buch hinzufügen</button>
         <span>Anzahl Datensätze: {{rowCount()}}</span>
+        <button mat-flat-button type="button" color="primary" [routerLink]="['/book/new']">Buch hinzufügen</button>
     </div>
 
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
