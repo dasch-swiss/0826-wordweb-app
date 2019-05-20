@@ -17,6 +17,7 @@ export class BookRefComponent implements OnInit {
 
   value: string;
   valueChanged: boolean;
+  maximum: number;
 
   constructor(private dialogRef: MatDialogRef<BookRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
     console.log(data);
@@ -25,6 +26,8 @@ export class BookRefComponent implements OnInit {
     } else {
       this.copyValues = data["values"].length !== 0 ? [...data["values"]] : [];
     }
+
+    this.maximum = data["max"];
   }
 
   ngOnInit() {
@@ -59,6 +62,11 @@ export class BookRefComponent implements OnInit {
 
   isUsed(id: number): boolean {
     return this.copyValues.filter((book) => book.id === id).length !== 0;
+  }
+
+
+  hasMaximum(): boolean | null {
+    return this.maximum ? this.copyValues.length === this.maximum : null;
   }
 
   clear() {

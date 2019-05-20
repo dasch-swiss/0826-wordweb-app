@@ -50,7 +50,8 @@ export class EditionComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
       values: this.copyArray(book),
-      editMod: true
+      editMod: true,
+      max: 1
     };
     const dialogRef = this.bookDialog.open(BookRefComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((data) => {
@@ -64,7 +65,8 @@ export class EditionComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
       values: this.copyArray(language),
-      editMod: true
+      editMod: true,
+      max: 1
     };
     const dialogRef = this.languageDialog.open(LanguageRefComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((data) => {

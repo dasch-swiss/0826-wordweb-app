@@ -36,7 +36,7 @@
         <tr class="data-row" *ngFor="let language of filteredList">
           <td>{{language.name}}</td>
           <td>
-            <button type="button" class="add-button" [disabled]="isUsed(language.id)" (click)="add(language)">+</button>
+            <button type="button" class="add-button" [disabled]="isUsed(language.id) || hasMaximum()" (click)="add(language)">+</button>
           </td>
         </tr>
         <tr class="empty-row" *ngIf="filteredList.length === 0">

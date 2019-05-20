@@ -17,6 +17,7 @@ export class LanguageRefComponent implements OnInit {
 
   value: string;
   valueChanged: boolean;
+  maximum: number;
 
   constructor(private dialogRef: MatDialogRef<LanguageRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
     if (data["editMod"]) {
@@ -24,6 +25,8 @@ export class LanguageRefComponent implements OnInit {
     } else {
       this.copyValues = data["values"].length !== 0 ? [...data["values"]] : [];
     }
+
+    this.maximum = data["max"];
   }
 
   ngOnInit() {
@@ -44,7 +47,6 @@ export class LanguageRefComponent implements OnInit {
   add(language: Language) {
     this.copyValues.push(language);
     this.valueChanged = true;
-    console.log(this.copyValues);
   }
 
   remove(id: number) {
@@ -58,6 +60,10 @@ export class LanguageRefComponent implements OnInit {
 
   isUsed(id: number): boolean {
     return this.copyValues.filter((language) => language.id === id).length !== 0;
+  }
+
+  hasMaximum(): boolean | null {
+    return this.maximum ? this.copyValues.length === this.maximum : null;
   }
 
   clear() {

@@ -17,7 +17,7 @@
         <td class="delete-cell"><button class="remove-button" (click)="remove(book.id)">-</button></td>
       </tr>
       <tr class="empty-row" *ngIf="copyValues.length === 0">
-        <td colspan="4">Noch keine Bücher hinzugefügt</td>
+        <td colspan="4">Noch kein Buch hinzugefügt</td>
       </tr>
     </table>
   </div>
@@ -44,7 +44,7 @@
             <div *ngFor="let author of book.authors">{{author.firstName}} {{author.lastName}}</div>
           </td>
           <td>
-            <button type="button" class="add-button" [disabled]="isUsed(book.id)" (click)="add(book)">+</button>
+            <button type="button" class="add-button" [disabled]="isUsed(book.id) || hasMaximum()" (click)="add(book)">+</button>
           </td>
         </tr>
         <tr class="empty-row" *ngIf="filteredList.length === 0">
@@ -55,7 +55,7 @@
   </div>
 
   <div class="add-btn-container" *ngIf="!addingModus">
-    <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Bücher hinzufügen</button>
+    <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Buch hinzufügen</button>
   </div>
 
   <div class="add-btn-container" *ngIf="addingModus">
