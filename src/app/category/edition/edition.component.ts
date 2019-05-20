@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {ApiService} from "../../services/apiService/api.service";
-import {Author, Edition} from "../../model/model";
-import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
+import {Book, Edition} from "../../model/model";
+import {BookRefComponent} from "../../dialog/book-ref/book-ref.component";
 
 @Component({
   selector: "app-edition",
@@ -18,7 +18,7 @@ export class EditionComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private apiService: ApiService,
-              private authorDialog: MatDialog) {
+              private bookDialog: MatDialog) {
     this.dataSource = new MatTableDataSource(this.apiService.getEditions());
   }
 
@@ -38,22 +38,22 @@ export class EditionComponent implements OnInit {
     return this.dataSource.filteredData.length;
   }
 
-  copyArray(authors: Author[]) {
-    return authors;
+  copyArray(book: Book[]) {
+    return book;
   }
 
-  editBook(books: any[]) {
-  //   const dialogConfig = new MatDialogConfig();
-  //   dialogConfig.disableClose = true;
-  //   dialogConfig.autoFocus = true;
-  //   dialogConfig.data = {
-  //     values: this.copyArray(editions),
-  //     editMod: true
-  //   };
-  //   const dialogRef = this.authorDialog.open(AuthorRefComponent, dialogConfig);
-  //   dialogRef.afterClosed().subscribe((data) => {
-  //     console.log(data);
-  //   });
+  editBook(book: any[]) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      values: this.copyArray(book),
+      editMod: true
+    };
+    const dialogRef = this.bookDialog.open(BookRefComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((data) => {
+      console.log(data);
+    });
   }
 
   editLanguage(language: any) {

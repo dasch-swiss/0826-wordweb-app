@@ -2,7 +2,7 @@
 
   <h2>Venue</h2>
 
-  <div class="result-container" [class.full]="copyValues.length>=8">
+  <div class="result-container">
     <table class="chosen-data-table">
       <tr class="header-row">
         <th>Name</th>
@@ -31,10 +31,17 @@
     </mat-form-field>
     <div class="full-data-table-container">
       <table class="full-data-table">
-        <tr *ngFor="let venue of filteredList">
+        <tr>
+          <th>Name</th>
+          <th>Stadt</th>
+          <th></th>
+        </tr>
+        <tr class="data-row" *ngFor="let venue of filteredList">
           <td>{{venue.name}}</td>
           <td>{{venue.city}}</td>
-          <td><button class="add-button" [disabled]="isUsed(venue.id)" (click)="add(venue)">+</button></td>
+          <td>
+            <button type="button" class="add-button" [disabled]="isUsed(venue.id)" (click)="add(venue)">+</button>
+          </td>
         </tr>
         <tr class="empty-row" *ngIf="filteredList.length === 0">
           <td colspan="4">Venueliste ist leer!</td>

@@ -1,23 +1,23 @@
 <div class="dialog">
 
-  <h2>Autor(en)</h2>
+  <h2 matTooltip="Hier kommt die Maus/n">Bücher</h2>
 
   <div class="result-container">
     <table class="chosen-data-table">
       <tr class="header-row">
-        <th>ID Intern</th>
-        <th>Vorname</th>
-        <th>Nachname</th>
-        <th></th>
+        <th>Title</th>
+        <th>Autoren</th>
+        <th>Löschen</th>
       </tr>
-      <tr class="data-row" *ngFor="let author of copyValues">
-        <td>{{author.internalID}}</td>
-        <td>{{author.firstName}}</td>
-        <td>{{author.lastName}}</td>
-        <td class="delete-cell"><button class="remove-button" (click)="removeAuthor(author.id)">-</button></td>
+      <tr class="data-row" *ngFor="let book of copyValues">
+        <td>{{book.title}}</td>
+        <td>
+          <div *ngFor="let author of book.authors">{{author.firstName}} {{author.lastName}}</div>
+        </td>
+        <td class="delete-cell"><button class="remove-button" (click)="remove(book.id)">-</button></td>
       </tr>
       <tr class="empty-row" *ngIf="copyValues.length === 0">
-        <td colspan="4">Noch keine Autoren hinzugefügt</td>
+        <td colspan="4">Noch keine Organisationen hinzugefügt</td>
       </tr>
     </table>
   </div>
@@ -34,28 +34,28 @@
     <div class="full-data-table-container">
       <table class="full-data-table">
         <tr>
-          <th>ID Intern</th>
-          <th>Vorname</th>
-          <th>Nachname</th>
+          <th>Title</th>
+          <th>Autoren</th>
           <th></th>
         </tr>
-        <tr class="data-row" *ngFor="let author of filteredList">
-          <td>{{author.internalID}}</td>
-          <td>{{author.firstName}}</td>
-          <td>{{author.lastName}}</td>
+        <tr class="data-row" *ngFor="let book of filteredList">
+          <td>{{book.title}}</td>
           <td>
-            <button type="button" class="add-button" [disabled]="isUsed(author.id)" (click)="addAuthor(author)">+</button>
+            <div *ngFor="let author of book.authors">{{author.firstName}} {{author.lastName}}</div>
+          </td>
+          <td>
+            <button type="button" class="add-button" [disabled]="isUsed(book.id)" (click)="add(book)">+</button>
           </td>
         </tr>
         <tr class="empty-row" *ngIf="filteredList.length === 0">
-          <td colspan="4">Autorenliste ist leer!</td>
+          <td colspan="4">Organisationsliste ist leer!</td>
         </tr>
       </table>
     </div>
   </div>
 
   <div class="add-btn-container" *ngIf="!addingModus">
-    <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Autoren hinzufügen</button>
+    <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Organisationen hinzufügen</button>
   </div>
 
   <div class="add-btn-container" *ngIf="addingModus">

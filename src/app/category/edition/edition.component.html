@@ -35,9 +35,9 @@
     <ng-container matColumnDef="book">
       <th mat-header-cell *matHeaderCellDef> Buch</th>
       <td mat-cell *matCellDef="let element">
-        <div class="edit-value" (click)="editBook(element.book)" style="padding-left: 0;">
-          {{element.book.title}}
-        </div>
+        <ul class="edit-value" (click)="editBook([element.book])" style="padding-left: 0; list-style-type: none">
+          <li>{{element.book.title}}</li>
+        </ul>
       </td>
     </ng-container>
 

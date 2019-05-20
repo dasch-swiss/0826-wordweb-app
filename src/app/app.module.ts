@@ -8,7 +8,7 @@ import {
     MatChipsModule, MatDialogModule, MatDividerModule, MatExpansionModule,
     MatIconModule, MatInputModule,
     MatProgressSpinnerModule, MatSelectModule, MatSortModule,
-    MatTableModule
+    MatTableModule, MatTooltipModule
 } from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {SatPopoverModule} from "@ncstate/sat-popover";
@@ -31,6 +31,9 @@ import { GenreComponent } from "./category/genre/genre.component";
 import {TreetableModule} from "ng-material-treetable";
 import { CreateEditionComponent } from "./create-resource/create-edition/create-edition.component";
 import { SubjectComponent } from "./category/subject/subject.component";
+import { LanguageRefComponent } from "./dialog/language-ref/language-ref.component";
+import { BookRefComponent } from "./dialog/book-ref/book-ref.component";
+import { TooltipComponent } from "./dialog/tooltip/tooltip.component";
 
 const routes: Routes = [
     {path: "book", component: BookComponent},
@@ -68,7 +71,10 @@ const routes: Routes = [
         OrganisationRefComponent,
         GenreComponent,
         CreateEditionComponent,
-        SubjectComponent
+        SubjectComponent,
+        LanguageRefComponent,
+        BookRefComponent,
+        TooltipComponent
     ],
     imports: [
         RouterModule.forRoot(routes),
@@ -90,7 +96,8 @@ const routes: Routes = [
         MatExpansionModule,
         MatSelectModule,
         TreetableModule,
-        MatDividerModule
+        MatDividerModule,
+        MatTooltipModule,
     ],
     providers: [],
     bootstrap: [AppComponent],
@@ -98,6 +105,7 @@ const routes: Routes = [
         AuthorRefComponent,
         VenueRefComponent,
         OrganisationRefComponent,
+        BookRefComponent,
         CreateAuthorComponent,
         CreateBookComponent,
         CreateLanguageComponent

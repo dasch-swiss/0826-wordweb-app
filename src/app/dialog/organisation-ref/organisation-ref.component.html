@@ -2,7 +2,7 @@
 
   <h2>Organisation</h2>
 
-  <div class="result-container" [class.full]="copyValues.length>=8">
+  <div class="result-container">
     <table class="chosen-data-table">
       <tr class="header-row">
         <th>Name</th>
@@ -29,9 +29,15 @@
     </mat-form-field>
     <div class="full-data-table-container">
       <table class="full-data-table">
-        <tr *ngFor="let organisation of filteredList">
+        <tr>
+          <th>Name</th>
+          <th></th>
+        </tr>
+        <tr class="data-row" *ngFor="let organisation of filteredList">
           <td>{{organisation.name}}</td>
-          <td><button class="add-button" [disabled]="isUsed(organisation.id)" (click)="add(organisation)">+</button></td>
+          <td>
+            <button type="button" class="add-button" [disabled]="isUsed(organisation.id)" (click)="add(organisation)">+</button>
+          </td>
         </tr>
         <tr class="empty-row" *ngIf="filteredList.length === 0">
           <td colspan="4">Organisationsliste ist leer!</td>

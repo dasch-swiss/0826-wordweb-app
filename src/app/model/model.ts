@@ -9,6 +9,7 @@ export interface Author {
 
 export interface Book {
     id: number;
+    internalID: string;
     title: string;
     authors: Author[];
     references: number;
@@ -65,4 +66,16 @@ export interface Subject {
     id: number;
     name: string;
     references: number;
+}
+
+export interface Genre {
+    id: number;
+    name: string;
+    references: number;
+    genres: Genre[];
+}
+
+export interface TreeGenre extends Genre {
+    isVisible: boolean;
+    isExpanded: boolean;
 }

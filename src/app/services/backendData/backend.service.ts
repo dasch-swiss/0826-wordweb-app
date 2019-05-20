@@ -255,6 +255,7 @@ export class BackendService {
 
     private b1: Book = {
         id: 1,
+        internalID: "@000100",
         title: "Romeo and Juliet",
         authors: [this.a1, this.a8, this.a3],
         references: 0
@@ -308,6 +309,7 @@ export class BackendService {
 
     private b2: Book = {
         id: 2,
+        internalID: "@000200",
         title: "Hamlet",
         authors: [this.a1, this.a10],
         references: 2
@@ -379,6 +381,7 @@ export class BackendService {
 
     private b3: Book = {
         id: 3,
+        internalID: "@000300",
         title: "The Comedy of Errors",
         authors: [this.a1],
         references: 6
@@ -448,6 +451,7 @@ export class BackendService {
 
     private b4: Book = {
         id: 4,
+        internalID: "@000400",
         title: "Tamburlaine",
         authors: [this.a2],
         references: 1
@@ -499,6 +503,7 @@ export class BackendService {
 
     private b5: Book = {
         id: 5,
+        internalID: "@000500",
         title: "Of Two Evils Choose the Least",
         authors: [this.a12, this.a19],
         references: 1
@@ -506,8 +511,41 @@ export class BackendService {
 
     private b6: Book = {
         id: 6,
+        internalID: "@000600",
         title: "The Cruel Brother",
         authors: [this.a10],
+        references: 1
+    };
+
+    private b7: Book = {
+        id: 7,
+        internalID: "@000700",
+        title: " The Art of Reason",
+        authors: [this.a22],
+        references: 1
+    };
+
+    private b8: Book = {
+        id: 8,
+        internalID: "@000800",
+        title: "Five Hundred Points of Good Husbandry",
+        authors: [this.a6, this.a9],
+        references: 1
+    };
+
+    private b9: Book = {
+        id: 9,
+        internalID: "@000900",
+        title: "Treatise of God's Effectual Calling",
+        authors: [this.a20],
+        references: 1
+    };
+
+    private b10: Book = {
+        id: 10,
+        internalID: "@001000",
+        title: "The Jews' Tragedy",
+        authors: [this.a22],
         references: 1
     };
 
@@ -657,7 +695,7 @@ export class BackendService {
     private readonly objSubjects: any = {};
 
     constructor() {
-        this.bookList = [this.b1, this.b2, this.b3, this.b4, this.b5, this.b6];
+        this.bookList = [this.b1, this.b2, this.b3, this.b4, this.b5, this.b6, this.b7, this.b8, this.b9, this.b10];
         this.objBooks = this.bookList.reduce((acc, cur) => {
             acc[cur.id] = cur;
             return acc;

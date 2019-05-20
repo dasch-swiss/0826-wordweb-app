@@ -10,40 +10,45 @@ button {
   cursor: pointer;
 }
 
-.result-container.full {
+.result-container {
   max-height: 14.3rem;
-  overflow-y: scroll;
-}
+  overflow-y: auto;
 
-.chosen-data-table {
-  border-spacing: 0;
-  th {
-    border: 1px solid white;
-    background-color: rgb(64, 84, 178);
-    color: white;
-    text-align: left;
-    position: sticky;
-    top: 0px;
-    padding: 0.4rem 0.7rem;
-  }
+  .chosen-data-table {
+    border-spacing: 0;
 
-  td {
-    padding: 0.3rem 0.7rem;
-  }
-
-  .data-row {
-    background-color:white;
-  }
-
-  .delete-cell {
-    text-align: center;
-  }
-
-  .empty-row {
-    background-color: white;
+    th {
+      border: 1px solid white;
+      background-color: rgb(64, 84, 178);
+      color: white;
+      text-align: left;
+      position: sticky;
+      top: 0px;
+      padding: 0.4rem 0.7rem;
+    }
 
     td {
+      padding: 0.3rem 0.7rem;
+    }
+
+    .data-row:nth-child(even) {
+      background-color:white;
+    }
+
+    .data-row:nth-child(odd) {
+      background: whitesmoke;
+    }
+
+    .delete-cell {
       text-align: center;
+    }
+
+    .empty-row {
+      background-color: white;
+
+      td {
+        text-align: center;
+      }
     }
   }
 }
@@ -73,7 +78,7 @@ button {
       }
 
       th {
-        //border: 1px solid white;
+        text-align: left;
         background-color: lightgray;
         color: white;
         position: sticky;
@@ -82,6 +87,14 @@ button {
 
       tr:hover {
         background-color: whitesmoke;
+      }
+
+      .data-row:nth-child(even) {
+        background-color:white;
+      }
+
+      .data-row:nth-child(odd) {
+        background: whitesmoke;
       }
 
       .empty-row {
