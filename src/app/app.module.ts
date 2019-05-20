@@ -106,6 +106,7 @@ const routes: Routes = [
         VenueRefComponent,
         OrganisationRefComponent,
         BookRefComponent,
+        LanguageRefComponent,
         CreateAuthorComponent,
         CreateBookComponent,
         CreateLanguageComponent

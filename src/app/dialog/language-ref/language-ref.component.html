@@ -1,3 +1,62 @@
-<p>
-  language-ref works!
-</p>
+<div class="dialog">
+
+  <h2>Venue</h2>
+
+  <div class="result-container">
+    <table class="chosen-data-table">
+      <tr class="header-row">
+        <th>Sprache</th>
+        <th>Löschen</th>
+      </tr>
+      <tr class="data-row" *ngFor="let language of copyValues">
+        <td>{{language.name}}</td>
+        <td class="delete-cell"><button class="remove-button" (click)="remove(language.id)">-</button></td>
+      </tr>
+      <tr class="empty-row" *ngIf="copyValues.length === 0">
+        <td colspan="4">Noch keine Sprache hinzugefügt</td>
+      </tr>
+    </table>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="full-data-container" [class.opened]="addingModus">
+    <mat-form-field>
+      <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)" (keydown.escape)="clear()">
+      <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <div class="full-data-table-container">
+      <table class="full-data-table">
+        <tr>
+          <th>Sprache</th>
+          <th></th>
+        </tr>
+        <tr class="data-row" *ngFor="let language of filteredList">
+          <td>{{language.name}}</td>
+          <td>
+            <button type="button" class="add-button" [disabled]="isUsed(language.id)" (click)="add(language)">+</button>
+          </td>
+        </tr>
+        <tr class="empty-row" *ngIf="filteredList.length === 0">
+          <td colspan="4">Sprachliste ist leer!</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="add-btn-container" *ngIf="!addingModus">
+    <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Sprache hinzufügen</button>
+  </div>
+
+  <div class="add-btn-container" *ngIf="addingModus">
+    <button mat-flat-button color="accent" (click)="closeList()"><mat-icon>keyboard_arrow_up</mat-icon>Zuklappen</button>
+  </div>
+
+  <div class="action-btn-container">
+    <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
+    <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">SPEICHERN</button>
+  </div>
+
+</div>

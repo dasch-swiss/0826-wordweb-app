@@ -44,9 +44,9 @@
     <ng-container matColumnDef="language">
       <th mat-header-cell *matHeaderCellDef> Sprache</th>
       <td mat-cell *matCellDef="let element">
-        <div class="edit-value" (click)="editLanguage(element.language)" style="padding-left: 0;">
-          {{element.language.name}}
-        </div>
+        <ul class="edit-value" (click)="editLanguage([element.language])" style="padding-left: 0; list-style-type: none">
+          <li> {{element.language.name}}</li>
+        </ul>
       </td>
     </ng-container>
 

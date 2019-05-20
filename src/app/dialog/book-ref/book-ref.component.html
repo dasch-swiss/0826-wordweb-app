@@ -17,7 +17,7 @@
         <td class="delete-cell"><button class="remove-button" (click)="remove(book.id)">-</button></td>
       </tr>
       <tr class="empty-row" *ngIf="copyValues.length === 0">
-        <td colspan="4">Noch keine Organisationen hinzugefügt</td>
+        <td colspan="4">Noch keine Bücher hinzugefügt</td>
       </tr>
     </table>
   </div>
@@ -48,14 +48,14 @@
           </td>
         </tr>
         <tr class="empty-row" *ngIf="filteredList.length === 0">
-          <td colspan="4">Organisationsliste ist leer!</td>
+          <td colspan="4">Bücherliste ist leer!</td>
         </tr>
       </table>
     </div>
   </div>
 
   <div class="add-btn-container" *ngIf="!addingModus">
-    <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Organisationen hinzufügen</button>
+    <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Bücher hinzufügen</button>
   </div>
 
   <div class="add-btn-container" *ngIf="addingModus">

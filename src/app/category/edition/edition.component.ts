@@ -3,6 +3,7 @@ import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/
 import {ApiService} from "../../services/apiService/api.service";
 import {Book, Edition} from "../../model/model";
 import {BookRefComponent} from "../../dialog/book-ref/book-ref.component";
+import {LanguageRefComponent} from "../../dialog/language-ref/language-ref.component";
 
 @Component({
   selector: "app-edition",
@@ -18,7 +19,8 @@ export class EditionComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private apiService: ApiService,
-              private bookDialog: MatDialog) {
+              private bookDialog: MatDialog,
+              private languageDialog: MatDialog) {
     this.dataSource = new MatTableDataSource(this.apiService.getEditions());
   }
 
@@ -56,8 +58,18 @@ export class EditionComponent implements OnInit {
     });
   }
 
-  editLanguage(language: any) {
-
+  editLanguage(language: any[]) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      values: this.copyArray(language),
+      editMod: true
+    };
+    const dialogRef = this.languageDialog.open(LanguageRefComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((data) => {
+      console.log(data);
+    });
   }
 
 }
