@@ -1,0 +1,35 @@
+.container {
+  margin: 2rem;
+  //border: 1px solid red;
+
+  table {
+    width: 100%;
+
+    .title-column {
+      width: 160px;
+    }
+
+    td {
+      //border: 1px solid black;
+      button {
+        margin: 4px;
+      }
+
+      mat-form-field {
+        //width: 100%;
+      }
+    }
+  }
+
+  .authors {
+    border-radius: 0.4rem;
+    background-color: lightgray;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    display: inline-block;
+  }
+
+  .button-actions {
+    text-align: right;
+  }
+}
