@@ -1,12 +1,12 @@
 <mat-card>
-  <mat-card-content>
-    <div class="mat-subheading-2">Bearbeiten</div>
-<form [formGroup]="form" (ngSubmit)=submit()>
-  <mat-form-field>
-    <input matInput [type]="type" formControlName="property">
-  </mat-form-field>
-  <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-  <button type="submit" mat-button color="primary">SPEICHERN</button>
-</form>
-  </mat-card-content>
+    <mat-card-content>
+        <div class="mat-subheading-2">Bearbeiten</div>
+        <form [formGroup]="form" (ngSubmit)=submit()>
+            <mat-form-field>
+                <input matInput [type]="type" formControlName="property">
+            </mat-form-field>
+            <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
+            <button type="submit" mat-button color="primary">SPEICHERN</button>
+        </form>
+    </mat-card-content>
 </mat-card>
