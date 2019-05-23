@@ -5,15 +5,26 @@
 
 table {
   width: 100%;
-}
 
-.edit-value:hover {
-  background: rgb(240,240,240);
-  /*border: 1px solid rgb(100,100,100);*/
-  cursor: text;
-}
+  th, td {
+    padding: 0.5rem;
+    //border: 1px solid red;
 
-th, td {
-  /*margin: 10px !important;*/
-  padding: auto !important;
+    .read-only-value {
+      min-height: 1rem;
+      padding: 0.25rem 0.5rem;
+    }
+
+    .edit-value {
+      min-height: 1rem;
+      padding: 0.25rem 0.25rem;
+      border: 1px solid white;
+    }
+
+    .edit-value:hover {
+      //background: rgb(240,240,240);
+      cursor: text;
+      border: 1px solid rgb(150, 150, 150);
+    }
+  }
 }

@@ -1,10 +1,21 @@
-export interface Author {
+export interface Human {
     id: number;
-    internalID: string;
     firstName: string;
     lastName: string;
+}
+
+export interface Author extends Human {
+    internalID: string;
     description: string;
+    birthDate: number;
+    deathDate: number;
+    // flStartDate: number;
+    // flEndDate: number;
     references: number;
+}
+
+export interface Contributor extends Human {
+    email: string;
 }
 
 export interface Book {

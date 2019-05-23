@@ -11,7 +11,7 @@ import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
 })
 export class BookComponent implements OnInit {
 
-    displayedColumns: string[] = ["title", "authors", "order", "references", "action"];
+    displayedColumns: string[] = ["internalID", "title", "authors", "order", "references", "action"];
     dataSource: MatTableDataSource<Book>;
     value: string;
 

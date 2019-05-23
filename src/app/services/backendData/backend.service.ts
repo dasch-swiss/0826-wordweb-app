@@ -42,6 +42,8 @@ export class BackendService {
         firstName: "William",
         lastName: "Shakespeare",
         description: "English Dramatist",
+        birthDate: 1564,
+        deathDate: 1616,
         references: 0
     };
 
@@ -51,6 +53,8 @@ export class BackendService {
         firstName: "Christopher",
         lastName: "Marlowe",
         description: "English playwright and poet",
+        birthDate: 1564,
+        deathDate: 1593,
         references: 1
     };
 
@@ -60,6 +64,8 @@ export class BackendService {
         firstName: "Rosina Doyle",
         lastName: "Bulwer-Lytton",
         description: "English novelist",
+        birthDate: 1802,
+        deathDate: 1882,
         references: 3
     };
 
@@ -69,6 +75,8 @@ export class BackendService {
         firstName: "Samuel Taylor",
         lastName: "Coleridge",
         description: "English poet",
+        birthDate: 1772,
+        deathDate: 1834,
         references: 0
     };
 
@@ -78,6 +86,8 @@ export class BackendService {
         firstName: "William",
         lastName: "Barksted",
         description: "English poet and dramatist fl. 1611",
+        birthDate: null,
+        deathDate: null,
         references: 0
     };
 
@@ -87,6 +97,8 @@ export class BackendService {
         firstName: "George",
         lastName: "Chapman",
         description: "English poet, dramatist and Homer translator 1559?-1634",
+        birthDate: 1559,
+        deathDate: 1634,
         references: 0
     };
 
@@ -96,16 +108,19 @@ export class BackendService {
         firstName: "Marcus Tullius",
         lastName: "Cicero",
         description: "Roman politician, orator and philosopher 106-43",
+        birthDate: -106,
+        deathDate: 43,
         references: 0
     };
 
     private a8: Author = {
         id: 8,
         internalID: "&000008",
-        // firstName: "John",
         firstName: "John Byrne Leicester Warren, Baron de",
         lastName: "Cotgrave",
         description: "English anthologist 1611?-1655?",
+        birthDate: 1611,
+        deathDate: 1655,
         references: 24
     };
 
@@ -115,6 +130,8 @@ export class BackendService {
         firstName: "Sir William",
         lastName: "D'Avenant",
         description: "English dramatist 1606-1668",
+        birthDate: 1606,
+        deathDate: 1668,
         references: 0
     };
 
@@ -124,6 +141,8 @@ export class BackendService {
         firstName: "Charles",
         lastName: "Dickens",
         description: "English novelist 1812-1870",
+        birthDate: 1812,
+        deathDate: 1870,
         references: 0
     };
 
@@ -133,6 +152,8 @@ export class BackendService {
         firstName: "Maria",
         lastName: "Edgeworth",
         description: "Anglo-Irish dramatist and novelist 1767-1849",
+        birthDate: 1767,
+        deathDate: 1849,
         references: 12
     };
 
@@ -142,6 +163,8 @@ export class BackendService {
         firstName: "David",
         lastName: "Garrick",
         description: "English actor 1717-1779",
+        birthDate: 1717,
+        deathDate: 1779,
         references: 6
     };
 
@@ -151,6 +174,8 @@ export class BackendService {
         firstName: "Elizabeth",
         lastName: "George",
         description: "U.S. crime writer b. 1949, pen-name for Susan Elizabeth George",
+        birthDate: 1949,
+        deathDate: null,
         references: 35
     };
 
@@ -160,6 +185,8 @@ export class BackendService {
         firstName: "Johann Wolfgang von",
         lastName: "Goethe",
         description: "German poet and dramatist 1748-1832",
+        birthDate: 1748,
+        deathDate: 1832,
         references: 21
     };
 
@@ -169,6 +196,8 @@ export class BackendService {
         firstName: "Robert",
         lastName: "Gott",
         description: "Australian cartoonist children's and crime writer b. 1957",
+        birthDate: 1957,
+        deathDate: null,
         references: 18
     };
 
@@ -178,6 +207,8 @@ export class BackendService {
         firstName: "Paul",
         lastName: "Green",
         description: "U.S. dramatist 1894-1981",
+        birthDate: 1894,
+        deathDate: 1981,
         references: 11
     };
 
@@ -187,6 +218,8 @@ export class BackendService {
         firstName: "Martha",
         lastName: "Grimes",
         description: "U.S. crime writer b. 1931",
+        birthDate: 1931,
+        deathDate: null,
         references: 16
     };
 
@@ -196,6 +229,8 @@ export class BackendService {
         firstName: "Thomas",
         lastName: "Hardy",
         description: "English novelist and poet 1840-1928",
+        birthDate: 1840,
+        deathDate: 1928,
         references: 38
     };
 
@@ -205,6 +240,8 @@ export class BackendService {
         firstName: "Gerhart",
         lastName: "Hauptmann",
         description: "German dramatist and novelist 1862-1942",
+        birthDate: 1862,
+        deathDate: 1942,
         references: 9
     };
 
@@ -214,6 +251,8 @@ export class BackendService {
         firstName: "William",
         lastName: "Hazlitt",
         description: "English critic and essayist 1778-1830",
+        birthDate: 1778,
+        deathDate: 1830,
         references: 340
     };
 
@@ -223,6 +262,8 @@ export class BackendService {
         firstName: "Lewis C.",
         lastName: "Henry",
         description: "U.S. (?) anthologist fl. 1961, real name Lewis Copeland",
+        birthDate: null,
+        deathDate: null,
         references: 33
     };
 
@@ -232,6 +273,8 @@ export class BackendService {
         firstName: "Aaron",
         lastName: "Hill",
         description: "British novelist and poet 1685-1750",
+        birthDate: 1685,
+        deathDate: 1750,
         references: 15
     };
 
@@ -241,6 +284,8 @@ export class BackendService {
         firstName: "Vladimír",
         lastName: "Holan",
         description: "Czech poet 1905-1980",
+        birthDate: 1905,
+        deathDate: 1980,
         references: 1
     };
 
@@ -250,6 +295,8 @@ export class BackendService {
         firstName: "Zora Neale",
         lastName: "Hurston",
         description: "U.S. novelist 1891-1960",
+        birthDate: 1891,
+        deathDate: 1960,
         references: 2
     };
 
@@ -602,6 +649,13 @@ export class BackendService {
         references: 0
     };
 
+    private v8: Venue = {
+        id: 8,
+        name: "Ludlow Castle",
+        city: "Shropshire",
+        references: 3
+    };
+
     private o1: Organisation = {
         id: 1,
         name: "King's Men",
@@ -746,7 +800,7 @@ export class BackendService {
             return acc;
         }, {});
 
-        this.venueList = [this.v1, this.v2, this.v3, this.v4, this.v5, this.v6, this.v7];
+        this.venueList = [this.v1, this.v2, this.v3, this.v4, this.v5, this.v6, this.v7, this.v8];
         this.objVenues = this.venueList.reduce((acc, cur) => {
             acc[cur.id] = cur;
             return acc;

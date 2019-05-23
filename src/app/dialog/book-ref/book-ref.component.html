@@ -1,70 +1,86 @@
 <div class="dialog">
 
-  <h2 matTooltip="Hier kommt die Maus/n">Bücher</h2>
+    <h2 matTooltip="Hier kommt die Maus/n">Buch</h2>
 
-  <div class="result-container">
-    <table class="chosen-data-table">
-      <tr class="header-row">
-        <th>Title</th>
-        <th>Autoren</th>
-        <th>Löschen</th>
-      </tr>
-      <tr class="data-row" *ngFor="let book of copyValues">
-        <td>{{book.title}}</td>
-        <td>
-          <div *ngFor="let author of book.authors">{{author.firstName}} {{author.lastName}}</div>
-        </td>
-        <td class="delete-cell"><button class="remove-button" (click)="remove(book.id)">-</button></td>
-      </tr>
-      <tr class="empty-row" *ngIf="copyValues.length === 0">
-        <td colspan="4">Noch kein Buch hinzugefügt</td>
-      </tr>
-    </table>
-  </div>
-
-  <mat-divider></mat-divider>
-
-  <div class="full-data-container" [class.opened]="addingModus">
-    <mat-form-field>
-      <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)" (keydown.escape)="clear()">
-      <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-    <div class="full-data-table-container">
-      <table class="full-data-table">
-        <tr>
-          <th>Title</th>
-          <th>Autoren</th>
-          <th></th>
-        </tr>
-        <tr class="data-row" *ngFor="let book of filteredList">
-          <td>{{book.title}}</td>
-          <td>
-            <div *ngFor="let author of book.authors">{{author.firstName}} {{author.lastName}}</div>
-          </td>
-          <td>
-            <button type="button" class="add-button" [disabled]="isUsed(book.id) || hasMaximum()" (click)="add(book)">+</button>
-          </td>
-        </tr>
-        <tr class="empty-row" *ngIf="filteredList.length === 0">
-          <td colspan="4">Bücherliste ist leer!</td>
-        </tr>
-      </table>
+    <div class="result-container">
+        <table class="chosen-data-table">
+            <tr class="header-row">
+                <th>ID Intern</th>
+                <th>Title</th>
+                <th>Autoren</th>
+                <th></th>
+            </tr>
+            <tr class="data-row" *ngFor="let book of copyValues">
+                <td>{{book.internalID}}</td>
+                <td>{{book.title}}</td>
+                <td>
+                    <div *ngFor="let author of book.authors">{{author.firstName}} {{author.lastName}}</div>
+                </td>
+                <td class="delete-cell">
+                    <button class="remove-button" (click)="remove(book.id)">-</button>
+                </td>
+            </tr>
+            <tr class="empty-row" *ngIf="copyValues.length === 0">
+                <td colspan="4">Noch kein Buch hinzugefügt</td>
+            </tr>
+        </table>
     </div>
-  </div>
 
-  <div class="add-btn-container" *ngIf="!addingModus">
-    <button mat-flat-button color="accent" (click)="openList()"><mat-icon>add</mat-icon>Buch hinzufügen</button>
-  </div>
+    <mat-divider></mat-divider>
 
-  <div class="add-btn-container" *ngIf="addingModus">
-    <button mat-flat-button color="accent" (click)="closeList()"><mat-icon>keyboard_arrow_up</mat-icon>Zuklappen</button>
-  </div>
+    <div class="full-data-container" [class.opened]="addingModus">
+        <mat-form-field>
+            <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
+                   (keydown.escape)="clear()">
+            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <div class="full-data-table-container">
+            <table class="full-data-table">
+                <tr>
+                    <th>ID Intern</th>
+                    <th>Title</th>
+                    <th>Autoren</th>
+                    <th></th>
+                </tr>
+                <tr class="data-row" *ngFor="let book of filteredList">
+                    <td>{{book.internalID}}</td>
+                    <td>{{book.title}}</td>
+                    <td>
+                        <div *ngFor="let author of book.authors">{{author.firstName}} {{author.lastName}}</div>
+                    </td>
+                    <td>
+                        <button type="button" class="add-button" [disabled]="isUsed(book.id) || hasMaximum()"
+                                (click)="add(book)">+
+                        </button>
+                    </td>
+                </tr>
+                <tr class="empty-row" *ngIf="filteredList.length === 0">
+                    <td colspan="4">Bücherliste ist leer!</td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
-  <div class="action-btn-container">
-    <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-    <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">SPEICHERN</button>
-  </div>
+    <div class="add-btn-container" *ngIf="!addingModus">
+        <button mat-flat-button color="accent" (click)="openList()">
+            <mat-icon>add</mat-icon>
+            Buch hinzufügen
+        </button>
+    </div>
+
+    <div class="add-btn-container" *ngIf="addingModus">
+        <button mat-flat-button color="accent" (click)="closeList()">
+            <mat-icon>keyboard_arrow_up</mat-icon>
+            Zuklappen
+        </button>
+    </div>
+
+    <div class="action-btn-container">
+        <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
+        <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">SPEICHERN
+        </button>
+    </div>
 
 </div>
