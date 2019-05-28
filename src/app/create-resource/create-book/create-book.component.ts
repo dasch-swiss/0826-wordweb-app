@@ -63,6 +63,7 @@ export class CreateBookComponent implements OnInit {
         dialogConfig.data = {
             values: this.authorList,
             editMod: false,
+            max: 10
         };
         const dialogRef = this.authorDialog.open(AuthorRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
@@ -79,6 +80,7 @@ export class CreateBookComponent implements OnInit {
         dialogConfig.data = {
             values: this.venueList,
             editMod: false,
+            max: 10
         };
         const dialogRef = this.venueDialog.open(VenueRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
@@ -95,6 +97,7 @@ export class CreateBookComponent implements OnInit {
         dialogConfig.data = {
             values: this.organisationList,
             editMod: false,
+            max: 10
         };
         const dialogRef = this.venueDialog.open(OrganisationRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {

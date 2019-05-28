@@ -1,6 +1,6 @@
-<div class="dialog">
+<div class="dialog-multiple" *ngIf="maximum!==1">
 
-    <h2>Autor(en)</h2>
+    <h2>Autoren auswählen</h2>
 
     <div class="result-container">
         <table class="chosen-data-table">
@@ -47,7 +47,7 @@
                     <td>{{author.firstName}}</td>
                     <td>{{author.lastName}}</td>
                     <td>
-                        <button type="button" class="add-button" [disabled]="isUsed(author.id)"
+                        <button type="button" class="add-button" [disabled]="isUsed(author.id) || hasMaximum()"
                                 (click)="addAuthor(author)">+
                         </button>
                     </td>
@@ -75,8 +75,45 @@
 
     <div class="action-btn-container">
         <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-        <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">SPEICHERN
+        <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">ÜBERNEHMEN
         </button>
     </div>
 
+</div>
+
+<div class="dialog-single" *ngIf="maximum==1">
+
+    <h2>Autor auswählen</h2>
+
+        <div class="full-data-container">
+        <mat-form-field>
+            <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
+                   (keydown.escape)="clear()">
+            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <div class="full-data-table-container">
+            <table class="full-data-table">
+                <tr>
+                    <th>ID Intern</th>
+                    <th>Vorname</th>
+                    <th>Nachname</th>
+                </tr>
+                <tr class="data-row" *ngFor="let author of filteredList" (click)="choseElement(author)">
+                    <td>{{author.internalID}}</td>
+                    <td>{{author.firstName}}</td>
+                    <td>{{author.lastName}}</td>
+                </tr>
+                <tr class="empty-row" *ngIf="filteredList.length === 0">
+                    <td colspan="4">Autorenliste ist leer!</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="action-btn-container">
+        <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
+        <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">ÜBERNEHMEN</button>
+    </div>
 </div>

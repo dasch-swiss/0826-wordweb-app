@@ -1,83 +1,92 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {Language} from "../../model/model";
+import {Book, Language} from "../../model/model";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {ApiService} from "../../services/apiService/api.service";
 
 @Component({
-  selector: "app-language-ref",
-  templateUrl: "./language-ref.component.html",
-  styleUrls: ["../category-ref.component.scss"]
+    selector: "app-language-ref",
+    templateUrl: "./language-ref.component.html",
+    styleUrls: ["../category-ref.component.scss"]
 })
 export class LanguageRefComponent implements OnInit {
 
-  copyValues: any[];
-  addingModus: boolean;
-  list: Language[];
-  filteredList: Language[];
+    copyValues: any[];
+    addingModus: boolean;
+    list: Language[];
+    filteredList: Language[];
 
-  value: string;
-  valueChanged: boolean;
-  maximum: number;
+    value: string;
+    valueChanged: boolean;
+    maximum: number;
 
-  constructor(private dialogRef: MatDialogRef<LanguageRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
-    if (data["editMod"]) {
-      this.copyValues = [...data["values"]];
-    } else {
-      this.copyValues = data["values"].length !== 0 ? [...data["values"]] : [];
+    constructor(private dialogRef: MatDialogRef<LanguageRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+        if (data["editMod"]) {
+            this.copyValues = [...data["values"]];
+        } else {
+            this.copyValues = data["values"].length !== 0 ? [...data["values"]] : [];
+        }
+
+        this.maximum = data["max"];
     }
 
-    this.maximum = data["max"];
-  }
+    ngOnInit() {
+        this.addingModus = false;
+        this.list = this.apiService.getLanguages();
+        this.filteredList = [...this.list];
+        this.valueChanged = false;
+    }
 
-  ngOnInit() {
-    this.addingModus = false;
-    this.list = this.apiService.getLanguages();
-    this.filteredList = [...this.list];
-    this.valueChanged = false;
-  }
+    openList() {
+        this.addingModus = true;
+    }
 
-  openList() {
-    this.addingModus = true;
-  }
+    closeList() {
+        this.addingModus = false;
+    }
 
-  closeList() {
-    this.addingModus = false;
-  }
+    add(language: Language) {
+        this.copyValues.push(language);
+        this.valueChanged = true;
+    }
 
-  add(language: Language) {
-    this.copyValues.push(language);
-    this.valueChanged = true;
-  }
+    remove(id: number) {
+        this.copyValues = this.copyValues.filter((language) => language.id !== id);
+        this.valueChanged = true;
+    }
 
-  remove(id: number) {
-    this.copyValues = this.copyValues.filter((language) => language.id !== id);
-    this.valueChanged = true;
-  }
+    applyFilter(value: string) {
+        this.filteredList = this.list.filter((language) => (language.name.toLowerCase().indexOf(value.toLowerCase()) > -1));
+    }
 
-  applyFilter(value: string) {
-    this.filteredList = this.list.filter((language) => (language.name.toLowerCase().indexOf(value.toLowerCase()) > -1));
-  }
+    isUsed(id: number): boolean {
+        return this.copyValues.filter((language) => language.id === id).length !== 0;
+    }
 
-  isUsed(id: number): boolean {
-    return this.copyValues.filter((language) => language.id === id).length !== 0;
-  }
+    hasMaximum(): boolean | null {
+        return this.maximum ? this.copyValues.length === this.maximum : null;
+    }
 
-  hasMaximum(): boolean | null {
-    return this.maximum ? this.copyValues.length === this.maximum : null;
-  }
+    clear() {
+        this.value = "";
+        this.filteredList = [...this.list];
+    }
 
-  clear() {
-    this.value = "";
-    this.filteredList = [...this.list];
-  }
+    cancel() {
+        this.dialogRef.close({cancel: true, data: null});
+    }
 
-  cancel() {
-    this.dialogRef.close({ cancel: true, data: null});
-  }
+    save() {
+        this.dialogRef.close({cancel: false, data: [...this.copyValues]});
+    }
 
-  save() {
-    this.dialogRef.close({ cancel: false, data: [...this.copyValues]});
-  }
+    choseElement(language: Language) {
+        if ((this.copyValues.length !== 0) && (this.copyValues[0].id === language.id)) {
+            return;
+        }
 
+        this.copyValues = [];
+        this.copyValues.push(language);
+        this.valueChanged = true;
+    }
 
 }

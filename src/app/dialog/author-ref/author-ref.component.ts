@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {ApiService} from "../../services/apiService/api.service";
-import {Author} from "../../model/model";
+import {Author, Book} from "../../model/model";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 @Component({
@@ -17,6 +17,7 @@ export class AuthorRefComponent implements OnInit {
 
     value: string;
     valueChanged: boolean;
+    maximum: number;
 
     constructor(private dialogRef: MatDialogRef<AuthorRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         if (data["editMod"]) {
@@ -24,6 +25,8 @@ export class AuthorRefComponent implements OnInit {
         } else {
             this.copyValues = data["values"].length !== 0 ? [...data["values"]] : [];
         }
+
+        this.maximum = data["max"];
     }
 
     ngOnInit() {
@@ -60,17 +63,31 @@ export class AuthorRefComponent implements OnInit {
         return this.copyValues.filter((author) => author.id === id).length !== 0;
     }
 
+    hasMaximum(): boolean | null {
+        return this.maximum ? this.copyValues.length === this.maximum : null;
+    }
+
     clear() {
         this.value = "";
         this.filteredList = [...this.list];
     }
 
     cancel() {
-        this.dialogRef.close({ cancel: true, data: null});
+        this.dialogRef.close({cancel: true, data: null});
     }
 
     save() {
-        this.dialogRef.close({ cancel: false, data: [...this.copyValues]});
+        this.dialogRef.close({cancel: false, data: [...this.copyValues]});
+    }
+
+    choseElement(author: Author) {
+        if ((this.copyValues.length !== 0) && (this.copyValues[0].id === author.id)) {
+            return;
+        }
+
+        this.copyValues = [];
+        this.copyValues.push(author);
+        this.valueChanged = true;
     }
 
 }

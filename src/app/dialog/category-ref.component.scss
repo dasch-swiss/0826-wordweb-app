@@ -1,104 +1,42 @@
-.dialog {
+.dialog-multiple {
   width: 600px;
-}
 
-table {
-  min-width: 100%;
-}
+  .result-container {
+    max-height: 14.3rem;
+    overflow-y: auto;
 
-button {
-  cursor: pointer;
-}
-
-.result-container {
-  max-height: 14.3rem;
-  overflow-y: auto;
-
-  .chosen-data-table {
-    border-spacing: 0;
-
-    th {
-      border: 1px solid white;
-      background-color: rgb(64, 84, 178);
-      color: white;
-      text-align: left;
-      position: sticky;
-      top: 0px;
-      padding: 0.4rem 0.7rem;
-    }
-
-    td {
-      padding: 0.3rem 0.7rem;
-    }
-
-    .data-row:nth-child(even) {
-      background-color:white;
-    }
-
-    .data-row:nth-child(odd) {
-      background: whitesmoke;
-    }
-
-    .delete-cell {
-      text-align: center;
-    }
-
-    .empty-row {
-      background-color: white;
-
-      td {
-        text-align: center;
-      }
-    }
-  }
-}
-
-.full-data-container {
-  padding: 0 2rem;
-  margin-top:1rem;
-
-  max-height: 0px;
-  overflow-y: hidden;
-  transition: ease-in-out 200ms max-height;
-
-  mat-form-field {
-    width: 100%;
-  }
-
-  .full-data-table-container{
-    border: 1px solid darkgray;
-    height: 14rem;
-    overflow-y: scroll;
-
-    .full-data-table {
+    .chosen-data-table {
+      min-width: 100%;
       border-spacing: 0;
 
-      th, td {
-        padding: 0 0.4rem;
-      }
-
       th {
-        text-align: left;
-        background-color: lightgray;
+        border: 1px solid white;
+        background-color: rgb(64, 84, 178);
         color: white;
+        text-align: left;
         position: sticky;
         top: 0px;
+        padding: 0.4rem 0.7rem;
       }
 
-      tr:hover {
-        background-color: whitesmoke;
+      td {
+        padding: 0.3rem 0.7rem;
       }
 
       .data-row:nth-child(even) {
-        background-color:white;
+        background-color: white;
       }
 
       .data-row:nth-child(odd) {
         background: whitesmoke;
       }
 
+      .delete-cell {
+        text-align: center;
+      }
+
       .empty-row {
-        background-color: whitesmoke;
+        background-color: white;
 
         td {
           text-align: center;
@@ -106,22 +44,149 @@ button {
       }
     }
   }
-}
 
-.full-data-container.opened {
-  max-height: 450px;
-  //height: 100%;
-  transition: ease-in-out 600ms max-height;
-}
+  .full-data-container {
+    padding: 0 2rem;
+    margin-top: 1rem;
 
-.add-btn-container {
-  margin-top: 1rem;
-}
+    max-height: 0px;
+    overflow-y: hidden;
+    transition: ease-in-out 200ms max-height;
 
-.action-btn-container {
-  text-align: right;
+    mat-form-field {
+      width: 100%;
+    }
 
-  button {
+    .full-data-table-container {
+      border: 1px solid darkgray;
+      height: 14rem;
+      overflow-y: scroll;
+
+      .full-data-table {
+        min-width: 100%;
+        border-spacing: 0;
+
+        th, td {
+          padding: 0 0.4rem;
+        }
+
+        th {
+          text-align: left;
+          background-color: lightgray;
+          color: white;
+          position: sticky;
+          top: 0px;
+        }
+
+        .data-row:nth-child(even) {
+          background-color: white;
+        }
+
+        .data-row:nth-child(odd) {
+          background: whitesmoke;
+        }
+
+        .empty-row {
+          background-color: whitesmoke;
+
+          td {
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
+  .full-data-container.opened {
+    max-height: 450px;
+    //height: 100%;
+    transition: ease-in-out 600ms max-height;
+  }
+
+  .add-btn-container {
     margin-top: 1rem;
   }
+
+  .action-btn-container {
+    text-align: right;
+
+    button {
+      margin-top: 1rem;
+    }
+  }
+}
+
+.dialog-single {
+  width: 600px;
+
+  .full-data-container {
+    padding: 0 2rem;
+    margin-top: 1rem;
+
+    max-height: 450px;
+    overflow-y: hidden;
+
+    mat-form-field {
+      width: 100%;
+    }
+
+    .full-data-table-container {
+      border: 1px solid darkgray;
+      height: 14rem;
+      overflow-y: scroll;
+
+      .full-data-table {
+        min-width: 100%;
+        border-spacing: 0;
+
+        th, td {
+          padding: 0 0.4rem;
+        }
+
+        th {
+          text-align: left;
+          background-color: lightgray;
+          color: white;
+          position: sticky;
+          top: 0px;
+        }
+
+        .data-row:nth-child(even) {
+          background-color: white;
+        }
+
+        .data-row:nth-child(odd) {
+          background: whitesmoke;
+        }
+
+        .data-row:hover {
+          background-color: lightblue;
+        }
+
+        .empty-row {
+          background-color: whitesmoke;
+
+          td {
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
+  .add-btn-container {
+    margin-top: 1rem;
+  }
+
+  .action-btn-container {
+    text-align: right;
+
+    button {
+      margin-top: 1rem;
+    }
+  }
+}
+
+button {
+  cursor: pointer;
 }
