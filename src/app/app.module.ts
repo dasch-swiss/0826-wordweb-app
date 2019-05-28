@@ -33,7 +33,6 @@ import { CreateEditionComponent } from "./create-resource/create-edition/create-
 import { SubjectComponent } from "./category/subject/subject.component";
 import { LanguageRefComponent } from "./dialog/language-ref/language-ref.component";
 import { BookRefComponent } from "./dialog/book-ref/book-ref.component";
-import { TooltipComponent } from "./dialog/tooltip/tooltip.component";
 
 const routes: Routes = [
     {path: "book", component: BookComponent},
@@ -73,8 +72,7 @@ const routes: Routes = [
         CreateEditionComponent,
         SubjectComponent,
         LanguageRefComponent,
-        BookRefComponent,
-        TooltipComponent
+        BookRefComponent
     ],
     imports: [
         RouterModule.forRoot(routes),
