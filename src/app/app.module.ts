@@ -33,6 +33,8 @@ import { CreateEditionComponent } from "./create-resource/create-edition/create-
 import { SubjectComponent } from "./category/subject/subject.component";
 import { LanguageRefComponent } from "./dialog/language-ref/language-ref.component";
 import { BookRefComponent } from "./dialog/book-ref/book-ref.component";
+import { PassageComponent } from "./category/passage/passage.component";
+import { EditionRefComponent } from "./dialog/edition-ref/edition-ref.component";
 
 const routes: Routes = [
     {path: "book", component: BookComponent},
@@ -49,7 +51,7 @@ const routes: Routes = [
     // {path: "genre/new", component: CreateSubjectComponent},
     {path: "genre", component: GenreComponent},
     // {path: "genre/new", component: CreateGenreComponent},
-    // {path: "", component },
+    {path: "passage", component: PassageComponent},
     // {path: "", component },
 ];
 
@@ -60,19 +62,21 @@ const routes: Routes = [
         AuthorComponent,
         BookComponent,
         LanguageComponent,
+        EditionComponent,
+        OrganisationComponent,
+        GenreComponent,
+        SubjectComponent,
+        PassageComponent,
         AuthorRefComponent,
+        VenueRefComponent,
+        OrganisationRefComponent,
+        LanguageRefComponent,
+        BookRefComponent,
+        EditionRefComponent,
         CreateAuthorComponent,
         CreateBookComponent,
         CreateLanguageComponent,
-        VenueRefComponent,
-        EditionComponent,
-        OrganisationComponent,
-        OrganisationRefComponent,
-        GenreComponent,
-        CreateEditionComponent,
-        SubjectComponent,
-        LanguageRefComponent,
-        BookRefComponent
+        CreateEditionComponent
     ],
     imports: [
         RouterModule.forRoot(routes),
@@ -105,6 +109,7 @@ const routes: Routes = [
         OrganisationRefComponent,
         BookRefComponent,
         LanguageRefComponent,
+        EditionRefComponent,
         CreateAuthorComponent,
         CreateBookComponent,
         CreateLanguageComponent

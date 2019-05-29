@@ -320,7 +320,8 @@ export class BackendService {
         id: 1,
         edition: this.e1,
         text: "thus with a kiss I die",
-        page: "2"
+        page: "2",
+        references: 0
     };
 
     private pas2: Passage = {
@@ -329,7 +330,8 @@ export class BackendService {
         text: "My bounty is as boundless as the sea,\n" +
             "My love as deep; the more I give to thee,\n" +
             "The more I have, for both are infinite.",
-        page: "101-102"
+        page: "101-102",
+        references: 0
     };
 
     private e1_original: EditionOriginal = {
@@ -375,14 +377,16 @@ export class BackendService {
         id: 3,
         edition: this.e2,
         text: "What a piece of work is a man! How noble in reason! how infinite in faculty! in form, in moving, how express and admirable! in action how like an angel! in apprehension how like a god! the beauty of the world! the paragon of animals! And yet, to me, what is this quintessence of dust?",
-        page: "43-45"
+        page: "43-45",
+        references: 0
     };
 
     private pas4: Passage = {
         id: 4,
         edition: this.e2,
         text: "Though this be madness, yet there is method in't.",
-        page: "90"
+        page: "90",
+        references: 0
     };
 
     private pas5: Passage = {
@@ -393,7 +397,8 @@ export class BackendService {
             "Lord Polonius: What is the matter, my lord? \n" +
             "Hamlet: Between who? \n" +
             "Lord Polonius: I mean, the matter that you read, my lord.",
-        page: "87-92"
+        page: "87-92",
+        references: 0
     };
 
     private e2_original: EditionOriginal = {
@@ -452,7 +457,8 @@ export class BackendService {
             "Yet, that the world may witness that my end\n" +
             "Was wrought by nature, not by vile offence,\n" +
             "I'll utter what my sorrow gives me leave.",
-        page: "129"
+        page: "129",
+        references: 0
     };
 
     private pas7: Passage = {
@@ -465,7 +471,8 @@ export class BackendService {
             "And piteous plainings of the pretty babes,\n" +
             "That mourned for fashion, ignorant what to fear,\n" +
             "Forced me to seek delays for them and me.",
-        page: "205-207"
+        page: "205-207",
+        references: 0
     };
 
     private e3_original: EditionOriginal = {
@@ -520,14 +527,16 @@ export class BackendService {
         edition: this.e4,
         text: "I hold the Fates bound fast in iron chains,\n" +
             "And with my hand turn Fortune's wheel about;",
-        page: "14"
+        page: "14",
+        references: 0
     };
 
     private pas9: Passage = {
         id: 9,
         edition: this.e4,
         text: "Well, bark, ye dogs; I'll bridle all your tongues",
-        page: "4"
+        page: "4",
+        references: 0
     };
 
     private e4_original: EditionOriginal = {

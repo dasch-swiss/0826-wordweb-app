@@ -46,6 +46,7 @@ export interface Passage {
     edition: Edition;
     text: string;
     page: string;
+    references: number;
 }
 
 export interface PassageOriginal {

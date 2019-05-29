@@ -4,13 +4,14 @@
 <!--<button (click)="showPassages()">Passagen</button>-->
 <!--<button (click)="showEditionsOriginal()">Ausgaben_Original</button>-->
 <!--<button (click)="showPassagesOriginal()">Passagen_Original</button>-->
-<button (click)="showBookCat()">Book</button>
 <button (click)="showAuthorCat()">Author</button>
+<button (click)="showBookCat()">Book</button>
 <button (click)="showLanguageCat()">Language</button>
 <button (click)="showEditionCat()">Edition</button>
 <button (click)="showOrganisationCat()">Organisation</button>
 <button (click)="showSubjectCat()">Subject</button>
 <button (click)="showGenreCat()">Genre</button>
+<button (click)="showPassageCat()">Passage</button>
 
 <div *ngIf="list === 'book'">
     <div *ngFor="let book of bookList" style="border: 1px solid darkgray; margin: 10px;padding: 10px;">

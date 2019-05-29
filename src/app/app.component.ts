@@ -97,4 +97,8 @@ export class AppComponent implements OnInit {
         this.router.navigate(["genre"]);
     }
 
+    showPassageCat() {
+        this.router.navigate(["passage"]);
+    }
+
 }
