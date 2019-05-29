@@ -57,7 +57,16 @@ export class BookRefComponent implements OnInit {
     }
 
     applyFilter(value: string) {
-        this.filteredList = this.list.filter((book) => ((book.title.toLowerCase().indexOf(value.toLowerCase()) > -1) || (book.authors.filter(author => author.firstName.toLowerCase().indexOf(value.toLowerCase()) > -1).length > 0) || (book.authors.filter(author => author.lastName.toLowerCase().indexOf(value.toLowerCase()) > -1).length > 0)));
+        this.filteredList = this.list.filter((book) => {
+            const containsID = book.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
+            const containsTitle = book.title.toLowerCase().indexOf(value.toLowerCase()) > -1;
+            const containsAuthorName = book.authors.filter(author => {
+                const fullName = `${author.firstName} ${author.lastName}`;
+                return fullName.toLowerCase().indexOf(value.toLowerCase()) > -1;
+            }).length > 0;
+
+            return containsID || containsTitle || containsAuthorName ;
+        });
     }
 
     isUsed(id: number): boolean {

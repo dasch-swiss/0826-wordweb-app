@@ -5,8 +5,8 @@ import {ApiService} from "../../services/apiService/api.service";
 import {EditionRefComponent} from "../../dialog/edition-ref/edition-ref.component";
 
 @Component({
-  selector: "app-passage",
-  templateUrl: "./passage.component.html",
+    selector: "app-passage",
+    templateUrl: "./passage.component.html",
     styleUrls: ["../category.component.scss"]
 })
 export class PassageComponent implements OnInit {
@@ -21,7 +21,6 @@ export class PassageComponent implements OnInit {
                 private bookDialog: MatDialog,
                 private languageDialog: MatDialog) {
         this.dataSource = new MatTableDataSource(this.apiService.getPassages());
-        console.log(this.dataSource);
     }
 
     ngOnInit() {
@@ -29,7 +28,15 @@ export class PassageComponent implements OnInit {
     }
 
     applyFilter(filterValue: string) {
+        this.dataSource.filterPredicate = this.customFilter;
         this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+
+    customFilter(passage: Passage, filterValue: string): boolean {
+        const containsEdition = passage.edition.publicationInfo.toLowerCase().indexOf(filterValue) > -1;
+        const containsText = passage.text.toLowerCase().indexOf(filterValue) > -1;
+
+        return containsEdition || containsText;
     }
 
     clear() {

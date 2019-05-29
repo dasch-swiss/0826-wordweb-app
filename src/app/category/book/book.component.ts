@@ -27,7 +27,19 @@ export class BookComponent implements OnInit {
     }
 
     applyFilter(filterValue: string) {
+        this.dataSource.filterPredicate = this.customFilter;
         this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+
+    customFilter(book: Book, filterValue: string): boolean {
+        const containsInternalID = book.internalID.indexOf(filterValue) > -1;
+        const containsTitle = book.title.toLowerCase().indexOf(filterValue) > -1;
+        const containsAuthorName = book.authors.filter(author => {
+            const fullName = `${author.firstName} ${author.lastName}`;
+            return fullName.toLowerCase().indexOf(filterValue) > -1;
+        }).length > 0;
+
+        return containsInternalID || containsTitle || containsAuthorName;
     }
 
     clear() {

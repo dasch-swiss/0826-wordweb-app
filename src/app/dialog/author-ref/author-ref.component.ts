@@ -56,7 +56,13 @@ export class AuthorRefComponent implements OnInit {
     }
 
     applyFilter(value: string) {
-        this.filteredList = this.list.filter((author) => (author.firstName.toLowerCase().indexOf(value.toLowerCase()) > -1) || (author.lastName.toLowerCase().indexOf(value.toLowerCase()) > -1) || (author.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1));
+        this.filteredList = this.list.filter((author) => {
+            const containsID = author.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
+            const containsFirstName = author.firstName.toLowerCase().indexOf(value.toLowerCase()) > -1;
+            const containsLastName = author.lastName.toLowerCase().indexOf(value.toLowerCase()) > -1;
+
+            return containsID || containsFirstName || containsLastName;
+        });
     }
 
     isUsed(id: number): boolean {

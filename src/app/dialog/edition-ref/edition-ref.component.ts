@@ -57,7 +57,13 @@ export class EditionRefComponent implements OnInit {
     }
 
     applyFilter(value: string) {
-        this.filteredList = this.list.filter((edition) => ((edition.publicationInfo.toLowerCase().indexOf(value.toLowerCase()) > -1) || (edition.book.title.toLowerCase().indexOf(value.toLowerCase()) > -1) || (edition.language.name.toLowerCase().indexOf(value.toLowerCase()) > -1)));
+        this.filteredList = this.list.filter((edition) => {
+            const containsPublicationInfo = edition.publicationInfo.toLowerCase().indexOf(value.toLowerCase()) > -1;
+            const containsBook = edition.book.title.toLowerCase().indexOf(value.toLowerCase()) > -1;
+            const containsLanguage = edition.language.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+
+            return containsPublicationInfo || containsBook || containsLanguage;
+        });
     }
 
     isUsed(id: number): boolean {
