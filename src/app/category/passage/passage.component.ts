@@ -11,7 +11,7 @@ import {EditionRefComponent} from "../../dialog/edition-ref/edition-ref.componen
 })
 export class PassageComponent implements OnInit {
 
-    displayedColumns: string[] = ["text", "edition", "order", "references", "action"];
+    displayedColumns: string[] = ["edition", "text", "order", "references", "action"];
     dataSource: MatTableDataSource<Passage>;
     value: string;
 

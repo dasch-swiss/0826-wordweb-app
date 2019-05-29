@@ -5,15 +5,15 @@
     <div class="result-container">
         <table class="chosen-data-table">
             <tr class="header-row">
+                <th>Publikationsinfo</th>
                 <th>Buch</th>
                 <th>Sprache</th>
-                <th>Publikationsinfo</th>
                 <th></th>
             </tr>
             <tr class="data-row" *ngFor="let edition of copyValues">
+                <td>{{edition.publicationInfo}}</td>
                 <td>{{edition.book.title}}</td>
                 <td>{{edition.language.name}}</td>
-                <td>{{edition.publicationInfo}}</td>
                 <td class="delete-cell">
                     <button class="remove-button" (click)="remove(edition.id)">-</button>
                 </td>
@@ -37,15 +37,15 @@
         <div class="full-data-table-container">
             <table class="full-data-table">
                 <tr>
+                    <th>Publikationsinfo</th>
                     <th>Buch</th>
                     <th>Sprache</th>
-                    <th>Publikationsinfo</th>
                     <th></th>
                 </tr>
                 <tr class="data-row" *ngFor="let edition of filteredList">
+                    <td>{{edition.publicationInfo}}</td>
                     <td>{{edition.book.title}}</td>
                     <td>{{edition.language.name}}</td>
-                    <td>{{edition.publicationInfo}}</td>
                     <td>
                         <button type="button" class="add-button" [disabled]="isUsed(edition.id) || hasMaximum()"
                                 (click)="add(edition)">+
@@ -96,14 +96,14 @@
         <div class="full-data-table-container">
             <table class="full-data-table">
                 <tr>
+                    <th>Publikationsinfo</th>
                     <th>Buch</th>
                     <th>Sprache</th>
-                    <th>Publikationsinfo</th>
                 </tr>
                 <tr class="data-row" *ngFor="let edition of filteredList" (click)="choseElement(edition)">
+                    <td>{{edition.publicationInfo}}</td>
                     <td>{{edition.book.title}}</td>
                     <td>{{edition.language.name}}</td>
-                    <td>{{edition.publicationInfo}}</td>
                 </tr>
                 <tr class="empty-row" *ngIf="filteredList.length === 0">
                     <td colspan="4">Editionsliste ist leer!</td>
