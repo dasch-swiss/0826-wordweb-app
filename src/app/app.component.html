@@ -12,6 +12,8 @@
 <button (click)="showSubjectCat()">Subject</button>
 <button (click)="showGenreCat()">Genre</button>
 <button (click)="showPassageCat()">Passage</button>
+<button (click)="showLexiaCat()">Lexia</button>
+<button (click)="showContributorCat()">Contributor</button>
 
 <div *ngIf="list === 'book'">
     <div *ngFor="let book of bookList" style="border: 1px solid darkgray; margin: 10px;padding: 10px;">

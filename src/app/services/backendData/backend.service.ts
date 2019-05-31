@@ -1,5 +1,17 @@
 import {Injectable} from "@angular/core";
-import {Book, Language, Author, Edition, Organisation, Venue, PassageOriginal, EditionOriginal, Passage, Subject} from "../../model/model";
+import {
+    Book,
+    Language,
+    Author,
+    Edition,
+    Organisation,
+    Venue,
+    PassageOriginal,
+    EditionOriginal,
+    Passage,
+    Subject,
+    Contributor, Lexia
+} from "../../model/model";
 
 @Injectable({
     providedIn: "root"
@@ -737,6 +749,227 @@ export class BackendService {
         references: 0
     };
 
+    private con1: Contributor = {
+        id: 1,
+        firstName: "Regula",
+        lastName: "Hohl",
+        email: "r.hohl@unibas.ch",
+        references: 22
+    };
+
+    private con2: Contributor = {
+        id: 2,
+        firstName: "Stefanie",
+        lastName: "Heeg",
+        email: "s.heeg@unibas.ch",
+        references: 10
+    };
+
+    private con3: Contributor = {
+        id: 3,
+        firstName: "Elliot",
+        lastName: "Reitzer",
+        email: "elliot@yahoo.de",
+        references: 10
+    };
+
+    private con4: Contributor = {
+        id: 4,
+        firstName: "Christian",
+        lastName: "Gebhard",
+        email: "christian.gebhard@stud.unibas.ch",
+        references: 10
+    };
+
+    private con5: Contributor = {
+        id: 5,
+        firstName: "Christian",
+        lastName: "Eichenberger",
+        email: "christianmarkus.eichenberger@unifr.ch",
+        references: 10
+    };
+
+    private con6: Contributor = {
+        id: 6,
+        firstName: "Ursula",
+        lastName: "Caci",
+        email: "ursula.caci@unibas.ch",
+        references: 10
+    };
+
+    private con7: Contributor = {
+        id: 7,
+        firstName: "Mark",
+        lastName: "Hunter",
+        email: "hardguenni@gmx.de, hyperhamlet@boriskuehne.net",
+        references: 10
+    };
+
+    private con8: Contributor = {
+        id: 8,
+        firstName: "Pauline",
+        lastName: "Sallis",
+        email: "pjsallis@yahoo.co.uk",
+        references: 10
+    };
+
+    private con9: Contributor = {
+        id: 9,
+        firstName: "Sebastian",
+        lastName: "Refardt",
+        email: "sebastian.refardt@stud.unibas.ch",
+        references: 10
+    };
+
+    private con10: Contributor = {
+        id: 10,
+        firstName: "Thierry",
+        lastName: "Spampinato",
+        email: "thierry.spampinato@unibas.ch",
+        references: 1
+    };
+
+    private lex1: Lexia = {
+        id: 1,
+        internalID: "#002007",
+        lexia: "moist hand indicating arousal",
+        references: 1
+    };
+
+    private lex2: Lexia = {
+        id: 2,
+        internalID: "#002082",
+        lexia: "I have lived too long",
+        references: 1
+
+    };
+
+    private lex3: Lexia = {
+        id: 3,
+        internalID: "#000787",
+        lexia: "devil haunting in the likeness of sb",
+        references: 1
+    };
+
+    private lex4: Lexia = {
+        id: 4,
+        internalID: "#001082",
+        lexia: "IMAGE - music as perfect harmony",
+        references: 1
+    };
+
+    private lex5: Lexia = {
+        id: 5,
+        internalID: "#000007",
+        lexia: "pampered jades",
+        references: 1
+    };
+
+    private lex6: Lexia = {
+        id: 6,
+        internalID: "#001000",
+        lexia: "brain of a cat",
+        references: 1
+    };
+
+    private lex7: Lexia = {
+        id: 7,
+        internalID: "#002084",
+        lexia: "IMAGE - walled in with something beautiful",
+        references: 1
+    };
+
+    private lex8: Lexia = {
+        id: 8,
+        internalID: "#002013",
+        lexia: "IMAGE - woman is like a jewel hanging in (Ethiop's) ear",
+        references: 1
+    };
+
+    private lex9: Lexia = {
+        id: 9,
+        internalID: "#002067",
+        lexia: "great person's revenue on back",
+        references: 1
+    };
+
+    private lex10: Lexia = {
+        id: 10,
+        internalID: "#000064",
+        lexia: "IMAGE - sea can't wash bloody hands",
+        references: 1
+    };
+
+    private lex11: Lexia = {
+        id: 11,
+        internalID: "#002077",
+        lexia: "no other proof",
+        references: 1
+    };
+
+    private lex12: Lexia = {
+        id: 12,
+        internalID: "#000792",
+        lexia: "give out my Anne is sick",
+        references: 1
+    };
+
+    private lex13: Lexia = {
+        id: 13,
+        internalID: "#002046",
+        lexia: "cannot brook these",
+        references: 1
+    };
+
+    private lex14: Lexia = {
+        id: 14,
+        internalID: "#001016",
+        lexia: "cannot abide gaping pig",
+        references: 1
+    };
+
+    private lex15: Lexia = {
+        id: 15,
+        internalID: "#000116",
+        lexia: "prophetic soul",
+        references: 1
+    };
+
+    private lex16: Lexia = {
+        id: 16,
+        internalID: "#000766",
+        lexia: "adulterate beast",
+        references: 1
+    };
+
+    private lex17: Lexia = {
+        id: 17,
+        internalID: "#000335",
+        lexia: "Hic et ubique - here, there and everywhere",
+        references: 1
+    };
+
+    private lex18: Lexia = {
+        id: 18,
+        internalID: "#005005",
+        lexia: "SETPIECE - To be or not to be",
+        references: 1
+    };
+
+    private lex19: Lexia = {
+        id: 19,
+        internalID: "#000292",
+        lexia: "oh what a falling off",
+        references: 1
+    };
+
+    private lex20: Lexia = {
+        id: 20,
+        internalID: "#001124",
+        lexia: "idle weed",
+        references: 0
+    };
+
     // List of resources
     private readonly bookList: Book[];
     private readonly authorList: Author[];
@@ -748,6 +981,8 @@ export class BackendService {
     private readonly venueList: Venue[];
     private readonly organisationList: Organisation[];
     private readonly subjectList: Subject[];
+    private readonly contributorList: Contributor[];
+    private readonly lexiaList: Lexia[];
 
     // Converts list to objects with id as keys
     private readonly objBooks: any = {};
@@ -760,6 +995,8 @@ export class BackendService {
     private readonly objVenues: any = {};
     private readonly objOrganisation: any = {};
     private readonly objSubjects: any = {};
+    private readonly objContributors: any = {};
+    private readonly objLexia: any = {};
 
     constructor() {
         this.bookList = [this.b1, this.b2, this.b3, this.b4, this.b5, this.b6, this.b7, this.b8, this.b9, this.b10];
@@ -823,6 +1060,18 @@ export class BackendService {
 
         this.subjectList = [this.s1, this.s2, this.s3, this.s4, this.s5];
         this.objSubjects = this.subjectList.reduce((acc, cur) => {
+            acc[cur.id] = cur;
+            return acc;
+        });
+
+        this.contributorList = [this.con1, this.con2, this.con3, this.con4, this.con5, this.con6, this.con7, this.con8, this.con9, this.con10];
+        this.objContributors = this.contributorList.reduce((acc, cur) => {
+            acc[cur.id] = cur;
+            return acc;
+        });
+
+        this.lexiaList = [this.lex1, this.lex2, this.lex3, this.lex4, this.lex5, this.lex6, this.lex7, this.lex8, this.lex9, this.lex10, this.lex11, this.lex12, this.lex13, this.lex14, this.lex15, this.lex16, this.lex17, this.lex18, this.lex19, this.lex20];
+        this.objLexia = this.lexiaList.reduce((acc, cur) => {
             acc[cur.id] = cur;
             return acc;
         });
@@ -906,6 +1155,22 @@ export class BackendService {
 
     getSubjects() {
         return this.subjectList;
+    }
+
+    getContributor(iri: number) {
+        return this.objContributors[iri] ? this.objContributors[iri] : {};
+    }
+
+    getContributors() {
+        return this.contributorList;
+    }
+
+    getLexia(iri: number) {
+        return this.objLexia[iri] ? this.objLexia[iri] : {};
+    }
+
+    getLexias() {
+        return this.lexiaList;
     }
 
     getGenres() {

@@ -35,6 +35,8 @@ import { LanguageRefComponent } from "./dialog/language-ref/language-ref.compone
 import { BookRefComponent } from "./dialog/book-ref/book-ref.component";
 import { PassageComponent } from "./category/passage/passage.component";
 import { EditionRefComponent } from "./dialog/edition-ref/edition-ref.component";
+import { LexiaComponent } from "./category/lexia/lexia.component";
+import { ContributorComponent } from "./category/contributor/contributor.component";
 
 const routes: Routes = [
     {path: "book", component: BookComponent},
@@ -52,7 +54,11 @@ const routes: Routes = [
     {path: "genre", component: GenreComponent},
     // {path: "genre/new", component: CreateGenreComponent},
     {path: "passage", component: PassageComponent},
-    // {path: "", component },
+    // {path: "passage/new", component: CreatePassageComponent },
+    {path: "contributor", component: ContributorComponent},
+    // {path: "passage/new", component: CreateContributorComponent },
+    {path: "lexia", component: LexiaComponent},
+    // {path: "lexia/new", component: CreateLexiaComponent },
 ];
 
 @NgModule({
@@ -76,7 +82,9 @@ const routes: Routes = [
         CreateAuthorComponent,
         CreateBookComponent,
         CreateLanguageComponent,
-        CreateEditionComponent
+        CreateEditionComponent,
+        LexiaComponent,
+        ContributorComponent
     ],
     imports: [
         RouterModule.forRoot(routes),

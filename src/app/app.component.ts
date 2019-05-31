@@ -101,4 +101,12 @@ export class AppComponent implements OnInit {
         this.router.navigate(["passage"]);
     }
 
+    showLexiaCat() {
+        this.router.navigate(["lexia"]);
+    }
+
+    showContributorCat() {
+        this.router.navigate(["contributor"]);
+    }
+
 }

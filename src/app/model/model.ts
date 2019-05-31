@@ -16,6 +16,7 @@ export interface Author extends Human {
 
 export interface Contributor extends Human {
     email: string;
+    references: number;
 }
 
 export interface Book {
@@ -78,6 +79,13 @@ export interface Organisation {
 export interface Subject {
     id: number;
     name: string;
+    references: number;
+}
+
+export interface Lexia {
+    id: number;
+    internalID: string;
+    lexia: string;
     references: number;
 }
 
