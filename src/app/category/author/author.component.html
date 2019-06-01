@@ -24,9 +24,9 @@
         <ng-container matColumnDef="internalID">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Internal ID</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchorFor]="in" (click)="in.open()"> {{element.internalID}} </div>
-                <sat-popover #in hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit [value]="element.internalID" [type]="'string'"></app-inline-edit>
+                <div class="edit-value" [satPopoverAnchorFor]="intID" (click)="intID.open()"> {{element.internalID}} </div>
+                <sat-popover #intID hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="intID.isOpen()" [value]="element.internalID" [type]="'string'" (newValue)="updateProperty($event,'internalID', element, intID)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
@@ -37,8 +37,7 @@
             <td mat-cell *matCellDef="let element">
                 <div class="edit-value" [satPopoverAnchorFor]="fn" (click)="fn.open()"> {{element.firstName}} </div>
                 <sat-popover #fn hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="fn.isOpen()" [value]="element.firstName"
-                                     [type]="'string'"></app-inline-edit>
+                    <app-inline-edit *ngIf="fn.isOpen()" [value]="element.firstName" [type]="'string'" (newValue)="updateProperty($event,'firstName', element, fn)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
@@ -49,7 +48,7 @@
             <td mat-cell *matCellDef="let element">
                 <div class="edit-value" [satPopoverAnchorFor]="ln" (click)="ln.open()"> {{element.lastName}} </div>
                 <sat-popover #ln hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="ln.isOpen()" [value]="element.lastName" [type]="'string'"></app-inline-edit>
+                    <app-inline-edit *ngIf="ln.isOpen()" [value]="element.lastName" [type]="'string'" (newValue)="updateProperty($event,'lastName', element, ln)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
@@ -60,8 +59,7 @@
             <td mat-cell *matCellDef="let element">
                 <div class="edit-value" [satPopoverAnchorFor]="des" (click)="des.open()"> {{element.description}} </div>
                 <sat-popover #des hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="des.isOpen()" [value]="element.description"
-                                     [type]="'string'"></app-inline-edit>
+                    <app-inline-edit *ngIf="des.isOpen()" [value]="element.description" [type]="'string'" (newValue)="updateProperty($event,'description', element, des)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
@@ -69,9 +67,9 @@
         <ng-container matColumnDef="birthDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Geburtsjahr</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchorFor]="by" (click)="by.open()">{{element.birthDate}}</div>
-                <sat-popover #by hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="by.isOpen()" [value]="element.birthDate" [type]="'number'"></app-inline-edit>
+                <div class="edit-value" [satPopoverAnchorFor]="bd" (click)="bd.open()">{{element.birthDate}}</div>
+                <sat-popover #bd hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="bd.isOpen()" [value]="element.birthDate" [type]="'number'" (newValue)="updateProperty($event,'birthDate', element, bd)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
@@ -79,9 +77,9 @@
         <ng-container matColumnDef="deathDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Todesjahr</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchorFor]="dy" (click)="dy.open()">{{element.deathDate}}</div>
-                <sat-popover #dy hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="dy.isOpen()" [value]="element.deathDate" [type]="'number'"></app-inline-edit>
+                <div class="edit-value" [satPopoverAnchorFor]="dd" (click)="dd.open()">{{element.deathDate}}</div>
+                <sat-popover #dd hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="dd.isOpen()" [value]="element.deathDate" [type]="'number'" (newValue)="updateProperty($event,'deathDate', element, dd)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
@@ -89,9 +87,9 @@
         <ng-container matColumnDef="activeDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Aktivitätsperiode</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchorFor]="ay" (click)="ay.open()"></div>
-                <sat-popover #ay hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="ay.isOpen()" [value]="" [type]="'number'"></app-inline-edit>
+                <div class="edit-value" [satPopoverAnchorFor]="ad" (click)="ad.open()"></div>
+                <sat-popover #ad hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="ad.isOpen()" [value]="" [type]="'number'"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
@@ -99,9 +97,9 @@
         <ng-container matColumnDef="order">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Reihenfolge</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchorFor]="or" (click)="or.open()">0</div>
+                <div class="edit-value" [satPopoverAnchorFor]="or" (click)="or.open()">{{element.order}}</div>
                 <sat-popover #or hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="or.isOpen()" [value]="0" [type]="'number'"></app-inline-edit>
+                    <app-inline-edit *ngIf="or.isOpen()" [value]="element.order" [type]="'number'" (newValue)="updateProperty($event,'order', element, or)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>

@@ -1,4 +1,4 @@
-import {Component, Host, Input, OnInit} from "@angular/core";
+import {Component, EventEmitter, Host, Input, OnInit, Output} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {SatPopover} from "@ncstate/sat-popover";
 
@@ -9,9 +9,9 @@ import {SatPopover} from "@ncstate/sat-popover";
 })
 export class InlineEditComponent implements OnInit {
     form: FormGroup;
-
     @Input() value: string | number;
     @Input() type: string;
+    @Output() newValue: EventEmitter<string|number> = new EventEmitter();
 
     constructor(@Host() public popover: SatPopover) {
     }
@@ -22,11 +22,8 @@ export class InlineEditComponent implements OnInit {
         });
     }
 
-    submit() {
-        console.log("submit");
-        if (this.popover) {
-            this.popover.close();
-        }
+    save() {
+        this.newValue.emit(this.form.get("property").value);
     }
 
     cancel() {

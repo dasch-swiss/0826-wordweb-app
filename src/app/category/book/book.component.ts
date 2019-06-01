@@ -3,6 +3,7 @@ import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/
 import {ApiService} from "../../services/apiService/api.service";
 import {Book, Author} from "../../model/model";
 import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
+import {SatPopover} from "@ncstate/sat-popover";
 
 @Component({
     selector: "app-book",
@@ -52,6 +53,13 @@ export class BookComponent implements OnInit {
 
     copyArray(authors: Author[]) {
         return authors;
+    }
+
+    updateProperty(event: string | number, property: string, book: Book, popover: SatPopover) {
+        // book[property] = event;
+        // this.apiService.updateBook(book.id, book);
+        // this.dataSource = new MatTableDataSource(this.apiService.getBooks());
+        // popover.close();
     }
 
     editAuthor(authors: any[]) {

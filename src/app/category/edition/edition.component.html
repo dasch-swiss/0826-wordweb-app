@@ -55,9 +55,9 @@
         <ng-container matColumnDef="order">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Reihenfolge</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchorFor]="or" (click)="or.open()">0</div>
+                <div class="edit-value" [satPopoverAnchorFor]="or" (click)="or.open()">{{element.order}}</div>
                 <sat-popover #or hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit [value]="0" [type]="'number'"></app-inline-edit>
+                    <app-inline-edit [value]="element.order" [type]="'number'"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>

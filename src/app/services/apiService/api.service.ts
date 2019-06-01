@@ -1,5 +1,18 @@
 import {Injectable} from "@angular/core";
 import {BackendService} from "../backendData/backend.service";
+import {
+    Author,
+    Book, Contributor,
+    Edition,
+    EditionOriginal,
+    Language,
+    Lexia,
+    Organisation,
+    Passage,
+    PassageOriginal,
+    Subject,
+    Venue
+} from "../../model/model";
 
 @Injectable({
     providedIn: "root"
@@ -107,6 +120,54 @@ export class ApiService {
 
     getGenres() {
         return this.backendData.getGenres();
+    }
+
+    updateAuthor(iri: number, author: Author) {
+        this.backendData.updateAuthor(iri, author);
+    }
+
+    updateBook(iri: number, book: Book) {
+
+    }
+
+    updateEdition(iri: number, edition: Edition) {
+
+    }
+
+    updatePassage(iri: number, passage: Passage) {
+
+    }
+
+    updateEditionOriginal(iri: number, editionOr: EditionOriginal) {
+
+    }
+
+    updatePassageOriginal(iri: number, passageOr: PassageOriginal) {
+
+    }
+
+    updateLanguage(iri: number, language: Language) {
+
+    }
+
+    updateVenue(iri: number, venue: Venue) {
+
+    }
+
+    updateOrganisation(iri: number, organisation: Organisation) {
+
+    }
+
+    updateSubject(iri: number, subject: Subject) {
+
+    }
+
+    updateLexia(iri: number, lexia: Lexia) {
+
+    }
+
+    updateContributor(iri: number, contributor: Contributor) {
+
     }
 
     createAuthor() {

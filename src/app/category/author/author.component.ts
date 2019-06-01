@@ -3,6 +3,7 @@ import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/
 import {ApiService} from "../../services/apiService/api.service";
 import {Author} from "../../model/model";
 import {CreateAuthorComponent} from "../../create-resource/create-author/create-author.component";
+import {SatPopover} from "@ncstate/sat-popover";
 
 @Component({
     selector: "app-author",
@@ -17,11 +18,10 @@ export class AuthorComponent implements OnInit {
 
     @ViewChild(MatSort) sort: MatSort;
 
-    constructor(private apiService: ApiService,
+    constructor(public apiService: ApiService,
                 private createAuthorDialog: MatDialog) {
         this.dataSource = new MatTableDataSource(this.apiService.getAuthors());
     }
-
 
     ngOnInit() {
         this.dataSource.sort = this.sort;
@@ -37,6 +37,13 @@ export class AuthorComponent implements OnInit {
 
     rowCount() {
         return this.dataSource.filteredData.length;
+    }
+
+    updateProperty(event: string | number, property: string, author: Author, popover: SatPopover) {
+        author[property] = event;
+        this.apiService.updateAuthor(author.id, author);
+        this.dataSource = new MatTableDataSource(this.apiService.getAuthors());
+        popover.close();
     }
 
     openCreateAuthor() {

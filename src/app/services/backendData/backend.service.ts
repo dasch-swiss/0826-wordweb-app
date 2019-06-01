@@ -10,7 +10,7 @@ import {
     EditionOriginal,
     Passage,
     Subject,
-    Contributor, Lexia
+    Contributor, Lexia, Genre
 } from "../../model/model";
 
 @Injectable({
@@ -21,30 +21,35 @@ export class BackendService {
     private lang1: Language = {
         id: 1,
         name: "Englisch",
+        order: 0,
         references: 10
     };
 
     private lang2: Language = {
         id: 2,
         name: "Deutsch",
+        order: 0,
         references: 1
     };
 
     private lang3: Language = {
         id: 3,
         name: "Französisch",
+        order: 0,
         references: 0
     };
 
     private lang4: Language = {
         id: 4,
         name: "Italienisch",
+        order: 0,
         references: 0
     };
 
     private lang5: Language = {
         id: 5,
         name: "Spanisch",
+        order: 0,
         references: 0
     };
 
@@ -56,6 +61,7 @@ export class BackendService {
         description: "English Dramatist",
         birthDate: 1564,
         deathDate: 1616,
+        order: 0,
         references: 0
     };
 
@@ -67,6 +73,7 @@ export class BackendService {
         description: "English playwright and poet",
         birthDate: 1564,
         deathDate: 1593,
+        order: 0,
         references: 1
     };
 
@@ -78,6 +85,7 @@ export class BackendService {
         description: "English novelist",
         birthDate: 1802,
         deathDate: 1882,
+        order: 0,
         references: 3
     };
 
@@ -89,6 +97,7 @@ export class BackendService {
         description: "English poet",
         birthDate: 1772,
         deathDate: 1834,
+        order: 0,
         references: 0
     };
 
@@ -100,6 +109,7 @@ export class BackendService {
         description: "English poet and dramatist fl. 1611",
         birthDate: null,
         deathDate: null,
+        order: 0,
         references: 0
     };
 
@@ -111,6 +121,7 @@ export class BackendService {
         description: "English poet, dramatist and Homer translator 1559?-1634",
         birthDate: 1559,
         deathDate: 1634,
+        order: 0,
         references: 0
     };
 
@@ -122,6 +133,7 @@ export class BackendService {
         description: "Roman politician, orator and philosopher 106-43",
         birthDate: -106,
         deathDate: 43,
+        order: 0,
         references: 0
     };
 
@@ -133,6 +145,7 @@ export class BackendService {
         description: "English anthologist 1611?-1655?",
         birthDate: 1611,
         deathDate: 1655,
+        order: 0,
         references: 24
     };
 
@@ -144,6 +157,7 @@ export class BackendService {
         description: "English dramatist 1606-1668",
         birthDate: 1606,
         deathDate: 1668,
+        order: 0,
         references: 0
     };
 
@@ -155,6 +169,7 @@ export class BackendService {
         description: "English novelist 1812-1870",
         birthDate: 1812,
         deathDate: 1870,
+        order: 0,
         references: 0
     };
 
@@ -166,6 +181,7 @@ export class BackendService {
         description: "Anglo-Irish dramatist and novelist 1767-1849",
         birthDate: 1767,
         deathDate: 1849,
+        order: 0,
         references: 12
     };
 
@@ -177,6 +193,7 @@ export class BackendService {
         description: "English actor 1717-1779",
         birthDate: 1717,
         deathDate: 1779,
+        order: 0,
         references: 6
     };
 
@@ -188,6 +205,7 @@ export class BackendService {
         description: "U.S. crime writer b. 1949, pen-name for Susan Elizabeth George",
         birthDate: 1949,
         deathDate: null,
+        order: 0,
         references: 35
     };
 
@@ -199,6 +217,7 @@ export class BackendService {
         description: "German poet and dramatist 1748-1832",
         birthDate: 1748,
         deathDate: 1832,
+        order: 0,
         references: 21
     };
 
@@ -210,6 +229,7 @@ export class BackendService {
         description: "Australian cartoonist children's and crime writer b. 1957",
         birthDate: 1957,
         deathDate: null,
+        order: 0,
         references: 18
     };
 
@@ -221,6 +241,7 @@ export class BackendService {
         description: "U.S. dramatist 1894-1981",
         birthDate: 1894,
         deathDate: 1981,
+        order: 0,
         references: 11
     };
 
@@ -232,6 +253,7 @@ export class BackendService {
         description: "U.S. crime writer b. 1931",
         birthDate: 1931,
         deathDate: null,
+        order: 0,
         references: 16
     };
 
@@ -243,6 +265,7 @@ export class BackendService {
         description: "English novelist and poet 1840-1928",
         birthDate: 1840,
         deathDate: 1928,
+        order: 0,
         references: 38
     };
 
@@ -254,6 +277,7 @@ export class BackendService {
         description: "German dramatist and novelist 1862-1942",
         birthDate: 1862,
         deathDate: 1942,
+        order: 0,
         references: 9
     };
 
@@ -265,6 +289,7 @@ export class BackendService {
         description: "English critic and essayist 1778-1830",
         birthDate: 1778,
         deathDate: 1830,
+        order: 0,
         references: 340
     };
 
@@ -276,6 +301,7 @@ export class BackendService {
         description: "U.S. (?) anthologist fl. 1961, real name Lewis Copeland",
         birthDate: null,
         deathDate: null,
+        order: 0,
         references: 33
     };
 
@@ -287,6 +313,7 @@ export class BackendService {
         description: "British novelist and poet 1685-1750",
         birthDate: 1685,
         deathDate: 1750,
+        order: 0,
         references: 15
     };
 
@@ -298,6 +325,7 @@ export class BackendService {
         description: "Czech poet 1905-1980",
         birthDate: 1905,
         deathDate: 1980,
+        order: 0,
         references: 1
     };
 
@@ -309,6 +337,7 @@ export class BackendService {
         description: "U.S. novelist 1891-1960",
         birthDate: 1891,
         deathDate: 1960,
+        order: 0,
         references: 2
     };
 
@@ -317,6 +346,7 @@ export class BackendService {
         internalID: "@000100",
         title: "Romeo and Juliet",
         authors: [this.a1, this.a8, this.a3],
+        order: 0,
         references: 0
     };
 
@@ -325,6 +355,7 @@ export class BackendService {
         book: this.b1,
         language: this.lang1,
         publicationInfo: "Romeo and Juliet, W. Shakespeare, [not_original]",
+        order: 0,
         references: 0
     };
 
@@ -333,6 +364,7 @@ export class BackendService {
         edition: this.e1,
         text: "thus with a kiss I die",
         page: "2",
+        order: 0,
         references: 0
     };
 
@@ -343,6 +375,7 @@ export class BackendService {
             "My love as deep; the more I give to thee,\n" +
             "The more I have, for both are infinite.",
         page: "101-102",
+        order: 0,
         references: 0
     };
 
@@ -374,6 +407,7 @@ export class BackendService {
         internalID: "@000200",
         title: "Hamlet",
         authors: [this.a1, this.a10],
+        order: 0,
         references: 2
     };
 
@@ -382,6 +416,7 @@ export class BackendService {
         book: this.b2,
         language: this.lang1,
         publicationInfo: "Hamlet, W. Shakespeare, [not_original]",
+        order: 0,
         references: 0
     };
 
@@ -390,6 +425,7 @@ export class BackendService {
         edition: this.e2,
         text: "What a piece of work is a man! How noble in reason! how infinite in faculty! in form, in moving, how express and admirable! in action how like an angel! in apprehension how like a god! the beauty of the world! the paragon of animals! And yet, to me, what is this quintessence of dust?",
         page: "43-45",
+        order: 0,
         references: 0
     };
 
@@ -398,6 +434,7 @@ export class BackendService {
         edition: this.e2,
         text: "Though this be madness, yet there is method in't.",
         page: "90",
+        order: 0,
         references: 0
     };
 
@@ -410,6 +447,7 @@ export class BackendService {
             "Hamlet: Between who? \n" +
             "Lord Polonius: I mean, the matter that you read, my lord.",
         page: "87-92",
+        order: 0,
         references: 0
     };
 
@@ -450,6 +488,7 @@ export class BackendService {
         internalID: "@000300",
         title: "The Comedy of Errors",
         authors: [this.a1],
+        order: 0,
         references: 6
     };
 
@@ -458,6 +497,7 @@ export class BackendService {
         book: this.b3,
         language: this.lang1,
         publicationInfo: "The Comedy of Errors, W. Shakespeare, [not_original]",
+        order: 0,
         references: 0
     };
 
@@ -470,6 +510,7 @@ export class BackendService {
             "Was wrought by nature, not by vile offence,\n" +
             "I'll utter what my sorrow gives me leave.",
         page: "129",
+        order: 0,
         references: 0
     };
 
@@ -484,6 +525,7 @@ export class BackendService {
             "That mourned for fashion, ignorant what to fear,\n" +
             "Forced me to seek delays for them and me.",
         page: "205-207",
+        order: 0,
         references: 0
     };
 
@@ -523,6 +565,7 @@ export class BackendService {
         internalID: "@000400",
         title: "Tamburlaine",
         authors: [this.a2],
+        order: 0,
         references: 1
     };
 
@@ -531,6 +574,7 @@ export class BackendService {
         book: this.b4,
         language: this.lang2,
         publicationInfo: "Tamburlaine, C. Marlowe, [not_original]",
+        order: 0,
         references: 0
     };
 
@@ -540,6 +584,7 @@ export class BackendService {
         text: "I hold the Fates bound fast in iron chains,\n" +
             "And with my hand turn Fortune's wheel about;",
         page: "14",
+        order: 0,
         references: 0
     };
 
@@ -548,6 +593,7 @@ export class BackendService {
         edition: this.e4,
         text: "Well, bark, ye dogs; I'll bridle all your tongues",
         page: "4",
+        order: 0,
         references: 0
     };
 
@@ -578,6 +624,7 @@ export class BackendService {
         internalID: "@000500",
         title: "Of Two Evils Choose the Least",
         authors: [this.a12, this.a19],
+        order: 0,
         references: 1
     };
 
@@ -586,6 +633,7 @@ export class BackendService {
         internalID: "@000600",
         title: "The Cruel Brother",
         authors: [this.a10],
+        order: 0,
         references: 1
     };
 
@@ -594,6 +642,7 @@ export class BackendService {
         internalID: "@000700",
         title: " The Art of Reason",
         authors: [this.a22],
+        order: 0,
         references: 1
     };
 
@@ -602,6 +651,7 @@ export class BackendService {
         internalID: "@000800",
         title: "Five Hundred Points of Good Husbandry",
         authors: [this.a6, this.a9],
+        order: 0,
         references: 1
     };
 
@@ -610,6 +660,7 @@ export class BackendService {
         internalID: "@000900",
         title: "Treatise of God's Effectual Calling",
         authors: [this.a20],
+        order: 0,
         references: 1
     };
 
@@ -618,6 +669,7 @@ export class BackendService {
         internalID: "@001000",
         title: "The Jews' Tragedy",
         authors: [this.a22],
+        order: 0,
         references: 1
     };
 
@@ -625,6 +677,7 @@ export class BackendService {
         id: 1,
         name: "Blackfriars",
         city: "London",
+        order: 0,
         references: 123
     };
 
@@ -632,6 +685,7 @@ export class BackendService {
         id: 2,
         name: "The Theatre",
         city: "London",
+        order: 0,
         references: 21
     };
 
@@ -639,6 +693,7 @@ export class BackendService {
         id: 3,
         name: "Cockpit",
         city: "London",
+        order: 0,
         references: 23
     };
 
@@ -646,6 +701,7 @@ export class BackendService {
         id: 4,
         name: "The Curtain",
         city: "London",
+        order: 0,
         references: 7
     };
 
@@ -653,6 +709,7 @@ export class BackendService {
         id: 5,
         name: "Whitefriars",
         city: "London",
+        order: 0,
         references: 0
     };
 
@@ -660,6 +717,7 @@ export class BackendService {
         id: 6,
         name: "Red Bull",
         city: "London",
+        order: 0,
         references: 3
     };
 
@@ -667,6 +725,7 @@ export class BackendService {
         id: 7,
         name: "Then Rose",
         city: "London",
+        order: 0,
         references: 0
     };
 
@@ -674,78 +733,91 @@ export class BackendService {
         id: 8,
         name: "Ludlow Castle",
         city: "Shropshire",
+        order: 0,
         references: 3
     };
 
     private o1: Organisation = {
         id: 1,
         name: "King's Men",
+        order: 0,
         references: 17
     };
 
     private o2: Organisation = {
         id: 2,
         name: "Lord Chamberlain's (Lord Hunsdon's) Men",
+        order: 0,
         references: 4
     };
 
     private o3: Organisation = {
         id: 3,
         name: "Children of the Chapel Royal",
+        order: 0,
         references: 9
     };
 
     private o4: Organisation = {
         id: 4,
         name: "Worcester's Men",
+        order: 0,
         references: 0
     };
 
     private o5: Organisation = {
         id: 5,
         name: "Derby's Men",
+        order: 0,
         references: 7
     };
 
     private o6: Organisation = {
         id: 6,
         name: "Oxford's Men",
+        order: 0,
         references: 22
     };
 
     private o7: Organisation = {
         id: 7,
         name: "Pembroke's Men",
+        order: 0,
         references: 18
     };
 
     private s1: Subject = {
         id: 1,
         name: "Art, architecture, music",
+        order: 0,
         references: 0
     };
 
     private s2: Subject = {
         id: 2,
         name: "History, (auto-)biography",
+        order: 0,
         references: 0
     };
 
     private s3: Subject = {
         id: 3,
         name: "Literary and Cultural Studies",
+        order: 0,
         references: 0
     };
 
     private s4: Subject = {
         id: 4,
         name: "Linguistics",
+        order: 0,
         references: 0
     };
 
     private s5: Subject = {
         id: 5,
         name: "Politics, law, economics",
+        order: 0,
         references: 0
     };
 
@@ -754,6 +826,7 @@ export class BackendService {
         firstName: "Regula",
         lastName: "Hohl",
         email: "r.hohl@unibas.ch",
+        order: 0,
         references: 22
     };
 
@@ -762,6 +835,7 @@ export class BackendService {
         firstName: "Stefanie",
         lastName: "Heeg",
         email: "s.heeg@unibas.ch",
+        order: 0,
         references: 10
     };
 
@@ -770,6 +844,7 @@ export class BackendService {
         firstName: "Elliot",
         lastName: "Reitzer",
         email: "elliot@yahoo.de",
+        order: 0,
         references: 10
     };
 
@@ -778,6 +853,7 @@ export class BackendService {
         firstName: "Christian",
         lastName: "Gebhard",
         email: "christian.gebhard@stud.unibas.ch",
+        order: 0,
         references: 10
     };
 
@@ -786,6 +862,7 @@ export class BackendService {
         firstName: "Christian",
         lastName: "Eichenberger",
         email: "christianmarkus.eichenberger@unifr.ch",
+        order: 0,
         references: 10
     };
 
@@ -794,6 +871,7 @@ export class BackendService {
         firstName: "Ursula",
         lastName: "Caci",
         email: "ursula.caci@unibas.ch",
+        order: 0,
         references: 10
     };
 
@@ -802,6 +880,7 @@ export class BackendService {
         firstName: "Mark",
         lastName: "Hunter",
         email: "hardguenni@gmx.de, hyperhamlet@boriskuehne.net",
+        order: 0,
         references: 10
     };
 
@@ -810,6 +889,7 @@ export class BackendService {
         firstName: "Pauline",
         lastName: "Sallis",
         email: "pjsallis@yahoo.co.uk",
+        order: 0,
         references: 10
     };
 
@@ -818,6 +898,7 @@ export class BackendService {
         firstName: "Sebastian",
         lastName: "Refardt",
         email: "sebastian.refardt@stud.unibas.ch",
+        order: 0,
         references: 10
     };
 
@@ -826,6 +907,7 @@ export class BackendService {
         firstName: "Thierry",
         lastName: "Spampinato",
         email: "thierry.spampinato@unibas.ch",
+        order: 0,
         references: 1
     };
 
@@ -833,6 +915,7 @@ export class BackendService {
         id: 1,
         internalID: "#002007",
         lexia: "moist hand indicating arousal",
+        order: 0,
         references: 1
     };
 
@@ -840,6 +923,7 @@ export class BackendService {
         id: 2,
         internalID: "#002082",
         lexia: "I have lived too long",
+        order: 0,
         references: 1
 
     };
@@ -848,6 +932,7 @@ export class BackendService {
         id: 3,
         internalID: "#000787",
         lexia: "devil haunting in the likeness of sb",
+        order: 0,
         references: 1
     };
 
@@ -855,6 +940,7 @@ export class BackendService {
         id: 4,
         internalID: "#001082",
         lexia: "IMAGE - music as perfect harmony",
+        order: 0,
         references: 1
     };
 
@@ -862,6 +948,7 @@ export class BackendService {
         id: 5,
         internalID: "#000007",
         lexia: "pampered jades",
+        order: 0,
         references: 1
     };
 
@@ -869,6 +956,7 @@ export class BackendService {
         id: 6,
         internalID: "#001000",
         lexia: "brain of a cat",
+        order: 0,
         references: 1
     };
 
@@ -876,6 +964,7 @@ export class BackendService {
         id: 7,
         internalID: "#002084",
         lexia: "IMAGE - walled in with something beautiful",
+        order: 0,
         references: 1
     };
 
@@ -883,6 +972,7 @@ export class BackendService {
         id: 8,
         internalID: "#002013",
         lexia: "IMAGE - woman is like a jewel hanging in (Ethiop's) ear",
+        order: 0,
         references: 1
     };
 
@@ -890,6 +980,7 @@ export class BackendService {
         id: 9,
         internalID: "#002067",
         lexia: "great person's revenue on back",
+        order: 0,
         references: 1
     };
 
@@ -897,6 +988,7 @@ export class BackendService {
         id: 10,
         internalID: "#000064",
         lexia: "IMAGE - sea can't wash bloody hands",
+        order: 0,
         references: 1
     };
 
@@ -904,6 +996,7 @@ export class BackendService {
         id: 11,
         internalID: "#002077",
         lexia: "no other proof",
+        order: 0,
         references: 1
     };
 
@@ -911,6 +1004,7 @@ export class BackendService {
         id: 12,
         internalID: "#000792",
         lexia: "give out my Anne is sick",
+        order: 0,
         references: 1
     };
 
@@ -918,6 +1012,7 @@ export class BackendService {
         id: 13,
         internalID: "#002046",
         lexia: "cannot brook these",
+        order: 0,
         references: 1
     };
 
@@ -925,6 +1020,7 @@ export class BackendService {
         id: 14,
         internalID: "#001016",
         lexia: "cannot abide gaping pig",
+        order: 0,
         references: 1
     };
 
@@ -932,6 +1028,7 @@ export class BackendService {
         id: 15,
         internalID: "#000116",
         lexia: "prophetic soul",
+        order: 0,
         references: 1
     };
 
@@ -939,6 +1036,7 @@ export class BackendService {
         id: 16,
         internalID: "#000766",
         lexia: "adulterate beast",
+        order: 0,
         references: 1
     };
 
@@ -946,6 +1044,7 @@ export class BackendService {
         id: 17,
         internalID: "#000335",
         lexia: "Hic et ubique - here, there and everywhere",
+        order: 0,
         references: 1
     };
 
@@ -953,6 +1052,7 @@ export class BackendService {
         id: 18,
         internalID: "#005005",
         lexia: "SETPIECE - To be or not to be",
+        order: 0,
         references: 1
     };
 
@@ -960,6 +1060,7 @@ export class BackendService {
         id: 19,
         internalID: "#000292",
         lexia: "oh what a falling off",
+        order: 0,
         references: 1
     };
 
@@ -967,6 +1068,7 @@ export class BackendService {
         id: 20,
         internalID: "#001124",
         lexia: "idle weed",
+        order: 0,
         references: 0
     };
 
@@ -1217,5 +1319,49 @@ export class BackendService {
         ];
 
         return genres;
+    }
+
+    updateAuthor(iri: number, newAuthor: Author) {
+        const author = this.objAuthors[iri];
+        author.firstName = newAuthor.firstName;
+        author.lastName = newAuthor.lastName;
+        author.internalID = newAuthor.internalID;
+        author.description = newAuthor.description;
+        author.birthDate = newAuthor.birthDate;
+        author.deathDate = newAuthor.deathDate;
+    }
+
+    updateBook(iri: number, newBook: Book) {
+        const book = this.objBooks[iri];
+    }
+
+    updateLanguage(iri: number, language: Language) {
+    }
+
+    updateEdition(iri: number, edition: Edition) {
+    }
+
+    updateEditionOriginal(iri: number, editionOr: EditionOriginal) {
+    }
+
+    updateOrganisation(iri: number, organisation: Organisation) {
+    }
+
+    updateSubject(iri: number, subject: Subject) {
+    }
+
+    updateGenre(iri: number, genre: Genre) {
+    }
+
+    updatePassage(iri: number, passage: Passage) {
+    }
+
+    updatePassageOriginal(iri: number, passageOr: PassageOriginal) {
+    }
+
+    updateLexia(iri: number, lexia: Lexia) {
+    }
+
+    updateContributor(iri: number, contributor: Contributor) {
     }
 }

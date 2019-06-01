@@ -1,7 +1,7 @@
 <mat-card>
     <mat-card-content>
         <div class="mat-subheading-2">Bearbeiten</div>
-        <form [formGroup]="form" (ngSubmit)=submit()>
+        <form [formGroup]="form" (ngSubmit)="save()">
             <mat-form-field>
                 <input matInput [type]="type" formControlName="property">
             </mat-form-field>

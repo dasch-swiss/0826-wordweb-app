@@ -2,6 +2,7 @@ export interface Human {
     id: number;
     firstName: string;
     lastName: string;
+    order: number;
 }
 
 export interface Author extends Human {
@@ -24,6 +25,7 @@ export interface Book {
     internalID: string;
     title: string;
     authors: Author[];
+    order: number;
     references: number;
 }
 
@@ -39,6 +41,7 @@ export interface Edition {
     book: Book;
     language: Language;
     publicationInfo: string;
+    order: number;
     references: number;
 }
 
@@ -47,6 +50,7 @@ export interface Passage {
     edition: Edition;
     text: string;
     page: string;
+    order: number;
     references: number;
 }
 
@@ -60,6 +64,7 @@ export interface PassageOriginal {
 export interface Language {
     id: number;
     name: string;
+    order: number;
     references: number;
 }
 
@@ -67,18 +72,21 @@ export interface Venue {
     id: number;
     name: string;
     city: string;
+    order: number;
     references: number;
 }
 
 export interface Organisation {
     id: number;
     name: string;
+    order: number;
     references: number;
 }
 
 export interface Subject {
     id: number;
     name: string;
+    order: number;
     references: number;
 }
 
@@ -86,6 +94,7 @@ export interface Lexia {
     id: number;
     internalID: string;
     lexia: string;
+    order: number;
     references: number;
 }
 
