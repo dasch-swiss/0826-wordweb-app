@@ -1101,12 +1101,6 @@ export class BackendService {
     private readonly objLexia: any = {};
 
     constructor() {
-        this.bookList = [this.b1, this.b2, this.b3, this.b4, this.b5, this.b6, this.b7, this.b8, this.b9, this.b10];
-        this.objBooks = this.bookList.reduce((acc, cur) => {
-            acc[cur.id] = cur;
-            return acc;
-        }, {});
-
         this.authorList = [
             this.a1, this.a2, this.a3, this.a4, this.a5, this.a6,
             this.a7, this.a8, this.a9, this.a10, this.a11, this.a12,
@@ -1114,6 +1108,12 @@ export class BackendService {
             this.a19, this.a20, this.a21, this.a22, this.a23, this.a24
         ];
         this.objAuthors = this.authorList.reduce((acc, cur) => {
+            acc[cur.id] = cur;
+            return acc;
+        }, {});
+
+        this.bookList = [this.b1, this.b2, this.b3, this.b4, this.b5, this.b6, this.b7, this.b8, this.b9, this.b10];
+        this.objBooks = this.bookList.reduce((acc, cur) => {
             acc[cur.id] = cur;
             return acc;
         }, {});
@@ -1179,103 +1179,103 @@ export class BackendService {
         });
     }
 
-    getBook(iri: number) {
+    getBook(iri: number, references: boolean) {
         return this.objBooks[iri] ? this.objBooks[iri] : {};
     }
 
-    getBooks() {
+    getBooks(references: boolean) {
         return this.bookList;
     }
 
-    getAuthor(iri: number) {
+    getAuthor(iri: number, references: boolean) {
         return this.objAuthors[iri] ? this.objAuthors[iri] : {};
     }
 
-    getAuthors() {
+    getAuthors(references: boolean) {
         return this.authorList;
     }
 
-    getEdition(iri: number) {
+    getEdition(iri: number, references: boolean) {
         return this.objEditions[iri] ? this.objEditions[iri] : {};
     }
 
-    getEditions() {
+    getEditions(references: boolean) {
         return this.editionList;
     }
 
-    getPassage(iri: number) {
+    getPassage(iri: number, references: boolean) {
         return this.objPassages[iri] ? this.objPassages[iri] : {};
     }
 
-    getPassages() {
+    getPassages(references: boolean) {
         return this.passageList;
     }
 
-    getEditionOriginal(iri: number) {
+    getEditionOriginal(iri: number, references: boolean) {
         return this.objEditionOriginals[iri] ? this.objEditionOriginals[iri] : {};
     }
 
-    getEditionsOriginal() {
+    getEditionsOriginal(references: boolean) {
         return this.editionOriginalList;
     }
 
-    getPassageOriginal(iri: number) {
+    getPassageOriginal(iri: number, references: boolean) {
         return this.objPassagesOriginal[iri] ? this.objPassagesOriginal[iri] : {};
     }
 
-    getPassagesOriginal() {
+    getPassagesOriginal(references: boolean) {
         return this.passageOriginalList;
     }
 
-    getLanguage(iri: number) {
+    getLanguage(iri: number, references: boolean) {
         return this.objLanguages[iri] ? this.objLanguages[iri] : {};
     }
 
-    getLanguages() {
+    getLanguages(references: boolean) {
         return this.languageList;
     }
 
-    getVenue(iri: number) {
+    getVenue(iri: number, references: boolean) {
         return this.objVenues[iri] ? this.objVenues[iri] : {};
     }
 
-    getVenues() {
+    getVenues(references: boolean) {
         return this.venueList;
     }
 
-    getOrganisation(iri: number) {
+    getOrganisation(iri: number, references: boolean) {
         return this.objOrganisation[iri] ? this.objOrganisation[iri] : {};
     }
 
-    getOrganisations() {
+    getOrganisations(references: boolean) {
         return this.organisationList;
     }
 
-    getSubject(iri: number) {
+    getSubject(iri: number, references: boolean) {
         return this.objSubjects[iri] ? this.objSubjects[iri] : {};
     }
 
-    getSubjects() {
+    getSubjects(references: boolean) {
         return this.subjectList;
     }
 
-    getContributor(iri: number) {
+    getContributor(iri: number, references: boolean) {
         return this.objContributors[iri] ? this.objContributors[iri] : {};
     }
 
-    getContributors() {
+    getContributors(references: boolean) {
         return this.contributorList;
     }
 
-    getLexia(iri: number) {
+    getLexia(iri: number, references: boolean) {
         return this.objLexia[iri] ? this.objLexia[iri] : {};
     }
 
-    getLexias() {
+    getLexias(references: boolean) {
         return this.lexiaList;
     }
 
-    getGenres() {
+    getGenres(references: boolean) {
         const genres = [{
             id: 1,
             name: "Fiction",
@@ -1333,6 +1333,11 @@ export class BackendService {
 
     updateBook(iri: number, newBook: Book) {
         const book = this.objBooks[iri];
+        // book.internalID = newBook.internalID;
+        // book.title = newBook.title;
+        // book.order = newBook.order;
+        // book.references = newBook.references;
+        // book.authors: Author[];
     }
 
     updateLanguage(iri: number, language: Language) {

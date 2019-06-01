@@ -22,104 +22,104 @@ export class ApiService {
     constructor(private backendData: BackendService) {
     }
 
-    getBook(iri: number) {
-        return this.backendData.getBook(iri);
+    getBook(iri: number, references: boolean = false) {
+        return this.backendData.getBook(iri, references);
     }
 
-    getBooks() {
-        return this.backendData.getBooks();
+    getBooks(references: boolean = false) {
+        return this.backendData.getBooks(references);
     }
 
-    getAuthor(iri: number) {
-        return this.backendData.getAuthor(iri);
+    getAuthor(iri: number, references: boolean = false) {
+        return this.backendData.getAuthor(iri, references);
     }
 
-    getAuthors() {
-        return this.backendData.getAuthors();
+    getAuthors(references: boolean = false) {
+        return this.backendData.getAuthors(references);
     }
 
-    getEdition(iri: number) {
-        return this.backendData.getEdition(iri);
+    getEdition(iri: number, references: boolean = false) {
+        return this.backendData.getEdition(iri, references);
     }
 
-    getEditions() {
-        return this.backendData.getEditions();
+    getEditions(references: boolean = false) {
+        return this.backendData.getEditions(references);
     }
 
-    getPassage(iri: number) {
-        return this.backendData.getPassage(iri);
+    getPassage(iri: number, references: boolean = false) {
+        return this.backendData.getPassage(iri, references);
     }
 
-    getPassages() {
-        return this.backendData.getPassages();
+    getPassages(references: boolean = false) {
+        return this.backendData.getPassages(references);
     }
 
-    getEditionOriginal(iri: number) {
-        return this.backendData.getEditionOriginal(iri);
+    getEditionOriginal(iri: number, references: boolean = false) {
+        return this.backendData.getEditionOriginal(iri, references);
     }
 
-    getEditionsOriginal() {
-        return this.backendData.getEditionsOriginal();
+    getEditionsOriginal(references: boolean = false) {
+        return this.backendData.getEditionsOriginal(references);
     }
 
-    getPassageOriginal(iri: number) {
-        return this.backendData.getPassageOriginal(iri);
+    getPassageOriginal(iri: number, references: boolean = false) {
+        return this.backendData.getPassageOriginal(iri, references);
     }
 
-    getPassagesOriginal() {
-        return this.backendData.getPassagesOriginal();
+    getPassagesOriginal(references: boolean = false) {
+        return this.backendData.getPassagesOriginal(references);
     }
 
-    getLanguage(iri: number) {
-        return this.backendData.getLanguage(iri);
+    getLanguage(iri: number, references: boolean = false) {
+        return this.backendData.getLanguage(iri, references);
     }
 
-    getLanguages() {
-        return this.backendData.getLanguages();
+    getLanguages(references: boolean = false) {
+        return this.backendData.getLanguages(references);
     }
 
-    getVenue(iri: number) {
-        return this.backendData.getVenue(iri);
+    getVenue(iri: number, references: boolean = false) {
+        return this.backendData.getVenue(iri, references);
     }
 
-    getVenues() {
-        return this.backendData.getVenues();
+    getVenues(references: boolean = false) {
+        return this.backendData.getVenues(references);
     }
 
-    getOrganisation(iri: number) {
-        return this.backendData.getOrganisation(iri);
+    getOrganisation(iri: number, references: boolean = false) {
+        return this.backendData.getOrganisation(iri, references);
     }
 
-    getOrganisations() {
-        return this.backendData.getOrganisations();
+    getOrganisations(references: boolean = false) {
+        return this.backendData.getOrganisations(references);
     }
 
-    getSubject(iri: number) {
-        return this.backendData.getSubject(iri);
+    getSubject(iri: number, references: boolean = false) {
+        return this.backendData.getSubject(iri, references);
     }
 
-    getSubjects() {
-        return this.backendData.getSubjects();
+    getSubjects(references: boolean = false) {
+        return this.backendData.getSubjects(references);
     }
 
-    getLexia(iri: number) {
-        return this.backendData.getLexia(iri);
+    getLexia(iri: number, references: boolean = false) {
+        return this.backendData.getLexia(iri, references);
     }
 
-    getLexias() {
-        return this.backendData.getLexias();
+    getLexias(references: boolean = false) {
+        return this.backendData.getLexias(references);
     }
 
-    getContributor(iri: number) {
-        return this.backendData.getContributor(iri);
+    getContributor(iri: number, references: boolean = false) {
+        return this.backendData.getContributor(iri, references);
     }
 
-    getContributors() {
-        return this.backendData.getContributors();
+    getContributors(references: boolean = false) {
+        return this.backendData.getContributors(references);
     }
 
-    getGenres() {
-        return this.backendData.getGenres();
+    getGenres(references: boolean = false) {
+        return this.backendData.getGenres(references);
     }
 
     updateAuthor(iri: number, author: Author) {
@@ -127,6 +127,7 @@ export class ApiService {
     }
 
     updateBook(iri: number, book: Book) {
+        this.backendData.updateBook(iri, book);
 
     }
 
