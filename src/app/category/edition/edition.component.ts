@@ -4,6 +4,7 @@ import {ApiService} from "../../services/apiService/api.service";
 import {Book, Edition} from "../../model/model";
 import {BookRefComponent} from "../../dialog/book-ref/book-ref.component";
 import {LanguageRefComponent} from "../../dialog/language-ref/language-ref.component";
+import {SatPopover} from "@ncstate/sat-popover";
 
 @Component({
     selector: "app-edition",
@@ -51,6 +52,13 @@ export class EditionComponent implements OnInit {
 
     rowCount() {
         return this.dataSource.filteredData.length;
+    }
+
+    updateProperty(event: string | number, property: string, edition: Edition, popover: SatPopover) {
+        edition[property] = event;
+        this.apiService.updateEdition(edition.id, edition);
+        this.resetTable();
+        popover.close();
     }
 
     copyArray(book: Book[]) {

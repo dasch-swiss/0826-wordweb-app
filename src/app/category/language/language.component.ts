@@ -3,6 +3,7 @@ import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/
 import {ApiService} from "../../services/apiService/api.service";
 import {Language} from "../../model/model";
 import {CreateLanguageComponent} from "../../create-resource/create-language/create-language.component";
+import {SatPopover} from "@ncstate/sat-popover";
 
 @Component({
     selector: "app-language",
@@ -40,6 +41,13 @@ export class LanguageComponent implements OnInit {
 
     rowCount() {
         return this.dataSource.filteredData.length;
+    }
+
+    updateProperty(event: string | number, property: string, language: Language, popover: SatPopover) {
+        language[property] = event;
+        this.apiService.updateLanguage(language.id, language);
+        this.resetTable();
+        popover.close();
     }
 
     openCreateLanguage() {

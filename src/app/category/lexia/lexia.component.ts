@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {Lexia} from "../../model/model";
 import {ApiService} from "../../services/apiService/api.service";
-import {CreateLanguageComponent} from "../../create-resource/create-language/create-language.component";
+import {SatPopover} from "@ncstate/sat-popover";
 
 @Component({
     selector: "app-lexia",
@@ -40,6 +40,13 @@ export class LexiaComponent implements OnInit {
 
     rowCount() {
         return this.dataSource.filteredData.length;
+    }
+
+    updateProperty(event: string | number, property: string, lexia: Lexia, popover: SatPopover) {
+        lexia[property] = event;
+        this.apiService.updateLexia(lexia.id, lexia);
+        this.resetTable();
+        popover.close();
     }
 
     openCreateLexia() {

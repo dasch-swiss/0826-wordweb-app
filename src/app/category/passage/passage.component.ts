@@ -3,6 +3,7 @@ import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/
 import {Book, Passage} from "../../model/model";
 import {ApiService} from "../../services/apiService/api.service";
 import {EditionRefComponent} from "../../dialog/edition-ref/edition-ref.component";
+import {SatPopover} from "@ncstate/sat-popover";
 
 @Component({
     selector: "app-passage",
@@ -11,7 +12,7 @@ import {EditionRefComponent} from "../../dialog/edition-ref/edition-ref.componen
 })
 export class PassageComponent implements OnInit {
 
-    displayedColumns: string[] = ["edition", "text", "order", "references", "action"];
+    displayedColumns: string[] = ["edition", "text", "page", "order", "references", "action"];
     dataSource: MatTableDataSource<Passage>;
     value: string;
 
@@ -49,6 +50,13 @@ export class PassageComponent implements OnInit {
 
     rowCount() {
         return this.dataSource.filteredData.length;
+    }
+
+    updateProperty(event: string | number, property: string, passage: Passage, popover: SatPopover) {
+        passage[property] = event;
+        this.apiService.updatePassage(passage.id, passage);
+        this.resetTable();
+        popover.close();
     }
 
     copyArray(book: Book[]) {

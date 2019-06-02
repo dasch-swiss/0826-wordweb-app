@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatSort, MatTableDataSource} from "@angular/material";
 import {Contributor} from "../../model/model";
 import {ApiService} from "../../services/apiService/api.service";
+import {SatPopover} from "@ncstate/sat-popover";
 
 @Component({
     selector: "app-contributor",
@@ -39,6 +40,13 @@ export class ContributorComponent implements OnInit {
 
     rowCount() {
         return this.dataSource.filteredData.length;
+    }
+
+    updateProperty(event: string | number, property: string, contributor: Contributor, popover: SatPopover) {
+        contributor[property] = event;
+        this.apiService.updateContributor(contributor.id, contributor);
+        this.resetTable();
+        popover.close();
     }
 
     openCreateContributor() {

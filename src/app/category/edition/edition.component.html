@@ -28,7 +28,7 @@
                 <div class="edit-value" [satPopoverAnchorFor]="pi"
                      (click)="pi.open()"> {{element.publicationInfo}} </div>
                 <sat-popover #pi hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="pi.isOpen()" [value]="element.publicationInfo" [type]="'string'"></app-inline-edit>
+                    <app-inline-edit *ngIf="pi.isOpen()" [value]="element.publicationInfo" [type]="'string'" (newValue)="updateProperty($event,'publicationInfo', element, pi)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
@@ -47,7 +47,7 @@
             <th mat-header-cell *matHeaderCellDef>Sprache</th>
             <td mat-cell *matCellDef="let element">
                 <div class="edit-value" (click)="editLanguage([element.language])">
-                    <div> {{element.language.name}}</div>
+                    <div>{{element.language.name}}</div>
                 </div>
             </td>
         </ng-container>
@@ -57,7 +57,7 @@
             <td mat-cell *matCellDef="let element">
                 <div class="edit-value" [satPopoverAnchorFor]="or" (click)="or.open()">{{element.order}}</div>
                 <sat-popover #or hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="or.isOpen()" [value]="element.order" [type]="'number'"></app-inline-edit>
+                    <app-inline-edit *ngIf="or.isOpen()" [value]="element.order" [type]="'number'" (newValue)="updateProperty($event,'order', element, or)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>

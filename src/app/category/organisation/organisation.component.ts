@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {ApiService} from "../../services/apiService/api.service";
 import {Organisation} from "../../model/model";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
+import {SatPopover} from "@ncstate/sat-popover";
 
 @Component({
     selector: "app-organisation",
@@ -39,6 +40,13 @@ export class OrganisationComponent implements OnInit {
 
     rowCount() {
         return this.dataSource.filteredData.length;
+    }
+
+    updateProperty(event: string | number, property: string, organisation: Organisation, popover: SatPopover) {
+        organisation[property] = event;
+        this.apiService.updateOrganisation(organisation.id, organisation);
+        this.resetTable();
+        popover.close();
     }
 
     openCreateOrganisation() {

@@ -34,6 +34,8 @@ export interface EditionOriginal {
     book: Book;
     language: Language;
     publicationInfo: string;
+    order: number;
+    references: number;
 }
 
 export interface Edition {
@@ -59,6 +61,8 @@ export interface PassageOriginal {
     edition: EditionOriginal;
     text: string;
     page: string;
+    order: number;
+    references: number;
 }
 
 export interface Language {
