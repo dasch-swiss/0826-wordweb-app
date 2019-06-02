@@ -22,27 +22,27 @@
 
         <!-- Name Column -->
         <ng-container matColumnDef="language">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Sprache</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Sprache</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchorFor]="fn" (click)="fn.open()"> {{element.name}} </div>
-                <sat-popover #fn hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit [value]="element.name" [type]="'string'"></app-inline-edit>
+                <div class="edit-value" [satPopoverAnchorFor]="n" (click)="n.open()">{{element.name}}</div>
+                <sat-popover #n hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="n.isOpen()" [value]="element.name" [type]="'string'"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
 
         <ng-container matColumnDef="order">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Reihenfolge</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Reihenfolge</th>
             <td mat-cell *matCellDef="let element">
                 <div class="edit-value" [satPopoverAnchorFor]="or" (click)="or.open()">{{element.order}}</div>
                 <sat-popover #or hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit [value]="element.order" [type]="'number'"></app-inline-edit>
+                    <app-inline-edit *ngIf="or.isOpen()" [value]="element.order" [type]="'number'"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
 
         <ng-container matColumnDef="references">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Referenzen</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Referenzen</th>
             <td mat-cell *matCellDef="let element">
                 <div class="read-only-value">{{element.references}}</div>
             </td>
