@@ -32,7 +32,7 @@ export class EditionRefComponent implements OnInit {
 
     ngOnInit() {
         this.addingModus = false;
-        this.list = this.apiService.getEditions();
+        this.list = this.apiService.getEditions(true);
         this.filteredList = [...this.list];
         this.valueChanged = false;
     }

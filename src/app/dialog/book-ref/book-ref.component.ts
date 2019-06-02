@@ -32,7 +32,7 @@ export class BookRefComponent implements OnInit {
 
     ngOnInit() {
         this.addingModus = false;
-        this.list = this.apiService.getBooks();
+        this.list = this.apiService.getBooks(true);
         this.filteredList = [...this.list];
         this.valueChanged = false;
     }

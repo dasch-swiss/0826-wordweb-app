@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
 
     constructor(private apiService: ApiService,
                 private router: Router) {
-        this.bookList = apiService.getBooks();
+        this.bookList = apiService.getBooks(true);
     }
 
     ngOnInit() {
@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
 
     showBooks() {
         this.list = "book";
-        this.bookList = this.apiService.getBooks();
+        this.bookList = this.apiService.getBooks(true);
     }
 
     showAuthors() {
@@ -38,12 +38,12 @@ export class AppComponent implements OnInit {
 
     showEditions() {
         this.list = "edition";
-        this.editionList = this.apiService.getEditions();
+        this.editionList = this.apiService.getEditions(true);
     }
 
     showPassages() {
         this.list = "passage";
-        this.passageList = this.apiService.getPassages().map(passage => {
+        this.passageList = this.apiService.getPassages(true).map(passage => {
             passage["collapsed"] = false;
             return passage;
         });
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
 
     showEditionsOriginal() {
         this.list = "editionOriginal";
-        this.editionOriginalList = this.apiService.getEditionsOriginal().map(editionOriginal => {
+        this.editionOriginalList = this.apiService.getEditionsOriginal(true).map(editionOriginal => {
             editionOriginal["collapsed"] = false;
             return editionOriginal;
         });
@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
 
     showPassagesOriginal() {
         this.list = "passageOriginal";
-        this.passageOriginalList = this.apiService.getPassagesOriginal().map(passageOriginal => {
+        this.passageOriginalList = this.apiService.getPassagesOriginal(true).map(passageOriginal => {
             passageOriginal["collapsed"] = false;
             return passageOriginal;
         });

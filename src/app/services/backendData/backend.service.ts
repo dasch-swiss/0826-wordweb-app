@@ -341,36 +341,36 @@ export class BackendService {
         references: 2
     };
 
-    private b1: Book = {
+    private b1: any = {
         id: 1,
         internalID: "@000100",
         title: "Romeo and Juliet",
-        authors: [this.a1, this.a8, this.a3],
+        authors: [this.a1.id, this.a8.id, this.a3.id],
         order: 0,
         references: 0
     };
 
-    private e1: Edition = {
+    private e1: any = {
         id: 1,
-        book: this.b1,
-        language: this.lang1,
+        book: 1,
+        language: 1,
         publicationInfo: "Romeo and Juliet, W. Shakespeare, [not_original]",
         order: 0,
         references: 0
     };
 
-    private pas1: Passage = {
+    private pas1: any = {
         id: 1,
-        edition: this.e1,
+        edition: 1,
         text: "thus with a kiss I die",
         page: "2",
         order: 0,
         references: 0
     };
 
-    private pas2: Passage = {
+    private pas2: any = {
         id: 2,
-        edition: this.e1,
+        edition: 1,
         text: "My bounty is as boundless as the sea,\n" +
             "My love as deep; the more I give to thee,\n" +
             "The more I have, for both are infinite.",
@@ -379,68 +379,68 @@ export class BackendService {
         references: 0
     };
 
-    private e1_original: EditionOriginal = {
+    private e1_original: any = {
         id: 1,
-        book: this.b1,
-        language: this.lang1,
+        book: 1,
+        language: 1,
         publicationInfo: "Romeo and Juliet, W. Shakespeare, [original]"
     };
 
-    private pas1_original: PassageOriginal = {
+    private pas1_original: any = {
         id: 1,
         edition: this.e1_original,
         text: "[original] thus with a kiss I die",
         page: "2"
     };
 
-    private pas2_original: PassageOriginal = {
+    private pas2_original: any = {
         id: 2,
-        edition: this.e1_original,
+        edition: 1,
         text: "[original] My bounty is as boundless as the sea,\n" +
             "My love as deep; the more I give to thee,\n" +
             "The more I have, for both are infinite.",
         page: "101-102"
     };
 
-    private b2: Book = {
+    private b2: any = {
         id: 2,
         internalID: "@000200",
         title: "Hamlet",
-        authors: [this.a1, this.a10],
+        authors: [this.a1.id, this.a10.id],
         order: 0,
         references: 2
     };
 
-    private e2: Edition = {
+    private e2: any = {
         id: 2,
-        book: this.b2,
-        language: this.lang1,
+        book: 2,
+        language: 1,
         publicationInfo: "Hamlet, W. Shakespeare, [not_original]",
         order: 0,
         references: 0
     };
 
-    private pas3: Passage = {
+    private pas3: any = {
         id: 3,
-        edition: this.e2,
+        edition: 2,
         text: "What a piece of work is a man! How noble in reason! how infinite in faculty! in form, in moving, how express and admirable! in action how like an angel! in apprehension how like a god! the beauty of the world! the paragon of animals! And yet, to me, what is this quintessence of dust?",
         page: "43-45",
         order: 0,
         references: 0
     };
 
-    private pas4: Passage = {
+    private pas4: any = {
         id: 4,
-        edition: this.e2,
+        edition: 2,
         text: "Though this be madness, yet there is method in't.",
         page: "90",
         order: 0,
         references: 0
     };
 
-    private pas5: Passage = {
+    private pas5: any = {
         id: 5,
-        edition: this.e2,
+        edition: 2,
         text: "Lord Polonius: What do you read, my lord? \n" +
             "Hamlet: Words, words, words. \n" +
             "Lord Polonius: What is the matter, my lord? \n" +
@@ -458,23 +458,23 @@ export class BackendService {
         publicationInfo: "The Tragedy of Hamlet, W. Shakespeare, [original]"
     };
 
-    private pas3_original: PassageOriginal = {
+    private pas3_original: any = {
         id: 3,
-        edition: this.e2_original,
+        edition: 2,
         text: "[original] What a piece of work is a man! How noble in reason! how infinite in faculty! in form, in moving, how express and admirable! in action how like an angel! in apprehension how like a god! the beauty of the world! the paragon of animals! And yet, to me, what is this quintessence of dust?",
         page: "43-45"
     };
 
-    private pas4_original: PassageOriginal = {
+    private pas4_original: any = {
         id: 4,
-        edition: this.e2_original,
+        edition: 2,
         text: "[original] Though this be madness, yet there is method in't.",
         page: "90"
     };
 
-    private pas5_original: PassageOriginal = {
+    private pas5_original: any = {
         id: 5,
-        edition: this.e2_original,
+        edition: 2,
         text: "[original] Lord Polonius: What do you read, my lord? \n" +
             "Hamlet: Words, words, words. \n" +
             "Lord Polonius: What is the matter, my lord? \n" +
@@ -483,27 +483,27 @@ export class BackendService {
         page: "87-92"
     };
 
-    private b3: Book = {
+    private b3: any = {
         id: 3,
         internalID: "@000300",
         title: "The Comedy of Errors",
-        authors: [this.a1],
+        authors: [this.a1.id],
         order: 0,
         references: 6
     };
 
-    private e3: Edition = {
+    private e3: any = {
         id: 3,
-        book: this.b3,
-        language: this.lang1,
+        book: 3,
+        language: 1,
         publicationInfo: "The Comedy of Errors, W. Shakespeare, [not_original]",
         order: 0,
         references: 0
     };
 
-    private pas6: Passage = {
+    private pas6: any = {
         id: 6,
-        edition: this.e3,
+        edition: 3,
         text: "A heavier task could not have been imposed\n" +
             "Than I to speak my griefs unspeakable;\n" +
             "Yet, that the world may witness that my end\n" +
@@ -514,9 +514,9 @@ export class BackendService {
         references: 0
     };
 
-    private pas7: Passage = {
+    private pas7: any = {
         id: 7,
-        edition: this.e3,
+        edition: 3,
         text: "A doubtful warrant of immediate death,\n" +
             "Which though myself would gladly have embraced,\n" +
             "Yet the incessant weepings of my wife,\n" +
@@ -529,16 +529,16 @@ export class BackendService {
         references: 0
     };
 
-    private e3_original: EditionOriginal = {
+    private e3_original: any = {
         id: 3,
-        book: this.b3,
-        language: this.lang1,
+        book: 3,
+        language: 1,
         publicationInfo: "The Comedy of Errors, W. Shakespeare, [original]"
     };
 
-    private pas6_original: PassageOriginal = {
+    private pas6_original: any = {
         id: 6,
-        edition: this.e3_original,
+        edition: 3,
         text: "[original] A heavier task could not have been imposed\n" +
             "Than I to speak my griefs unspeakable;\n" +
             "Yet, that the world may witness that my end\n" +
@@ -547,9 +547,9 @@ export class BackendService {
         page: "129"
     };
 
-    private pas7_original: PassageOriginal = {
+    private pas7_original: any = {
         id: 7,
-        edition: this.e3_original,
+        edition: 3,
         text: "[original] A doubtful warrant of immediate death,\n" +
             "Which though myself would gladly have embraced,\n" +
             "Yet the incessant weepings of my wife,\n" +
@@ -560,27 +560,27 @@ export class BackendService {
         page: "205-207"
     };
 
-    private b4: Book = {
+    private b4: any = {
         id: 4,
         internalID: "@000400",
         title: "Tamburlaine",
-        authors: [this.a2],
+        authors: [this.a2.id],
         order: 0,
         references: 1
     };
 
-    private e4: Edition = {
+    private e4: any = {
         id: 4,
-        book: this.b4,
-        language: this.lang2,
+        book: 4,
+        language: 2,
         publicationInfo: "Tamburlaine, C. Marlowe, [not_original]",
         order: 0,
         references: 0
     };
 
-    private pas8: Passage = {
+    private pas8: any = {
         id: 8,
-        edition: this.e4,
+        edition: 4,
         text: "I hold the Fates bound fast in iron chains,\n" +
             "And with my hand turn Fortune's wheel about;",
         page: "14",
@@ -588,9 +588,9 @@ export class BackendService {
         references: 0
     };
 
-    private pas9: Passage = {
+    private pas9: any = {
         id: 9,
-        edition: this.e4,
+        edition: 4,
         text: "Well, bark, ye dogs; I'll bridle all your tongues",
         page: "4",
         order: 0,
@@ -604,71 +604,71 @@ export class BackendService {
         publicationInfo: "Tamburlaine, C. Marlowe, [original]"
     };
 
-    private pas8_original: PassageOriginal = {
+    private pas8_original: any = {
         id: 8,
-        edition: this.e4_original,
+        edition: 4,
         text: "[original] I hold the Fates bound fast in iron chains,\n" +
             "And with my hand turn Fortune's wheel about;",
         page: "14"
     };
 
-    private pas9_original: PassageOriginal = {
+    private pas9_original: any = {
         id: 9,
-        edition: this.e4_original,
+        edition: 4,
         text: "[original] Well, bark, ye dogs; I'll bridle all your tongues",
         page: "4"
     };
 
-    private b5: Book = {
+    private b5: any = {
         id: 5,
         internalID: "@000500",
         title: "Of Two Evils Choose the Least",
-        authors: [this.a12, this.a19],
+        authors: [this.a12.id, this.a19.id],
         order: 0,
         references: 1
     };
 
-    private b6: Book = {
+    private b6: any = {
         id: 6,
         internalID: "@000600",
         title: "The Cruel Brother",
-        authors: [this.a10],
+        authors: [this.a10.id],
         order: 0,
         references: 1
     };
 
-    private b7: Book = {
+    private b7: any = {
         id: 7,
         internalID: "@000700",
         title: " The Art of Reason",
-        authors: [this.a22],
+        authors: [this.a22.id],
         order: 0,
         references: 1
     };
 
-    private b8: Book = {
+    private b8: any = {
         id: 8,
         internalID: "@000800",
         title: "Five Hundred Points of Good Husbandry",
-        authors: [this.a6, this.a9],
+        authors: [this.a6.id, this.a9.id],
         order: 0,
         references: 1
     };
 
-    private b9: Book = {
+    private b9: any = {
         id: 9,
         internalID: "@000900",
         title: "Treatise of God's Effectual Calling",
-        authors: [this.a20],
+        authors: [this.a20.id],
         order: 0,
         references: 1
     };
 
-    private b10: Book = {
+    private b10: any = {
         id: 10,
         internalID: "@001000",
         title: "The Jews' Tragedy",
-        authors: [this.a22],
+        authors: [this.a22.id],
         order: 0,
         references: 1
     };
@@ -1073,18 +1073,18 @@ export class BackendService {
     };
 
     // List of resources
-    private readonly bookList: Book[];
-    private readonly authorList: Author[];
-    private readonly editionList: Edition[];
-    private readonly editionOriginalList: EditionOriginal[];
-    private readonly passageList: Passage[];
-    private readonly passageOriginalList: PassageOriginal[];
-    private readonly languageList: Language[];
-    private readonly venueList: Venue[];
-    private readonly organisationList: Organisation[];
-    private readonly subjectList: Subject[];
-    private readonly contributorList: Contributor[];
-    private readonly lexiaList: Lexia[];
+    private readonly bookList: any[];
+    private readonly authorList: any[];
+    private readonly editionList: any[];
+    private readonly editionOriginalList: any[];
+    private readonly passageList: any[];
+    private readonly passageOriginalList: any[];
+    private readonly languageList: any[];
+    private readonly venueList: any[];
+    private readonly organisationList: any[];
+    private readonly subjectList: any[];
+    private readonly contributorList: any[];
+    private readonly lexiaList: any[];
 
     // Converts list to objects with id as keys
     private readonly objBooks: any = {};
@@ -1180,99 +1180,279 @@ export class BackendService {
     }
 
     getBook(iri: number, references: boolean) {
-        return this.objBooks[iri] ? this.objBooks[iri] : {};
+        if (!this.objBooks[iri]) {
+            return {};
+        }
+
+        const copyBook = JSON.parse(JSON.stringify(this.objBooks[iri]));
+
+        if (references) {
+            const authors = [];
+            for (const author of this.objBooks[iri].authors) {
+                authors.push(this.getAuthor(author, true));
+            }
+            copyBook.authors = authors;
+        }
+
+        return copyBook;
     }
 
     getBooks(references: boolean) {
-        return this.bookList;
+        let copyBookList = JSON.parse(JSON.stringify(this.bookList));
+
+        if (references) {
+            copyBookList = copyBookList.map(book => {
+               return this.getBook(book.id, true);
+            });
+        }
+
+        return copyBookList;
     }
 
     getAuthor(iri: number, references: boolean) {
-        return this.objAuthors[iri] ? this.objAuthors[iri] : {};
+        if (!this.objAuthors[iri]) {
+            return {};
+        }
+
+        return JSON.parse(JSON.stringify(this.objAuthors[iri]));
     }
 
     getAuthors(references: boolean) {
-        return this.authorList;
+        let copyAuthorList = JSON.parse(JSON.stringify(this.authorList));
+
+        if (references) {
+            copyAuthorList = copyAuthorList.map(author => {
+                return this.getAuthor(author.id, true);
+            });
+        }
+
+        return copyAuthorList;
     }
 
     getEdition(iri: number, references: boolean) {
-        return this.objEditions[iri] ? this.objEditions[iri] : {};
+        if (!this.objEditions[iri]) {
+            return {};
+        }
+
+        const copyEdition = JSON.parse(JSON.stringify(this.objEditions[iri]));
+
+        if (references) {
+            copyEdition.book = this.getBook(this.objEditions[iri].book, false);
+            copyEdition.language = this.getLanguage(this.objEditions[iri].language, false);
+        }
+
+        return copyEdition;
     }
 
     getEditions(references: boolean) {
-        return this.editionList;
+        let copyEditionList = JSON.parse(JSON.stringify(this.editionList));
+
+        if (references) {
+            copyEditionList = copyEditionList.map(edition => {
+                return this.getEdition(edition.id, true);
+            });
+        }
+
+        return copyEditionList;
     }
 
     getPassage(iri: number, references: boolean) {
-        return this.objPassages[iri] ? this.objPassages[iri] : {};
+        if (!this.objPassages[iri]) {
+            return {};
+        }
+
+        const copyPassage = JSON.parse(JSON.stringify(this.objPassages[iri]));
+
+        if (references) {
+            copyPassage.edition = this.getEdition(this.objPassages[iri].edition, false);
+        }
+
+        return copyPassage;
     }
 
     getPassages(references: boolean) {
-        return this.passageList;
+        let copyPassageList = JSON.parse(JSON.stringify(this.passageList));
+
+        if (references) {
+            copyPassageList = copyPassageList.map(passage => {
+                return this.getPassage(passage.id, true);
+            });
+        }
+
+        return copyPassageList;
     }
 
     getEditionOriginal(iri: number, references: boolean) {
-        return this.objEditionOriginals[iri] ? this.objEditionOriginals[iri] : {};
+        if (!this.objEditionOriginals[iri]) {
+            return {};
+        }
+
+        const copyEditionOriginal = JSON.parse(JSON.stringify(this.objEditionOriginals[iri]));
+
+        if (references) {
+            copyEditionOriginal.book = this.getBook(this.objEditionOriginals[iri].book, false);
+            copyEditionOriginal.language = this.getLanguage(this.objEditionOriginals[iri].language, false);
+        }
+
+        return copyEditionOriginal;
     }
 
     getEditionsOriginal(references: boolean) {
-        return this.editionOriginalList;
+        let copyEditionOriginalList = JSON.parse(JSON.stringify(this.editionOriginalList));
+
+        if (references) {
+            copyEditionOriginalList = copyEditionOriginalList.map(editionOr => {
+                return this.getEditionOriginal(editionOr.id, true);
+            });
+        }
+
+        return copyEditionOriginalList;
     }
 
     getPassageOriginal(iri: number, references: boolean) {
-        return this.objPassagesOriginal[iri] ? this.objPassagesOriginal[iri] : {};
+        if (!this.objPassagesOriginal[iri]) {
+            return {};
+        }
+
+        const copyPassageOriginal = JSON.parse(JSON.stringify(this.objPassagesOriginal[iri]));
+
+        if (references) {
+            copyPassageOriginal.edition = this.getEditionOriginal(this.objPassagesOriginal[iri].edition, false);
+        }
+
+        return copyPassageOriginal;
     }
 
     getPassagesOriginal(references: boolean) {
-        return this.passageOriginalList;
+        let copyPassageOriginalList = JSON.parse(JSON.stringify(this.passageOriginalList));
+
+        if (references) {
+            copyPassageOriginalList = copyPassageOriginalList.map(passageOr => {
+                return this.getPassageOriginal(passageOr.id, true);
+            });
+        }
+
+        return copyPassageOriginalList;
     }
 
     getLanguage(iri: number, references: boolean) {
-        return this.objLanguages[iri] ? this.objLanguages[iri] : {};
+        if (!this.objLanguages[iri]) {
+            return {};
+        }
+
+        return JSON.parse(JSON.stringify(this.objLanguages[iri]));
     }
 
     getLanguages(references: boolean) {
-        return this.languageList;
+        let copyLanguageList = JSON.parse(JSON.stringify(this.languageList));
+
+        if (references) {
+            copyLanguageList = copyLanguageList.map(language => {
+                return this.getLanguage(language.id, true);
+            });
+        }
+
+        return copyLanguageList;
     }
 
     getVenue(iri: number, references: boolean) {
-        return this.objVenues[iri] ? this.objVenues[iri] : {};
+        if (!this.objVenues[iri]) {
+            return {};
+        }
+
+        return JSON.parse(JSON.stringify(this.objVenues[iri]));
     }
 
     getVenues(references: boolean) {
-        return this.venueList;
+        let copyVenueList = JSON.parse(JSON.stringify(this.venueList));
+
+        if (references) {
+            copyVenueList = copyVenueList.map(venue => {
+                return this.getVenue(venue.id, true);
+            });
+        }
+
+        return copyVenueList;
     }
 
     getOrganisation(iri: number, references: boolean) {
-        return this.objOrganisation[iri] ? this.objOrganisation[iri] : {};
+        if (!this.objOrganisation[iri]) {
+            return {};
+        }
+
+        return JSON.parse(JSON.stringify(this.objOrganisation[iri]));
     }
 
     getOrganisations(references: boolean) {
-        return this.organisationList;
+        let copyOrganisationList = JSON.parse(JSON.stringify(this.organisationList));
+
+        if (references) {
+            copyOrganisationList = copyOrganisationList.map(organisation => {
+                return this.getOrganisation(organisation.id, true);
+            });
+        }
+
+        return copyOrganisationList;
     }
 
     getSubject(iri: number, references: boolean) {
-        return this.objSubjects[iri] ? this.objSubjects[iri] : {};
+        if (!this.objSubjects[iri]) {
+            return {};
+        }
+
+        return JSON.parse(JSON.stringify(this.objSubjects[iri]));
     }
 
     getSubjects(references: boolean) {
-        return this.subjectList;
+        let copySubjectList = JSON.parse(JSON.stringify(this.subjectList));
+
+        if (references) {
+            copySubjectList = copySubjectList.map(subject => {
+                return this.getSubject(subject.id, true);
+            });
+        }
+
+        return copySubjectList;
     }
 
     getContributor(iri: number, references: boolean) {
-        return this.objContributors[iri] ? this.objContributors[iri] : {};
+        if (!this.objContributors[iri]) {
+            return {};
+        }
+
+        return JSON.parse(JSON.stringify(this.objContributors[iri]));
     }
 
     getContributors(references: boolean) {
-        return this.contributorList;
+        let copyContributorList = JSON.parse(JSON.stringify(this.contributorList));
+
+        if (references) {
+            copyContributorList = copyContributorList.map(contributor => {
+                return this.getContributor(contributor.id, true);
+            });
+        }
+
+        return copyContributorList;
     }
 
     getLexia(iri: number, references: boolean) {
-        return this.objLexia[iri] ? this.objLexia[iri] : {};
+        if (!this.objLexia[iri]) {
+            return {};
+        }
+
+        return JSON.parse(JSON.stringify(this.objLexia[iri]));
     }
 
     getLexias(references: boolean) {
-        return this.lexiaList;
+        let copyLexiaList = JSON.parse(JSON.stringify(this.lexiaList));
+
+        if (references) {
+            copyLexiaList = copyLexiaList.map(lexia => {
+                return this.getLexia(lexia.id, true);
+            });
+        }
+
+        return copyLexiaList;
     }
 
     getGenres(references: boolean) {

@@ -20,7 +20,7 @@ export class BookComponent implements OnInit {
 
     constructor(private apiService: ApiService,
                 private authorDialog: MatDialog) {
-        this.dataSource = new MatTableDataSource(this.apiService.getBooks());
+        this.dataSource = new MatTableDataSource(this.apiService.getBooks(true));
     }
 
     ngOnInit() {

@@ -21,7 +21,7 @@ export class EditionComponent implements OnInit {
     constructor(private apiService: ApiService,
                 private bookDialog: MatDialog,
                 private languageDialog: MatDialog) {
-        this.dataSource = new MatTableDataSource(this.apiService.getEditions());
+        this.dataSource = new MatTableDataSource(this.apiService.getEditions(true));
     }
 
     ngOnInit() {
