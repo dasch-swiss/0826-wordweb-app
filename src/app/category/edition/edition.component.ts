@@ -61,37 +61,43 @@ export class EditionComponent implements OnInit {
         popover.close();
     }
 
-    copyArray(book: Book[]) {
-        return book;
-    }
-
-    editBook(book: any[]) {
+    editBook(edition: Edition) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            values: this.copyArray(book),
+            values: [edition.book],
             editMod: true,
             max: 1
         };
         const dialogRef = this.bookDialog.open(BookRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
-            console.log(data);
+            if (data.submit) {
+                const copyEdition = JSON.parse(JSON.stringify(edition));
+                copyEdition.book = data.data[0];
+                this.apiService.updateEdition(copyEdition.id, copyEdition);
+                this.resetTable();
+            }
         });
     }
 
-    editLanguage(language: any[]) {
+    editLanguage(edition: Edition) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            values: this.copyArray(language),
+            values: [edition.language],
             editMod: true,
             max: 1
         };
         const dialogRef = this.languageDialog.open(LanguageRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
-            console.log(data);
+            if (data.submit) {
+                const copyEdition = JSON.parse(JSON.stringify(edition));
+                copyEdition.language = data.data[0];
+                this.apiService.updateEdition(copyEdition.id, copyEdition);
+                this.resetTable();
+            }
         });
     }
 

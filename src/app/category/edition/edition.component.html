@@ -37,7 +37,7 @@
         <ng-container matColumnDef="book">
             <th mat-header-cell *matHeaderCellDef>Buch</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" (click)="editBook([element.book])">
+                <div class="edit-value" (click)="editBook(element)">
                     <div>{{element.book.title}}</div>
                 </div>
             </td>
@@ -46,7 +46,7 @@
         <ng-container matColumnDef="language">
             <th mat-header-cell *matHeaderCellDef>Sprache</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" (click)="editLanguage([element.language])">
+                <div class="edit-value" (click)="editLanguage(element)">
                     <div>{{element.language.name}}</div>
                 </div>
             </td>

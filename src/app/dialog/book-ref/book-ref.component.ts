@@ -84,11 +84,11 @@ export class BookRefComponent implements OnInit {
     }
 
     cancel() {
-        this.dialogRef.close({cancel: true, data: null});
+        this.dialogRef.close({submit: false, data: null});
     }
 
     save() {
-        this.dialogRef.close({cancel: false, data: [...this.copyValues]});
+        this.dialogRef.close({submit: true, data: [...this.copyValues]});
     }
 
     choseElement(book: Book) {

@@ -59,22 +59,23 @@ export class PassageComponent implements OnInit {
         popover.close();
     }
 
-    copyArray(book: Book[]) {
-        return book;
-    }
-
-    editEdition(edition: any[]) {
+    editEdition(passage: Passage) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            values: this.copyArray(edition),
+            values: [passage.edition],
             editMod: true,
             max: 1
         };
         const dialogRef = this.languageDialog.open(EditionRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
-            console.log(data);
+            if (data.submit) {
+                const copyPassage = JSON.parse(JSON.stringify(passage));
+                copyPassage.edition = data.data[0];
+                this.apiService.updatePassage(copyPassage.id, copyPassage);
+                this.resetTable();
+            }
         });
     }
 

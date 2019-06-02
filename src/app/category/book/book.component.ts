@@ -66,17 +66,22 @@ export class BookComponent implements OnInit {
         popover.close();
     }
 
-    editAuthor(authors: any[]) {
+    editAuthor(book: Book) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            values: this.copyArray(authors),
+            values: this.copyArray(book.authors),
             editMod: true
         };
         const dialogRef = this.authorDialog.open(AuthorRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
-           console.log(data);
+            if (data.submit) {
+                const copyBook = JSON.parse(JSON.stringify(book));
+                copyBook.authors = data.data;
+                this.apiService.updateBook(copyBook.id, copyBook);
+                this.resetTable();
+            }
         });
     }
 
