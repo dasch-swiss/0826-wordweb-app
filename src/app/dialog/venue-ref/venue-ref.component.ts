@@ -78,7 +78,7 @@ export class VenueRefComponent implements OnInit {
     }
 
     cancel() {
-        this.dialogRef.close({submit: false, data: null});
+        this.dialogRef.close({submit: false, data: []});
     }
 
     save() {
