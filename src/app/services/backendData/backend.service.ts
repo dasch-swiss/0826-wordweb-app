@@ -53,6 +53,119 @@ export class BackendService {
         references: 0
     };
 
+    private v1: Venue = {
+        id: 1,
+        name: "Blackfriars",
+        city: "London",
+        order: 0,
+        references: 123
+    };
+
+    private v2: Venue = {
+        id: 2,
+        name: "The Theatre",
+        city: "London",
+        order: 0,
+        references: 21
+    };
+
+    private v3: Venue = {
+        id: 3,
+        name: "Cockpit",
+        city: "London",
+        order: 0,
+        references: 23
+    };
+
+    private v4: Venue = {
+        id: 4,
+        name: "The Curtain",
+        city: "London",
+        order: 0,
+        references: 7
+    };
+
+    private v5: Venue = {
+        id: 5,
+        name: "Whitefriars",
+        city: "London",
+        order: 0,
+        references: 0
+    };
+
+    private v6: Venue = {
+        id: 6,
+        name: "Red Bull",
+        city: "London",
+        order: 0,
+        references: 3
+    };
+
+    private v7: Venue = {
+        id: 7,
+        name: "Then Rose",
+        city: "London",
+        order: 0,
+        references: 0
+    };
+
+    private v8: Venue = {
+        id: 8,
+        name: "Ludlow Castle",
+        city: "Shropshire",
+        order: 0,
+        references: 3
+    };
+
+    private org1: any = {
+        id: 1,
+        name: "King's Men",
+        order: 0,
+        references: 17
+    };
+
+    private org2: any = {
+        id: 2,
+        name: "Lord Chamberlain's (Lord Hunsdon's) Men",
+        order: 0,
+        references: 4
+    };
+
+    private org3: any = {
+        id: 3,
+        name: "Children of the Chapel Royal",
+        order: 0,
+        references: 9
+    };
+
+    private org4: any = {
+        id: 4,
+        name: "Worcester's Men",
+        order: 0,
+        references: 0
+    };
+
+    private org5: any = {
+        id: 5,
+        name: "Derby's Men",
+        order: 0,
+        references: 7
+    };
+
+    private org6: any = {
+        id: 6,
+        name: "Oxford's Men",
+        order: 0,
+        references: 22
+    };
+
+    private org7: any = {
+        id: 7,
+        name: "Pembroke's Men",
+        order: 0,
+        references: 18
+    };
+
     private a1: Author = {
         id: 1,
         internalID: "&000001",
@@ -346,6 +459,8 @@ export class BackendService {
         internalID: "@000100",
         title: "Romeo and Juliet",
         authors: [this.a1.id, this.a8.id, this.a3.id],
+        venues: [this.v1.id],
+        organisations: [this.org3.id],
         order: 0,
         references: 0
     };
@@ -413,6 +528,8 @@ export class BackendService {
         internalID: "@000200",
         title: "Hamlet",
         authors: [this.a1.id, this.a10.id],
+        venues: [this.v3.id],
+        organisations: [this.v1.id],
         order: 0,
         references: 2
     };
@@ -502,6 +619,8 @@ export class BackendService {
         internalID: "@000300",
         title: "The Comedy of Errors",
         authors: [this.a1.id],
+        venues: [this.v6.id],
+        organisations: [this.org5.id],
         order: 0,
         references: 6
     };
@@ -585,6 +704,8 @@ export class BackendService {
         internalID: "@000400",
         title: "Tamburlaine",
         authors: [this.a2.id],
+        venues: [this.v4.id],
+        organisations: [this.org1.id],
         order: 0,
         references: 1
     };
@@ -650,6 +771,8 @@ export class BackendService {
         internalID: "@000500",
         title: "Of Two Evils Choose the Least",
         authors: [this.a12.id, this.a19.id],
+        venues: [this.v2.id, this.v8.id],
+        organisations: [this.org4.id],
         order: 0,
         references: 1
     };
@@ -659,6 +782,8 @@ export class BackendService {
         internalID: "@000600",
         title: "The Cruel Brother",
         authors: [this.a10.id],
+        venues: [this.v2.id],
+        organisations: [this.org3.id, this.org7.id],
         order: 0,
         references: 1
     };
@@ -668,6 +793,8 @@ export class BackendService {
         internalID: "@000700",
         title: " The Art of Reason",
         authors: [this.a22.id],
+        venues: [],
+        organisations: [],
         order: 0,
         references: 1
     };
@@ -677,6 +804,8 @@ export class BackendService {
         internalID: "@000800",
         title: "Five Hundred Points of Good Husbandry",
         authors: [this.a6.id, this.a9.id],
+        venues: [this.v1.id],
+        organisations: [this.org1.id],
         order: 0,
         references: 1
     };
@@ -686,6 +815,8 @@ export class BackendService {
         internalID: "@000900",
         title: "Treatise of God's Effectual Calling",
         authors: [this.a20.id],
+        venues: [],
+        organisations: [],
         order: 0,
         references: 1
     };
@@ -695,121 +826,10 @@ export class BackendService {
         internalID: "@001000",
         title: "The Jews' Tragedy",
         authors: [this.a22.id],
+        venues: [this.v5.id],
+        organisations: [this.org2.id],
         order: 0,
         references: 1
-    };
-
-    private v1: Venue = {
-        id: 1,
-        name: "Blackfriars",
-        city: "London",
-        order: 0,
-        references: 123
-    };
-
-    private v2: Venue = {
-        id: 2,
-        name: "The Theatre",
-        city: "London",
-        order: 0,
-        references: 21
-    };
-
-    private v3: Venue = {
-        id: 3,
-        name: "Cockpit",
-        city: "London",
-        order: 0,
-        references: 23
-    };
-
-    private v4: Venue = {
-        id: 4,
-        name: "The Curtain",
-        city: "London",
-        order: 0,
-        references: 7
-    };
-
-    private v5: Venue = {
-        id: 5,
-        name: "Whitefriars",
-        city: "London",
-        order: 0,
-        references: 0
-    };
-
-    private v6: Venue = {
-        id: 6,
-        name: "Red Bull",
-        city: "London",
-        order: 0,
-        references: 3
-    };
-
-    private v7: Venue = {
-        id: 7,
-        name: "Then Rose",
-        city: "London",
-        order: 0,
-        references: 0
-    };
-
-    private v8: Venue = {
-        id: 8,
-        name: "Ludlow Castle",
-        city: "Shropshire",
-        order: 0,
-        references: 3
-    };
-
-    private org1: any = {
-        id: 1,
-        name: "King's Men",
-        order: 0,
-        references: 17
-    };
-
-    private org2: any = {
-        id: 2,
-        name: "Lord Chamberlain's (Lord Hunsdon's) Men",
-        order: 0,
-        references: 4
-    };
-
-    private org3: any = {
-        id: 3,
-        name: "Children of the Chapel Royal",
-        order: 0,
-        references: 9
-    };
-
-    private org4: any = {
-        id: 4,
-        name: "Worcester's Men",
-        order: 0,
-        references: 0
-    };
-
-    private org5: any = {
-        id: 5,
-        name: "Derby's Men",
-        order: 0,
-        references: 7
-    };
-
-    private org6: any = {
-        id: 6,
-        name: "Oxford's Men",
-        order: 0,
-        references: 22
-    };
-
-    private org7: any = {
-        id: 7,
-        name: "Pembroke's Men",
-        order: 0,
-        references: 18
     };
 
     private s1: Subject = {
@@ -1214,10 +1234,24 @@ export class BackendService {
 
         if (references) {
             const authors = [];
+            const venues = [];
+            const organistaions = [];
+
             for (const author of this.objBooks[iri].authors) {
                 authors.push(this.getAuthor(author, true));
             }
+
+            for (const venue of this.objBooks[iri].venues) {
+                venues.push(this.getVenue(venue, true));
+            }
+
+            for (const organisation of this.objBooks[iri].organisations) {
+                organistaions.push(this.getOrganisation(organisation, true));
+            }
+
             copyBook.authors = authors;
+            copyBook.venues = venues;
+            copyBook.organisations = organistaions;
         }
 
         return copyBook;
@@ -1541,9 +1575,11 @@ export class BackendService {
         const book = this.objBooks[iri];
         book.internalID = newBook.internalID;
         book.title = newBook.title;
+        book.order = newBook.order;
         // TODO Check if all id are valid
         book.authors = newBook.authors.map(author => author.id);
-        book.order = newBook.order;
+        book.venues = newBook.venues.map(venue => venue.id);
+        book.organisations = newBook.organisations.map(organisation => organisation.id);
     }
 
     updateLanguage(iri: number, newLanguage: Language) {

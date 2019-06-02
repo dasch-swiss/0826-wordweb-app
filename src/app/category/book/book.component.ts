@@ -4,6 +4,8 @@ import {ApiService} from "../../services/apiService/api.service";
 import {Book, Author} from "../../model/model";
 import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
 import {SatPopover} from "@ncstate/sat-popover";
+import {VenueRefComponent} from "../../dialog/venue-ref/venue-ref.component";
+import {OrganisationRefComponent} from "../../dialog/organisation-ref/organisation-ref.component";
 
 @Component({
     selector: "app-book",
@@ -12,14 +14,16 @@ import {SatPopover} from "@ncstate/sat-popover";
 })
 export class BookComponent implements OnInit {
 
-    displayedColumns: string[] = ["internalID", "title", "authors", "order", "references", "action"];
+    displayedColumns: string[] = ["internalID", "title", "authors", "venues", "organisations", "order", "references", "action"];
     dataSource: MatTableDataSource<Book>;
     value: string;
 
     @ViewChild(MatSort) sort: MatSort;
 
     constructor(private apiService: ApiService,
-                private authorDialog: MatDialog) {
+                private authorDialog: MatDialog,
+                private venueDialog: MatDialog,
+                private organisationDialog: MatDialog) {
         this.resetTable();
     }
 
@@ -55,10 +59,6 @@ export class BookComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
-    copyArray(authors: Author[]) {
-        return authors;
-    }
-
     updateProperty(event: string | number, property: string, book: Book, popover: SatPopover) {
         book[property] = event;
         this.apiService.updateBook(book.id, book);
@@ -71,7 +71,7 @@ export class BookComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            values: this.copyArray(book.authors),
+            values: book.authors,
             editMod: true
         };
         const dialogRef = this.authorDialog.open(AuthorRefComponent, dialogConfig);
@@ -79,6 +79,44 @@ export class BookComponent implements OnInit {
             if (data.submit) {
                 const copyBook = JSON.parse(JSON.stringify(book));
                 copyBook.authors = data.data;
+                this.apiService.updateBook(copyBook.id, copyBook);
+                this.resetTable();
+            }
+        });
+    }
+
+    editVenue(book: Book) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            values: book.venues,
+            editMod: true
+        };
+        const dialogRef = this.venueDialog.open(VenueRefComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.submit) {
+                const copyBook = JSON.parse(JSON.stringify(book));
+                copyBook.venues = data.data;
+                this.apiService.updateBook(copyBook.id, copyBook);
+                this.resetTable();
+            }
+        });
+    }
+
+    editOrganisation(book: Book) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            values: book.organisations,
+            editMod: true
+        };
+        const dialogRef = this.organisationDialog.open(OrganisationRefComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.submit) {
+                const copyBook = JSON.parse(JSON.stringify(book));
+                copyBook.organisations = data.data;
                 this.apiService.updateBook(copyBook.id, copyBook);
                 this.resetTable();
             }
