@@ -1513,11 +1513,12 @@ export class BackendService {
 
     updateBook(iri: number, newBook: Book) {
         const book = this.objBooks[iri];
-        // book.internalID = newBook.internalID;
-        // book.title = newBook.title;
-        // book.order = newBook.order;
-        // book.references = newBook.references;
-        // book.authors: Author[];
+        book.internalID = newBook.internalID;
+        book.title = newBook.title;
+        book.order = newBook.order;
+        book.references = newBook.references;
+        // TODO Check if all id are valid
+        book.authors = newBook.authors.map(author => author.id);
     }
 
     updateLanguage(iri: number, language: Language) {

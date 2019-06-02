@@ -20,6 +20,10 @@ export class BookComponent implements OnInit {
 
     constructor(private apiService: ApiService,
                 private authorDialog: MatDialog) {
+        this.resetTable();
+    }
+
+    resetTable() {
         this.dataSource = new MatTableDataSource(this.apiService.getBooks(true));
     }
 
@@ -56,10 +60,10 @@ export class BookComponent implements OnInit {
     }
 
     updateProperty(event: string | number, property: string, book: Book, popover: SatPopover) {
-        // book[property] = event;
-        // this.apiService.updateBook(book.id, book);
-        // this.dataSource = new MatTableDataSource(this.apiService.getBooks());
-        // popover.close();
+        book[property] = event;
+        this.apiService.updateBook(book.id, book);
+        this.resetTable();
+        popover.close();
     }
 
     editAuthor(authors: any[]) {

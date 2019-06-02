@@ -19,6 +19,10 @@ export class SubjectComponent implements OnInit {
 
     constructor(private apiService: ApiService,
                 private createLanguageDialog: MatDialog) {
+        this.resetTable();
+    }
+
+    resetTable() {
         this.dataSource = new MatTableDataSource(this.apiService.getSubjects());
     }
 

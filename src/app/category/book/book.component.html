@@ -25,7 +25,7 @@
             <td mat-cell *matCellDef="let element">
                 <div class="edit-value" [satPopoverAnchorFor]="intID" (click)="intID.open()">{{element.internalID}}</div>
                 <sat-popover #intID hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit [value]="element.internalID" [type]="'string'"></app-inline-edit>
+                    <app-inline-edit *ngIf="intID.isOpen()" [value]="element.internalID" [type]="'string'" (newValue)="updateProperty($event,'internalID', element, intID)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
@@ -34,9 +34,9 @@
         <ng-container matColumnDef="title">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Title</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchorFor]="fn" (click)="fn.open()"> {{element.title}} </div>
-                <sat-popover #fn hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit [value]="element.title" [type]="'string'"></app-inline-edit>
+                <div class="edit-value" [satPopoverAnchorFor]="tit" (click)="tit.open()"> {{element.title}} </div>
+                <sat-popover #tit hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="tit.isOpen()" [value]="element.title" [type]="'string'" (newValue)="updateProperty($event,'title', element, tit)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
@@ -56,7 +56,7 @@
             <td mat-cell *matCellDef="let element">
                 <div class="edit-value" [satPopoverAnchorFor]="or" (click)="or.open()">{{element.order}}</div>
                 <sat-popover #or hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit [value]="element.order" [type]="'number'"></app-inline-edit>
+                    <app-inline-edit *ngIf="or.isOpen()" [value]="element.order" [type]="'number'" (newValue)="updateProperty($event,'order', element, or)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>

@@ -20,6 +20,10 @@ export class AuthorComponent implements OnInit {
 
     constructor(public apiService: ApiService,
                 private createAuthorDialog: MatDialog) {
+        this.resetTable();
+    }
+
+    resetTable() {
         this.dataSource = new MatTableDataSource(this.apiService.getAuthors());
     }
 
@@ -42,7 +46,7 @@ export class AuthorComponent implements OnInit {
     updateProperty(event: string | number, property: string, author: Author, popover: SatPopover) {
         author[property] = event;
         this.apiService.updateAuthor(author.id, author);
-        this.dataSource = new MatTableDataSource(this.apiService.getAuthors());
+        this.resetTable();
         popover.close();
     }
 

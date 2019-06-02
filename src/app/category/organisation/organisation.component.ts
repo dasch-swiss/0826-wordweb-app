@@ -4,45 +4,49 @@ import {Organisation} from "../../model/model";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 
 @Component({
-  selector: "app-organisation",
-  templateUrl: "./organisation.component.html",
-  styleUrls: ["../category.component.scss"]
+    selector: "app-organisation",
+    templateUrl: "./organisation.component.html",
+    styleUrls: ["../category.component.scss"]
 })
 export class OrganisationComponent implements OnInit {
 
-  displayedColumns: string[] = ["name", "order", "references", "action"];
-  dataSource: MatTableDataSource<Organisation>;
-  value: string;
+    displayedColumns: string[] = ["name", "order", "references", "action"];
+    dataSource: MatTableDataSource<Organisation>;
+    value: string;
 
-  @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private apiService: ApiService,
-              private createOrganisationDialog: MatDialog) {
-    this.dataSource = new MatTableDataSource(this.apiService.getOrganisations());
-  }
+    constructor(private apiService: ApiService,
+                private createOrganisationDialog: MatDialog) {
+        this.resetTable();
+    }
 
-  ngOnInit() {
-    this.dataSource.sort = this.sort;
-  }
+    resetTable() {
+        this.dataSource = new MatTableDataSource(this.apiService.getOrganisations());
+    }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
+    ngOnInit() {
+        this.dataSource.sort = this.sort;
+    }
 
-  clear() {
-    this.dataSource.filter = this.value = "";
-  }
+    applyFilter(filterValue: string) {
+        this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
 
-  rowCount() {
-    return this.dataSource.filteredData.length;
-  }
+    clear() {
+        this.dataSource.filter = this.value = "";
+    }
 
-  openCreateOrganisation() {
-    // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.disableClose = true;
-    // dialogConfig.autoFocus = true;
-    // dialogConfig.width = "450px";
-    // this.createOrganisationDialog.open(CreateOrganisationComponent, dialogConfig);
-  }
+    rowCount() {
+        return this.dataSource.filteredData.length;
+    }
+
+    openCreateOrganisation() {
+        // const dialogConfig = new MatDialogConfig();
+        // dialogConfig.disableClose = true;
+        // dialogConfig.autoFocus = true;
+        // dialogConfig.width = "450px";
+        // this.createOrganisationDialog.open(CreateOrganisationComponent, dialogConfig);
+    }
 
 }

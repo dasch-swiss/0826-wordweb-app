@@ -18,6 +18,10 @@ export class ContributorComponent implements OnInit {
 
     constructor(private apiService: ApiService,
                 private createContributorDialog: MatDialog) {
+        this.resetTable();
+    }
+
+    resetTable() {
         this.dataSource = new MatTableDataSource(this.apiService.getContributors());
     }
 

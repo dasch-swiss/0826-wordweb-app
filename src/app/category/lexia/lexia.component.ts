@@ -19,6 +19,10 @@ export class LexiaComponent implements OnInit {
 
     constructor(private apiService: ApiService,
                 private createLexiaDialog: MatDialog) {
+        this.resetTable();
+    }
+
+    resetTable() {
         this.dataSource = new MatTableDataSource(this.apiService.getLexias());
     }
 

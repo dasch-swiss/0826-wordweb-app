@@ -20,6 +20,10 @@ export class PassageComponent implements OnInit {
     constructor(private apiService: ApiService,
                 private bookDialog: MatDialog,
                 private languageDialog: MatDialog) {
+        this.resetTable();
+    }
+
+    resetTable() {
         this.dataSource = new MatTableDataSource(this.apiService.getPassages(true));
     }
 
