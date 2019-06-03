@@ -16,6 +16,7 @@ export class CreateAuthorComponent implements OnInit {
 
     ngOnInit() {
         this.form = new FormGroup({
+            internalID: new FormControl("", []),
             firstName: new FormControl("", [Validators.required]),
             lastName: new FormControl("", [Validators.required]),
             description: new FormControl("", []),
@@ -34,12 +35,12 @@ export class CreateAuthorComponent implements OnInit {
         console.log(`${this.form.get("firstName").value} ${this.form.get("lastName").value}`);
 
         const data: any = {
-            internalID: "&000000",
-            firstName: "Hansueli",
-            lastName: "Schweizer",
-            description: "Swiss Singer",
-            birthDate: 1973,
-            deathDate: 2053
+            internalID: this.form.get("internalID").value,
+            firstName: this.form.get("firstName").value,
+            lastName: this.form.get("lastName").value,
+            description: this.form.get("description").value,
+            birthDate: this.form.get("birthDate").value,
+            deathDate: this.form.get("deathDate").value
         };
         this.apiService.createAuthor(data);
         this.dialogRef.close({refresh: true});
