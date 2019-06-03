@@ -47,8 +47,15 @@ export class BookComponent implements OnInit {
             const fullName = `${author.firstName} ${author.lastName}`;
             return fullName.toLowerCase().indexOf(filterValue) > -1;
         }).length > 0;
+        const containsVenue = book.venues.filter(venue => {
+            const fullName = `${venue.name}, ${venue.city}`;
+            return fullName.toLowerCase().indexOf(filterValue) > -1;
+        }).length > 0;
+        const containsOrganisation = book.organisations.filter(organisation => {
+            return organisation.name.toLowerCase().indexOf(filterValue) > -1;
+        }).length > 0;
 
-        return containsInternalID || containsTitle || containsAuthorName;
+        return containsInternalID || containsTitle || containsAuthorName || containsVenue || containsOrganisation;
     }
 
     clear() {
