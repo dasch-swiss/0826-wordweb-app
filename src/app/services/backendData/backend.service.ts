@@ -791,7 +791,7 @@ export class BackendService {
     private b7: any = {
         id: 7,
         internalID: "@000700",
-        title: " The Art of Reason",
+        title: "The Art of Reason",
         authors: [this.a22.id],
         venues: [],
         organisations: [],
@@ -1189,7 +1189,7 @@ export class BackendService {
         }, {});
 
         this.languageList = [this.lang1, this.lang2, this.lang3, this.lang4, this.lang5];
-        this.objLanguages = this.languageList.reduce((acc, cur) =>  {
+        this.objLanguages = this.languageList.reduce((acc, cur) => {
             acc[cur.id] = cur;
             return acc;
         }, {});
@@ -1262,10 +1262,11 @@ export class BackendService {
 
         if (references) {
             copyBookList = copyBookList.map(book => {
-               return this.getBook(book.id, true);
+                return this.getBook(book.id, true);
             });
         }
 
+        console.log(copyBookList);
         return copyBookList;
     }
 
@@ -1285,6 +1286,9 @@ export class BackendService {
                 return this.getAuthor(author.id, true);
             });
         }
+
+        // Sort after internalID
+        // copyAuthorList.sort((a, b) => (a.internalID > b.internalID) ? 1 : ( (b.internalID > a.internalID) ? -1 : 0));
 
         return copyAuthorList;
     }
@@ -1412,6 +1416,7 @@ export class BackendService {
             });
         }
 
+        console.log(copyLanguageList);
         return copyLanguageList;
     }
 
@@ -1662,5 +1667,23 @@ export class BackendService {
         venue.name = newVenue.name;
         venue.city = newVenue.city;
         venue.order = newVenue.order;
+    }
+
+    createAuthor(data: any) {
+        console.log("before", this.authorList, this.objAuthors);
+        const newAuthor: Author = {
+            id: 30,
+            internalID: data.internalID,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            description: data.description,
+            birthDate: data.birthDate,
+            deathDate: data.deathDate,
+            order: 0,
+            references: 0
+        };
+        this.authorList.push(newAuthor);
+        this.objAuthors[newAuthor.id] = newAuthor;
+        console.log("after", this.authorList, this.objAuthors);
     }
 }

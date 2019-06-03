@@ -171,8 +171,8 @@ export class ApiService {
         this.backendData.updateContributor(iri, contributor);
     }
 
-    createAuthor() {
-
+    createAuthor(data: any) {
+        this.backendData.createAuthor(data);
     }
 
     createBook() {

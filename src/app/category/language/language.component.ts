@@ -12,7 +12,7 @@ import {SatPopover} from "@ncstate/sat-popover";
 })
 export class LanguageComponent implements OnInit {
 
-    displayedColumns: string[] = ["language", "order", "references", "action"];
+    displayedColumns: string[] = ["name", "order", "references", "action"];
     dataSource: MatTableDataSource<Language>;
     value: string;
 

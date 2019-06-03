@@ -32,7 +32,17 @@ export class CreateAuthorComponent implements OnInit {
     create() {
         const fd = new FormData();
         console.log(`${this.form.get("firstName").value} ${this.form.get("lastName").value}`);
-        this.dialogRef.close();
+
+        const data: any = {
+            internalID: "&000000",
+            firstName: "Hansueli",
+            lastName: "Schweizer",
+            description: "Swiss Singer",
+            birthDate: 1973,
+            deathDate: 2053
+        };
+        this.apiService.createAuthor(data);
+        this.dialogRef.close({refresh: true});
     }
 
 }

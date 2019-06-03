@@ -55,7 +55,13 @@ export class AuthorComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.width = "450px";
-        this.createAuthorDialog.open(CreateAuthorComponent, dialogConfig);
+        const dialogRef = this.createAuthorDialog.open(CreateAuthorComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.refresh) {
+                this.resetTable();
+                this.dataSource.sort = this.sort;
+            }
+        });
     }
 
 }
