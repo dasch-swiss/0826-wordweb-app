@@ -52,10 +52,17 @@ export class PassageComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
+    edit() {
+    }
+
+    delete() {
+    }
+
     updateProperty(event: string | number, property: string, passage: Passage, popover: SatPopover) {
         passage[property] = event;
         this.apiService.updatePassage(passage.id, passage);
         this.resetTable();
+        this.applyFilter(this.value);
         popover.close();
     }
 

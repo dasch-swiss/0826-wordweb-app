@@ -1,27 +1,21 @@
 <div class="table-container">
 
-    <div>
+    <div class="filter-container">
+        <div class="create-btn-container">
+            <button mat-raised-button type="button" color="primary" [routerLink]="['/lexia/new']"><mat-icon>add</mat-icon>Lexia erstellen</button>
+        </div>
         <mat-form-field>
-            <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter"
-                   (keydown.escape)="clear()">
+            <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter" (keydown.escape)="clear()">
             <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
-        <span>Anzahl Datensätze: {{rowCount()}}</span>
-        <button mat-flat-button type="button" color="primary" [routerLink]="['/lexia/new']">Lexia hinzufügen
-        </button>
+        <div class="row-counter">Anzahl: {{rowCount()}}</div>
     </div>
 
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-        <!-- Position Column -->
-        <!--  <ng-container matColumnDef="id">-->
-        <!--    <th mat-header-cell *matHeaderCellDef> No. </th>-->
-        <!--    <td mat-cell *matCellDef="let element"> {{element.id}} </td>-->
-        <!--  </ng-container>-->
-
-        <!-- Internal ID -->
+        <!-- internal id -->
         <ng-container matColumnDef="internalID">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Internal ID</th>
             <td mat-cell *matCellDef="let element">
@@ -33,7 +27,7 @@
             </td>
         </ng-container>
 
-        <!-- Symbol Column -->
+        <!-- lexia column -->
         <ng-container matColumnDef="lexia">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Text</th>
             <td mat-cell *matCellDef="let element">
@@ -44,6 +38,7 @@
             </td>
         </ng-container>
 
+        <!-- order column -->
         <ng-container matColumnDef="order">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Reihenfolge</th>
             <td mat-cell *matCellDef="let element">
@@ -54,6 +49,7 @@
             </td>
         </ng-container>
 
+        <!-- reference column -->
         <ng-container matColumnDef="references">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Referenzen</th>
             <td mat-cell *matCellDef="let element">
@@ -61,13 +57,18 @@
             </td>
         </ng-container>
 
-        <!-- Symbol Column -->
+        <!-- button column -->
         <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>Aktionen</th>
+            <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
-                <button type="button" mat-flat-button color="warn" [disabled]="element.references !== 0">Löschen
-                </button>
-                <!--      <button>Details</button>-->
+                <div class="action-btn-container">
+                    <button mat-button mat-icon-button color="primary" (click)="edit()">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-button mat-icon-button color="warn" (click)="delete()" [disabled]="element.references !== 0">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
             </td>
         </ng-container>
 

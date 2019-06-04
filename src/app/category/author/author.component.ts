@@ -43,10 +43,17 @@ export class AuthorComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
+    edit() {
+    }
+
+    delete() {
+    }
+
     updateProperty(event: string | number, property: string, author: Author, popover: SatPopover) {
         author[property] = event;
         this.apiService.updateAuthor(author.id, author);
         this.resetTable();
+        this.applyFilter(this.value);
         popover.close();
     }
 

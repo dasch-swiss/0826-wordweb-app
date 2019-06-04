@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {ApiService} from "../../services/apiService/api.service";
-import {Book, Author} from "../../model/model";
+import {Book} from "../../model/model";
 import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
 import {SatPopover} from "@ncstate/sat-popover";
 import {VenueRefComponent} from "../../dialog/venue-ref/venue-ref.component";
@@ -66,10 +66,17 @@ export class BookComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
+    edit() {
+    }
+
+    delete() {
+    }
+
     updateProperty(event: string | number, property: string, book: Book, popover: SatPopover) {
         book[property] = event;
         this.apiService.updateBook(book.id, book);
         this.resetTable();
+        this.applyFilter(this.value);
         popover.close();
     }
 

@@ -42,10 +42,17 @@ export class LexiaComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
+    edit() {
+    }
+
+    delete() {
+    }
+
     updateProperty(event: string | number, property: string, lexia: Lexia, popover: SatPopover) {
         lexia[property] = event;
         this.apiService.updateLexia(lexia.id, lexia);
         this.resetTable();
+        this.applyFilter(this.value);
         popover.close();
     }
 

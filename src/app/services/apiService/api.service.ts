@@ -22,6 +22,8 @@ export class ApiService {
     constructor(private backendData: BackendService) {
     }
 
+    // READ REQUEST
+
     getBook(iri: number, references: boolean = false) {
         return this.backendData.getBook(iri, references);
     }
@@ -122,6 +124,8 @@ export class ApiService {
         return this.backendData.getGenres(references);
     }
 
+    // UPDATE REQUESTS
+
     updateAuthor(iri: number, author: Author) {
         this.backendData.updateAuthor(iri, author);
     }
@@ -171,27 +175,53 @@ export class ApiService {
         this.backendData.updateContributor(iri, contributor);
     }
 
+    // CREATE REQUESTS
+
     createAuthor(data: any) {
         this.backendData.createAuthor(data);
     }
 
-    createBook() {
-
+    createBook(data: any) {
+        this.backendData.createBook(data);
     }
 
-    createEdition() {
-
+    createEdition(data: any) {
+        this.backendData.createEdition(data);
     }
 
-    createEditionOriginal() {
-
+    createEditionOriginal(data: any) {
+        this.backendData.createEditionOriginal(data);
     }
 
-    createPassage() {
-
+    createPassage(data: any) {
+        this.backendData.createPassage(data);
     }
 
-    createPassageOriginal() {
+    createPassageOriginal(data: any) {
+        this.backendData.createPassageOriginal(data);
+    }
 
+    createLanguage(data: any) {
+        this.backendData.createLanguage(data);
+    }
+
+    createVenue(data: any) {
+        this.backendData.createVenue(data);
+    }
+
+    createOrganistaion(data: any) {
+        this.backendData.createOrganisation(data);
+    }
+
+    createSubject(data: any) {
+        this.backendData.createSubject(data);
+    }
+
+    createLexia(data: any) {
+        this.backendData.createLexia(data);
+    }
+
+    createContributor(data: any) {
+        this.backendData.createContributor(data);
     }
 }

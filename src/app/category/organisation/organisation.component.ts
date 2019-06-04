@@ -42,10 +42,17 @@ export class OrganisationComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
+    edit() {
+    }
+
+    delete() {
+    }
+
     updateProperty(event: string | number, property: string, organisation: Organisation, popover: SatPopover) {
         organisation[property] = event;
         this.apiService.updateOrganisation(organisation.id, organisation);
         this.resetTable();
+        this.applyFilter(this.value);
         popover.close();
     }
 

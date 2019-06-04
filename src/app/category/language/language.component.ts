@@ -43,10 +43,17 @@ export class LanguageComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
+    edit() {
+    }
+
+    delete() {
+    }
+
     updateProperty(event: string | number, property: string, language: Language, popover: SatPopover) {
         language[property] = event;
         this.apiService.updateLanguage(language.id, language);
         this.resetTable();
+        this.applyFilter(this.value);
         popover.close();
     }
 

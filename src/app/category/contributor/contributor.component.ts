@@ -42,10 +42,17 @@ export class ContributorComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
+    edit() {
+    }
+
+    delete() {
+    }
+
     updateProperty(event: string | number, property: string, contributor: Contributor, popover: SatPopover) {
         contributor[property] = event;
         this.apiService.updateContributor(contributor.id, contributor);
         this.resetTable();
+        this.applyFilter(this.value);
         popover.close();
     }
 

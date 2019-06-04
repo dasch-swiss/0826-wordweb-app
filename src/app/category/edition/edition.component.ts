@@ -54,10 +54,17 @@ export class EditionComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
+    edit() {
+    }
+
+    delete() {
+    }
+
     updateProperty(event: string | number, property: string, edition: Edition, popover: SatPopover) {
         edition[property] = event;
         this.apiService.updateEdition(edition.id, edition);
         this.resetTable();
+        this.applyFilter(this.value);
         popover.close();
     }
 

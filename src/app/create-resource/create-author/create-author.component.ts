@@ -27,7 +27,7 @@ export class CreateAuthorComponent implements OnInit {
     }
 
     cancel() {
-        this.dialogRef.close();
+        this.dialogRef.close({refresh: false});
     }
 
     create() {

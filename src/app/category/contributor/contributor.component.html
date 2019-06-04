@@ -1,86 +1,93 @@
 <div class="table-container">
 
-  <div>
-    <mat-form-field>
-      <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter"
-             (keydown.escape)="clear()">
-      <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-    <span>Anzahl Datensätze: {{rowCount()}}</span>
-    <button mat-flat-button type="button" color="primary" [routerLink]="['/contributor/new']"><mat-icon>add</mat-icon>Contributor hinzufügen</button>
-  </div>
+    <div class="filter-container">
+        <div class="create-btn-container">
+            <button mat-raised-button type="button" color="primary" [routerLink]="['/contributor/new']"><mat-icon>add</mat-icon>Organisation erstellen</button>
+        </div>
+        <mat-form-field>
+            <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter" (keydown.escape)="clear()">
+            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <div class="row-counter">Anzahl: {{rowCount()}}</div>
+    </div>
 
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-    <!-- Position Column -->
-    <!--  <ng-container matColumnDef="id">-->
-    <!--    <th mat-header-cell *matHeaderCellDef> No. </th>-->
-    <!--    <td mat-cell *matCellDef="let element"> {{element.id}} </td>-->
-    <!--  </ng-container>-->
+        <!-- first name -->
+        <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Vorname</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="edit-value" [satPopoverAnchorFor]="fn" (click)="fn.open()">{{element.firstName}}</div>
+                <sat-popover #fn hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="fn.isOpen()" [value]="element.firstName" [type]="'string'"
+                                     (newValue)="updateProperty($event,'firstName', element, fn)"></app-inline-edit>
+                </sat-popover>
+            </td>
+        </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="firstName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Vorname</th>
-      <td mat-cell *matCellDef="let element">
-        <div class="edit-value" [satPopoverAnchorFor]="fn" (click)="fn.open()">{{element.firstName}}</div>
-        <sat-popover #fn hasBackdrop xAlign="start" yAlign="start">
-          <app-inline-edit *ngIf="fn.isOpen()" [value]="element.firstName" [type]="'string'" (newValue)="updateProperty($event,'firstName', element, fn)"></app-inline-edit>
-        </sat-popover>
-      </td>
-    </ng-container>
+        <!-- last name -->
+        <ng-container matColumnDef="lastName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nachname</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="edit-value" [satPopoverAnchorFor]="ln" (click)="ln.open()">{{element.lastName}}</div>
+                <sat-popover #ln hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="ln.isOpen()" [value]="element.lastName" [type]="'string'"
+                                     (newValue)="updateProperty($event,'lastName', element, ln)"></app-inline-edit>
+                </sat-popover>
+            </td>
+        </ng-container>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="lastName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nachname</th>
-      <td mat-cell *matCellDef="let element">
-        <div class="edit-value" [satPopoverAnchorFor]="ln" (click)="ln.open()">{{element.lastName}}</div>
-        <sat-popover #ln hasBackdrop xAlign="start" yAlign="start">
-          <app-inline-edit *ngIf="ln.isOpen()" [value]="element.lastName" [type]="'string'" (newValue)="updateProperty($event,'lastName', element, ln)"></app-inline-edit>
-        </sat-popover>
-      </td>
-    </ng-container>
+        <!-- email -->
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="edit-value" [satPopoverAnchorFor]="em" (click)="em.open()">{{element.email}}</div>
+                <sat-popover #em hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="em.isOpen()" [value]="element.email" [type]="'string'"
+                                     (newValue)="updateProperty($event,'email', element, em)"></app-inline-edit>
+                </sat-popover>
+            </td>
+        </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-      <td mat-cell *matCellDef="let element">
-        <div class="edit-value" [satPopoverAnchorFor]="em" (click)="em.open()">{{element.email}}</div>
-        <sat-popover #em hasBackdrop xAlign="start" yAlign="start">
-          <app-inline-edit *ngIf="em.isOpen()" [value]="element.email" [type]="'string'" (newValue)="updateProperty($event,'email', element, em)"></app-inline-edit>
-        </sat-popover>
-      </td>
-    </ng-container>
+        <!-- order-->
+        <ng-container matColumnDef="order">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Reihenfolge</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="edit-value" [satPopoverAnchorFor]="or" (click)="or.open()">{{element.order}}</div>
+                <sat-popover #or hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="or.isOpen()" [value]="element.order" [type]="'number'"
+                                     (newValue)="updateProperty($event,'order', element, or)"></app-inline-edit>
+                </sat-popover>
+            </td>
+        </ng-container>
 
-    <ng-container matColumnDef="order">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Reihenfolge</th>
-      <td mat-cell *matCellDef="let element">
-        <div class="edit-value" [satPopoverAnchorFor]="or" (click)="or.open()">{{element.order}}</div>
-        <sat-popover #or hasBackdrop xAlign="start" yAlign="start">
-          <app-inline-edit *ngIf="or.isOpen()" [value]="element.order" [type]="'number'" (newValue)="updateProperty($event,'order', element, or)"></app-inline-edit>
-        </sat-popover>
-      </td>
-    </ng-container>
+        <!-- reference-->
+        <ng-container matColumnDef="references">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Referenzen</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="read-only-value">{{element.references}}</div>
+            </td>
+        </ng-container>
 
-    <ng-container matColumnDef="references">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Referenzen</th>
-      <td mat-cell *matCellDef="let element">
-        <div class="read-only-value">{{element.references}}</div>
-      </td>
-    </ng-container>
+        <!-- button column -->
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <div class="action-btn-container">
+                    <button mat-button mat-icon-button color="primary" (click)="edit()">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-button mat-icon-button color="warn" (click)="delete()" [disabled]="element.references !== 0">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </td>
+        </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef>Aktionen</th>
-      <td mat-cell *matCellDef="let element">
-        <button type="button" mat-flat-button color="warn" [disabled]="element.references !== 0">Löschen</button>
-        <!--      <button>Details</button>-->
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 
 </div>

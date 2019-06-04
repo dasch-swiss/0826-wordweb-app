@@ -1266,7 +1266,6 @@ export class BackendService {
             });
         }
 
-        console.log(copyBookList);
         return copyBookList;
     }
 
@@ -1416,7 +1415,6 @@ export class BackendService {
             });
         }
 
-        console.log(copyLanguageList);
         return copyLanguageList;
     }
 
@@ -1596,26 +1594,23 @@ export class BackendService {
     updateEdition(iri: number, newEdition: Edition) {
         const edition = this.objEditions[iri];
         edition.publicationInfo = newEdition.publicationInfo;
-        // Reference
-        edition.book = newEdition.book.id;
-        // Reference
-        edition.language = newEdition.language.id;
         edition.order = newEdition.order;
+        // TODO Check if all id are valid
+        edition.book = newEdition.book.id;
+        edition.language = newEdition.language.id;
     }
 
     updateEditionOriginal(iri: number, newEditionOr: EditionOriginal) {
         const editionOr = this.objEditions[iri];
         editionOr.publicationInfo = newEditionOr.publicationInfo;
-        // Reference
-        editionOr.book = newEditionOr.book.id;
-        // Reference
-        editionOr.language = newEditionOr.language.id;
         editionOr.order = newEditionOr.order;
+        // TODO Check if all id are valid
+        editionOr.book = newEditionOr.book.id;
+        editionOr.language = newEditionOr.language.id;
     }
 
     updateOrganisation(iri: number, newOrganisation: Organisation) {
         const organisation = this.objOrganisation[iri];
-        // console.log(this.objOrganisation, this.objOrganisation[iri], iri);
         organisation.name = newOrganisation.name;
         organisation.order = newOrganisation.order;
     }
@@ -1631,20 +1626,20 @@ export class BackendService {
 
     updatePassage(iri: number, newPassage: Passage) {
         const passage = this.objPassages[iri];
-        // Reference
-        passage.edition = newPassage.edition.id;
         passage.text = newPassage.text;
         passage.page = newPassage.page;
         passage.order = newPassage.order;
+        // TODO Check if all id are valid
+        passage.edition = newPassage.edition.id;
     }
 
     updatePassageOriginal(iri: number, newPassageOr: PassageOriginal) {
         const passageOr = this.objPassages[iri];
-        // Reference
-        passageOr.edition = newPassageOr.edition.id;
         passageOr.text = newPassageOr.text;
         passageOr.page = newPassageOr.page;
         passageOr.order = newPassageOr.order;
+        // TODO Check if all id are valid
+        passageOr.edition = newPassageOr.edition.id;
     }
 
     updateLexia(iri: number, newLexia: Lexia) {
@@ -1670,7 +1665,6 @@ export class BackendService {
     }
 
     createAuthor(data: any) {
-        console.log("before", this.authorList, this.objAuthors);
         const newAuthor: Author = {
             id: 30,
             internalID: data.internalID,
@@ -1684,6 +1678,147 @@ export class BackendService {
         };
         this.authorList.push(newAuthor);
         this.objAuthors[newAuthor.id] = newAuthor;
-        console.log("after", this.authorList, this.objAuthors);
+    }
+
+    createBook(data: any) {
+        // TODO if id of authors, venues and organisations are valid
+        const newBook: Book = {
+            id: data.id,
+            internalID: data.internalID,
+            title: data.title,
+            authors: data.authors.map(author => author.id),
+            venues: data.venues.map(venue => venue.id),
+            organisations: data.organisations.map(organisation => organisation.id),
+            order: 0,
+            references: 0
+        };
+        this.bookList.push(newBook);
+        this.objBooks[newBook.id] = newBook;
+    }
+
+    createLanguage(data: any) {
+        const newLanguage: Language = {
+            id: data.id,
+            name: data.name,
+            order: 0,
+            references: 0
+        };
+        this.languageList.push(newLanguage);
+        this.objLanguages[newLanguage.id] = newLanguage;
+    }
+
+    createContributor(data: any) {
+        const newContributor: Contributor = {
+            id: data.id,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            order: 0,
+            references: 0
+        };
+        this.contributorList.push(newContributor);
+        this.objContributors[newContributor.id] = newContributor;
+    }
+
+    createEdition(data: any) {
+        const newEdition: Edition = {
+            id: data.id,
+            book: data.book.id,
+            language: data.language.id,
+            publicationInfo: data.publicationInfo,
+            order: 0,
+            references: 0
+        };
+        this.editionList.push(newEdition);
+        this.objEditions[newEdition.id] = newEdition;
+    }
+
+    createEditionOriginal(data: any) {
+        const newEditionOr: EditionOriginal = {
+            id: data.id,
+            book: data.book.id,
+            language: data.language.id,
+            publicationInfo: data.publicationInfo,
+            order: 0,
+            references: 0
+        };
+        this.editionOriginalList.push(newEditionOr);
+        this.objEditionOriginals[newEditionOr.id] = newEditionOr;
+    }
+
+    createPassage(data: any) {
+        const newPassage: Passage = {
+            id: data.id,
+            edition: data.edition.id,
+            text: data.text,
+            page: data.page,
+            order: 0,
+            references: 0
+        };
+        this.passageList.push(newPassage);
+        this.objPassages[newPassage.id] = newPassage;
+    }
+
+    createPassageOriginal(data: any) {
+        const newPassageOr: PassageOriginal = {
+            id: data.id,
+            edition: data.edition.id,
+            text: data.text,
+            page: data.page,
+            order: 0,
+            references: 0
+        };
+        this.passageOriginalList.push(newPassageOr);
+        this.objPassagesOriginal[newPassageOr.id] = newPassageOr;
+    }
+
+    createVenue(data: any) {
+        const newVenue: Venue = {
+            id: data.id,
+            name: data.name,
+            city: data.city,
+            order: 0,
+            references: 0
+        };
+        this.venueList.push(newVenue);
+        this.objVenues[newVenue.id] = newVenue;
+    }
+
+    createOrganisation(data: any) {
+        const newOrganisation: Organisation = {
+            id: data.id,
+            name: data.name,
+            order: 0,
+            references: 0
+        };
+        this.organisationList.push(newOrganisation);
+        this.objOrganisation[newOrganisation.id] = newOrganisation;
+    }
+
+    createSubject(data: any) {
+        const newSubject: Subject = {
+            id: data.id,
+            name: data.name,
+            order: 0,
+            references: 0
+        };
+        this.subjectList.push(newSubject);
+        this.objSubjects[newSubject.id] = newSubject;
+
+    }
+
+    createLexia(data: any) {
+        const newLexia: Lexia = {
+            id: data.id,
+            internalID: data.internalID,
+            lexia: data.lexia,
+            order: 0,
+            references: 0
+        };
+        this.lexiaList.push(newLexia);
+        this.objLexia[newLexia.id] = newLexia;
+    }
+
+    createGenre(data: any) {
     }
 }

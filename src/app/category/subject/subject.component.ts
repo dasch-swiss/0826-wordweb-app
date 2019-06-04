@@ -43,10 +43,17 @@ export class SubjectComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
+    edit() {
+    }
+
+    delete() {
+    }
+
     updateProperty(event: string | number, property: string, subject: Subject, popover: SatPopover) {
         subject[property] = event;
         this.apiService.updateSubject(subject.id, subject);
         this.resetTable();
+        this.applyFilter(this.value);
         popover.close();
     }
 
