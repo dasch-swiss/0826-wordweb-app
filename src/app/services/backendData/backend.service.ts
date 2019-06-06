@@ -1132,7 +1132,7 @@ export class BackendService {
     private readonly contributorList: any[];
     private readonly lexiaList: any[];
 
-    // Converts list to objects with id as keys
+    // Converts allAuthors to objects with id as keys
     private readonly objBooks: any = {};
     private readonly objAuthors: any = {};
     private readonly objEditions: any = {};
@@ -1564,7 +1564,7 @@ export class BackendService {
         return genres;
     }
 
-    updateAuthor(iri: number, newAuthor: Author) {
+    updateAuthor(iri: number, newAuthor: any) {
         const author = this.objAuthors[iri];
         author.firstName = newAuthor.firstName;
         author.lastName = newAuthor.lastName;
@@ -1574,82 +1574,83 @@ export class BackendService {
         author.deathDate = newAuthor.deathDate;
     }
 
-    updateBook(iri: number, newBook: Book) {
+    updateBook(iri: number, newBook: any) {
+        console.log("backend", newBook);
         const book = this.objBooks[iri];
         book.internalID = newBook.internalID;
         book.title = newBook.title;
         book.order = newBook.order;
         // TODO Check if all id are valid
-        book.authors = newBook.authors.map(author => author.id);
-        book.venues = newBook.venues.map(venue => venue.id);
-        book.organisations = newBook.organisations.map(organisation => organisation.id);
+        book.authors = newBook.authors;
+        book.venues = newBook.venues;
+        book.organisations = newBook.organisations;
     }
 
-    updateLanguage(iri: number, newLanguage: Language) {
+    updateLanguage(iri: number, newLanguage: any) {
         const language = this.objLanguages[iri];
         language.name = newLanguage.name;
         language.order = newLanguage.order;
     }
 
-    updateEdition(iri: number, newEdition: Edition) {
+    updateEdition(iri: number, newEdition: any) {
         const edition = this.objEditions[iri];
         edition.publicationInfo = newEdition.publicationInfo;
         edition.order = newEdition.order;
-        // TODO Check if all id are valid
-        edition.book = newEdition.book.id;
-        edition.language = newEdition.language.id;
+        // TODO Check if all IDs are valid
+        edition.book = newEdition.book;
+        edition.language = newEdition.language;
     }
 
-    updateEditionOriginal(iri: number, newEditionOr: EditionOriginal) {
+    updateEditionOriginal(iri: number, newEditionOr: any) {
         const editionOr = this.objEditions[iri];
         editionOr.publicationInfo = newEditionOr.publicationInfo;
         editionOr.order = newEditionOr.order;
-        // TODO Check if all id are valid
-        editionOr.book = newEditionOr.book.id;
-        editionOr.language = newEditionOr.language.id;
+        // TODO Check if all IDs are valid
+        editionOr.book = newEditionOr.book;
+        editionOr.language = newEditionOr.language;
     }
 
-    updateOrganisation(iri: number, newOrganisation: Organisation) {
+    updateOrganisation(iri: number, newOrganisation: any) {
         const organisation = this.objOrganisation[iri];
         organisation.name = newOrganisation.name;
         organisation.order = newOrganisation.order;
     }
 
-    updateSubject(iri: number, newSbject: Subject) {
+    updateSubject(iri: number, newSbject: any) {
         const subject = this.objSubjects[iri];
         subject.name = newSbject.name;
         subject.order = newSbject.order;
     }
 
-    updateGenre(iri: number, genre: Genre) {
+    updateGenre(iri: number, genre: any) {
     }
 
-    updatePassage(iri: number, newPassage: Passage) {
+    updatePassage(iri: number, newPassage: any) {
         const passage = this.objPassages[iri];
         passage.text = newPassage.text;
         passage.page = newPassage.page;
         passage.order = newPassage.order;
-        // TODO Check if all id are valid
-        passage.edition = newPassage.edition.id;
+        // TODO Check if all IDs are valid
+        passage.edition = newPassage.edition;
     }
 
-    updatePassageOriginal(iri: number, newPassageOr: PassageOriginal) {
+    updatePassageOriginal(iri: number, newPassageOr: any) {
         const passageOr = this.objPassages[iri];
         passageOr.text = newPassageOr.text;
         passageOr.page = newPassageOr.page;
         passageOr.order = newPassageOr.order;
-        // TODO Check if all id are valid
-        passageOr.edition = newPassageOr.edition.id;
+        // TODO Check if all IDs are valid
+        passageOr.edition = newPassageOr.edition;
     }
 
-    updateLexia(iri: number, newLexia: Lexia) {
+    updateLexia(iri: number, newLexia: any) {
         const lexia = this.objLexia[iri];
         lexia.internalID = newLexia.internalID;
         lexia.lexia = newLexia.lexia;
         lexia.order = newLexia.order;
     }
 
-    updateContributor(iri: number, newContributor: Contributor) {
+    updateContributor(iri: number, newContributor: any) {
         const contributor = this.objContributors[iri];
         contributor.firstName = newContributor.firstName;
         contributor.lastName = newContributor.lastName;
@@ -1657,7 +1658,7 @@ export class BackendService {
         contributor.email = newContributor.email;
     }
 
-    updateVenue(iri: number, newVenue: Venue) {
+    updateVenue(iri: number, newVenue: any) {
         const venue = this.objVenues[iri];
         venue.name = newVenue.name;
         venue.city = newVenue.city;
@@ -1683,12 +1684,12 @@ export class BackendService {
     createBook(data: any) {
         // TODO if id of authors, venues and organisations are valid
         const newBook: Book = {
-            id: data.id,
+            id: this.getID(),
             internalID: data.internalID,
             title: data.title,
-            authors: data.authors.map(author => author.id),
-            venues: data.venues.map(venue => venue.id),
-            organisations: data.organisations.map(organisation => organisation.id),
+            authors: data.authors,
+            venues: data.venues,
+            organisations: data.organisations,
             order: 0,
             references: 0
         };
@@ -1698,7 +1699,7 @@ export class BackendService {
 
     createLanguage(data: any) {
         const newLanguage: Language = {
-            id: data.id,
+            id: this.getID(),
             name: data.name,
             order: 0,
             references: 0
@@ -1709,7 +1710,7 @@ export class BackendService {
 
     createContributor(data: any) {
         const newContributor: Contributor = {
-            id: data.id,
+            id: this.getID(),
             firstName: data.firstName,
             lastName: data.lastName,
             email: data.email,
@@ -1722,9 +1723,9 @@ export class BackendService {
 
     createEdition(data: any) {
         const newEdition: Edition = {
-            id: data.id,
-            book: data.book.id,
-            language: data.language.id,
+            id: this.getID(),
+            book: data.book,
+            language: data.language,
             publicationInfo: data.publicationInfo,
             order: 0,
             references: 0
@@ -1735,9 +1736,9 @@ export class BackendService {
 
     createEditionOriginal(data: any) {
         const newEditionOr: EditionOriginal = {
-            id: data.id,
-            book: data.book.id,
-            language: data.language.id,
+            id: this.getID(),
+            book: data.book,
+            language: data.language,
             publicationInfo: data.publicationInfo,
             order: 0,
             references: 0
@@ -1748,8 +1749,8 @@ export class BackendService {
 
     createPassage(data: any) {
         const newPassage: Passage = {
-            id: data.id,
-            edition: data.edition.id,
+            id: this.getID(),
+            edition: data.edition,
             text: data.text,
             page: data.page,
             order: 0,
@@ -1761,8 +1762,8 @@ export class BackendService {
 
     createPassageOriginal(data: any) {
         const newPassageOr: PassageOriginal = {
-            id: data.id,
-            edition: data.edition.id,
+            id: this.getID(),
+            edition: data.edition,
             text: data.text,
             page: data.page,
             order: 0,
@@ -1774,7 +1775,7 @@ export class BackendService {
 
     createVenue(data: any) {
         const newVenue: Venue = {
-            id: data.id,
+            id: this.getID(),
             name: data.name,
             city: data.city,
             order: 0,
@@ -1786,7 +1787,7 @@ export class BackendService {
 
     createOrganisation(data: any) {
         const newOrganisation: Organisation = {
-            id: data.id,
+            id: this.getID(),
             name: data.name,
             order: 0,
             references: 0
@@ -1797,7 +1798,7 @@ export class BackendService {
 
     createSubject(data: any) {
         const newSubject: Subject = {
-            id: data.id,
+            id: this.getID(),
             name: data.name,
             order: 0,
             references: 0
@@ -1809,7 +1810,7 @@ export class BackendService {
 
     createLexia(data: any) {
         const newLexia: Lexia = {
-            id: data.id,
+            id: this.getID(),
             internalID: data.internalID,
             lexia: data.lexia,
             order: 0,
@@ -1820,5 +1821,9 @@ export class BackendService {
     }
 
     createGenre(data: any) {
+    }
+
+    getID(): number {
+        return (Math.random() * 10000) + 1;
     }
 }

@@ -1,6 +1,6 @@
-<div class="dialog-multiple" *ngIf="maximum!==1">
+<div class="dialog-multiple" *ngIf="max!==1">
 
-    <h2 matTooltip="Hier kommt die Maus/n">Bücher auswählen</h2>
+    <h2>Bücher auswählen</h2>
 
     <div class="result-container">
         <table class="chosen-data-table">
@@ -10,17 +10,17 @@
                 <th>Autoren</th>
                 <th></th>
             </tr>
-            <tr class="data-row" *ngFor="let book of copyValues">
+            <tr class="data-row" *ngFor="let book of clonedList">
                 <td>{{book.internalID}}</td>
                 <td>{{book.title}}</td>
                 <td>
                     <div *ngFor="let author of book.authors">{{author.firstName}} {{author.lastName}}</div>
                 </td>
                 <td class="delete-cell">
-                    <button class="remove-button" (click)="remove(book.id)">-</button>
+                    <button class="remove-button" (click)="removeBook(book.id)">-</button>
                 </td>
             </tr>
-            <tr class="empty-row" *ngIf="copyValues.length === 0">
+            <tr class="empty-row" *ngIf="clonedList.length === 0">
                 <td colspan="4">Noch kein Buch hinzugefügt</td>
             </tr>
         </table>
@@ -30,9 +30,9 @@
 
     <div class="full-data-container" [class.opened]="addingModus">
         <mat-form-field>
-            <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
+            <input [(ngModel)]="filterWord" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
                    (keydown.escape)="clear()">
-            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+            <button *ngIf="filterWord" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
@@ -52,7 +52,7 @@
                     </td>
                     <td>
                         <button type="button" class="add-button" [disabled]="isUsed(book.id) || hasMaximum()"
-                                (click)="add(book)">+
+                                (click)="addBook(book)">+
                         </button>
                     </td>
                 </tr>
@@ -79,20 +79,20 @@
 
     <div class="action-btn-container">
         <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-        <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">ÜBERNEHMEN</button>
+        <button type="button" mat-flat-button color="primary" [disabled]="!listChanged" (click)="save()">ÜBERNEHMEN</button>
     </div>
 
 </div>
 
-<div class="dialog-single" *ngIf="maximum==1">
+<div class="dialog-single" *ngIf="max==1">
 
     <h2>Buch auswählen</h2>
 
     <div class="full-data-container">
         <mat-form-field>
-            <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
+            <input [(ngModel)]="filterWord" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
                    (keydown.escape)="clear()">
-            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+            <button *ngIf="filterWord" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
@@ -103,7 +103,7 @@
                     <th>Title</th>
                     <th>Autoren</th>
                 </tr>
-                <tr class="data-row" *ngFor="let book of filteredList" (click)="choseElement(book)">
+                <tr class="data-row" *ngFor="let book of filteredList" (click)="chooseElement(book)">
                     <td>{{book.internalID}}</td>
                     <td>{{book.title}}</td>
                     <td>
@@ -119,6 +119,6 @@
 
     <div class="action-btn-container">
         <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-        <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">ÜBERNEHMEN</button>
+        <button type="button" mat-flat-button color="primary" [disabled]="!listChanged" (click)="save()">ÜBERNEHMEN</button>
     </div>
 </div>

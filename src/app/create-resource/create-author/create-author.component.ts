@@ -9,20 +9,24 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
     styleUrls: ["./create-author.component.scss"]
 })
 export class CreateAuthorComponent implements OnInit {
+    author: any;
+    editMod: boolean;
     form: FormGroup;
 
     constructor(private dialogRef: MatDialogRef<CreateAuthorComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+        this.author = JSON.parse(JSON.stringify(data.resource));
+        this.editMod = data.editMod;
     }
 
     ngOnInit() {
         this.form = new FormGroup({
-            internalID: new FormControl("", []),
-            firstName: new FormControl("", [Validators.required]),
-            lastName: new FormControl("", [Validators.required]),
-            description: new FormControl("", []),
-            birthDate: new FormControl("", []),
-            deathDate: new FormControl("", []),
-            activeDate: new FormControl("", [])
+            internalID: new FormControl(this.editMod ? this.author.internalID : "", []),
+            firstName: new FormControl(this.editMod ? this.author.firstName : "", [Validators.required]),
+            lastName: new FormControl(this.editMod ? this.author.lastName : "", [Validators.required]),
+            description: new FormControl(this.editMod ? this.author.description : "", []),
+            birthDate: new FormControl(this.editMod ? this.author.birthDate : "", []),
+            deathDate: new FormControl(this.editMod ? this.author.deathDate : "", []),
+            activeDate: new FormControl(this.editMod ? this.author.activeDate : "", [])
         });
     }
 
@@ -30,20 +34,38 @@ export class CreateAuthorComponent implements OnInit {
         this.dialogRef.close({refresh: false});
     }
 
-    create() {
-        const fd = new FormData();
-        console.log(`${this.form.get("firstName").value} ${this.form.get("lastName").value}`);
+    submit() {
+        if (this.editMod) {
+            this.author.internalID = this.form.get("internalID").value;
+            this.author.firstName = this.form.get("firstName").value;
+            this.author.lastName = this.form.get("lastName").value;
+            this.author.description = this.form.get("description").value;
+            this.author.birthDate = this.form.get("birthDate").value;
+            this.author.deathDate = this.form.get("deathDate").value;
+            // update request
+            this.apiService.updateAuthor(this.author.id, this.author);
+            this.dialogRef.close({refresh: true});
+        } else {
+            const newAuthor = {
+                internalID: this.form.get("internalID").value,
+                firstName: this.form.get("firstName").value,
+                lastName: this.form.get("lastName").value,
+                description: this.form.get("description").value,
+                birthDate: this.form.get("birthDate").value,
+                deathDate: this.form.get("deathDate").value,
+            };
+            // create request
+            this.apiService.createAuthor(newAuthor);
+            this.dialogRef.close({refresh: true});
+        }
+    }
 
-        const data: any = {
-            internalID: this.form.get("internalID").value,
-            firstName: this.form.get("firstName").value,
-            lastName: this.form.get("lastName").value,
-            description: this.form.get("description").value,
-            birthDate: this.form.get("birthDate").value,
-            deathDate: this.form.get("deathDate").value
-        };
-        this.apiService.createAuthor(data);
-        this.dialogRef.close({refresh: true});
+    getTitle(): string {
+        return this.editMod ? "Autor bearbeiten" : "Neuen Autor erstellen";
+    }
+
+    getButtonText(): string {
+        return this.editMod ? "SPEICHERN" : "ERSTELLEN";
     }
 
 }

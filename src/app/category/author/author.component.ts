@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {ApiService} from "../../services/apiService/api.service";
-import {Author} from "../../model/model";
+import {Author, Book} from "../../model/model";
 import {CreateAuthorComponent} from "../../create-resource/create-author/create-author.component";
 import {SatPopover} from "@ncstate/sat-popover";
 
@@ -43,25 +43,31 @@ export class AuthorComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
-    edit() {
+    create() {
+        this.createOrEditResource(false);
     }
 
-    delete() {
+    edit(author: Author) {
+        this.createOrEditResource(true, author);
     }
 
     updateProperty(event: string | number, property: string, author: Author, popover: SatPopover) {
         author[property] = event;
         this.apiService.updateAuthor(author.id, author);
         this.resetTable();
-        this.applyFilter(this.value);
+        this.applyFilter(this.value ? this.value : "");
         popover.close();
     }
 
-    openCreateAuthor() {
+    createOrEditResource(editMod: boolean, resource: Author = null) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.width = "450px";
+        dialogConfig.data = {
+            resource: resource,
+            editMod: editMod,
+        };
         const dialogRef = this.createAuthorDialog.open(CreateAuthorComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
@@ -69,6 +75,10 @@ export class AuthorComponent implements OnInit {
                 this.dataSource.sort = this.sort;
             }
         });
+    }
+
+    delete(id: number) {
+        console.log(`Author ID: ${id}`);
     }
 
 }

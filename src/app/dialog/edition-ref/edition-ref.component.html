@@ -1,6 +1,6 @@
-<div class="dialog-multiple" *ngIf="maximum!==1">
+<div class="dialog-multiple" *ngIf="max!==1">
 
-    <h2 matTooltip="Hier kommt die Maus/n">Editionen auswählen</h2>
+    <h2>Editionen auswählen</h2>
 
     <div class="result-container">
         <table class="chosen-data-table">
@@ -10,15 +10,15 @@
                 <th>Sprache</th>
                 <th></th>
             </tr>
-            <tr class="data-row" *ngFor="let edition of copyValues">
+            <tr class="data-row" *ngFor="let edition of clonedList">
                 <td>{{edition.publicationInfo}}</td>
                 <td>{{edition.book.title}}</td>
                 <td>{{edition.language.name}}</td>
                 <td class="delete-cell">
-                    <button class="remove-button" (click)="remove(edition.id)">-</button>
+                    <button class="remove-button" (click)="removeEdition(edition.id)">-</button>
                 </td>
             </tr>
-            <tr class="empty-row" *ngIf="copyValues.length === 0">
+            <tr class="empty-row" *ngIf="clonedList.length === 0">
                 <td colspan="4">Noch keine Editionen hinzugefügt</td>
             </tr>
         </table>
@@ -28,9 +28,9 @@
 
     <div class="full-data-container" [class.opened]="addingModus">
         <mat-form-field>
-            <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
+            <input [(ngModel)]="filterWord" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
                    (keydown.escape)="clear()">
-            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+            <button *ngIf="filterWord" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
@@ -48,7 +48,7 @@
                     <td>{{edition.language.name}}</td>
                     <td>
                         <button type="button" class="add-button" [disabled]="isUsed(edition.id) || hasMaximum()"
-                                (click)="add(edition)">+
+                                (click)="addEdition(edition)">+
                         </button>
                     </td>
                 </tr>
@@ -75,21 +75,21 @@
 
     <div class="action-btn-container">
         <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-        <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">ÜBERNEHMEN
+        <button type="button" mat-flat-button color="primary" [disabled]="!listChanged" (click)="save()">ÜBERNEHMEN
         </button>
     </div>
 
 </div>
 
-<div class="dialog-single" *ngIf="maximum==1">
+<div class="dialog-single" *ngIf="max==1">
 
     <h2>Edition auswählen</h2>
 
     <div class="full-data-container">
         <mat-form-field>
-            <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
+            <input [(ngModel)]="filterWord" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
                    (keydown.escape)="clear()">
-            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+            <button *ngIf="filterWord" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
@@ -100,7 +100,7 @@
                     <th>Buch</th>
                     <th>Sprache</th>
                 </tr>
-                <tr class="data-row" *ngFor="let edition of filteredList" (click)="choseElement(edition)">
+                <tr class="data-row" *ngFor="let edition of filteredList" (click)="chooseElement(edition)">
                     <td>{{edition.publicationInfo}}</td>
                     <td>{{edition.book.title}}</td>
                     <td>{{edition.language.name}}</td>
@@ -114,7 +114,7 @@
 
     <div class="action-btn-container">
         <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-        <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">ÜBERNEHMEN
+        <button type="button" mat-flat-button color="primary" [disabled]="!listChanged" (click)="save()">ÜBERNEHMEN
         </button>
     </div>
 </div>

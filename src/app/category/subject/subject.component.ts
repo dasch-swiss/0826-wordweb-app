@@ -53,7 +53,7 @@ export class SubjectComponent implements OnInit {
         subject[property] = event;
         this.apiService.updateSubject(subject.id, subject);
         this.resetTable();
-        this.applyFilter(this.value);
+        this.applyFilter(this.value ? this.value : "");
         popover.close();
     }
 

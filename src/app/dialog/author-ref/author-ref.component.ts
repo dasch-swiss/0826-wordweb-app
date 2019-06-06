@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {ApiService} from "../../services/apiService/api.service";
-import {Author, Book} from "../../model/model";
+import {Author} from "../../model/model";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 @Component({
@@ -9,31 +9,30 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
     styleUrls: ["../category-ref.component.scss"]
 })
 export class AuthorRefComponent implements OnInit {
-
-    copyValues: any[];
     addingModus: boolean;
-    list: Author[];
+    clonedList: any[];
+    allAuthors: Author[];
     filteredList: Author[];
-
-    value: string;
-    valueChanged: boolean;
-    maximum: number;
+    filterWord: string;
+    listChanged: boolean;
+    max: number;
 
     constructor(private dialogRef: MatDialogRef<AuthorRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         if (data["editMod"]) {
-            this.copyValues = [...data["values"]];
+            this.clonedList = [...data["list"]];
+            this.closeList();
         } else {
-            this.copyValues = data["values"].length !== 0 ? [...data["values"]] : [];
+            this.clonedList = data["list"].length !== 0 ? [...data["list"]] : [];
+            this.openList();
         }
 
-        this.maximum = data["max"];
+        this.max = data["max"];
     }
 
     ngOnInit() {
-        this.addingModus = false;
-        this.list = this.apiService.getAuthors();
-        this.filteredList = [...this.list];
-        this.valueChanged = false;
+        this.allAuthors = this.apiService.getAuthors();
+        this.filteredList = [...this.allAuthors];
+        this.listChanged = false;
     }
 
     openList() {
@@ -45,18 +44,17 @@ export class AuthorRefComponent implements OnInit {
     }
 
     addAuthor(author: Author) {
-        this.copyValues.push(author);
-        this.valueChanged = true;
-        console.log(this.copyValues);
+        this.clonedList.push(author);
+        this.listChanged = true;
     }
 
     removeAuthor(id: number) {
-        this.copyValues = this.copyValues.filter((author) => author.id !== id);
-        this.valueChanged = true;
+        this.clonedList = this.clonedList.filter((author) => author.id !== id);
+        this.listChanged = true;
     }
 
     applyFilter(value: string) {
-        this.filteredList = this.list.filter((author) => {
+        this.filteredList = this.allAuthors.filter((author) => {
             const containsID = author.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
             const containsFirstName = author.firstName.toLowerCase().indexOf(value.toLowerCase()) > -1;
             const containsLastName = author.lastName.toLowerCase().indexOf(value.toLowerCase()) > -1;
@@ -66,16 +64,16 @@ export class AuthorRefComponent implements OnInit {
     }
 
     isUsed(id: number): boolean {
-        return this.copyValues.filter((author) => author.id === id).length !== 0;
+        return this.clonedList.filter((author) => author.id === id).length !== 0;
     }
 
     hasMaximum(): boolean | null {
-        return this.maximum ? this.copyValues.length === this.maximum : null;
+        return this.max ? this.clonedList.length === this.max : null;
     }
 
     clear() {
-        this.value = "";
-        this.filteredList = [...this.list];
+        this.filterWord = "";
+        this.filteredList = [...this.allAuthors];
     }
 
     cancel() {
@@ -83,17 +81,17 @@ export class AuthorRefComponent implements OnInit {
     }
 
     save() {
-        this.dialogRef.close({submit: true, data: [...this.copyValues]});
+        this.dialogRef.close({submit: true, data: [...this.clonedList]});
     }
 
-    choseElement(author: Author) {
-        if ((this.copyValues.length !== 0) && (this.copyValues[0].id === author.id)) {
+    chooseElement(author: Author) {
+        if ((this.clonedList.length !== 0) && (this.clonedList[0].id === author.id)) {
             return;
         }
 
-        this.copyValues = [];
-        this.copyValues.push(author);
-        this.valueChanged = true;
+        this.clonedList = [];
+        this.clonedList.push(author);
+        this.listChanged = true;
     }
 
 }

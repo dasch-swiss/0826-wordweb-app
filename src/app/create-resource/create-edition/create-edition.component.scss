@@ -1,6 +1,4 @@
 .container {
-  margin: 2rem;
-  //border: 1px solid red;
 
   table {
     width: 100%;
@@ -10,26 +8,34 @@
     }
 
     td {
-      //border: 1px solid black;
       button {
         margin: 4px;
       }
 
       mat-form-field {
-        //width: 100%;
+        width: 100%;
+      }
+    }
+
+    .reference {
+      td {
+        border-bottom: 1px solid lightgray;
+        padding: 0.5rem 0;
+      }
+
+      .last-row {
+        // width of last column with fab button
+        width: 1rem;
+      }
+
+      mat-chip {
+        width: auto;
       }
     }
   }
 
-  .authors {
-    border-radius: 0.4rem;
-    background-color: lightgray;
-    padding: 0.5rem;
-    margin: 0.5rem;
-    display: inline-block;
+  mat-dialog-actions {
+    justify-content: flex-end;
   }
 
-  .button-actions {
-    text-align: right;
-  }
 }

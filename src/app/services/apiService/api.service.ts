@@ -13,6 +13,7 @@ import {
     Subject,
     Venue
 } from "../../model/model";
+import {elementDef} from "@angular/core/src/view";
 
 @Injectable({
     providedIn: "root"
@@ -131,16 +132,38 @@ export class ApiService {
     }
 
     updateBook(iri: number, book: Book) {
-        this.backendData.updateBook(iri, book);
-
+        const data = {
+            id: book.id,
+            internalID: book.internalID,
+            title: book.title,
+            authors: book.authors.map(author => author.id),
+            venues: book.venues.map(venue => venue.id),
+            organisations: book.organisations.map(organisation => organisation.id),
+            order: book.order
+        };
+        this.backendData.updateBook(iri, data);
     }
 
     updateEdition(iri: number, edition: Edition) {
-        this.backendData.updateEdition(iri, edition);
+        const data = {
+            id: edition.id,
+            book: edition.book ? edition.book.id : null,
+            language: edition.language ? edition.language.id : null,
+            publicationInfo: edition.publicationInfo,
+            order: edition.order
+        };
+        this.backendData.updateEdition(iri, data);
     }
 
     updatePassage(iri: number, passage: Passage) {
-        this.backendData.updatePassage(iri, passage);
+        const data = {
+            id: passage.id,
+            edition: passage.edition ? passage.edition.id : null,
+            text: passage.text,
+            page: passage.page,
+            order: passage.order
+        };
+        this.backendData.updatePassage(iri, data);
     }
 
     updateEditionOriginal(iri: number, editionOr: EditionOriginal) {
@@ -182,10 +205,17 @@ export class ApiService {
     }
 
     createBook(data: any) {
+        // converts reference to IDs
+        data.authors = data.authors.map(author => author.id);
+        data.venues =  data.venues.map(venue => venue.id);
+        data.organisations = data.organisations.map(organisation => organisation.id);
         this.backendData.createBook(data);
     }
 
     createEdition(data: any) {
+        // converts reference to IDs
+        data.book = data.book ? data.book.id : null;
+        data.language = data.language ? data.language.id : null;
         this.backendData.createEdition(data);
     }
 
@@ -194,6 +224,11 @@ export class ApiService {
     }
 
     createPassage(data: any) {
+        // converts reference to IDs
+        if (data.edition) {
+            data.edition = data.edition.id;
+        }
+        // data.edition = data.edition ? data.edition.id;
         this.backendData.createPassage(data);
     }
 

@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {ApiService} from "../../services/apiService/api.service";
-import {Author, Book, Venue} from "../../model/model";
+import {Venue} from "../../model/model";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 @Component({
@@ -9,31 +9,30 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
     styleUrls: ["../category-ref.component.scss"]
 })
 export class VenueRefComponent implements OnInit {
-
-    copyValues: any[];
     addingModus: boolean;
-    list: Venue[];
+    clonedList: any[];
+    allVenues: Venue[];
     filteredList: Venue[];
-
-    value: string;
-    valueChanged: boolean;
-    maximum: number;
+    filterWord: string;
+    listChanged: boolean;
+    max: number;
 
     constructor(private dialogRef: MatDialogRef<VenueRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         if (data["editMod"]) {
-            this.copyValues = [...data["values"]];
+            this.clonedList = [...data["list"]];
+            this.closeList();
         } else {
-            this.copyValues = data["values"].length !== 0 ? [...data["values"]] : [];
+            this.clonedList = data["list"].length !== 0 ? [...data["list"]] : [];
+            this.openList();
         }
 
-        this.maximum = data["max"];
+        this.max = data["max"];
     }
 
     ngOnInit() {
-        this.addingModus = false;
-        this.list = this.apiService.getVenues();
-        this.filteredList = [...this.list];
-        this.valueChanged = false;
+        this.allVenues = this.apiService.getVenues();
+        this.filteredList = [...this.allVenues];
+        this.listChanged = false;
     }
 
     openList() {
@@ -44,19 +43,18 @@ export class VenueRefComponent implements OnInit {
         this.addingModus = false;
     }
 
-    add(venue: Venue) {
-        this.copyValues.push(venue);
-        this.valueChanged = true;
-        console.log(this.copyValues);
+    addVenue(venue: Venue) {
+        this.clonedList.push(venue);
+        this.listChanged = true;
     }
 
-    remove(id: number) {
-        this.copyValues = this.copyValues.filter((venue) => venue.id !== id);
-        this.valueChanged = true;
+    removeVenue(id: number) {
+        this.clonedList = this.clonedList.filter((venue) => venue.id !== id);
+        this.listChanged = true;
     }
 
     applyFilter(value: string) {
-        this.filteredList = this.list.filter((venue) => {
+        this.filteredList = this.allVenues.filter((venue) => {
             const containsName = venue.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
             const containsCity = venue.city.toLowerCase().indexOf(value.toLowerCase()) > -1;
 
@@ -65,16 +63,16 @@ export class VenueRefComponent implements OnInit {
     }
 
     isUsed(id: number): boolean {
-        return this.copyValues.filter((venue) => venue.id === id).length !== 0;
+        return this.clonedList.filter((venue) => venue.id === id).length !== 0;
     }
 
     hasMaximum(): boolean | null {
-        return this.maximum ? this.copyValues.length === this.maximum : null;
+        return this.max ? this.clonedList.length === this.max : null;
     }
 
     clear() {
-        this.value = "";
-        this.filteredList = [...this.list];
+        this.filterWord = "";
+        this.filteredList = [...this.allVenues];
     }
 
     cancel() {
@@ -82,16 +80,16 @@ export class VenueRefComponent implements OnInit {
     }
 
     save() {
-        this.dialogRef.close({submit: true, data: [...this.copyValues]});
+        this.dialogRef.close({submit: true, data: [...this.clonedList]});
     }
 
-    choseElement(venue: Venue) {
-        if ((this.copyValues.length !== 0) && (this.copyValues[0].id === venue.id)) {
+    chooseElement(venue: Venue) {
+        if ((this.clonedList.length !== 0) && (this.clonedList[0].id === venue.id)) {
             return;
         }
 
-        this.copyValues = [];
-        this.copyValues.push(venue);
-        this.valueChanged = true;
+        this.clonedList = [];
+        this.clonedList.push(venue);
+        this.listChanged = true;
     }
 }

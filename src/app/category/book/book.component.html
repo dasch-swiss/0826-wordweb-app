@@ -2,7 +2,7 @@
 
     <div class="filter-container">
         <div class="create-btn-container">
-            <button mat-raised-button type="button" color="primary" [routerLink]="['/book/new']"><mat-icon>add</mat-icon>Buch erstellen</button>
+            <button mat-raised-button type="button" color="primary" (click)="create()"><mat-icon>add</mat-icon>Buch erstellen</button>
         </div>
         <mat-form-field>
             <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter" (keydown.escape)="clear()">
@@ -91,10 +91,10 @@
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
                 <div class="action-btn-container">
-                    <button mat-button mat-icon-button color="primary" (click)="edit()">
+                    <button mat-button mat-icon-button color="primary" (click)="edit(element)">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-button mat-icon-button color="warn" (click)="delete()" [disabled]="element.references !== 0">
+                    <button mat-button mat-icon-button color="warn" (click)="delete(element.id)" [disabled]="element.references !== 0">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>

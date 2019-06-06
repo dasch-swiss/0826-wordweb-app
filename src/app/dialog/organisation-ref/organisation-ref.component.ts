@@ -9,31 +9,30 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
     styleUrls: ["../category-ref.component.scss"]
 })
 export class OrganisationRefComponent implements OnInit {
-
-    copyValues: any[];
     addingModus: boolean;
-    list: Organisation[];
+    clonedList: any[];
+    allOrganistions: Organisation[];
     filteredList: Organisation[];
-
-    value: string;
-    valueChanged: boolean;
-    maximum: number;
+    filterWord: string;
+    listChanged: boolean;
+    max: number;
 
     constructor(private dialogRef: MatDialogRef<OrganisationRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         if (data["editMod"]) {
-            this.copyValues = [...data["values"]];
+            this.clonedList = [...data["list"]];
+            this.closeList();
         } else {
-            this.copyValues = data["values"].length !== 0 ? [...data["values"]] : [];
+            this.clonedList = data["list"].length !== 0 ? [...data["list"]] : [];
+            this.openList();
         }
 
-        this.maximum = data["max"];
+        this.max = data["max"];
     }
 
     ngOnInit() {
-        this.addingModus = false;
-        this.list = this.apiService.getOrganisations(true);
-        this.filteredList = [...this.list];
-        this.valueChanged = false;
+        this.allOrganistions = this.apiService.getOrganisations(true);
+        this.filteredList = [...this.allOrganistions];
+        this.listChanged = false;
     }
 
     openList() {
@@ -44,32 +43,31 @@ export class OrganisationRefComponent implements OnInit {
         this.addingModus = false;
     }
 
-    add(organisation: Organisation) {
-        this.copyValues.push(organisation);
-        this.valueChanged = true;
-        console.log(this.copyValues);
+    addOrganisation(organisation: Organisation) {
+        this.clonedList.push(organisation);
+        this.listChanged = true;
     }
 
-    remove(id: number) {
-        this.copyValues = this.copyValues.filter((organisation) => organisation.id !== id);
-        this.valueChanged = true;
+    removeOrganisation(id: number) {
+        this.clonedList = this.clonedList.filter((organisation) => organisation.id !== id);
+        this.listChanged = true;
     }
 
     applyFilter(value: string) {
-        this.filteredList = this.list.filter((organisation) => (organisation.name.toLowerCase().indexOf(value.toLowerCase()) > -1));
+        this.filteredList = this.allOrganistions.filter((organisation) => (organisation.name.toLowerCase().indexOf(value.toLowerCase()) > -1));
     }
 
     isUsed(id: number): boolean {
-        return this.copyValues.filter((organisation) => organisation.id === id).length !== 0;
+        return this.clonedList.filter((organisation) => organisation.id === id).length !== 0;
     }
 
     hasMaximum(): boolean | null {
-        return this.maximum ? this.copyValues.length === this.maximum : null;
+        return this.max ? this.clonedList.length === this.max : null;
     }
 
     clear() {
-        this.value = "";
-        this.filteredList = [...this.list];
+        this.filterWord = "";
+        this.filteredList = [...this.allOrganistions];
     }
 
     cancel() {
@@ -77,17 +75,17 @@ export class OrganisationRefComponent implements OnInit {
     }
 
     save() {
-        this.dialogRef.close({submit: true, data: [...this.copyValues]});
+        this.dialogRef.close({submit: true, data: [...this.clonedList]});
     }
 
-    choseElement(organisation: Organisation) {
-        if ((this.copyValues.length !== 0) && (this.copyValues[0].id === organisation.id)) {
+    chooseElement(organisation: Organisation) {
+        if ((this.clonedList.length !== 0) && (this.clonedList[0].id === organisation.id)) {
             return;
         }
 
-        this.copyValues = [];
-        this.copyValues.push(organisation);
-        this.valueChanged = true;
+        this.clonedList = [];
+        this.clonedList.push(organisation);
+        this.listChanged = true;
     }
 
 }

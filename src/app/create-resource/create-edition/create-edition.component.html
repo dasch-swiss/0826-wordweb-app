@@ -1,60 +1,66 @@
 <div class="container">
-    <form [formGroup]="form" (ngSubmit)="create()">
-        <h2>Neue Edition erstellen</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <h2>{{getTitle()}}</h2>
 
-        <table>
-            <tr>
-                <td class="title-column">Publication Info:</td>
-                <td>
-                    <mat-form-field>
-                        <input matInput type="text" formControlName="publicationInfo" required>
-                    </mat-form-field>
-                </td>
-                <td></td>
-            </tr>
+        <mat-dialog-content>
+            <table>
+                <tr>
+                    <td class="title-column">Publikation Info:</td>
+                    <td colspan="2">
+                        <mat-form-field>
+                            <input matInput type="text" formControlName="publicationInfo" required>
+                        </mat-form-field>
+                    </td>
+                </tr>
 
-            <tr>
-                <td class="title-column">Buch:</td>
-                <td>
-                    <mat-chip-list>
-                        <mat-chip *ngFor="let book of bookList">
-                            <mat-chip-avatar>
-                                <mat-icon>import_contacts</mat-icon>
-                            </mat-chip-avatar>
-                            {{book.title}}
-                        </mat-chip>
-                    </mat-chip-list>
-                </td>
-                <td>
-                    <button type="button" mat-flat-button color="accent"
-                            (click)="addBook()">{{addOrEdit(bookList)}}</button>
-                </td>
-            </tr>
+                <tr class="reference">
+                    <td class="title-column">Buch:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked">
+                            <mat-chip *ngFor="let book of bookList">
+                                <mat-chip-avatar>
+                                    <mat-icon>import_contacts</mat-icon>
+                                </mat-chip-avatar>
+                                {{book.title}}
+                                <mat-icon matChipRemove (click)="removeBook(book)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                    <td>
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addBook()">
+                            <mat-icon>{{addOrEdit(bookList)}}</mat-icon>
+                        </button>
+                    </td>
+                </tr>
 
-            <tr>
-                <td class="title-column">Sprache:</td>
-                <td>
-                    <mat-chip-list>
-                        <mat-chip *ngFor="let language of languageList">
-                            <mat-chip-avatar>
-                                <mat-icon>record_voice_over</mat-icon>
-                            </mat-chip-avatar>
-                            {{language.name}}
-                        </mat-chip>
+                <tr class="reference">
+                    <td class="title-column">Sprache:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked">
+                            <mat-chip *ngFor="let language of languageList">
+                                <mat-chip-avatar>
+                                    <mat-icon>record_voice_over</mat-icon>
+                                </mat-chip-avatar>
+                                {{language.name}}
+                                <mat-icon matChipRemove (click)="removeLanguage(language)">cancel</mat-icon>
+                            </mat-chip>
 
-                    </mat-chip-list>
-                </td>
-                <td>
-                    <button type="button" mat-flat-button color="accent"
-                            (click)="addLanguage()">{{addOrEdit(languageList)}}</button>
-                </td>
-            </tr>
+                        </mat-chip-list>
+                    </td>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addLanguage()">
+                            <mat-icon>{{addOrEdit(languageList)}}</mat-icon>
+                        </button>
+                    </td>
+                </tr>
 
-        </table>
+            </table>
 
-        <div class="button-actions">
+        </mat-dialog-content>
+
+        <mat-dialog-actions>
             <button mat-button type="button" color="primary" (click)="cancel()">ABBRECHEN</button>
-            <button mat-flat-button type="submit" color="primary">ERSTELLEN</button>
-        </div>
+            <button [disabled]="form.invalid" mat-flat-button type="submit" color="primary">{{getButtonText()}}</button>
+        </mat-dialog-actions>
     </form>
 </div>

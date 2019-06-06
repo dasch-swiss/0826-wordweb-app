@@ -1,0 +1,53 @@
+<div class="container">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <h2>{{getTitle()}}</h2>
+
+        <mat-dialog-content>
+            <table>
+                <tr>
+                    <td class="title-column">Text</td>
+                    <td colspan="2">
+                        <mat-form-field>
+                            <input matInput type="text" formControlName="text" required>
+                        </mat-form-field>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="title-column">Seite:</td>
+                    <td colspan="2">
+                        <mat-form-field>
+                            <input matInput type="text" formControlName="page">
+                        </mat-form-field>
+                    </td>
+                </tr>
+
+                <tr class="reference">
+                    <td class="title-column">Edition:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked">
+                            <mat-chip *ngFor="let edition of editionList">
+                                <mat-chip-avatar>
+                                    <mat-icon>book</mat-icon>
+                                </mat-chip-avatar>
+                                {{edition.publicationInfo}}
+                                <mat-icon matChipRemove (click)="removeEdition(edition)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addEdition()">
+                            <mat-icon>{{addOrEdit(editionList)}}</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+
+            </table>
+        </mat-dialog-content>
+
+        <mat-dialog-actions>
+            <button mat-button type="button" color="primary" (click)="cancel()">ABBRECHEN</button>
+            <button [disabled]="form.invalid" mat-flat-button type="submit" color="primary">{{getButtonText()}}</button>
+        </mat-dialog-actions>
+    </form>
+</div>

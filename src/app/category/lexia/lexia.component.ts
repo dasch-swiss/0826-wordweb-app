@@ -52,7 +52,7 @@ export class LexiaComponent implements OnInit {
         lexia[property] = event;
         this.apiService.updateLexia(lexia.id, lexia);
         this.resetTable();
-        this.applyFilter(this.value);
+        this.applyFilter(this.value ? this.value : "");
         popover.close();
     }
 

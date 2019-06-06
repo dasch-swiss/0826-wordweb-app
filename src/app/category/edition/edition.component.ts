@@ -1,10 +1,11 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {ApiService} from "../../services/apiService/api.service";
-import {Book, Edition} from "../../model/model";
+import {Edition} from "../../model/model";
 import {BookRefComponent} from "../../dialog/book-ref/book-ref.component";
 import {LanguageRefComponent} from "../../dialog/language-ref/language-ref.component";
 import {SatPopover} from "@ncstate/sat-popover";
+import {CreateEditionComponent} from "../../create-resource/create-edition/create-edition.component";
 
 @Component({
     selector: "app-edition",
@@ -20,6 +21,7 @@ export class EditionComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
 
     constructor(private apiService: ApiService,
+                private editionDialog: MatDialog,
                 private bookDialog: MatDialog,
                 private languageDialog: MatDialog) {
         this.resetTable();
@@ -54,17 +56,40 @@ export class EditionComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
-    edit() {
+    create() {
+        this.createOrEditResource(false);
     }
 
-    delete() {
+    edit(edition: Edition) {
+        this.createOrEditResource(true, edition);
+    }
+
+    createOrEditResource(editMod: boolean, resource: Edition = null) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            resource: resource,
+            editMod: editMod,
+        };
+        const dialogRef = this.editionDialog.open(CreateEditionComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.refresh) {
+                this.resetTable();
+                this.dataSource.sort = this.sort;
+            }
+        });
+    }
+
+    delete(id: number) {
+        console.log(`Edition ID: ${id}`);
     }
 
     updateProperty(event: string | number, property: string, edition: Edition, popover: SatPopover) {
         edition[property] = event;
         this.apiService.updateEdition(edition.id, edition);
         this.resetTable();
-        this.applyFilter(this.value);
+        this.applyFilter(this.value ? this.value : "");
         popover.close();
     }
 
@@ -73,8 +98,8 @@ export class EditionComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            values: [edition.book],
-            editMod: true,
+            list: [edition.book],
+            editMod: [edition.book].length > 0,
             max: 1
         };
         const dialogRef = this.bookDialog.open(BookRefComponent, dialogConfig);
@@ -82,6 +107,7 @@ export class EditionComponent implements OnInit {
             if (data.submit) {
                 const copyEdition = JSON.parse(JSON.stringify(edition));
                 copyEdition.book = data.data[0];
+                // update request
                 this.apiService.updateEdition(copyEdition.id, copyEdition);
                 this.resetTable();
             }
@@ -93,8 +119,8 @@ export class EditionComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            values: [edition.language],
-            editMod: true,
+            list: [edition.language],
+            editMod: [edition.language].length > 0,
             max: 1
         };
         const dialogRef = this.languageDialog.open(LanguageRefComponent, dialogConfig);
@@ -102,6 +128,7 @@ export class EditionComponent implements OnInit {
             if (data.submit) {
                 const copyEdition = JSON.parse(JSON.stringify(edition));
                 copyEdition.language = data.data[0];
+                // update request
                 this.apiService.updateEdition(copyEdition.id, copyEdition);
                 this.resetTable();
             }

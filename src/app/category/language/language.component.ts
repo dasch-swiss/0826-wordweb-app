@@ -43,26 +43,41 @@ export class LanguageComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
-    edit() {
+    create() {
+        this.createOrEditResource(false);
     }
 
-    delete() {
+    edit(language: Language) {
+        this.createOrEditResource(true, language);
+    }
+
+    createOrEditResource(editMod: boolean, resource: Language = null) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            resource: resource,
+            editMod: editMod,
+        };
+        const dialogRef = this.createLanguageDialog.open(CreateLanguageComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.refresh) {
+                this.resetTable();
+                this.dataSource.sort = this.sort;
+            }
+        });
+    }
+
+    delete(id: number) {
+        console.log(`Book ID: ${id}`);
     }
 
     updateProperty(event: string | number, property: string, language: Language, popover: SatPopover) {
         language[property] = event;
         this.apiService.updateLanguage(language.id, language);
         this.resetTable();
-        this.applyFilter(this.value);
+        this.applyFilter(this.value ? this.value : "");
         popover.close();
-    }
-
-    openCreateLanguage() {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
-        dialogConfig.width = "450px";
-        this.createLanguageDialog.open(CreateLanguageComponent, dialogConfig);
     }
 
 }

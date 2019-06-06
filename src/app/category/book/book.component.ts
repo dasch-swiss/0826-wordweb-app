@@ -6,6 +6,7 @@ import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
 import {SatPopover} from "@ncstate/sat-popover";
 import {VenueRefComponent} from "../../dialog/venue-ref/venue-ref.component";
 import {OrganisationRefComponent} from "../../dialog/organisation-ref/organisation-ref.component";
+import {CreateBookComponent} from "../../create-resource/create-book/create-book.component";
 
 @Component({
     selector: "app-book",
@@ -23,7 +24,8 @@ export class BookComponent implements OnInit {
     constructor(private apiService: ApiService,
                 private authorDialog: MatDialog,
                 private venueDialog: MatDialog,
-                private organisationDialog: MatDialog) {
+                private organisationDialog: MatDialog,
+                private bookDialog: MatDialog) {
         this.resetTable();
     }
 
@@ -66,17 +68,40 @@ export class BookComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
-    edit() {
+    create() {
+        this.createOrEditResource(false);
     }
 
-    delete() {
+    edit(book: Book) {
+        this.createOrEditResource(true, book);
+    }
+
+    createOrEditResource(editMod: boolean, resource: Book = null) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            resource: resource,
+            editMod: editMod,
+        };
+        const dialogRef = this.bookDialog.open(CreateBookComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.refresh) {
+                this.resetTable();
+                this.dataSource.sort = this.sort;
+            }
+        });
+    }
+
+    delete(id: number) {
+        console.log(`Book ID: ${id}`);
     }
 
     updateProperty(event: string | number, property: string, book: Book, popover: SatPopover) {
         book[property] = event;
         this.apiService.updateBook(book.id, book);
         this.resetTable();
-        this.applyFilter(this.value);
+        this.applyFilter(this.value ? this.value : "");
         popover.close();
     }
 
@@ -85,14 +110,15 @@ export class BookComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            values: book.authors,
-            editMod: true
+            list: book.authors,
+            editMod: book.authors.length > 0
         };
         const dialogRef = this.authorDialog.open(AuthorRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.submit) {
                 const copyBook = JSON.parse(JSON.stringify(book));
                 copyBook.authors = data.data;
+                // update request
                 this.apiService.updateBook(copyBook.id, copyBook);
                 this.resetTable();
             }
@@ -104,14 +130,15 @@ export class BookComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            values: book.venues,
-            editMod: true
+            list: book.venues,
+            editMod: book.venues.length > 0
         };
         const dialogRef = this.venueDialog.open(VenueRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.submit) {
                 const copyBook = JSON.parse(JSON.stringify(book));
                 copyBook.venues = data.data;
+                // update request
                 this.apiService.updateBook(copyBook.id, copyBook);
                 this.resetTable();
             }
@@ -123,14 +150,15 @@ export class BookComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            values: book.organisations,
-            editMod: true
+            list: book.organisations,
+            editMod: book.organisations.length > 0
         };
         const dialogRef = this.organisationDialog.open(OrganisationRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.submit) {
                 const copyBook = JSON.parse(JSON.stringify(book));
                 copyBook.organisations = data.data;
+                // update request
                 this.apiService.updateBook(copyBook.id, copyBook);
                 this.resetTable();
             }

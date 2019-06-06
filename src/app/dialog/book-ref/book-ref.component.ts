@@ -9,32 +9,30 @@ import {ApiService} from "../../services/apiService/api.service";
     styleUrls: ["../category-ref.component.scss"]
 })
 export class BookRefComponent implements OnInit {
-
-    copyValues: any[];
     addingModus: boolean;
-    list: Book[];
+    clonedList: any[];
+    allBooks: Book[];
     filteredList: Book[];
-
-    value: string;
-    valueChanged: boolean;
-    maximum: number;
+    filterWord: string;
+    listChanged: boolean;
+    max: number;
 
     constructor(private dialogRef: MatDialogRef<BookRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
-        console.log(data);
         if (data["editMod"]) {
-            this.copyValues = [...data["values"]];
+            this.clonedList = [...data["list"]];
+            this.closeList();
         } else {
-            this.copyValues = data["values"].length !== 0 ? [...data["values"]] : [];
+            this.clonedList = data["list"].length !== 0 ? [...data["list"]] : [];
+            this.openList();
         }
 
-        this.maximum = data["max"];
+        this.max = data["max"];
     }
 
     ngOnInit() {
-        this.addingModus = false;
-        this.list = this.apiService.getBooks(true);
-        this.filteredList = [...this.list];
-        this.valueChanged = false;
+        this.allBooks = this.apiService.getBooks(true);
+        this.filteredList = [...this.allBooks];
+        this.listChanged = false;
     }
 
     openList() {
@@ -45,19 +43,19 @@ export class BookRefComponent implements OnInit {
         this.addingModus = false;
     }
 
-    add(book: Book) {
-        this.copyValues.push(book);
-        this.valueChanged = true;
-        console.log(this.copyValues);
+    addBook(book: Book) {
+        this.clonedList.push(book);
+        this.listChanged = true;
+        console.log(this.clonedList);
     }
 
-    remove(id: number) {
-        this.copyValues = this.copyValues.filter((book) => book.id !== id);
-        this.valueChanged = true;
+    removeBook(id: number) {
+        this.clonedList = this.clonedList.filter((book) => book.id !== id);
+        this.listChanged = true;
     }
 
     applyFilter(value: string) {
-        this.filteredList = this.list.filter((book) => {
+        this.filteredList = this.allBooks.filter((book) => {
             const containsID = book.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
             const containsTitle = book.title.toLowerCase().indexOf(value.toLowerCase()) > -1;
             const containsAuthorName = book.authors.filter(author => {
@@ -70,17 +68,17 @@ export class BookRefComponent implements OnInit {
     }
 
     isUsed(id: number): boolean {
-        return this.copyValues.filter((book) => book.id === id).length !== 0;
+        return this.clonedList.filter((book) => book.id === id).length !== 0;
     }
 
 
     hasMaximum(): boolean | null {
-        return this.maximum ? this.copyValues.length === this.maximum : null;
+        return this.max ? this.clonedList.length === this.max : null;
     }
 
     clear() {
-        this.value = "";
-        this.filteredList = [...this.list];
+        this.filterWord = "";
+        this.filteredList = [...this.allBooks];
     }
 
     cancel() {
@@ -88,17 +86,17 @@ export class BookRefComponent implements OnInit {
     }
 
     save() {
-        this.dialogRef.close({submit: true, data: [...this.copyValues]});
+        this.dialogRef.close({submit: true, data: [...this.clonedList]});
     }
 
-    choseElement(book: Book) {
-        if ((this.copyValues.length !== 0) && (this.copyValues[0].id === book.id)) {
+    chooseElement(book: Book) {
+        if ((this.clonedList.length !== 0) && (this.clonedList[0].id === book.id)) {
             return;
         }
 
-        this.copyValues = [];
-        this.copyValues.push(book);
-        this.valueChanged = true;
+        this.clonedList = [];
+        this.clonedList.push(book);
+        this.listChanged = true;
     }
 
 }

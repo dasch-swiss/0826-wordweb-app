@@ -52,7 +52,7 @@ export class OrganisationComponent implements OnInit {
         organisation[property] = event;
         this.apiService.updateOrganisation(organisation.id, organisation);
         this.resetTable();
-        this.applyFilter(this.value);
+        this.applyFilter(this.value ? this.value : "");
         popover.close();
     }
 

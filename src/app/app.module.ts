@@ -37,28 +37,19 @@ import { PassageComponent } from "./category/passage/passage.component";
 import { EditionRefComponent } from "./dialog/edition-ref/edition-ref.component";
 import { LexiaComponent } from "./category/lexia/lexia.component";
 import { ContributorComponent } from "./category/contributor/contributor.component";
+import { CreatePassageComponent } from "./create-resource/create-passage/create-passage.component";
 
 const routes: Routes = [
     {path: "book", component: BookComponent},
-    {path: "book/new", component: CreateBookComponent},
     {path: "author", component: AuthorComponent},
-    // {path: "author/new", component: CreateAuthorComponent},
     {path: "language", component: LanguageComponent},
-    // {path: "language/new", component: CreateLanguageComponent},
     {path: "edition", component: EditionComponent},
-    {path: "edition/new", component: CreateEditionComponent},
     {path: "organisation", component: OrganisationComponent},
-    // {path: "organisation/new", component: CreateOrganisation},
     {path: "subject", component: SubjectComponent},
-    // {path: "genre/new", component: CreateSubjectComponent},
     {path: "genre", component: GenreComponent},
-    // {path: "genre/new", component: CreateGenreComponent},
     {path: "passage", component: PassageComponent},
-    // {path: "passage/new", component: CreatePassageComponent },
     {path: "contributor", component: ContributorComponent},
-    // {path: "passage/new", component: CreateContributorComponent },
     {path: "lexia", component: LexiaComponent},
-    // {path: "lexia/new", component: CreateLexiaComponent },
 ];
 
 @NgModule({
@@ -84,7 +75,8 @@ const routes: Routes = [
         CreateLanguageComponent,
         CreateEditionComponent,
         LexiaComponent,
-        ContributorComponent
+        ContributorComponent,
+        CreatePassageComponent
     ],
     imports: [
         RouterModule.forRoot(routes),
@@ -120,7 +112,9 @@ const routes: Routes = [
         EditionRefComponent,
         CreateAuthorComponent,
         CreateBookComponent,
-        CreateLanguageComponent
+        CreateLanguageComponent,
+        CreateEditionComponent,
+        CreatePassageComponent
     ]
 })
 export class AppModule {

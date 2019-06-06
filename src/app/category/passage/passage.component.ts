@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
-import {Book, Passage} from "../../model/model";
+import {Passage} from "../../model/model";
 import {ApiService} from "../../services/apiService/api.service";
 import {EditionRefComponent} from "../../dialog/edition-ref/edition-ref.component";
 import {SatPopover} from "@ncstate/sat-popover";
+import {CreatePassageComponent} from "../../create-resource/create-passage/create-passage.component";
 
 @Component({
     selector: "app-passage",
@@ -19,13 +20,14 @@ export class PassageComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
 
     constructor(private apiService: ApiService,
-                private bookDialog: MatDialog,
-                private languageDialog: MatDialog) {
+                private passageDialog: MatDialog,
+                private editionDialog: MatDialog) {
         this.resetTable();
     }
 
     resetTable() {
         this.dataSource = new MatTableDataSource(this.apiService.getPassages(true));
+        console.log(this.apiService.getPassages(true));
     }
 
     ngOnInit() {
@@ -52,17 +54,40 @@ export class PassageComponent implements OnInit {
         return this.dataSource.filteredData.length;
     }
 
-    edit() {
+    create() {
+        this.createOrEditResource(false);
     }
 
-    delete() {
+    edit(passage: Passage) {
+        this.createOrEditResource(true, passage);
+    }
+
+    createOrEditResource(editMod: boolean, resource: Passage = null) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            resource: resource,
+            editMod: editMod,
+        };
+        const dialogRef = this.passageDialog.open(CreatePassageComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.refresh) {
+                this.resetTable();
+                this.dataSource.sort = this.sort;
+            }
+        });
+    }
+
+    delete(id: number) {
+        console.log(`Passage ID: ${id}`);
     }
 
     updateProperty(event: string | number, property: string, passage: Passage, popover: SatPopover) {
         passage[property] = event;
         this.apiService.updatePassage(passage.id, passage);
         this.resetTable();
-        this.applyFilter(this.value);
+        this.applyFilter(this.value ? this.value : "");
         popover.close();
     }
 
@@ -71,15 +96,16 @@ export class PassageComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            values: [passage.edition],
-            editMod: true,
+            list: [passage.edition],
+            editMod: [passage.edition].length > 0,
             max: 1
         };
-        const dialogRef = this.languageDialog.open(EditionRefComponent, dialogConfig);
+        const dialogRef = this.editionDialog.open(EditionRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.submit) {
                 const copyPassage = JSON.parse(JSON.stringify(passage));
                 copyPassage.edition = data.data[0];
+                // update request
                 this.apiService.updatePassage(copyPassage.id, copyPassage);
                 this.resetTable();
             }

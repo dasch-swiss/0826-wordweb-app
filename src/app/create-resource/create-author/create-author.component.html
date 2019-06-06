@@ -1,40 +1,85 @@
-<form [formGroup]="form" (ngSubmit)="create()">
-    <h2>Neuen Autor erstellen</h2>
+<div class="container">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <h2>{{getTitle()}}</h2>
 
-    <mat-dialog-content>
+        <mat-dialog-content>
+            <table>
+                <tr>
+                    <td class="title-column">Interne ID</td>
+                    <td colspan="2">
+                        <mat-form-field>
+                            <input matInput type="text" formControlName="internalID" required>
+                        </mat-form-field>
+                    </td>
+                </tr>
 
-        <mat-form-field>
-            <input matInput type="text" formControlName="internalID" placeholder="Interne ID">
-        </mat-form-field>
+                <tr>
+                    <td class="title-column">Vorname</td>
+                    <td colspan="2">
+                        <mat-form-field class="full-width">
+                            <input matInput type="text" formControlName="firstName">
+                        </mat-form-field>
+                    </td>
+                </tr>
 
-        <mat-form-field class="full-width">
-            <input matInput type="text" formControlName="firstName" placeholder="Vorname" required>
-        </mat-form-field>
+                <tr>
+                    <td class="title-column">Nachname</td>
+                    <td colspan="2">
+                        <mat-form-field class="full-width">
+                            <input matInput type="text" formControlName="lastName" required>
+                        </mat-form-field>
+                    </td>
+                </tr>
 
-        <mat-form-field class="full-width">
-            <input matInput type="text" formControlName="lastName" placeholder="Nachname" required>
-        </mat-form-field>
+                <tr>
+                    <td class="title-column">Beschreibung</td>
+                    <td colspan="2">
+                        <mat-form-field class="full-width">
+                            <textarea matInput formControlName="description"></textarea>
+                        </mat-form-field>
+                    </td>
+                </tr>
 
-        <mat-form-field class="full-width">
-            <textarea matInput formControlName="description" placeholder="Beschreibung"></textarea>
-        </mat-form-field>
+                <tr>
+                    <td class="title-column">Geburtstjahr</td>
+                    <td colspan="2">
+                        <mat-form-field>
+                            <input matInput type="number" formControlName="birthDate">
+                        </mat-form-field>
+                    </td>
+                </tr>
 
-        <mat-form-field>
-            <input matInput type="number" formControlName="birthDate" placeholder="Geburtstjahr">
-        </mat-form-field>
+                <tr>
+                    <td class="title-column">Todesjahr</td>
+                    <td colspan="2">
+                        <mat-form-field>
+                            <input matInput type="number" formControlName="deathDate">
+                        </mat-form-field>
+                    </td>
+                </tr>
 
-        <mat-form-field>
-            <input matInput type="number" formControlName="deathDate" placeholder="Todesjahr">
-        </mat-form-field>
+                <tr>
+                    <td class="title-column">Aktiv</td>
+                    <td colspan="2">
+                        <mat-form-field>
+                            <input matInput type="number" formControlName="activeDate">
+                        </mat-form-field>
+                    </td>
+                </tr>
 
-        <mat-form-field>
-            <input matInput type="number" formControlName="activeDate" placeholder="Aktiv">
-        </mat-form-field>
-    </mat-dialog-content>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
 
-    <mat-dialog-actions class="action-buttons">
-        <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-        <button [disabled]="form.invalid" type="submit" mat-flat-button color="primary">ERSTELLEN</button>
-    </mat-dialog-actions>
+        </mat-dialog-content>
 
-</form>
+        <mat-dialog-actions>
+            <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
+            <button [disabled]="form.invalid" type="submit" mat-flat-button color="primary">{{getButtonText()}}</button>
+        </mat-dialog-actions>
+    </form>
+
+</div>

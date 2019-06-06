@@ -1,4 +1,4 @@
-<div class="dialog-multiple" *ngIf="maximum!==1">
+<div class="dialog-multiple" *ngIf="max!==1">
 
     <h2>Venues auswählen</h2>
 
@@ -9,14 +9,14 @@
                 <th>Stadt</th>
                 <th></th>
             </tr>
-            <tr class="data-row" *ngFor="let venue of copyValues">
+            <tr class="data-row" *ngFor="let venue of clonedList">
                 <td>{{venue.name}}</td>
                 <td>{{venue.city}}</td>
                 <td class="delete-cell">
-                    <button class="remove-button" (click)="remove(venue.id)">-</button>
+                    <button class="remove-button" (click)="removeVenue(venue.id)">-</button>
                 </td>
             </tr>
-            <tr class="empty-row" *ngIf="copyValues.length === 0">
+            <tr class="empty-row" *ngIf="clonedList.length === 0">
                 <td colspan="4">Noch keine Venues hinzugefügt</td>
             </tr>
         </table>
@@ -26,9 +26,9 @@
 
     <div class="full-data-container" [class.opened]="addingModus">
         <mat-form-field>
-            <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
+            <input [(ngModel)]="filterWord" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
                    (keydown.escape)="clear()">
-            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+            <button *ngIf="filterWord" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
@@ -43,7 +43,7 @@
                     <td>{{venue.name}}</td>
                     <td>{{venue.city}}</td>
                     <td>
-                        <button type="button" class="add-button" [disabled]="isUsed(venue.id) || hasMaximum()" (click)="add(venue)">+
+                        <button type="button" class="add-button" [disabled]="isUsed(venue.id) || hasMaximum()" (click)="addVenue(venue)">+
                         </button>
                     </td>
                 </tr>
@@ -70,21 +70,21 @@
 
     <div class="action-btn-container">
         <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-        <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">ÜBERNEHMEN
+        <button type="button" mat-flat-button color="primary" [disabled]="!listChanged" (click)="save()">ÜBERNEHMEN
         </button>
     </div>
 
 </div>
 
-<div class="dialog-single" *ngIf="maximum==1">
+<div class="dialog-single" *ngIf="max==1">
 
     <h2>Venue auswählen</h2>
 
         <div class="full-data-container">
         <mat-form-field>
-            <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
+            <input [(ngModel)]="filterWord" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
                    (keydown.escape)="clear()">
-            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+            <button *ngIf="filterWord" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
@@ -94,7 +94,7 @@
                     <th>Name</th>
                     <th>Stadt</th>
                 </tr>
-                <tr class="data-row" *ngFor="let venue of filteredList" (click)="choseElement(venue)">
+                <tr class="data-row" *ngFor="let venue of filteredList" (click)="chooseElement(venue)">
                     <td>{{venue.name}}</td>
                     <td>{{venue.city}}</td>
                 </tr>
@@ -107,6 +107,6 @@
 
     <div class="action-btn-container">
         <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-        <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">ÜBERNEHMEN</button>
+        <button type="button" mat-flat-button color="primary" [disabled]="!listChanged" (click)="save()">ÜBERNEHMEN</button>
     </div>
 </div>

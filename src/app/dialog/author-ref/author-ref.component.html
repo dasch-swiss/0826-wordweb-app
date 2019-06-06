@@ -1,4 +1,4 @@
-<div class="dialog-multiple" *ngIf="maximum!==1">
+<div class="dialog-multiple" *ngIf="max!==1">
 
     <h2>Autoren auswählen</h2>
 
@@ -10,7 +10,7 @@
                 <th>Nachname</th>
                 <th></th>
             </tr>
-            <tr class="data-row" *ngFor="let author of copyValues">
+            <tr class="data-row" *ngFor="let author of clonedList">
                 <td>{{author.internalID}}</td>
                 <td>{{author.firstName}}</td>
                 <td>{{author.lastName}}</td>
@@ -18,7 +18,7 @@
                     <button class="remove-button" (click)="removeAuthor(author.id)">-</button>
                 </td>
             </tr>
-            <tr class="empty-row" *ngIf="copyValues.length === 0">
+            <tr class="empty-row" *ngIf="clonedList.length === 0">
                 <td colspan="4">Noch keine Autoren hinzugefügt</td>
             </tr>
         </table>
@@ -28,9 +28,9 @@
 
     <div class="full-data-container" [class.opened]="addingModus">
         <mat-form-field>
-            <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
+            <input [(ngModel)]="filterWord" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
                    (keydown.escape)="clear()">
-            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+            <button *ngIf="filterWord" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
@@ -75,21 +75,21 @@
 
     <div class="action-btn-container">
         <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-        <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">ÜBERNEHMEN
+        <button type="button" mat-flat-button color="primary" [disabled]="!listChanged" (click)="save()">ÜBERNEHMEN
         </button>
     </div>
 
 </div>
 
-<div class="dialog-single" *ngIf="maximum==1">
+<div class="dialog-single" *ngIf="max==1">
 
     <h2>Autor auswählen</h2>
 
         <div class="full-data-container">
         <mat-form-field>
-            <input [(ngModel)]="value" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
+            <input [(ngModel)]="filterWord" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
                    (keydown.escape)="clear()">
-            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+            <button *ngIf="filterWord" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
@@ -100,7 +100,7 @@
                     <th>Vorname</th>
                     <th>Nachname</th>
                 </tr>
-                <tr class="data-row" *ngFor="let author of filteredList" (click)="choseElement(author)">
+                <tr class="data-row" *ngFor="let author of filteredList" (click)="chooseElement(author)">
                     <td>{{author.internalID}}</td>
                     <td>{{author.firstName}}</td>
                     <td>{{author.lastName}}</td>
@@ -114,6 +114,6 @@
 
     <div class="action-btn-container">
         <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-        <button type="button" mat-flat-button color="primary" [disabled]="!valueChanged" (click)="save()">ÜBERNEHMEN</button>
+        <button type="button" mat-flat-button color="primary" [disabled]="!listChanged" (click)="save()">ÜBERNEHMEN</button>
     </div>
 </div>

@@ -9,31 +9,30 @@ import {ApiService} from "../../services/apiService/api.service";
     styleUrls: ["../category-ref.component.scss"]
 })
 export class LanguageRefComponent implements OnInit {
-
-    copyValues: any[];
     addingModus: boolean;
-    list: Language[];
+    clonedList: any[];
+    allLanguages: Language[];
     filteredList: Language[];
-
-    value: string;
-    valueChanged: boolean;
-    maximum: number;
+    filterWord: string;
+    listChanged: boolean;
+    max: number;
 
     constructor(private dialogRef: MatDialogRef<LanguageRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         if (data["editMod"]) {
-            this.copyValues = [...data["values"]];
+            this.clonedList = [...data["list"]];
+            this.closeList();
         } else {
-            this.copyValues = data["values"].length !== 0 ? [...data["values"]] : [];
+            this.clonedList = data["list"].length !== 0 ? [...data["list"]] : [];
+            this.openList();
         }
 
-        this.maximum = data["max"];
+        this.max = data["max"];
     }
 
     ngOnInit() {
-        this.addingModus = false;
-        this.list = this.apiService.getLanguages();
-        this.filteredList = [...this.list];
-        this.valueChanged = false;
+        this.allLanguages = this.apiService.getLanguages();
+        this.filteredList = [...this.allLanguages];
+        this.listChanged = false;
     }
 
     openList() {
@@ -44,31 +43,31 @@ export class LanguageRefComponent implements OnInit {
         this.addingModus = false;
     }
 
-    add(language: Language) {
-        this.copyValues.push(language);
-        this.valueChanged = true;
+    addLanguage(language: Language) {
+        this.clonedList.push(language);
+        this.listChanged = true;
     }
 
-    remove(id: number) {
-        this.copyValues = this.copyValues.filter((language) => language.id !== id);
-        this.valueChanged = true;
+    removeLanguage(id: number) {
+        this.clonedList = this.clonedList.filter((language) => language.id !== id);
+        this.listChanged = true;
     }
 
     applyFilter(value: string) {
-        this.filteredList = this.list.filter((language) => (language.name.toLowerCase().indexOf(value.toLowerCase()) > -1));
+        this.filteredList = this.allLanguages.filter((language) => (language.name.toLowerCase().indexOf(value.toLowerCase()) > -1));
     }
 
     isUsed(id: number): boolean {
-        return this.copyValues.filter((language) => language.id === id).length !== 0;
+        return this.clonedList.filter((language) => language.id === id).length !== 0;
     }
 
     hasMaximum(): boolean | null {
-        return this.maximum ? this.copyValues.length === this.maximum : null;
+        return this.max ? this.clonedList.length === this.max : null;
     }
 
     clear() {
-        this.value = "";
-        this.filteredList = [...this.list];
+        this.filterWord = "";
+        this.filteredList = [...this.allLanguages];
     }
 
     cancel() {
@@ -76,17 +75,17 @@ export class LanguageRefComponent implements OnInit {
     }
 
     save() {
-        this.dialogRef.close({submit: true, data: [...this.copyValues]});
+        this.dialogRef.close({submit: true, data: [...this.clonedList]});
     }
 
-    choseElement(language: Language) {
-        if ((this.copyValues.length !== 0) && (this.copyValues[0].id === language.id)) {
+    chooseElement(language: Language) {
+        if ((this.clonedList.length !== 0) && (this.clonedList[0].id === language.id)) {
             return;
         }
 
-        this.copyValues = [];
-        this.copyValues.push(language);
-        this.valueChanged = true;
+        this.clonedList = [];
+        this.clonedList.push(language);
+        this.listChanged = true;
     }
 
 }

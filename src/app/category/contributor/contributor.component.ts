@@ -52,7 +52,7 @@ export class ContributorComponent implements OnInit {
         contributor[property] = event;
         this.apiService.updateContributor(contributor.id, contributor);
         this.resetTable();
-        this.applyFilter(this.value);
+        this.applyFilter(this.value ? this.value : "");
         popover.close();
     }
 
