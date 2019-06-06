@@ -9,10 +9,10 @@ import {Book, Language} from "../../model/model";
 
 @Component({
     selector: "app-create-edition",
-    templateUrl: "./create-edition.component.html",
+    templateUrl: "./create-update-edition.component.html",
     styleUrls: ["../create-update.component.scss"]
 })
-export class CreateEditionComponent implements OnInit {
+export class CreateUpdateEditionComponent implements OnInit {
     edition: any;
     editMod: boolean;
     form: FormGroup;
@@ -23,7 +23,7 @@ export class CreateEditionComponent implements OnInit {
                 private bookDialog: MatDialog,
                 private languageDialog: MatDialog,
                 private router: Router,
-                private dialogRef: MatDialogRef<CreateEditionComponent>,
+                private dialogRef: MatDialogRef<CreateUpdateEditionComponent>,
                 @Inject(MAT_DIALOG_DATA) data) {
         this.edition = JSON.parse(JSON.stringify(data.resource));
         this.editMod = data.editMod;

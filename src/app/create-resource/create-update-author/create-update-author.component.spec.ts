@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { CreatePassageComponent } from "./create-passage.component";
+import { CreateUpdateAuthorComponent } from "./create-update-author.component";
 
-describe("CreatePassageComponent", () => {
-  let component: CreatePassageComponent;
-  let fixture: ComponentFixture<CreatePassageComponent>;
+describe("CreateUpdateAuthorComponent", () => {
+  let component: CreateUpdateAuthorComponent;
+  let fixture: ComponentFixture<CreateUpdateAuthorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreatePassageComponent ]
+      declarations: [ CreateUpdateAuthorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreatePassageComponent);
+    fixture = TestBed.createComponent(CreateUpdateAuthorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

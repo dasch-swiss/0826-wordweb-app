@@ -19,9 +19,9 @@ import {AuthorComponent} from "./category/author/author.component";
 import {BookComponent} from "./category/book/book.component";
 import {LanguageComponent} from "./category/language/language.component";
 import {AuthorRefComponent} from "./dialog/author-ref/author-ref.component";
-import {CreateAuthorComponent} from "./create-resource/create-author/create-author.component";
-import {CreateBookComponent} from "./create-resource/create-book/create-book.component";
-import { CreateLanguageComponent } from "./create-resource/create-language/create-language.component";
+import {CreateUpdateAuthorComponent} from "./create-resource/create-update-author/create-update-author.component";
+import {CreateUpdateBookComponent} from "./create-resource/create-update-book/create-update-book.component";
+import { CreateUpdateLanguageComponent } from "./create-resource/create-update-language/create-update-language.component";
 import {RouterModule, Routes} from "@angular/router";
 import { VenueRefComponent } from "./dialog/venue-ref/venue-ref.component";
 import { EditionComponent } from "./category/edition/edition.component";
@@ -29,7 +29,7 @@ import { OrganisationComponent } from "./category/organisation/organisation.comp
 import { OrganisationRefComponent } from "./dialog/organisation-ref/organisation-ref.component";
 import { GenreComponent } from "./category/genre/genre.component";
 import {TreetableModule} from "ng-material-treetable";
-import { CreateEditionComponent } from "./create-resource/create-edition/create-edition.component";
+import { CreateUpdateEditionComponent } from "./create-resource/create-update-edition/create-update-edition.component";
 import { SubjectComponent } from "./category/subject/subject.component";
 import { LanguageRefComponent } from "./dialog/language-ref/language-ref.component";
 import { BookRefComponent } from "./dialog/book-ref/book-ref.component";
@@ -37,7 +37,7 @@ import { PassageComponent } from "./category/passage/passage.component";
 import { EditionRefComponent } from "./dialog/edition-ref/edition-ref.component";
 import { LexiaComponent } from "./category/lexia/lexia.component";
 import { ContributorComponent } from "./category/contributor/contributor.component";
-import { CreatePassageComponent } from "./create-resource/create-passage/create-passage.component";
+import { CreateUpdatePassageComponent } from "./create-resource/create-update-passage/create-update-passage.component";
 
 const routes: Routes = [
     {path: "book", component: BookComponent},
@@ -70,13 +70,13 @@ const routes: Routes = [
         LanguageRefComponent,
         BookRefComponent,
         EditionRefComponent,
-        CreateAuthorComponent,
-        CreateBookComponent,
-        CreateLanguageComponent,
-        CreateEditionComponent,
         LexiaComponent,
         ContributorComponent,
-        CreatePassageComponent
+        CreateUpdateAuthorComponent,
+        CreateUpdateBookComponent,
+        CreateUpdateLanguageComponent,
+        CreateUpdateEditionComponent,
+        CreateUpdatePassageComponent,
     ],
     imports: [
         RouterModule.forRoot(routes),
@@ -110,11 +110,11 @@ const routes: Routes = [
         BookRefComponent,
         LanguageRefComponent,
         EditionRefComponent,
-        CreateAuthorComponent,
-        CreateBookComponent,
-        CreateLanguageComponent,
-        CreateEditionComponent,
-        CreatePassageComponent
+        CreateUpdateAuthorComponent,
+        CreateUpdateBookComponent,
+        CreateUpdateLanguageComponent,
+        CreateUpdateEditionComponent,
+        CreateUpdatePassageComponent
     ]
 })
 export class AppModule {

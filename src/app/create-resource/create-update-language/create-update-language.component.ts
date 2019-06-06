@@ -5,15 +5,15 @@ import {ApiService} from "../../services/apiService/api.service";
 
 @Component({
     selector: "app-create-language",
-    templateUrl: "./create-language.component.html",
+    templateUrl: "./create-update-language.component.html",
     styleUrls: ["../create-update.component.scss"]
 })
-export class CreateLanguageComponent implements OnInit {
+export class CreateUpdateLanguageComponent implements OnInit {
     language: any;
     editMod: boolean;
     form: FormGroup;
 
-    constructor(private dialogRef: MatDialogRef<CreateLanguageComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+    constructor(private dialogRef: MatDialogRef<CreateUpdateLanguageComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.language = JSON.parse(JSON.stringify(data.resource));
         this.editMod = data.editMod;
     }

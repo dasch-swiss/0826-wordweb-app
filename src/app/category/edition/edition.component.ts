@@ -5,7 +5,7 @@ import {Edition} from "../../model/model";
 import {BookRefComponent} from "../../dialog/book-ref/book-ref.component";
 import {LanguageRefComponent} from "../../dialog/language-ref/language-ref.component";
 import {SatPopover} from "@ncstate/sat-popover";
-import {CreateEditionComponent} from "../../create-resource/create-edition/create-edition.component";
+import {CreateUpdateEditionComponent} from "../../create-resource/create-update-edition/create-update-edition.component";
 
 @Component({
     selector: "app-edition",
@@ -72,7 +72,7 @@ export class EditionComponent implements OnInit {
             resource: resource,
             editMod: editMod,
         };
-        const dialogRef = this.editionDialog.open(CreateEditionComponent, dialogConfig);
+        const dialogRef = this.editionDialog.open(CreateUpdateEditionComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
                 this.resetTable();

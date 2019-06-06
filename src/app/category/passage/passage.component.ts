@@ -4,7 +4,7 @@ import {Passage} from "../../model/model";
 import {ApiService} from "../../services/apiService/api.service";
 import {EditionRefComponent} from "../../dialog/edition-ref/edition-ref.component";
 import {SatPopover} from "@ncstate/sat-popover";
-import {CreatePassageComponent} from "../../create-resource/create-passage/create-passage.component";
+import {CreateUpdatePassageComponent} from "../../create-resource/create-update-passage/create-update-passage.component";
 
 @Component({
     selector: "app-passage",
@@ -70,7 +70,7 @@ export class PassageComponent implements OnInit {
             resource: resource,
             editMod: editMod,
         };
-        const dialogRef = this.passageDialog.open(CreatePassageComponent, dialogConfig);
+        const dialogRef = this.passageDialog.open(CreateUpdatePassageComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
                 this.resetTable();

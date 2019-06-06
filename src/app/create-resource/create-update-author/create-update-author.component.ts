@@ -5,15 +5,15 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
     selector: "app-create-author",
-    templateUrl: "./create-author.component.html",
+    templateUrl: "./create-update-author.component.html",
     styleUrls: ["../create-update.component.scss"]
 })
-export class CreateAuthorComponent implements OnInit {
+export class CreateUpdateAuthorComponent implements OnInit {
     author: any;
     editMod: boolean;
     form: FormGroup;
 
-    constructor(private dialogRef: MatDialogRef<CreateAuthorComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+    constructor(private dialogRef: MatDialogRef<CreateUpdateAuthorComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.author = JSON.parse(JSON.stringify(data.resource));
         this.editMod = data.editMod;
     }

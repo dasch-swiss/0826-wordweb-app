@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {ApiService} from "../../services/apiService/api.service";
 import {Author, Book} from "../../model/model";
-import {CreateAuthorComponent} from "../../create-resource/create-author/create-author.component";
+import {CreateUpdateAuthorComponent} from "../../create-resource/create-update-author/create-update-author.component";
 import {SatPopover} from "@ncstate/sat-popover";
 
 @Component({
@@ -68,7 +68,7 @@ export class AuthorComponent implements OnInit {
             resource: resource,
             editMod: editMod,
         };
-        const dialogRef = this.createAuthorDialog.open(CreateAuthorComponent, dialogConfig);
+        const dialogRef = this.createAuthorDialog.open(CreateUpdateAuthorComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
                 this.resetTable();

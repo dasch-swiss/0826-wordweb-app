@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatSort, MatTableDataSource} from "@angular/material";
 import {ApiService} from "../../services/apiService/api.service";
-import {CreateLanguageComponent} from "../../create-resource/create-language/create-language.component";
+import {CreateUpdateLanguageComponent} from "../../create-resource/create-update-language/create-update-language.component";
 import {Subject} from "../../model/model";
 import {SatPopover} from "@ncstate/sat-popover";
 
@@ -62,7 +62,7 @@ export class SubjectComponent implements OnInit {
         // dialogConfig.disableClose = true;
         // dialogConfig.autoFocus = true;
         // dialogConfig.width = "450px";
-        // this.createLanguageDialog.open(CreateLanguageComponent, dialogConfig);
+        // this.createLanguageDialog.open(CreateUpdateLanguageComponent, dialogConfig);
     }
 
 }

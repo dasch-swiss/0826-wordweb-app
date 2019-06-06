@@ -8,10 +8,10 @@ import {EditionRefComponent} from "../../dialog/edition-ref/edition-ref.componen
 
 @Component({
     selector: "app-create-passage",
-    templateUrl: "./create-passage.component.html",
+    templateUrl: "./create-update-passage.component.html",
     styleUrls: ["../create-update.component.scss"]
 })
-export class CreatePassageComponent implements OnInit {
+export class CreateUpdatePassageComponent implements OnInit {
     passage: any;
     editMod: boolean;
     form: FormGroup;
@@ -20,7 +20,7 @@ export class CreatePassageComponent implements OnInit {
     constructor(private apiService: ApiService,
                 private editionDialog: MatDialog,
                 private router: Router,
-                private dialogRef: MatDialogRef<CreatePassageComponent>,
+                private dialogRef: MatDialogRef<CreateUpdatePassageComponent>,
                 @Inject(MAT_DIALOG_DATA) data) {
         this.passage = JSON.parse(JSON.stringify(data.resource));
         this.editMod = data.editMod;
@@ -48,13 +48,11 @@ export class CreatePassageComponent implements OnInit {
             this.apiService.updatePassage(this.passage.id, this.passage);
             this.dialogRef.close({refresh: true});
         } else {
-            console.log("before", this.editionList);
             const newPassage = {
                 text: this.form.get("text").value,
                 page: this.form.get("page").value,
                 edition: this.editionList[0]
             };
-            console.log("after", this.editionList);
             // create request
             this.apiService.createPassage(newPassage);
             this.dialogRef.close({refresh: true});

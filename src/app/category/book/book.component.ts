@@ -6,7 +6,7 @@ import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
 import {SatPopover} from "@ncstate/sat-popover";
 import {VenueRefComponent} from "../../dialog/venue-ref/venue-ref.component";
 import {OrganisationRefComponent} from "../../dialog/organisation-ref/organisation-ref.component";
-import {CreateBookComponent} from "../../create-resource/create-book/create-book.component";
+import {CreateUpdateBookComponent} from "../../create-resource/create-update-book/create-update-book.component";
 
 @Component({
     selector: "app-book",
@@ -84,7 +84,7 @@ export class BookComponent implements OnInit {
             resource: resource,
             editMod: editMod,
         };
-        const dialogRef = this.bookDialog.open(CreateBookComponent, dialogConfig);
+        const dialogRef = this.bookDialog.open(CreateUpdateBookComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
                 this.resetTable();

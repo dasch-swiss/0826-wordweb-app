@@ -10,10 +10,10 @@ import {Author, Organisation, Venue} from "../../model/model";
 
 @Component({
     selector: "app-create-book",
-    templateUrl: "./create-book.component.html",
+    templateUrl: "./create-update-book.component.html",
     styleUrls: ["../create-update.component.scss"]
 })
-export class CreateBookComponent implements OnInit {
+export class CreateUpdateBookComponent implements OnInit {
     readonly MAX_CHIPS: number = 4;
     book: any;
     editMod: boolean;
@@ -36,7 +36,7 @@ export class CreateBookComponent implements OnInit {
                 private authorDialog: MatDialog,
                 private venueDialog: MatDialog,
                 private router: Router,
-                private dialogRef: MatDialogRef<CreateBookComponent>,
+                private dialogRef: MatDialogRef<CreateUpdateBookComponent>,
                 @Inject(MAT_DIALOG_DATA) data) {
         this.book = JSON.parse(JSON.stringify(data.resource));
         this.editMod = data.editMod;

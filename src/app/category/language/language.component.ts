@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {ApiService} from "../../services/apiService/api.service";
 import {Language} from "../../model/model";
-import {CreateLanguageComponent} from "../../create-resource/create-language/create-language.component";
+import {CreateUpdateLanguageComponent} from "../../create-resource/create-update-language/create-update-language.component";
 import {SatPopover} from "@ncstate/sat-popover";
 
 @Component({
@@ -59,7 +59,7 @@ export class LanguageComponent implements OnInit {
             resource: resource,
             editMod: editMod,
         };
-        const dialogRef = this.createLanguageDialog.open(CreateLanguageComponent, dialogConfig);
+        const dialogRef = this.createLanguageDialog.open(CreateUpdateLanguageComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
                 this.resetTable();
