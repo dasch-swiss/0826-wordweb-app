@@ -9,7 +9,7 @@ import {EditionRefComponent} from "../../dialog/edition-ref/edition-ref.componen
 @Component({
     selector: "app-create-passage",
     templateUrl: "./create-passage.component.html",
-    styleUrls: ["./create-passage.component.scss"]
+    styleUrls: ["../create-update.component.scss"]
 })
 export class CreatePassageComponent implements OnInit {
     passage: any;

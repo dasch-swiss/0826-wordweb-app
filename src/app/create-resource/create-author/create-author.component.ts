@@ -6,7 +6,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 @Component({
     selector: "app-create-author",
     templateUrl: "./create-author.component.html",
-    styleUrls: ["./create-author.component.scss"]
+    styleUrls: ["../create-update.component.scss"]
 })
 export class CreateAuthorComponent implements OnInit {
     author: any;

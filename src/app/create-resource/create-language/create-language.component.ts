@@ -6,7 +6,7 @@ import {ApiService} from "../../services/apiService/api.service";
 @Component({
     selector: "app-create-language",
     templateUrl: "./create-language.component.html",
-    styleUrls: ["./create-language.component.scss"]
+    styleUrls: ["../create-update.component.scss"]
 })
 export class CreateLanguageComponent implements OnInit {
     language: any;

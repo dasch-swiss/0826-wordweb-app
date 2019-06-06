@@ -13,7 +13,6 @@ import {
     Subject,
     Venue
 } from "../../model/model";
-import {elementDef} from "@angular/core/src/view";
 
 @Injectable({
     providedIn: "root"

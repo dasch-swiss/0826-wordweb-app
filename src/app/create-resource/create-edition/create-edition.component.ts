@@ -10,7 +10,7 @@ import {Book, Language} from "../../model/model";
 @Component({
     selector: "app-create-edition",
     templateUrl: "./create-edition.component.html",
-    styleUrls: ["./create-edition.component.scss"]
+    styleUrls: ["../create-update.component.scss"]
 })
 export class CreateEditionComponent implements OnInit {
     edition: any;

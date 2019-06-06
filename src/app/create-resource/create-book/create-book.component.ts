@@ -11,7 +11,7 @@ import {Author, Organisation, Venue} from "../../model/model";
 @Component({
     selector: "app-create-book",
     templateUrl: "./create-book.component.html",
-    styleUrls: ["./create-book.component.scss"]
+    styleUrls: ["../create-update.component.scss"]
 })
 export class CreateBookComponent implements OnInit {
     readonly MAX_CHIPS: number = 4;
