@@ -108,6 +108,8 @@ export class ApiService {
             id: book.id,
             internalID: book.internalID,
             title: book.title,
+            edition: book.edition,
+            editionHist: book.editionHist,
             authors: book.authors.map(author => author.id),
             venues: book.venues.map(venue => venue.id),
             organisations: book.organisations.map(organisation => organisation.id),
@@ -121,7 +123,9 @@ export class ApiService {
             id: passage.id,
             book: passage.book ? passage.book.id : null,
             text: passage.text,
+            textHist: passage.textHist,
             page: passage.page,
+            pageHist: passage.pageHist,
             order: passage.order
         };
         this.backendData.updatePassage(iri, data);
