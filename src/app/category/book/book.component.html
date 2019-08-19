@@ -47,6 +47,28 @@
             </td>
         </ng-container>
 
+        <!-- edition column -->
+        <ng-container matColumnDef="edition">
+            <th mat-header-cell *matHeaderCellDef>Edition</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="edit-value" [satPopoverAnchorFor]="edi" (click)="edi.open()">{{element.edition}}</div>
+                <sat-popover #edi hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="edi.isOpen()" [value]="element.edition" [type]="'string'" (newValue)="updateProperty($event,'edition', element, edi)"></app-inline-edit>
+                </sat-popover>
+            </td>
+        </ng-container>
+
+        <!-- edition hist column -->
+        <ng-container matColumnDef="editionHist">
+            <th mat-header-cell *matHeaderCellDef>Edition Hist.</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="edit-value" [satPopoverAnchorFor]="ediHist" (click)="ediHist.open()">{{element.editionHist}}</div>
+                <sat-popover #ediHist hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="ediHist.isOpen()" [value]="element.editionHist" [type]="'string'" (newValue)="updateProperty($event,'editionHist', element, ediHist)"></app-inline-edit>
+                </sat-popover>
+            </td>
+        </ng-container>
+
         <!-- venue column -->
         <ng-container matColumnDef="venues">
             <th mat-header-cell *matHeaderCellDef>Venue</th>

@@ -458,8 +458,8 @@ export class BackendService {
         authors: [this.a1.id, this.a8.id, this.a3.id],
         venues: [this.v1.id],
         organisations: [this.org3.id],
-        edition: "Romeo and Juliet, W. Shakespeare, [not_original]",
-        editionHist: "Romeo and Juliet, W. Shakespeare, [original]",
+        edition: "Romeo and Juliet, W. Shakespeare, [not_or]",
+        editionHist: "Romeo and Juliet, W. Shakespeare, [or]",
         order: 0,
         references: 0
     };
@@ -468,7 +468,7 @@ export class BackendService {
         id: 1,
         book: 1,
         text: "thus with a kiss I die",
-        textHist: "[original] thus with a kiss I die",
+        textHist: "[or] thus with a kiss I die",
         page: "2",
         pageHist: "2",
         order: 0,
@@ -481,7 +481,7 @@ export class BackendService {
         text: "My bounty is as boundless as the sea,\n" +
             "My love as deep; the more I give to thee,\n" +
             "The more I have, for both are infinite.",
-        textHist: "[original] My bounty is as boundless as the sea,\n" +
+        textHist: "[or] My bounty is as boundless as the sea,\n" +
             "My love as deep; the more I give to thee,\n" +
             "The more I have, for both are infinite.",
         page: "101-102",
@@ -497,8 +497,8 @@ export class BackendService {
         authors: [this.a1.id, this.a10.id],
         venues: [this.v3.id],
         organisations: [this.v1.id],
-        edition: "Hamlet, W. Shakespeare, [not_original]",
-        editionHist: "The Tragedy of Hamlet, W. Shakespeare, [original]",
+        edition: "Hamlet, W. Shakespeare, [not_or]",
+        editionHist: "The Tragedy of Hamlet, W. Shakespeare, [or]",
         order: 0,
         references: 2
     };
@@ -510,7 +510,7 @@ export class BackendService {
             "in form, in moving, how express and admirable! in action how like an angel! " +
             "in apprehension how like a god! the beauty of the world! the paragon of animals! " +
             "And yet, to me, what is this quintessence of dust?",
-        textHist: "[original] What a piece of work is a man! How noble in reason! how infinite in faculty! " +
+        textHist: "[or] What a piece of work is a man! How noble in reason! how infinite in faculty! " +
             "in form, in moving, how express and admirable! in action how like an angel! " +
             "in apprehension how like a god! the beauty of the world! the paragon of animals! " +
             "And yet, to me, what is this quintessence of dust?",
@@ -525,7 +525,7 @@ export class BackendService {
         book: 2,
         text: "Though this be madness, yet there is method in't.",
         page: "90",
-        textHist: "[original] Though this be madness, yet there is method in't.",
+        textHist: "[or] Though this be madness, yet there is method in't.",
         pageHist: "90",
         order: 0,
         references: 0
@@ -539,7 +539,7 @@ export class BackendService {
             "Lord Polonius: What is the matter, my lord? \n" +
             "Hamlet: Between who? \n" +
             "Lord Polonius: I mean, the matter that you read, my lord.",
-        textHist: "[original] Lord Polonius: What do you read, my lord? \n" +
+        textHist: "[or] Lord Polonius: What do you read, my lord? \n" +
             "Hamlet: Words, words, words. \n" +
             "Lord Polonius: What is the matter, my lord? \n" +
             "Hamlet: Between who? \n" +
@@ -557,8 +557,8 @@ export class BackendService {
         authors: [this.a1.id],
         venues: [this.v6.id],
         organisations: [this.org5.id],
-        edition: "The Comedy of Errors, W. Shakespeare, [not_original]",
-        editionHist: "The Comedy of Errors, W. Shakespeare, [original]",
+        edition: "The Comedy of Errors, W. Shakespeare, [not_or]",
+        editionHist: "The Comedy of Errors, W. Shakespeare, [or]",
         order: 0,
         references: 6
     };
@@ -572,7 +572,7 @@ export class BackendService {
             "Was wrought by nature, not by vile offence,\n" +
             "I'll utter what my sorrow gives me leave.",
         page: "129",
-        textHist: "[original] A heavier task could not have been imposed\n" +
+        textHist: "[or] A heavier task could not have been imposed\n" +
             "Than I to speak my griefs unspeakable;\n" +
             "Yet, that the world may witness that my end\n" +
             "Was wrought by nature, not by vile offence,\n" +
@@ -593,7 +593,7 @@ export class BackendService {
             "That mourned for fashion, ignorant what to fear,\n" +
             "Forced me to seek delays for them and me.",
         page: "205-207",
-        textHist: "[original] A doubtful warrant of immediate death,\n" +
+        textHist: "[or] A doubtful warrant of immediate death,\n" +
             "Which though myself would gladly have embraced,\n" +
             "Yet the incessant weepings of my wife,\n" +
             "Weeping before for what she saw must come,\n" +
@@ -612,8 +612,8 @@ export class BackendService {
         authors: [this.a2.id],
         venues: [this.v4.id],
         organisations: [this.org1.id],
-        edition: "Tamburlaine, C. Marlowe, [not_original]",
-        editionHist: "Tamburlaine, C. Marlowe, [original]",
+        edition: "Tamburlaine, C. Marlowe, [not_or]",
+        editionHist: "Tamburlaine, C. Marlowe, [or]",
         order: 0,
         references: 1
     };
@@ -624,7 +624,7 @@ export class BackendService {
         text: "I hold the Fates bound fast in iron chains,\n" +
             "And with my hand turn Fortune's wheel about;",
         page: "14",
-        textHist: "[original] I hold the Fates bound fast in iron chains,\n" +
+        textHist: "[or] I hold the Fates bound fast in iron chains,\n" +
             "And with my hand turn Fortune's wheel about;",
         pageHist: "14",
         order: 0,
@@ -636,7 +636,7 @@ export class BackendService {
         book: 4,
         text: "Well, bark, ye dogs; I'll bridle all your tongues",
         page: "4",
-        textHist: "[original] Well, bark, ye dogs; I'll bridle all your tongues",
+        textHist: "[or] Well, bark, ye dogs; I'll bridle all your tongues",
         pageHist: "4",
         order: 0,
         references: 0
@@ -649,8 +649,8 @@ export class BackendService {
         authors: [this.a12.id, this.a19.id],
         venues: [this.v2.id, this.v8.id],
         organisations: [this.org4.id],
-        edition: "Of Two Evils Choose the Least, [not_original]",
-        editionHist: "Of Two Evils Choose the Least, [original]",
+        edition: "Of Two Evils Choose the Least, [not_or]",
+        editionHist: "Of Two Evils Choose the Least, [or]",
         order: 0,
         references: 1
     };
@@ -662,8 +662,8 @@ export class BackendService {
         authors: [this.a10.id],
         venues: [this.v2.id],
         organisations: [this.org3.id, this.org7.id],
-        edition: "The Cruel Brother, [not_original]",
-        editionHist: "The Cruel Brother, [original]",
+        edition: "The Cruel Brother, [not_or]",
+        editionHist: "The Cruel Brother, [or]",
         order: 0,
         references: 1
     };
@@ -675,8 +675,8 @@ export class BackendService {
         authors: [this.a22.id],
         venues: [],
         organisations: [],
-        edition: "The Art of Reason, [not_original]",
-        editionHist: "The Art of Reason, [original]",
+        edition: "The Art of Reason, [not_or]",
+        editionHist: "The Art of Reason, [or]",
         order: 0,
         references: 1
     };
@@ -688,8 +688,8 @@ export class BackendService {
         authors: [this.a6.id, this.a9.id],
         venues: [this.v1.id],
         organisations: [this.org1.id],
-        edition: "Five Hundred Points of Good Husbandry, [not_original]",
-        editionHist: "Five Hundred Points of Good Husbandry, [original]",
+        edition: "Five Hundred Points of Good Husbandry, [not_or]",
+        editionHist: "Five Hundred Points of Good Husbandry, [or]",
         order: 0,
         references: 1
     };
@@ -701,8 +701,8 @@ export class BackendService {
         authors: [this.a20.id],
         venues: [],
         organisations: [],
-        edition: "Treatise of God's Effectual Calling, [not_original]",
-        editionHist: "Treatise of God's Effectual Calling, [original]",
+        edition: "Treatise of God's Effectual Calling, [not_or]",
+        editionHist: "Treatise of God's Effectual Calling, [or]",
         order: 0,
         references: 1
     };
@@ -714,8 +714,8 @@ export class BackendService {
         authors: [this.a22.id],
         venues: [this.v5.id],
         organisations: [this.org2.id],
-        edition: "The Jews' Tragedy, [not_original]",
-        editionHist: "The Jews' Tragedy, [original]",
+        edition: "The Jews' Tragedy, [not_or]",
+        editionHist: "The Jews' Tragedy, [or]",
         order: 0,
         references: 1
     };

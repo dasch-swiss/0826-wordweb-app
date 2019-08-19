@@ -15,7 +15,7 @@ import {CreateUpdateBookComponent} from "../../create-resource/create-update-boo
 })
 export class BookComponent implements OnInit {
 
-    displayedColumns: string[] = ["internalID", "title", "authors", "venues", "organisations", "order", "references", "action"];
+    displayedColumns: string[] = ["internalID", "title", "authors", "edition", "editionHist", "venues", "organisations", "order", "references", "action"];
     dataSource: MatTableDataSource<Book>;
     value: string;
 
@@ -45,6 +45,8 @@ export class BookComponent implements OnInit {
     customFilter(book: Book, filterValue: string): boolean {
         const containsInternalID = book.internalID.indexOf(filterValue) > -1;
         const containsTitle = book.title.toLowerCase().indexOf(filterValue) > -1;
+        const containEdition = book.edition.toLowerCase().indexOf(filterValue) > -1;
+        const containEditionHist = book.editionHist.toLowerCase().indexOf(filterValue) > -1;
         const containsAuthorName = book.authors.filter(author => {
             const fullName = `${author.firstName} ${author.lastName}`;
             return fullName.toLowerCase().indexOf(filterValue) > -1;
@@ -57,7 +59,7 @@ export class BookComponent implements OnInit {
             return organisation.name.toLowerCase().indexOf(filterValue) > -1;
         }).length > 0;
 
-        return containsInternalID || containsTitle || containsAuthorName || containsVenue || containsOrganisation;
+        return containsInternalID || containsTitle || containEdition || containEditionHist || containsAuthorName || containsVenue || containsOrganisation;
     }
 
     clear() {
