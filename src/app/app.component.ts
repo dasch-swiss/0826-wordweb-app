@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {Author, Book, Edition, EditionOriginal, PassageOriginal} from "./model/model";
+import {Author, Book} from "./model/model";
 import {ApiService} from "./services/apiService/api.service";
 import {Router} from "@angular/router";
 
@@ -12,9 +12,6 @@ export class AppComponent implements OnInit {
     bookList: Book[];
     passageList: any[];
     authorList: Author[];
-    editionList: Edition[];
-    editionOriginalList: EditionOriginal[];
-    passageOriginalList: PassageOriginal[];
 
     list: string;
 
@@ -36,32 +33,11 @@ export class AppComponent implements OnInit {
         this.authorList = this.apiService.getAuthors();
     }
 
-    showEditions() {
-        this.list = "edition";
-        this.editionList = this.apiService.getEditions(true);
-    }
-
     showPassages() {
         this.list = "passage";
         this.passageList = this.apiService.getPassages(true).map(passage => {
             passage["collapsed"] = false;
             return passage;
-        });
-    }
-
-    showEditionsOriginal() {
-        this.list = "editionOriginal";
-        this.editionOriginalList = this.apiService.getEditionsOriginal(true).map(editionOriginal => {
-            editionOriginal["collapsed"] = false;
-            return editionOriginal;
-        });
-    }
-
-    showPassagesOriginal() {
-        this.list = "passageOriginal";
-        this.passageOriginalList = this.apiService.getPassagesOriginal(true).map(passageOriginal => {
-            passageOriginal["collapsed"] = false;
-            return passageOriginal;
         });
     }
 
@@ -79,10 +55,6 @@ export class AppComponent implements OnInit {
 
     showLanguageCat() {
         this.router.navigate(["language"]);
-    }
-
-    showEditionCat() {
-        this.router.navigate(["edition"]);
     }
 
     showOrganisationCat() {

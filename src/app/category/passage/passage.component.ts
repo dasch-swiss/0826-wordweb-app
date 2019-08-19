@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {Passage} from "../../model/model";
 import {ApiService} from "../../services/apiService/api.service";
-import {EditionRefComponent} from "../../dialog/edition-ref/edition-ref.component";
 import {SatPopover} from "@ncstate/sat-popover";
 import {CreateUpdatePassageComponent} from "../../create-resource/create-update-passage/create-update-passage.component";
 
@@ -13,7 +12,7 @@ import {CreateUpdatePassageComponent} from "../../create-resource/create-update-
 })
 export class PassageComponent implements OnInit {
 
-    displayedColumns: string[] = ["edition", "text", "page", "order", "references", "action"];
+    displayedColumns: string[] = ["book", "text", "page", "order", "references", "action"];
     dataSource: MatTableDataSource<Passage>;
     value: string;
 
@@ -40,7 +39,7 @@ export class PassageComponent implements OnInit {
     }
 
     customFilter(passage: Passage, filterValue: string): boolean {
-        const containsEdition = passage.edition.publicationInfo.toLowerCase().indexOf(filterValue) > -1;
+        const containsEdition = passage.book.title.toLowerCase().indexOf(filterValue) > -1;
         const containsText = passage.text.toLowerCase().indexOf(filterValue) > -1;
 
         return containsEdition || containsText;
@@ -91,25 +90,25 @@ export class PassageComponent implements OnInit {
         popover.close();
     }
 
-    editEdition(passage: Passage) {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
-        dialogConfig.data = {
-            list: [passage.edition],
-            editMod: [passage.edition].length > 0,
-            max: 1
-        };
-        const dialogRef = this.editionDialog.open(EditionRefComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe((data) => {
-            if (data.submit) {
-                const copyPassage = JSON.parse(JSON.stringify(passage));
-                copyPassage.edition = data.data[0];
-                // update request
-                this.apiService.updatePassage(copyPassage.id, copyPassage);
-                this.resetTable();
-            }
-        });
+    editBook(passage: Passage) {
+        // const dialogConfig = new MatDialogConfig();
+        // dialogConfig.disableClose = true;
+        // dialogConfig.autoFocus = true;
+        // dialogConfig.data = {
+        //     list: [passage.book],
+        //     editMod: [passage.book].length > 0,
+        //     max: 1
+        // };
+        // const dialogRef = this.editionDialog.open(EditionRefComponent, dialogConfig);
+        // dialogRef.afterClosed().subscribe((data) => {
+        //     if (data.submit) {
+        //         const copyPassage = JSON.parse(JSON.stringify(passage));
+        //         copyPassage.edition = data.data[0];
+        //         // update request
+        //         this.apiService.updatePassage(copyPassage.id, copyPassage);
+        //         this.resetTable();
+        //     }
+        // });
     }
 
 }

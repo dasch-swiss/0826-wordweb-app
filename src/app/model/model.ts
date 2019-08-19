@@ -27,42 +27,19 @@ export interface Book {
     authors: Author[];
     venues: Venue[];
     organisations: Organisation[];
-    order: number;
-    references: number;
-}
-
-export interface EditionOriginal {
-    id: number;
-    book: Book;
-    language: Language;
-    publicationInfo: string;
-    order: number;
-    references: number;
-}
-
-export interface Edition {
-    id: number;
-    book: Book;
-    language: Language;
-    publicationInfo: string;
+    edition: string;
+    editionHist: string;
     order: number;
     references: number;
 }
 
 export interface Passage {
     id: number;
-    edition: Edition;
+    book: Book;
     text: string;
+    textHist: string;
     page: string;
-    order: number;
-    references: number;
-}
-
-export interface PassageOriginal {
-    id: number;
-    edition: EditionOriginal;
-    text: string;
-    page: string;
+    pageHist: string;
     order: number;
     references: number;
 }

@@ -23,21 +23,21 @@
                 </tr>
 
                 <tr class="reference">
-                    <td class="title-column">Edition:</td>
+                    <td class="title-column">Buch:</td>
                     <td>
                         <mat-chip-list class="mat-chip-list-stacked">
-                            <mat-chip *ngFor="let edition of editionList">
+                            <mat-chip *ngFor="let book of bookList">
                                 <mat-chip-avatar>
                                     <mat-icon>book</mat-icon>
                                 </mat-chip-avatar>
-                                {{edition.publicationInfo}}
-                                <mat-icon matChipRemove (click)="removeEdition(edition)">cancel</mat-icon>
+                                {{book.title}}
+                                <mat-icon matChipRemove (click)="removeBook(book)">cancel</mat-icon>
                             </mat-chip>
                         </mat-chip-list>
                     </td>
                     <td class="last-row">
-                        <button mat-button mat-icon-button type="button" color="accent" (click)="addEdition()">
-                            <mat-icon>{{addOrEdit(editionList)}}</mat-icon>
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addBook()">
+                            <mat-icon>{{addOrEdit(bookList)}}</mat-icon>
                         </button>
                     </td>
                 </tr>

@@ -3,13 +3,10 @@ import {BackendService} from "../backendData/backend.service";
 import {
     Author,
     Book, Contributor,
-    Edition,
-    EditionOriginal,
     Language,
     Lexia,
     Organisation,
     Passage,
-    PassageOriginal,
     Subject,
     Venue
 } from "../../model/model";
@@ -40,36 +37,12 @@ export class ApiService {
         return this.backendData.getAuthors(references);
     }
 
-    getEdition(iri: number, references: boolean = false) {
-        return this.backendData.getEdition(iri, references);
-    }
-
-    getEditions(references: boolean = false) {
-        return this.backendData.getEditions(references);
-    }
-
     getPassage(iri: number, references: boolean = false) {
         return this.backendData.getPassage(iri, references);
     }
 
     getPassages(references: boolean = false) {
         return this.backendData.getPassages(references);
-    }
-
-    getEditionOriginal(iri: number, references: boolean = false) {
-        return this.backendData.getEditionOriginal(iri, references);
-    }
-
-    getEditionsOriginal(references: boolean = false) {
-        return this.backendData.getEditionsOriginal(references);
-    }
-
-    getPassageOriginal(iri: number, references: boolean = false) {
-        return this.backendData.getPassageOriginal(iri, references);
-    }
-
-    getPassagesOriginal(references: boolean = false) {
-        return this.backendData.getPassagesOriginal(references);
     }
 
     getLanguage(iri: number, references: boolean = false) {
@@ -143,34 +116,15 @@ export class ApiService {
         this.backendData.updateBook(iri, data);
     }
 
-    updateEdition(iri: number, edition: Edition) {
-        const data = {
-            id: edition.id,
-            book: edition.book ? edition.book.id : null,
-            language: edition.language ? edition.language.id : null,
-            publicationInfo: edition.publicationInfo,
-            order: edition.order
-        };
-        this.backendData.updateEdition(iri, data);
-    }
-
     updatePassage(iri: number, passage: Passage) {
         const data = {
             id: passage.id,
-            edition: passage.edition ? passage.edition.id : null,
+            book: passage.book ? passage.book.id : null,
             text: passage.text,
             page: passage.page,
             order: passage.order
         };
         this.backendData.updatePassage(iri, data);
-    }
-
-    updateEditionOriginal(iri: number, editionOr: EditionOriginal) {
-        this.backendData.updateEditionOriginal(iri, editionOr);
-    }
-
-    updatePassageOriginal(iri: number, passageOr: PassageOriginal) {
-        this.backendData.updatePassageOriginal(iri, passageOr);
     }
 
     updateLanguage(iri: number, language: Language) {
@@ -211,17 +165,6 @@ export class ApiService {
         this.backendData.createBook(data);
     }
 
-    createEdition(data: any) {
-        // converts reference to IDs
-        data.book = data.book ? data.book.id : null;
-        data.language = data.language ? data.language.id : null;
-        this.backendData.createEdition(data);
-    }
-
-    createEditionOriginal(data: any) {
-        this.backendData.createEditionOriginal(data);
-    }
-
     createPassage(data: any) {
         // converts reference to IDs
         if (data.edition) {
@@ -229,10 +172,6 @@ export class ApiService {
         }
         // data.edition = data.edition ? data.edition.id;
         this.backendData.createPassage(data);
-    }
-
-    createPassageOriginal(data: any) {
-        this.backendData.createPassageOriginal(data);
     }
 
     createLanguage(data: any) {

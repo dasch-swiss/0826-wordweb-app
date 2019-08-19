@@ -3,11 +3,8 @@ import {
     Book,
     Language,
     Author,
-    Edition,
     Organisation,
     Venue,
-    PassageOriginal,
-    EditionOriginal,
     Passage,
     Subject,
     Contributor, Lexia, Genre
@@ -461,66 +458,36 @@ export class BackendService {
         authors: [this.a1.id, this.a8.id, this.a3.id],
         venues: [this.v1.id],
         organisations: [this.org3.id],
-        order: 0,
-        references: 0
-    };
-
-    private e1: any = {
-        id: 1,
-        book: 1,
-        language: 1,
-        publicationInfo: "Romeo and Juliet, W. Shakespeare, [not_original]",
+        edition: "Romeo and Juliet, W. Shakespeare, [not_original]",
+        editionHist: "Romeo and Juliet, W. Shakespeare, [original]",
         order: 0,
         references: 0
     };
 
     private pas1: any = {
         id: 1,
-        edition: 1,
+        book: 1,
         text: "thus with a kiss I die",
+        textHist: "[original] thus with a kiss I die",
         page: "2",
+        pageHist: "2",
         order: 0,
         references: 0
     };
 
     private pas2: any = {
         id: 2,
-        edition: 1,
+        book: 1,
         text: "My bounty is as boundless as the sea,\n" +
             "My love as deep; the more I give to thee,\n" +
             "The more I have, for both are infinite.",
-        page: "101-102",
-        order: 0,
-        references: 0
-    };
-
-    private e1_original: any = {
-        id: 1,
-        book: 1,
-        language: 1,
-        publicationInfo: "Romeo and Juliet, W. Shakespeare, [original]",
-        order: 0,
-        references: 3
-    };
-
-    private pas1_original: any = {
-        id: 1,
-        edition: 1,
-        text: "[original] thus with a kiss I die",
-        page: "2",
-        order: 0,
-        references: 1
-    };
-
-    private pas2_original: any = {
-        id: 2,
-        edition: 1,
-        text: "[original] My bounty is as boundless as the sea,\n" +
+        textHist: "[original] My bounty is as boundless as the sea,\n" +
             "My love as deep; the more I give to thee,\n" +
             "The more I have, for both are infinite.",
         page: "101-102",
+        pageHist: "101-102",
         order: 0,
-        references: 2
+        references: 0
     };
 
     private b2: any = {
@@ -530,86 +497,55 @@ export class BackendService {
         authors: [this.a1.id, this.a10.id],
         venues: [this.v3.id],
         organisations: [this.v1.id],
+        edition: "Hamlet, W. Shakespeare, [not_original]",
+        editionHist: "The Tragedy of Hamlet, W. Shakespeare, [original]",
         order: 0,
         references: 2
     };
 
-    private e2: any = {
-        id: 2,
-        book: 2,
-        language: 1,
-        publicationInfo: "Hamlet, W. Shakespeare, [not_original]",
-        order: 0,
-        references: 0
-    };
-
     private pas3: any = {
         id: 3,
-        edition: 2,
-        text: "What a piece of work is a man! How noble in reason! how infinite in faculty! in form, in moving, how express and admirable! in action how like an angel! in apprehension how like a god! the beauty of the world! the paragon of animals! And yet, to me, what is this quintessence of dust?",
+        book: 2,
+        text: "What a piece of work is a man! How noble in reason! how infinite in faculty! " +
+            "in form, in moving, how express and admirable! in action how like an angel! " +
+            "in apprehension how like a god! the beauty of the world! the paragon of animals! " +
+            "And yet, to me, what is this quintessence of dust?",
+        textHist: "[original] What a piece of work is a man! How noble in reason! how infinite in faculty! " +
+            "in form, in moving, how express and admirable! in action how like an angel! " +
+            "in apprehension how like a god! the beauty of the world! the paragon of animals! " +
+            "And yet, to me, what is this quintessence of dust?",
         page: "43-45",
+        pageHist: "43-45",
         order: 0,
         references: 0
     };
 
     private pas4: any = {
         id: 4,
-        edition: 2,
+        book: 2,
         text: "Though this be madness, yet there is method in't.",
         page: "90",
+        textHist: "[original] Though this be madness, yet there is method in't.",
+        pageHist: "90",
         order: 0,
         references: 0
     };
 
     private pas5: any = {
         id: 5,
-        edition: 2,
+        book: 2,
         text: "Lord Polonius: What do you read, my lord? \n" +
             "Hamlet: Words, words, words. \n" +
             "Lord Polonius: What is the matter, my lord? \n" +
             "Hamlet: Between who? \n" +
             "Lord Polonius: I mean, the matter that you read, my lord.",
-        page: "87-92",
-        order: 0,
-        references: 0
-    };
-
-    private e2_original: any = {
-        id: 1,
-        book: this.b2,
-        language: this.lang1,
-        publicationInfo: "The Tragedy of Hamlet, W. Shakespeare, [original]",
-        order: 0,
-        references: 6
-    };
-
-    private pas3_original: any = {
-        id: 3,
-        edition: 2,
-        text: "[original] What a piece of work is a man! How noble in reason! how infinite in faculty! in form, in moving, how express and admirable! in action how like an angel! in apprehension how like a god! the beauty of the world! the paragon of animals! And yet, to me, what is this quintessence of dust?",
-        page: "43-45",
-        order: 0,
-        references: 2
-    };
-
-    private pas4_original: any = {
-        id: 4,
-        edition: 2,
-        text: "[original] Though this be madness, yet there is method in't.",
-        page: "90",
-        order: 0,
-        references: 0
-    };
-
-    private pas5_original: any = {
-        id: 5,
-        edition: 2,
-        text: "[original] Lord Polonius: What do you read, my lord? \n" +
+        textHist: "[original] Lord Polonius: What do you read, my lord? \n" +
             "Hamlet: Words, words, words. \n" +
             "Lord Polonius: What is the matter, my lord? \n" +
             "Hamlet: Between who? \n" +
             "Lord Polonius: I mean, the matter that you read, my lord.",
         page: "87-92",
+        pageHist: "87-92",
         order: 0,
         references: 0
     };
@@ -621,35 +557,34 @@ export class BackendService {
         authors: [this.a1.id],
         venues: [this.v6.id],
         organisations: [this.org5.id],
+        edition: "The Comedy of Errors, W. Shakespeare, [not_original]",
+        editionHist: "The Comedy of Errors, W. Shakespeare, [original]",
         order: 0,
         references: 6
     };
 
-    private e3: any = {
-        id: 3,
-        book: 3,
-        language: 1,
-        publicationInfo: "The Comedy of Errors, W. Shakespeare, [not_original]",
-        order: 0,
-        references: 0
-    };
-
     private pas6: any = {
         id: 6,
-        edition: 3,
+        book: 3,
         text: "A heavier task could not have been imposed\n" +
             "Than I to speak my griefs unspeakable;\n" +
             "Yet, that the world may witness that my end\n" +
             "Was wrought by nature, not by vile offence,\n" +
             "I'll utter what my sorrow gives me leave.",
         page: "129",
+        textHist: "[original] A heavier task could not have been imposed\n" +
+            "Than I to speak my griefs unspeakable;\n" +
+            "Yet, that the world may witness that my end\n" +
+            "Was wrought by nature, not by vile offence,\n" +
+            "I'll utter what my sorrow gives me leave.",
+        pageHist: "129",
         order: 0,
         references: 0
     };
 
     private pas7: any = {
         id: 7,
-        edition: 3,
+        book: 3,
         text: "A doubtful warrant of immediate death,\n" +
             "Which though myself would gladly have embraced,\n" +
             "Yet the incessant weepings of my wife,\n" +
@@ -658,45 +593,16 @@ export class BackendService {
             "That mourned for fashion, ignorant what to fear,\n" +
             "Forced me to seek delays for them and me.",
         page: "205-207",
-        order: 0,
-        references: 0
-    };
-
-    private e3_original: any = {
-        id: 3,
-        book: 3,
-        language: 1,
-        publicationInfo: "The Comedy of Errors, W. Shakespeare, [original]",
-        order: 0,
-        references: 10
-    };
-
-    private pas6_original: any = {
-        id: 6,
-        edition: 3,
-        text: "[original] A heavier task could not have been imposed\n" +
-            "Than I to speak my griefs unspeakable;\n" +
-            "Yet, that the world may witness that my end\n" +
-            "Was wrought by nature, not by vile offence,\n" +
-            "I'll utter what my sorrow gives me leave.",
-        page: "129",
-        order: 0,
-        references: 5
-    };
-
-    private pas7_original: any = {
-        id: 7,
-        edition: 3,
-        text: "[original] A doubtful warrant of immediate death,\n" +
+        textHist: "[original] A doubtful warrant of immediate death,\n" +
             "Which though myself would gladly have embraced,\n" +
             "Yet the incessant weepings of my wife,\n" +
             "Weeping before for what she saw must come,\n" +
             "And piteous plainings of the pretty babes,\n" +
             "That mourned for fashion, ignorant what to fear,\n" +
             "Forced me to seek delays for them and me.",
-        page: "205-207",
+        pageHist: "205-207",
         order: 0,
-        references: 2
+        references: 0
     };
 
     private b4: any = {
@@ -706,64 +612,34 @@ export class BackendService {
         authors: [this.a2.id],
         venues: [this.v4.id],
         organisations: [this.org1.id],
+        edition: "Tamburlaine, C. Marlowe, [not_original]",
+        editionHist: "Tamburlaine, C. Marlowe, [original]",
         order: 0,
         references: 1
     };
 
-    private e4: any = {
-        id: 4,
-        book: 4,
-        language: 2,
-        publicationInfo: "Tamburlaine, C. Marlowe, [not_original]",
-        order: 0,
-        references: 0
-    };
-
     private pas8: any = {
         id: 8,
-        edition: 4,
+        book: 4,
         text: "I hold the Fates bound fast in iron chains,\n" +
             "And with my hand turn Fortune's wheel about;",
         page: "14",
+        textHist: "[original] I hold the Fates bound fast in iron chains,\n" +
+            "And with my hand turn Fortune's wheel about;",
+        pageHist: "14",
         order: 0,
         references: 0
     };
 
     private pas9: any = {
         id: 9,
-        edition: 4,
+        book: 4,
         text: "Well, bark, ye dogs; I'll bridle all your tongues",
         page: "4",
+        textHist: "[original] Well, bark, ye dogs; I'll bridle all your tongues",
+        pageHist: "4",
         order: 0,
         references: 0
-    };
-
-    private e4_original: any = {
-        id: 4,
-        book: this.b4,
-        language: this.lang3,
-        publicationInfo: "Tamburlaine, C. Marlowe, [original]",
-        order: 0,
-        references: 3
-    };
-
-    private pas8_original: any = {
-        id: 8,
-        edition: 4,
-        text: "[original] I hold the Fates bound fast in iron chains,\n" +
-            "And with my hand turn Fortune's wheel about;",
-        page: "14",
-        order: 0,
-        references: 8
-    };
-
-    private pas9_original: any = {
-        id: 9,
-        edition: 4,
-        text: "[original] Well, bark, ye dogs; I'll bridle all your tongues",
-        page: "4",
-        order: 0,
-        references: 12
     };
 
     private b5: any = {
@@ -773,6 +649,8 @@ export class BackendService {
         authors: [this.a12.id, this.a19.id],
         venues: [this.v2.id, this.v8.id],
         organisations: [this.org4.id],
+        edition: "Of Two Evils Choose the Least, [not_original]",
+        editionHist: "Of Two Evils Choose the Least, [original]",
         order: 0,
         references: 1
     };
@@ -784,6 +662,8 @@ export class BackendService {
         authors: [this.a10.id],
         venues: [this.v2.id],
         organisations: [this.org3.id, this.org7.id],
+        edition: "The Cruel Brother, [not_original]",
+        editionHist: "The Cruel Brother, [original]",
         order: 0,
         references: 1
     };
@@ -795,6 +675,8 @@ export class BackendService {
         authors: [this.a22.id],
         venues: [],
         organisations: [],
+        edition: "The Art of Reason, [not_original]",
+        editionHist: "The Art of Reason, [original]",
         order: 0,
         references: 1
     };
@@ -806,6 +688,8 @@ export class BackendService {
         authors: [this.a6.id, this.a9.id],
         venues: [this.v1.id],
         organisations: [this.org1.id],
+        edition: "Five Hundred Points of Good Husbandry, [not_original]",
+        editionHist: "Five Hundred Points of Good Husbandry, [original]",
         order: 0,
         references: 1
     };
@@ -817,6 +701,8 @@ export class BackendService {
         authors: [this.a20.id],
         venues: [],
         organisations: [],
+        edition: "Treatise of God's Effectual Calling, [not_original]",
+        editionHist: "Treatise of God's Effectual Calling, [original]",
         order: 0,
         references: 1
     };
@@ -828,6 +714,8 @@ export class BackendService {
         authors: [this.a22.id],
         venues: [this.v5.id],
         organisations: [this.org2.id],
+        edition: "The Jews' Tragedy, [not_original]",
+        editionHist: "The Jews' Tragedy, [original]",
         order: 0,
         references: 1
     };
@@ -1121,10 +1009,7 @@ export class BackendService {
     // List of resources
     private readonly bookList: any[];
     private readonly authorList: any[];
-    private readonly editionList: any[];
-    private readonly editionOriginalList: any[];
     private readonly passageList: any[];
-    private readonly passageOriginalList: any[];
     private readonly languageList: any[];
     private readonly venueList: any[];
     private readonly organisationList: any[];
@@ -1135,10 +1020,7 @@ export class BackendService {
     // Converts allAuthors to objects with id as keys
     private readonly objBooks: any = {};
     private readonly objAuthors: any = {};
-    private readonly objEditions: any = {};
-    private readonly objEditionOriginals: any = {};
     private readonly objPassages: any = {};
-    private readonly objPassagesOriginal: any = {};
     private readonly objLanguages: any = {};
     private readonly objVenues: any = {};
     private readonly objOrganisation: any = {};
@@ -1164,26 +1046,8 @@ export class BackendService {
             return acc;
         }, {});
 
-        this.editionList = [this.e1, this.e2, this.e3, this.e4];
-        this.objEditions = this.editionList.reduce((acc, cur) => {
-            acc[cur.id] = cur;
-            return acc;
-        }, {});
-
         this.passageList = [this.pas1, this.pas2, this.pas3, this.pas4, this.pas5, this.pas6, this.pas7, this.pas8, this.pas9];
         this.objPassages = this.passageList.reduce((acc, cur) => {
-            acc[cur.id] = cur;
-            return acc;
-        }, {});
-
-        this.editionOriginalList = [this.e1_original, this.e2_original, this.e3_original, this.e4_original];
-        this.objEditionOriginals = this.editionOriginalList.reduce((acc, cur) => {
-            acc[cur.id] = cur;
-            return acc;
-        }, {});
-
-        this.passageOriginalList = [this.pas1_original, this.pas2_original, this.pas3_original, this.pas4_original, this.pas5_original, this.pas6_original, this.pas7_original, this.pas8_original, this.pas9_original];
-        this.objPassagesOriginal = this.passageOriginalList.reduce((acc, cur) => {
             acc[cur.id] = cur;
             return acc;
         }, {});
@@ -1292,33 +1156,6 @@ export class BackendService {
         return copyAuthorList;
     }
 
-    getEdition(iri: number, references: boolean) {
-        if (!this.objEditions[iri]) {
-            return {};
-        }
-
-        const copyEdition = JSON.parse(JSON.stringify(this.objEditions[iri]));
-
-        if (references) {
-            copyEdition.book = this.getBook(this.objEditions[iri].book, false);
-            copyEdition.language = this.getLanguage(this.objEditions[iri].language, false);
-        }
-
-        return copyEdition;
-    }
-
-    getEditions(references: boolean) {
-        let copyEditionList = JSON.parse(JSON.stringify(this.editionList));
-
-        if (references) {
-            copyEditionList = copyEditionList.map(edition => {
-                return this.getEdition(edition.id, true);
-            });
-        }
-
-        return copyEditionList;
-    }
-
     getPassage(iri: number, references: boolean) {
         if (!this.objPassages[iri]) {
             return {};
@@ -1327,7 +1164,7 @@ export class BackendService {
         const copyPassage = JSON.parse(JSON.stringify(this.objPassages[iri]));
 
         if (references) {
-            copyPassage.edition = this.getEdition(this.objPassages[iri].edition, false);
+            copyPassage.book = this.getBook(this.objPassages[iri].book, false);
         }
 
         return copyPassage;
@@ -1343,59 +1180,6 @@ export class BackendService {
         }
 
         return copyPassageList;
-    }
-
-    getEditionOriginal(iri: number, references: boolean) {
-        if (!this.objEditionOriginals[iri]) {
-            return {};
-        }
-
-        const copyEditionOriginal = JSON.parse(JSON.stringify(this.objEditionOriginals[iri]));
-
-        if (references) {
-            copyEditionOriginal.book = this.getBook(this.objEditionOriginals[iri].book, false);
-            copyEditionOriginal.language = this.getLanguage(this.objEditionOriginals[iri].language, false);
-        }
-
-        return copyEditionOriginal;
-    }
-
-    getEditionsOriginal(references: boolean) {
-        let copyEditionOriginalList = JSON.parse(JSON.stringify(this.editionOriginalList));
-
-        if (references) {
-            copyEditionOriginalList = copyEditionOriginalList.map(editionOr => {
-                return this.getEditionOriginal(editionOr.id, true);
-            });
-        }
-
-        return copyEditionOriginalList;
-    }
-
-    getPassageOriginal(iri: number, references: boolean) {
-        if (!this.objPassagesOriginal[iri]) {
-            return {};
-        }
-
-        const copyPassageOriginal = JSON.parse(JSON.stringify(this.objPassagesOriginal[iri]));
-
-        if (references) {
-            copyPassageOriginal.edition = this.getEditionOriginal(this.objPassagesOriginal[iri].edition, false);
-        }
-
-        return copyPassageOriginal;
-    }
-
-    getPassagesOriginal(references: boolean) {
-        let copyPassageOriginalList = JSON.parse(JSON.stringify(this.passageOriginalList));
-
-        if (references) {
-            copyPassageOriginalList = copyPassageOriginalList.map(passageOr => {
-                return this.getPassageOriginal(passageOr.id, true);
-            });
-        }
-
-        return copyPassageOriginalList;
     }
 
     getLanguage(iri: number, references: boolean) {
@@ -1584,30 +1368,14 @@ export class BackendService {
         book.authors = newBook.authors;
         book.venues = newBook.venues;
         book.organisations = newBook.organisations;
+        book.edition = newBook.edition;
+        book.editionHist = newBook.editionHist;
     }
 
     updateLanguage(iri: number, newLanguage: any) {
         const language = this.objLanguages[iri];
         language.name = newLanguage.name;
         language.order = newLanguage.order;
-    }
-
-    updateEdition(iri: number, newEdition: any) {
-        const edition = this.objEditions[iri];
-        edition.publicationInfo = newEdition.publicationInfo;
-        edition.order = newEdition.order;
-        // TODO Check if all IDs are valid
-        edition.book = newEdition.book;
-        edition.language = newEdition.language;
-    }
-
-    updateEditionOriginal(iri: number, newEditionOr: any) {
-        const editionOr = this.objEditions[iri];
-        editionOr.publicationInfo = newEditionOr.publicationInfo;
-        editionOr.order = newEditionOr.order;
-        // TODO Check if all IDs are valid
-        editionOr.book = newEditionOr.book;
-        editionOr.language = newEditionOr.language;
     }
 
     updateOrganisation(iri: number, newOrganisation: any) {
@@ -1629,18 +1397,11 @@ export class BackendService {
         const passage = this.objPassages[iri];
         passage.text = newPassage.text;
         passage.page = newPassage.page;
+        passage.textHist = newPassage.textHist;
+        passage.pagHiste = newPassage.pageHist;
         passage.order = newPassage.order;
         // TODO Check if all IDs are valid
-        passage.edition = newPassage.edition;
-    }
-
-    updatePassageOriginal(iri: number, newPassageOr: any) {
-        const passageOr = this.objPassages[iri];
-        passageOr.text = newPassageOr.text;
-        passageOr.page = newPassageOr.page;
-        passageOr.order = newPassageOr.order;
-        // TODO Check if all IDs are valid
-        passageOr.edition = newPassageOr.edition;
+        passage.book = newPassage.book;
     }
 
     updateLexia(iri: number, newLexia: any) {
@@ -1690,6 +1451,8 @@ export class BackendService {
             authors: data.authors,
             venues: data.venues,
             organisations: data.organisations,
+            edition: data.edition,
+            editionHist: data.editionHist,
             order: 0,
             references: 0
         };
@@ -1721,56 +1484,19 @@ export class BackendService {
         this.objContributors[newContributor.id] = newContributor;
     }
 
-    createEdition(data: any) {
-        const newEdition: Edition = {
-            id: this.getID(),
-            book: data.book,
-            language: data.language,
-            publicationInfo: data.publicationInfo,
-            order: 0,
-            references: 0
-        };
-        this.editionList.push(newEdition);
-        this.objEditions[newEdition.id] = newEdition;
-    }
-
-    createEditionOriginal(data: any) {
-        const newEditionOr: EditionOriginal = {
-            id: this.getID(),
-            book: data.book,
-            language: data.language,
-            publicationInfo: data.publicationInfo,
-            order: 0,
-            references: 0
-        };
-        this.editionOriginalList.push(newEditionOr);
-        this.objEditionOriginals[newEditionOr.id] = newEditionOr;
-    }
-
     createPassage(data: any) {
         const newPassage: Passage = {
             id: this.getID(),
-            edition: data.edition,
+            book: data.book,
             text: data.text,
             page: data.page,
+            textHist: data.textHist,
+            pageHist: data.pageHist,
             order: 0,
             references: 0
         };
         this.passageList.push(newPassage);
         this.objPassages[newPassage.id] = newPassage;
-    }
-
-    createPassageOriginal(data: any) {
-        const newPassageOr: PassageOriginal = {
-            id: this.getID(),
-            edition: data.edition,
-            text: data.text,
-            page: data.page,
-            order: 0,
-            references: 0
-        };
-        this.passageOriginalList.push(newPassageOr);
-        this.objPassagesOriginal[newPassageOr.id] = newPassageOr;
     }
 
     createVenue(data: any) {
