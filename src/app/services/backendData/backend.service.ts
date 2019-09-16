@@ -458,8 +458,8 @@ export class BackendService {
         authors: [this.a1.id, this.a8.id, this.a3.id],
         venues: [this.v1.id],
         organisations: [this.org3.id],
-        edition: "Romeo and Juliet, W. Shakespeare, [not_or]",
-        editionHist: "Romeo and Juliet, W. Shakespeare, [or]",
+        edition: "Shakespeare, William.  Romeo and Juliet.",
+        editionHist: "Shakespeare, William.  Romeo and Juliet.",
         order: 0,
         references: 0
     };
@@ -497,8 +497,8 @@ export class BackendService {
         authors: [this.a1.id, this.a10.id],
         venues: [this.v3.id],
         organisations: [this.v1.id],
-        edition: "Hamlet, W. Shakespeare, [not_or]",
-        editionHist: "The Tragedy of Hamlet, W. Shakespeare, [or]",
+        edition: "Shakespeare, William.  Hamlet.",
+        editionHist: "Shakespeare, William.  Hamlet.",
         order: 0,
         references: 2
     };

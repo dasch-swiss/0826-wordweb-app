@@ -2,10 +2,14 @@
 
     <div class="filter-container">
         <div class="create-btn-container">
-            <button mat-raised-button type="button" color="primary" (click)="create()"><mat-icon>add</mat-icon>Passage erstellen</button>
+            <button mat-raised-button type="button" color="primary" (click)="create()">
+                <mat-icon>add</mat-icon>
+                Passage erstellen
+            </button>
         </div>
         <mat-form-field>
-            <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter" (keydown.escape)="clear()">
+            <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter"
+                   (keydown.escape)="clear()">
             <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
@@ -17,7 +21,7 @@
 
         <!-- edition column -->
         <ng-container matColumnDef="book">
-            <th mat-header-cell *matHeaderCellDef>Buch</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Buch</th>
             <td mat-cell *matCellDef="let element">
                 <div class="edit-value" (click)="editBook(element)">
                     <div>{{element.book.title}}</div>
@@ -31,7 +35,21 @@
             <td mat-cell *matCellDef="let element">
                 <div class="edit-value" [satPopoverAnchorFor]="tx" (click)="tx.open()">{{element.text}}</div>
                 <sat-popover #tx hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="tx.isOpen()" [value]="element.text" [type]="'string'" (newValue)="updateProperty($event,'text', element, tx)"></app-inline-edit>
+                    <app-inline-edit *ngIf="tx.isOpen()" [value]="element.text" [type]="'string'"
+                                     (newValue)="updateProperty($event,'text', element, tx)"></app-inline-edit>
+                </sat-popover>
+            </td>
+        </ng-container>
+
+        <!-- text hist column -->
+        <ng-container matColumnDef="textHist">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Text hist.</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="edit-value" [satPopoverAnchorFor]="txhist"
+                     (click)="txhist.open()">{{element.textHist}}</div>
+                <sat-popover #txhist hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="txhist.isOpen()" [value]="element.textHist" [type]="'string'"
+                                     (newValue)="updateProperty($event,'textHist', element, txhist)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
@@ -42,7 +60,21 @@
             <td mat-cell *matCellDef="let element">
                 <div class="edit-value" [satPopoverAnchorFor]="pg" (click)="pg.open()">{{element.page}}</div>
                 <sat-popover #pg hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="pg.isOpen()" [value]="element.page" [type]="'string'" (newValue)="updateProperty($event,'page', element, pg)"></app-inline-edit>
+                    <app-inline-edit *ngIf="pg.isOpen()" [value]="element.page" [type]="'string'"
+                                     (newValue)="updateProperty($event,'page', element, pg)"></app-inline-edit>
+                </sat-popover>
+            </td>
+        </ng-container>
+
+        <!-- page hist column -->
+        <ng-container matColumnDef="pageHist">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Seite hist.</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="edit-value" [satPopoverAnchorFor]="pghist"
+                     (click)="pghist.open()">{{element.pageHist}}</div>
+                <sat-popover #pghist hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="pghist.isOpen()" [value]="element.pageHist" [type]="'string'"
+                                     (newValue)="updateProperty($event,'pageHist', element, pghist)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
@@ -53,7 +85,8 @@
             <td mat-cell *matCellDef="let element">
                 <div class="edit-value" [satPopoverAnchorFor]="or" (click)="or.open()">{{element.order}}</div>
                 <sat-popover #or hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="or.isOpen()" [value]="element.order" [type]="'number'" (newValue)="updateProperty($event,'order', element, or)"></app-inline-edit>
+                    <app-inline-edit *ngIf="or.isOpen()" [value]="element.order" [type]="'number'"
+                                     (newValue)="updateProperty($event,'order', element, or)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
@@ -74,7 +107,8 @@
                     <button mat-button mat-icon-button color="primary" (click)="edit(element)">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-button mat-icon-button color="warn" (click)="delete(element.id)" [disabled]="element.references !== 0">
+                    <button mat-button mat-icon-button color="warn" (click)="delete(element.id)"
+                            [disabled]="element.references !== 0">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>
@@ -84,5 +118,18 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
+<!--    <br>-->
+<!--    <br>-->
+<!--    <div style="margin:2rem 0;" *ngFor="let pa of passages">-->
+<!--        <mat-card>-->
+<!--            <mat-card-header>-->
+<!--                <mat-card-title>{{pa.book.title}}</mat-card-title>-->
+<!--            </mat-card-header>-->
+<!--            <mat-card-content>-->
+<!--                {{pa.text}}-->
+<!--            </mat-card-content>-->
+<!--        </mat-card>-->
+<!--    </div>-->
 
 </div>

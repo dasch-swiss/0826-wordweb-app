@@ -12,7 +12,8 @@ import {CreateUpdatePassageComponent} from "../../create-resource/create-update-
 })
 export class PassageComponent implements OnInit {
 
-    displayedColumns: string[] = ["book", "text", "page", "order", "references", "action"];
+    displayedColumns: string[] = ["book", "text", "textHist", "page", "pageHist", "order", "references", "action"];
+    passages: any;
     dataSource: MatTableDataSource<Passage>;
     value: string;
 
@@ -25,11 +26,18 @@ export class PassageComponent implements OnInit {
     }
 
     resetTable() {
-        this.dataSource = new MatTableDataSource(this.apiService.getPassages(true));
+        this.passages = this.apiService.getPassages(true);
+        this.dataSource = new MatTableDataSource(this.passages);
         console.log(this.apiService.getPassages(true));
     }
 
     ngOnInit() {
+        this.dataSource.sortingDataAccessor = ((item, property) => {
+            switch (property) {
+                case "book": return item.book.title;
+                default: return item[property];
+            }
+        });
         this.dataSource.sort = this.sort;
     }
 
