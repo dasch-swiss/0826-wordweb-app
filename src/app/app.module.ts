@@ -35,8 +35,12 @@ import {PassageComponent} from "./category/passage/passage.component";
 import {LexiaComponent} from "./category/lexia/lexia.component";
 import {ContributorComponent} from "./category/contributor/contributor.component";
 import {CreateUpdatePassageComponent} from "./create-resource/create-update-passage/create-update-passage.component";
+import { CategoriesComponent } from "./categories/categories.component";
+import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 
 const routes: Routes = [
+    {path: "categories", component: CategoriesComponent},
+    {path: "", redirectTo: "categories", pathMatch: "full"},
     {path: "book", component: BookComponent},
     {path: "author", component: AuthorComponent},
     {path: "language", component: LanguageComponent},
@@ -46,6 +50,7 @@ const routes: Routes = [
     {path: "passage", component: PassageComponent},
     {path: "contributor", component: ContributorComponent},
     {path: "lexia", component: LexiaComponent},
+    {path: "**", component: PageNotFoundComponent}
 ];
 
 @NgModule({
@@ -70,6 +75,8 @@ const routes: Routes = [
         CreateUpdateBookComponent,
         CreateUpdateLanguageComponent,
         CreateUpdatePassageComponent,
+        CategoriesComponent,
+        PageNotFoundComponent,
     ],
     imports: [
         RouterModule.forRoot(routes),

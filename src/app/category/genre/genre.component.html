@@ -1,5 +1,8 @@
 <div class="table-container">
 
+    <a [routerLink]="['/categories']">< back</a>
+    <h2>List of Genres</h2>
+
     <div>
         <mat-form-field>
             <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter"

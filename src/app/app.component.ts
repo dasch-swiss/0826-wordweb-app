@@ -15,8 +15,7 @@ export class AppComponent implements OnInit {
 
     list: string;
 
-    constructor(private apiService: ApiService,
-                private router: Router) {
+    constructor(private apiService: ApiService) {
         this.bookList = apiService.getBooks(true);
     }
 
@@ -43,42 +42,6 @@ export class AppComponent implements OnInit {
 
     collapse(passage: any) {
         passage["collapsed"] = !passage["collapsed"];
-    }
-
-    showBookCat() {
-        this.router.navigate(["book"]);
-    }
-
-    showAuthorCat() {
-        this.router.navigate(["author"]);
-    }
-
-    showLanguageCat() {
-        this.router.navigate(["language"]);
-    }
-
-    showOrganisationCat() {
-        this.router.navigate(["organisation"]);
-    }
-
-    showSubjectCat() {
-        this.router.navigate(["subject"]);
-    }
-
-    showGenreCat() {
-        this.router.navigate(["genre"]);
-    }
-
-    showPassageCat() {
-        this.router.navigate(["passage"]);
-    }
-
-    showLexiaCat() {
-        this.router.navigate(["lexia"]);
-    }
-
-    showContributorCat() {
-        this.router.navigate(["contributor"]);
     }
 
 }
