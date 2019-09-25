@@ -56,7 +56,7 @@ export class VenueRefComponent implements OnInit {
     applyFilter(value: string) {
         this.filteredList = this.allVenues.filter((venue) => {
             const containsName = venue.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
-            const containsCity = venue.city.toLowerCase().indexOf(value.toLowerCase()) > -1;
+            const containsCity = venue.place.toLowerCase().indexOf(value.toLowerCase()) > -1;
 
             return containsName || containsCity;
         });

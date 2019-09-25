@@ -54,8 +54,9 @@ export interface Language {
 
 export interface Venue {
     id: number;
+    internalID: string;
     name: string;
-    city: string;
+    place: string;
     order: number;
     references: number;
 }

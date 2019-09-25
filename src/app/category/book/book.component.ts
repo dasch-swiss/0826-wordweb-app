@@ -155,7 +155,7 @@ export class BookComponent implements OnInit {
             return fullName.toLowerCase().indexOf(filterValue) > -1;
         }).length > 0;
         const containsVenue = book.venues.filter(venue => {
-            const fullName = `${venue.name}, ${venue.city}`;
+            const fullName = `${venue.name}, ${venue.place}`;
             return fullName.toLowerCase().indexOf(filterValue) > -1;
         }).length > 0;
         const containsOrganisation = book.organisations.filter(organisation => {

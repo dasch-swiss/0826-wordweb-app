@@ -52,64 +52,72 @@ export class BackendService {
 
     private v1: Venue = {
         id: 1,
+        internalID: "#008001",
         name: "Blackfriars",
-        city: "London",
+        place: "London",
         order: 0,
         references: 123
     };
 
     private v2: Venue = {
         id: 2,
+        internalID: "#008002",
         name: "The Theatre",
-        city: "London",
+        place: "London",
         order: 0,
         references: 21
     };
 
     private v3: Venue = {
         id: 3,
+        internalID: "#008003",
         name: "Cockpit",
-        city: "London",
+        place: "London",
         order: 0,
         references: 23
     };
 
     private v4: Venue = {
         id: 4,
+        internalID: "#008004",
         name: "The Curtain",
-        city: "London",
+        place: "London",
         order: 0,
         references: 7
     };
 
     private v5: Venue = {
         id: 5,
+        internalID: "#008005",
         name: "Whitefriars",
-        city: "London",
+        place: "London",
         order: 0,
         references: 0
     };
 
     private v6: Venue = {
         id: 6,
+        internalID: "#008006",
         name: "Red Bull",
-        city: "London",
+        place: "London",
         order: 0,
         references: 3
     };
 
     private v7: Venue = {
         id: 7,
+        internalID: "#008007",
         name: "Then Rose",
-        city: "London",
+        place: "London",
         order: 0,
         references: 0
     };
 
     private v8: Venue = {
         id: 8,
+        internalID: "#008008",
         name: "Ludlow Castle",
-        city: "Shropshire",
+        place: "Shropshire",
         order: 0,
         references: 3
     };
@@ -1458,7 +1466,7 @@ export class BackendService {
     updateVenue(iri: number, newVenue: any) {
         const venue = this.objVenues[iri];
         venue.name = newVenue.name;
-        venue.city = newVenue.city;
+        venue.place = newVenue.place;
         venue.order = newVenue.order;
     }
 
@@ -1540,8 +1548,9 @@ export class BackendService {
     createVenue(data: any) {
         const newVenue: Venue = {
             id: this.getID(),
+            internalID: data.internalID,
             name: data.name,
-            city: data.city,
+            place: data.place,
             order: 0,
             references: 0
         };
