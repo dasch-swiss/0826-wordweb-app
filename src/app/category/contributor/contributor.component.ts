@@ -11,7 +11,7 @@ import {SatPopover} from "@ncstate/sat-popover";
 })
 export class ContributorComponent implements OnInit {
 
-    displayedColumns: string[] = ["firstName", "lastName", "email", "order", "references", "action"];
+    displayedColumns: string[] = ["firstName", "lastName", "gender", "email", "order", "references", "action"];
     dataSource: MatTableDataSource<Contributor>;
     value: string;
 

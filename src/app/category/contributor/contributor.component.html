@@ -42,6 +42,17 @@
             </td>
         </ng-container>
 
+        <!-- gender column-->
+        <ng-container matColumnDef="gender">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Geschlecht</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="edit-value" [satPopoverAnchorFor]="gen" (click)="gen.open()">{{element.gender}}</div>
+                <sat-popover #gen hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="gen.isOpen()" [value]="element.gender" [type]="'string'"></app-inline-edit>
+                </sat-popover>
+            </td>
+        </ng-container>
+
         <!-- email -->
         <ng-container matColumnDef="email">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>

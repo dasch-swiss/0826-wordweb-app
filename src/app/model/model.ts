@@ -2,6 +2,7 @@ export interface Human {
     id: number;
     firstName: string;
     lastName: string;
+    gender: string;
     order: number;
 }
 

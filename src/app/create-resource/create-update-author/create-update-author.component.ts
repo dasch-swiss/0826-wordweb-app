@@ -42,6 +42,7 @@ export class CreateUpdateAuthorComponent implements OnInit {
             this.author.description = this.form.get("description").value;
             this.author.birthDate = this.form.get("birthDate").value;
             this.author.deathDate = this.form.get("deathDate").value;
+            this.author.gender = "m";
             // update request
             this.apiService.updateAuthor(this.author.id, this.author);
             this.dialogRef.close({refresh: true});
@@ -53,6 +54,7 @@ export class CreateUpdateAuthorComponent implements OnInit {
                 description: this.form.get("description").value,
                 birthDate: this.form.get("birthDate").value,
                 deathDate: this.form.get("deathDate").value,
+                gender: "m"
             };
             // create request
             this.apiService.createAuthor(newAuthor);

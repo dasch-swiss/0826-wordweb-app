@@ -171,6 +171,7 @@ export class BackendService {
         description: "English Dramatist",
         birthDate: 1564,
         deathDate: 1616,
+        gender: "m",
         order: 0,
         references: 0
     };
@@ -183,6 +184,7 @@ export class BackendService {
         description: "English playwright and poet",
         birthDate: 1564,
         deathDate: 1593,
+        gender: "m",
         order: 0,
         references: 1
     };
@@ -195,6 +197,7 @@ export class BackendService {
         description: "English novelist",
         birthDate: 1802,
         deathDate: 1882,
+        gender: "m",
         order: 0,
         references: 3
     };
@@ -207,6 +210,7 @@ export class BackendService {
         description: "English poet",
         birthDate: 1772,
         deathDate: 1834,
+        gender: "m",
         order: 0,
         references: 0
     };
@@ -219,6 +223,7 @@ export class BackendService {
         description: "English poet and dramatist fl. 1611",
         birthDate: null,
         deathDate: null,
+        gender: "m",
         order: 0,
         references: 0
     };
@@ -231,6 +236,7 @@ export class BackendService {
         description: "English poet, dramatist and Homer translator 1559?-1634",
         birthDate: 1559,
         deathDate: 1634,
+        gender: "m",
         order: 0,
         references: 0
     };
@@ -243,6 +249,7 @@ export class BackendService {
         description: "Roman politician, orator and philosopher 106-43",
         birthDate: -106,
         deathDate: 43,
+        gender: "m",
         order: 0,
         references: 0
     };
@@ -255,6 +262,7 @@ export class BackendService {
         description: "English anthologist 1611?-1655?",
         birthDate: 1611,
         deathDate: 1655,
+        gender: "m",
         order: 0,
         references: 24
     };
@@ -264,9 +272,10 @@ export class BackendService {
         internalID: "&000009",
         firstName: "Sir William",
         lastName: "D'Avenant",
-        description: "English dramatist 1606-1668",
+        description: "English dramatist",
         birthDate: 1606,
         deathDate: 1668,
+        gender: "m",
         order: 0,
         references: 0
     };
@@ -276,9 +285,10 @@ export class BackendService {
         internalID: "&000010",
         firstName: "Charles",
         lastName: "Dickens",
-        description: "English novelist 1812-1870",
+        description: "English novelist",
         birthDate: 1812,
         deathDate: 1870,
+        gender: "m",
         order: 0,
         references: 0
     };
@@ -288,9 +298,10 @@ export class BackendService {
         internalID: "&000011",
         firstName: "Maria",
         lastName: "Edgeworth",
-        description: "Anglo-Irish dramatist and novelist 1767-1849",
+        description: "Anglo-Irish dramatist and novelist",
         birthDate: 1767,
         deathDate: 1849,
+        gender: "f",
         order: 0,
         references: 12
     };
@@ -300,9 +311,10 @@ export class BackendService {
         internalID: "&000012",
         firstName: "David",
         lastName: "Garrick",
-        description: "English actor 1717-1779",
+        description: "English actor",
         birthDate: 1717,
         deathDate: 1779,
+        gender: "m",
         order: 0,
         references: 6
     };
@@ -312,9 +324,10 @@ export class BackendService {
         internalID: "&000013",
         firstName: "Elizabeth",
         lastName: "George",
-        description: "U.S. crime writer b. 1949, pen-name for Susan Elizabeth George",
+        description: "U.S. crime writer, pen-name for Susan Elizabeth George",
         birthDate: 1949,
         deathDate: null,
+        gender: "f",
         order: 0,
         references: 35
     };
@@ -324,9 +337,10 @@ export class BackendService {
         internalID: "&000014",
         firstName: "Johann Wolfgang von",
         lastName: "Goethe",
-        description: "German poet and dramatist 1748-1832",
+        description: "German poet and dramatist",
         birthDate: 1748,
         deathDate: 1832,
+        gender: "m",
         order: 0,
         references: 21
     };
@@ -336,9 +350,10 @@ export class BackendService {
         internalID: "&000015",
         firstName: "Robert",
         lastName: "Gott",
-        description: "Australian cartoonist children's and crime writer b. 1957",
+        description: "Australian cartoonist children's and crime writer",
         birthDate: 1957,
         deathDate: null,
+        gender: "m",
         order: 0,
         references: 18
     };
@@ -348,9 +363,10 @@ export class BackendService {
         internalID: "&000016",
         firstName: "Paul",
         lastName: "Green",
-        description: "U.S. dramatist 1894-1981",
+        description: "U.S. dramatist",
         birthDate: 1894,
         deathDate: 1981,
+        gender: "m",
         order: 0,
         references: 11
     };
@@ -360,9 +376,10 @@ export class BackendService {
         internalID: "&000017",
         firstName: "Martha",
         lastName: "Grimes",
-        description: "U.S. crime writer b. 1931",
+        description: "U.S. crime writer",
         birthDate: 1931,
         deathDate: null,
+        gender: "m",
         order: 0,
         references: 16
     };
@@ -372,9 +389,10 @@ export class BackendService {
         internalID: "&000018",
         firstName: "Thomas",
         lastName: "Hardy",
-        description: "English novelist and poet 1840-1928",
+        description: "English novelist and poet",
         birthDate: 1840,
         deathDate: 1928,
+        gender: "m",
         order: 0,
         references: 38
     };
@@ -384,9 +402,10 @@ export class BackendService {
         internalID: "&000019",
         firstName: "Gerhart",
         lastName: "Hauptmann",
-        description: "German dramatist and novelist 1862-1942",
+        description: "German dramatist and novelist",
         birthDate: 1862,
         deathDate: 1942,
+        gender: "m",
         order: 0,
         references: 9
     };
@@ -396,9 +415,10 @@ export class BackendService {
         internalID: "&000020",
         firstName: "William",
         lastName: "Hazlitt",
-        description: "English critic and essayist 1778-1830",
+        description: "English critic and essayist",
         birthDate: 1778,
         deathDate: 1830,
+        gender: "m",
         order: 0,
         references: 340
     };
@@ -411,6 +431,7 @@ export class BackendService {
         description: "U.S. (?) anthologist fl. 1961, real name Lewis Copeland",
         birthDate: null,
         deathDate: null,
+        gender: "m",
         order: 0,
         references: 33
     };
@@ -420,9 +441,10 @@ export class BackendService {
         internalID: "&000022",
         firstName: "Aaron",
         lastName: "Hill",
-        description: "British novelist and poet 1685-1750",
+        description: "British novelist and poet",
         birthDate: 1685,
         deathDate: 1750,
+        gender: "m",
         order: 0,
         references: 15
     };
@@ -432,10 +454,11 @@ export class BackendService {
         internalID: "&000023",
         firstName: "Vladimír",
         lastName: "Holan",
-        description: "Czech poet 1905-1980",
+        description: "Czech poet",
         birthDate: 1905,
         deathDate: 1980,
-        order: 0,
+        gender: "m",
+        order: 9,
         references: 1
     };
 
@@ -444,10 +467,11 @@ export class BackendService {
         internalID: "&000024",
         firstName: "Zora Neale",
         lastName: "Hurston",
-        description: "U.S. novelist 1891-1960",
+        description: "U.S. novelist",
         birthDate: 1891,
         deathDate: 1960,
-        order: 0,
+        gender: "f",
+        order: 5,
         references: 2
     };
 
@@ -760,6 +784,7 @@ export class BackendService {
         firstName: "Regula",
         lastName: "Hohl",
         email: "r.hohl@unibas.ch",
+        gender: "f",
         order: 0,
         references: 22
     };
@@ -769,6 +794,7 @@ export class BackendService {
         firstName: "Stefanie",
         lastName: "Heeg",
         email: "s.heeg@unibas.ch",
+        gender: "f",
         order: 0,
         references: 10
     };
@@ -778,6 +804,7 @@ export class BackendService {
         firstName: "Elliot",
         lastName: "Reitzer",
         email: "elliot@yahoo.de",
+        gender: "m",
         order: 0,
         references: 10
     };
@@ -787,6 +814,7 @@ export class BackendService {
         firstName: "Christian",
         lastName: "Gebhard",
         email: "christian.gebhard@stud.unibas.ch",
+        gender: "m",
         order: 0,
         references: 10
     };
@@ -796,6 +824,7 @@ export class BackendService {
         firstName: "Christian",
         lastName: "Eichenberger",
         email: "christianmarkus.eichenberger@unifr.ch",
+        gender: "m",
         order: 0,
         references: 10
     };
@@ -805,6 +834,7 @@ export class BackendService {
         firstName: "Ursula",
         lastName: "Caci",
         email: "ursula.caci@unibas.ch",
+        gender: "f",
         order: 0,
         references: 10
     };
@@ -814,6 +844,7 @@ export class BackendService {
         firstName: "Mark",
         lastName: "Hunter",
         email: "hardguenni@gmx.de, hyperhamlet@boriskuehne.net",
+        gender: "m",
         order: 0,
         references: 10
     };
@@ -823,6 +854,7 @@ export class BackendService {
         firstName: "Pauline",
         lastName: "Sallis",
         email: "pjsallis@yahoo.co.uk",
+        gender: "f",
         order: 0,
         references: 10
     };
@@ -832,6 +864,7 @@ export class BackendService {
         firstName: "Sebastian",
         lastName: "Refardt",
         email: "sebastian.refardt@stud.unibas.ch",
+        gender: "m",
         order: 0,
         references: 10
     };
@@ -841,6 +874,7 @@ export class BackendService {
         firstName: "Thierry",
         lastName: "Spampinato",
         email: "thierry.spampinato@unibas.ch",
+        gender: "m",
         order: 0,
         references: 1
     };
@@ -1356,6 +1390,7 @@ export class BackendService {
         author.description = newAuthor.description;
         author.birthDate = newAuthor.birthDate;
         author.deathDate = newAuthor.deathDate;
+        author.gender = newAuthor.gender;
     }
 
     updateBook(iri: number, newBook: any) {
@@ -1417,6 +1452,7 @@ export class BackendService {
         contributor.lastName = newContributor.lastName;
         contributor.order = newContributor.order;
         contributor.email = newContributor.email;
+        contributor.gender = newContributor.gender;
     }
 
     updateVenue(iri: number, newVenue: any) {
@@ -1435,6 +1471,7 @@ export class BackendService {
             description: data.description,
             birthDate: data.birthDate,
             deathDate: data.deathDate,
+            gender: data.gender,
             order: 0,
             references: 0
         };
@@ -1477,6 +1514,7 @@ export class BackendService {
             firstName: data.firstName,
             lastName: data.lastName,
             email: data.email,
+            gender: data.gender,
             order: 0,
             references: 0
         };

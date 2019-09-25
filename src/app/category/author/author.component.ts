@@ -12,7 +12,7 @@ import {SatPopover} from "@ncstate/sat-popover";
 })
 export class AuthorComponent implements OnInit {
 
-    displayedColumns: string[] = ["internalID", "firstName", "lastName", "description", "birthDate", "deathDate", "activeDate", "order", "references", "action"];
+    displayedColumns: string[] = ["internalID", "firstName", "lastName", "gender", "description", "birthDate", "deathDate", "activeDate", "order", "references", "action"];
     dataSource: MatTableDataSource<Author>;
     value: string;
 
