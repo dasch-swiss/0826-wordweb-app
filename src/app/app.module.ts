@@ -37,19 +37,33 @@ import {ContributorComponent} from "./category/contributor/contributor.component
 import {CreateUpdatePassageComponent} from "./create-resource/create-update-passage/create-update-passage.component";
 import { CategoriesComponent } from "./categories/categories.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
+import { FunctionVoiceComponent } from "./category/function-voice/function-voice.component";
+import { GenderComponent } from "./category/gender/gender.component";
+import { ImageComponent } from "./category/image/image.component";
+import { MarkingComponent } from "./category/marking/marking.component";
+import { ResearchFieldComponent } from "./category/research-field/research-field.component";
+import { StatusComponent } from "./category/status/status.component";
+import { VenueComponent } from "./category/venue/venue.component";
 
 const routes: Routes = [
     {path: "categories", component: CategoriesComponent},
     {path: "", redirectTo: "categories", pathMatch: "full"},
-    {path: "book", component: BookComponent},
     {path: "author", component: AuthorComponent},
-    {path: "language", component: LanguageComponent},
-    {path: "organisation", component: OrganisationComponent},
-    {path: "subject", component: SubjectComponent},
-    {path: "genre", component: GenreComponent},
-    {path: "passage", component: PassageComponent},
+    {path: "book", component: BookComponent},
     {path: "contributor", component: ContributorComponent},
+    {path: "function", component: FunctionVoiceComponent},
+    {path: "gender", component: GenderComponent},
+    {path: "genre", component: GenreComponent},
+    {path: "image", component: ImageComponent},
+    {path: "language", component: LanguageComponent},
     {path: "lexia", component: LexiaComponent},
+    {path: "marking", component: MarkingComponent},
+    {path: "organisation", component: OrganisationComponent},
+    {path: "passage", component: PassageComponent},
+    {path: "research", component: ResearchFieldComponent},
+    {path: "status", component: StatusComponent},
+    {path: "subject", component: SubjectComponent},
+    {path: "venue", component: VenueComponent},
     {path: "**", component: PageNotFoundComponent}
 ];
 
@@ -77,6 +91,13 @@ const routes: Routes = [
         CreateUpdatePassageComponent,
         CategoriesComponent,
         PageNotFoundComponent,
+        FunctionVoiceComponent,
+        GenderComponent,
+        ImageComponent,
+        MarkingComponent,
+        ResearchFieldComponent,
+        StatusComponent,
+        VenueComponent,
     ],
     imports: [
         RouterModule.forRoot(routes),
