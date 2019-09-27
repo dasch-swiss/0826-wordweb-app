@@ -139,9 +139,9 @@
             <th mat-header-cell *matHeaderCellDef style="width:1rem;"></th>
             <td mat-cell *matCellDef="let element">
                 <div class="action-btn-container">
-                    <button mat-button mat-icon-button color="primary" (click)="expandedElement = expandedElement === element ? null : element">
-                        <mat-icon *ngIf="expandedElement !== element">chevron_right</mat-icon>
-                        <mat-icon *ngIf="expandedElement === element">expand_more</mat-icon>
+                    <button mat-button mat-icon-button color="primary" (click)="expansion(element)">
+                        <mat-icon *ngIf="!contains(element, expandedElements)">chevron_right</mat-icon>
+                        <mat-icon *ngIf="contains(element, expandedElements)">expand_more</mat-icon>
                     </button>
                 </div>
             </td>
@@ -161,7 +161,7 @@
         <ng-container matColumnDef="expandedDetail">
             <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
                 <div class="example-element-detail"
-                     [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                     [@detailExpand]="contains(element, expandedElements) ? 'expanded' : 'collapsed'">
                     <div class="example-element-diagram">
                         <div class="example-element-position"> {{element.position}} </div>
                         <div class="example-element-symbol"> {{element.symbol}} </div>
@@ -179,7 +179,7 @@
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
             class="example-element-row"
-            [class.example-expanded-row]="expandedElement === element">
+            [class.example-expanded-row]="contains(element, expandedElements)">
         </tr>
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
     </table>

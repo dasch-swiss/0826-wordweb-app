@@ -120,7 +120,7 @@ export class BookComponent implements OnInit {
     dataSource2 = ELEMENT_DATA;
     columnsToDisplay = ["action2", "name", "weight"];
     // columnsToDisplay = ["name", "weight", "symbol", "position", "action2"];
-    expandedElement: PeriodicElement | null;
+    expandedElements: PeriodicElement[] = [];
 
     @ViewChild(MatSort) sort: MatSort;
 
@@ -268,6 +268,27 @@ export class BookComponent implements OnInit {
                 this.resetTable();
             }
         });
+    }
+
+    contains(obj: PeriodicElement, arr: PeriodicElement[]) {
+        for (let i = 0; i < arr.length; i++) {
+            if (JSON.stringify(obj) === JSON.stringify(arr[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    addElement(obj: PeriodicElement, arr: PeriodicElement[]) {
+        arr.push(obj);
+    }
+
+    removeElement(obj: PeriodicElement, arr: PeriodicElement[]) {
+        return arr.filter((element => JSON.stringify(obj) !== JSON.stringify(element)));
+    }
+
+    expansion(element) {
+        this.contains(element, this.expandedElements) ? this. expandedElements = this.removeElement(element, this.expandedElements) : this.addElement(element, this.expandedElements)
     }
 
 }
