@@ -1,15 +1,15 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {ApiService} from "../../services/apiService/api.service";
 import {Book, Organisation, Venue} from "../../model/model";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {ApiService} from "../../services/api.service";
 
 @Component({
-    selector: "app-organisation-ref",
-    templateUrl: "./organisation-ref.component.html",
-    styleUrls: ["../category-ref.component.scss"]
+  selector: "app-organisation-ref",
+  templateUrl: "./organisation-ref.component.html",
+  styleUrls: ["../category-ref.scss"]
 })
 export class OrganisationRefComponent implements OnInit {
-    addingModus: boolean;
+addingModus: boolean;
     clonedList: any[];
     allOrganistions: Organisation[];
     filteredList: Organisation[];

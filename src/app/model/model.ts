@@ -63,6 +63,7 @@ export interface Venue {
 
 export interface Organisation {
     id: number;
+    internalID: string;
     name: string;
     order: number;
     references: number;

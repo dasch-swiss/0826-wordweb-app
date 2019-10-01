@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthorRefComponent } from "./author-ref.component";
+import { AuthorRefComponent } from './author-ref.component';
 
-describe("AuthorRefComponent", () => {
+describe('AuthorRefComponent', () => {
   let component: AuthorRefComponent;
   let fixture: ComponentFixture<AuthorRefComponent>;
 
@@ -19,7 +19,7 @@ describe("AuthorRefComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

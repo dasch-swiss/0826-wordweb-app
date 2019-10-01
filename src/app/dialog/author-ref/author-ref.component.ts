@@ -1,12 +1,12 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {ApiService} from "../../services/apiService/api.service";
+import {ApiService} from "../../services/api.service";
 import {Author} from "../../model/model";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
 @Component({
-    selector: "app-dragbox",
-    templateUrl: "./author-ref.component.html",
-    styleUrls: ["../category-ref.component.scss"]
+  selector: "app-author-ref",
+  templateUrl: "./author-ref.component.html",
+  styleUrls: ["../category-ref.scss"]
 })
 export class AuthorRefComponent implements OnInit {
     addingModus: boolean;
@@ -95,3 +95,4 @@ export class AuthorRefComponent implements OnInit {
     }
 
 }
+

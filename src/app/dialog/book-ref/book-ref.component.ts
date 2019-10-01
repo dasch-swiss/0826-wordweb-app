@@ -1,15 +1,15 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {Book} from "../../model/model";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {ApiService} from "../../services/apiService/api.service";
+import {ApiService} from "../../services/api.service";
 
 @Component({
-    selector: "app-book-ref",
-    templateUrl: "./book-ref.component.html",
-    styleUrls: ["../category-ref.component.scss"]
+  selector: "app-book-ref",
+  templateUrl: "./book-ref.component.html",
+  styleUrls: ["../category-ref.scss"]
 })
 export class BookRefComponent implements OnInit {
-    addingModus: boolean;
+   addingModus: boolean;
     clonedList: any[];
     allBooks: Book[];
     filteredList: Book[];
@@ -100,3 +100,4 @@ export class BookRefComponent implements OnInit {
     }
 
 }
+

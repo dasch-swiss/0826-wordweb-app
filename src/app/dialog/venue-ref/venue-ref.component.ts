@@ -1,12 +1,13 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {ApiService} from "../../services/apiService/api.service";
 import {Venue} from "../../model/model";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {ApiService} from "../../services/api.service";
+
 
 @Component({
-    selector: "app-venue-set",
+    selector: "app-venue-ref",
     templateUrl: "./venue-ref.component.html",
-    styleUrls: ["../category-ref.component.scss"]
+    styleUrls: ["../category-ref.scss"]
 })
 export class VenueRefComponent implements OnInit {
     addingModus: boolean;
@@ -93,3 +94,4 @@ export class VenueRefComponent implements OnInit {
         this.listChanged = true;
     }
 }
+

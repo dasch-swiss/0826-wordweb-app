@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import {Router} from "@angular/router";
+// import {ApiServiceError, Project, ProjectsService} from "@knora/core";
 
 @Component({
   selector: "app-categories",
@@ -8,9 +9,21 @@ import {Router} from "@angular/router";
 })
 export class CategoriesComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    // private projectService: ProjectsService
+  ) {
+  }
 
   ngOnInit() {
+    // this.projectService.getProjectByShortcode("0826")
+    //   .subscribe((data: Project) => {
+    //       console.log(data);
+    //     },
+    //     (error: ApiServiceError) => {
+    //       console.error(error);
+    //     }
+    //   );
   }
 
   showAuthors() {
