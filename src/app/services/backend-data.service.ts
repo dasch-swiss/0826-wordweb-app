@@ -485,6 +485,8 @@ export class BackendDataService {
         id: 1,
         internalID: "@000100",
         title: "Romeo and Juliet",
+        createdDate: 1900,
+        publishDate: 1900,
         authors: [this.a1.id, this.a8.id, this.a3.id],
         venues: [this.v1.id],
         organisations: [this.org3.id],
@@ -524,6 +526,8 @@ export class BackendDataService {
         id: 2,
         internalID: "@000200",
         title: "Hamlet",
+        createdDate: 1805,
+        publishDate: 1900,
         authors: [this.a1.id, this.a10.id],
         venues: [this.v3.id],
         organisations: [this.v1.id],
@@ -584,6 +588,8 @@ export class BackendDataService {
         id: 3,
         internalID: "@000300",
         title: "The Comedy of Errors",
+        createdDate: 1899,
+        publishDate: 1900,
         authors: [this.a1.id],
         venues: [this.v6.id],
         organisations: [this.org5.id],
@@ -639,6 +645,8 @@ export class BackendDataService {
         id: 4,
         internalID: "@000400",
         title: "Tamburlaine",
+        createdDate: 1989,
+        publishDate: 1900,
         authors: [this.a2.id],
         venues: [this.v4.id],
         organisations: [this.org1.id],
@@ -676,6 +684,8 @@ export class BackendDataService {
         id: 5,
         internalID: "@000500",
         title: "Of Two Evils Choose the Least",
+        createdDate: 1912,
+        publishDate: 1900,
         authors: [this.a12.id, this.a19.id],
         venues: [this.v2.id, this.v8.id],
         organisations: [this.org4.id],
@@ -689,6 +699,8 @@ export class BackendDataService {
         id: 6,
         internalID: "@000600",
         title: "The Cruel Brother",
+        createdDate: 1567,
+        publishDate: 1900,
         authors: [this.a10.id],
         venues: [this.v2.id],
         organisations: [this.org3.id, this.org7.id],
@@ -702,6 +714,8 @@ export class BackendDataService {
         id: 7,
         internalID: "@000700",
         title: "The Art of Reason",
+        createdDate: 1845,
+        publishDate: 1900,
         authors: [this.a22.id],
         venues: [],
         organisations: [],
@@ -715,6 +729,8 @@ export class BackendDataService {
         id: 8,
         internalID: "@000800",
         title: "Five Hundred Points of Good Husbandry",
+        createdDate: 1715,
+        publishDate: 1715,
         authors: [this.a6.id, this.a9.id],
         venues: [this.v1.id],
         organisations: [this.org1.id],
@@ -728,6 +744,8 @@ export class BackendDataService {
         id: 9,
         internalID: "@000900",
         title: "Treatise of God's Effectual Calling",
+        createdDate: 1668,
+        publishDate: 1668,
         authors: [this.a20.id],
         venues: [],
         organisations: [],
@@ -741,6 +759,8 @@ export class BackendDataService {
         id: 10,
         internalID: "@001000",
         title: "The Jews' Tragedy",
+        createdDate: 1690,
+        publishDate: 1690,
         authors: [this.a22.id],
         venues: [this.v5.id],
         organisations: [this.org2.id],
@@ -1400,10 +1420,11 @@ export class BackendDataService {
     }
 
     updateBook(iri: number, newBook: any) {
-        console.log("backend", newBook);
         const book = this.objBooks[iri];
         book.internalID = newBook.internalID;
         book.title = newBook.title;
+        book.createdDate = newBook.createdDate;
+        book.publishDate = newBook.publishDate;
         book.order = newBook.order;
         // TODO Check if all id are valid
         book.authors = newBook.authors;
@@ -1492,6 +1513,8 @@ export class BackendDataService {
             id: this.getID(),
             internalID: data.internalID,
             title: data.title,
+            createdDate: data.createDate,
+            publishDate: data.publishDate,
             authors: data.authors,
             venues: data.venues,
             organisations: data.organisations,

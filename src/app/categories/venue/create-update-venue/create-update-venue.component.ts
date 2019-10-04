@@ -48,7 +48,7 @@ export class CreateUpdateVenueComponent implements OnInit {
     }
 
     getTitle(): string {
-        return this.editMod ? "Sprache bearbeiten" : "Neue Sprache erstellen";
+        return this.editMod ? "Venue bearbeiten" : "Neue Venue erstellen";
     }
 
     getButtonText(): string {

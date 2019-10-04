@@ -25,6 +25,8 @@ export interface Book {
     id: number;
     internalID: string;
     title: string;
+    createdDate: number;
+    publishDate: number;
     authors: Author[];
     venues: Venue[];
     organisations: Organisation[];

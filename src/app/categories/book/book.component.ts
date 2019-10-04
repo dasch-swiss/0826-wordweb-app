@@ -22,7 +22,7 @@ import {VenueRefComponent} from "../../dialog/venue-ref/venue-ref.component";
 })
 export class BookComponent implements OnInit {
     dataSource: MatTableDataSource<Book>;
-    columnsToDisplay = ["action2", "internalID", "title", "authors", "order", "references"];
+    columnsToDisplay = ["action", "internalID", "title", "authors", "createdDate", "publishDate", "order", "references"];
     expandedElements: any[] = [];
     value: string;
 

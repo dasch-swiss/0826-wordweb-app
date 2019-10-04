@@ -99,6 +99,8 @@ export class ApiService {
       id: book.id,
       internalID: book.internalID,
       title: book.title,
+      createdDate: book.createdDate,
+      publishDate: book.publishDate,
       edition: book.edition,
       editionHist: book.editionHist,
       authors: book.authors.map(author => author.id),
