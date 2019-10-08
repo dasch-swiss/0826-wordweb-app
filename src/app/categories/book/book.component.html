@@ -5,130 +5,20 @@
 
     <div class="filter-container">
         <div class="create-btn-container">
-            <button mat-raised-button type="button" color="primary" (click)="create()"><mat-icon>add</mat-icon>Create book</button>
+            <button mat-raised-button type="button" color="primary" (click)="create()">
+                <mat-icon>add</mat-icon>
+                Create book
+            </button>
         </div>
         <mat-form-field>
-            <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter" (keydown.escape)="clear()">
+            <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter"
+                   (keydown.escape)="clear()">
             <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
         <div class="row-counter">Amount: {{rowCount()}}</div>
     </div>
-
-<!--    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">-->
-
-<!--        &lt;!&ndash; internal id &ndash;&gt;-->
-<!--        <ng-container matColumnDef="internalID">-->
-<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Interne ID</th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div class="edit-value" [satPopoverAnchor]="intID" (click)="intID.open()">{{element.internalID}}</div>-->
-<!--                <sat-popover #intID hasBackdrop xAlign="start" yAlign="start">-->
-<!--                    <app-inline-edit *ngIf="intID.isOpen()" [value]="element.internalID" [type]="'string'" (newValue)="updateProperty($event,'internalID', element, intID)"></app-inline-edit>-->
-<!--                </sat-popover>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        &lt;!&ndash; title Column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="title">-->
-<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div class="edit-value" [satPopoverAnchor]="tit" (click)="tit.open()">{{element.title}}</div>-->
-<!--                <sat-popover #tit hasBackdrop xAlign="start" yAlign="start">-->
-<!--                    <app-inline-edit *ngIf="tit.isOpen()" [value]="element.title" [type]="'string'" (newValue)="updateProperty($event,'title', element, tit)"></app-inline-edit>-->
-<!--                </sat-popover>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        &lt;!&ndash; author column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="authors">-->
-<!--            <th mat-header-cell *matHeaderCellDef>Autor</th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div class="edit-value" (click)="editAuthor(element)" >-->
-<!--                    <div *ngFor="let author of element.authors">{{author.firstName}} {{author.lastName}}</div>-->
-<!--                </div>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        &lt;!&ndash; edition column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="edition">-->
-<!--            <th mat-header-cell *matHeaderCellDef>Edition</th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div class="edit-value" [satPopoverAnchor]="edi" (click)="edi.open()">{{element.edition}}</div>-->
-<!--                <sat-popover #edi hasBackdrop xAlign="start" yAlign="start">-->
-<!--                    <app-inline-edit *ngIf="edi.isOpen()" [value]="element.edition" [type]="'string'" (newValue)="updateProperty($event,'edition', element, edi)"></app-inline-edit>-->
-<!--                </sat-popover>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        &lt;!&ndash; edition hist column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="editionHist">-->
-<!--            <th mat-header-cell *matHeaderCellDef>Edition Hist.</th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div class="edit-value" [satPopoverAnchor]="ediHist" (click)="ediHist.open()">{{element.editionHist}}</div>-->
-<!--                <sat-popover #ediHist hasBackdrop xAlign="start" yAlign="start">-->
-<!--                    <app-inline-edit *ngIf="ediHist.isOpen()" [value]="element.editionHist" [type]="'string'" (newValue)="updateProperty($event,'editionHist', element, ediHist)"></app-inline-edit>-->
-<!--                </sat-popover>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        &lt;!&ndash; venue column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="venues">-->
-<!--            <th mat-header-cell *matHeaderCellDef>Venue</th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div class="edit-value" (click)="editVenue(element)" >-->
-<!--                    <div *ngFor="let venue of element.venues">{{venue.name}}, {{venue.city}}</div>-->
-<!--                </div>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        &lt;!&ndash; organisation column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="organisations">-->
-<!--            <th mat-header-cell *matHeaderCellDef>Organisation</th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div class="edit-value" (click)="editOrganisation(element)" >-->
-<!--                    <div *ngFor="let organisation of element.organisations">{{organisation.name}}</div>-->
-<!--                </div>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        &lt;!&ndash; order column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="order">-->
-<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Reihenfolge</th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div class="edit-value" [satPopoverAnchor]="or" (click)="or.open()">{{element.order}}</div>-->
-<!--                <sat-popover #or hasBackdrop xAlign="start" yAlign="start">-->
-<!--                    <app-inline-edit *ngIf="or.isOpen()" [value]="element.order" [type]="'number'" (newValue)="updateProperty($event,'order', element, or)"></app-inline-edit>-->
-<!--                </sat-popover>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        &lt;!&ndash; reference column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="references">-->
-<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Referenzen</th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div class="read-only-value">{{element.references}}</div>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        &lt;!&ndash; button column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="action">-->
-<!--            <th mat-header-cell *matHeaderCellDef></th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div class="action-btn-container">-->
-<!--                    <button mat-button mat-icon-button color="primary" (click)="edit(element)">-->
-<!--                        <mat-icon>edit</mat-icon>-->
-<!--                    </button>-->
-<!--                    <button mat-button mat-icon-button color="warn" (click)="delete(element.id)" [disabled]="element.references !== 0">-->
-<!--                        <mat-icon>delete</mat-icon>-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>-->
-<!--        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
-<!--    </table>-->
 
     <table mat-table matSort
            [dataSource]="dataSource" multiTemplateDataRows
@@ -147,19 +37,19 @@
         </ng-container>
 
         <ng-container matColumnDef="internalID">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Internal ID </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Internal ID</th>
             <td mat-cell *matCellDef="let element"> {{element["internalID"]}} </td>
         </ng-container>
 
         <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef> Title </th>
+            <th mat-header-cell *matHeaderCellDef> Title</th>
             <td mat-cell *matCellDef="let element"> {{element["title"]}} </td>
         </ng-container>
 
         <ng-container matColumnDef="authors">
             <th mat-header-cell *matHeaderCellDef>Autor</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" (click)="editAuthor(element)" >
+                <div class="edit-value" (click)="editAuthor(element)">
                     <div *ngFor="let author of element.authors">{{author.firstName}} {{author.lastName}}</div>
                 </div>
             </td>
@@ -169,7 +59,7 @@
         <ng-container matColumnDef="createdDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Composition</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchor]="cd" (click)="cd.open()">{{element.createdDate}}</div>
+                <div class="edit-value" [satPopoverAnchor]="cd" (click)="cd.open()">{{getDateFormat(element.createdStartDate, element.createdEndDate)}}</div>
                 <sat-popover #cd hasBackdrop xAlign="start" yAlign="start">
                     <app-inline-edit *ngIf="cd.isOpen()" [value]="element.createdDate" [type]="'number'"
                                      (newValue)="updateProperty($event,'createdDate', element, cd)"></app-inline-edit>
@@ -181,7 +71,7 @@
         <ng-container matColumnDef="publishDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Publication</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchor]="pd" (click)="pd.open()">{{element.publishDate}}</div>
+                <div class="edit-value" [satPopoverAnchor]="pd" (click)="pd.open()">{{getDateFormat(element.publishedStartDate, element.publishedEndDate)}}</div>
                 <sat-popover #pd hasBackdrop xAlign="start" yAlign="start">
                     <app-inline-edit *ngIf="pd.isOpen()" [value]="element.publishDate" [type]="'number'"
                                      (newValue)="updateProperty($event,'publishDate', element, pd)"></app-inline-edit>
@@ -195,7 +85,8 @@
             <td mat-cell *matCellDef="let element">
                 <div class="edit-value" [satPopoverAnchor]="or" (click)="or.open()">{{element.order}}</div>
                 <sat-popover #or hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="or.isOpen()" [value]="element.order" [type]="'number'" (newValue)="updateProperty($event,'order', element, or)"></app-inline-edit>
+                    <app-inline-edit *ngIf="or.isOpen()" [value]="element.order" [type]="'number'"
+                                     (newValue)="updateProperty($event,'order', element, or)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>
@@ -213,7 +104,7 @@
             <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
                 <div class="example-element-detail"
                      [@detailExpand]="contains(element, expandedElements) ? 'expanded' : 'collapsed'">
-                   Edition: {{element.edition}}
+                    Edition: {{element.edition}}
                 </div>
             </td>
         </ng-container>

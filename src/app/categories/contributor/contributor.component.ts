@@ -2,8 +2,7 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {ApiService} from "../../services/api.service";
 import {SatPopover} from "@ncstate/sat-popover";
-import {Book, Contributor} from "../../model/model";
-import {CreateUpdateBookComponent} from "../book/create-update-book/create-update-book.component";
+import { Contributor} from "../../model/model";
 import {CreateUpdateContributorComponent} from "./create-update-contributor/create-update-contributor.component";
 
 @Component({
@@ -13,7 +12,7 @@ import {CreateUpdateContributorComponent} from "./create-update-contributor/crea
 })
 export class ContributorComponent implements OnInit {
 
-    displayedColumns: string[] = ["firstName", "lastName", "gender", "email", "order", "references", "action"];
+    displayedColumns: string[] = ["internalID", "firstName", "lastName", "gender", "email", "order", "references", "action"];
     dataSource: MatTableDataSource<Contributor>;
     value: string;
 

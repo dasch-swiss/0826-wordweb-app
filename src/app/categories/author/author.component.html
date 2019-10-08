@@ -74,7 +74,7 @@
         <ng-container matColumnDef="birthDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Birth year</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchor]="bd" (click)="bd.open()">{{element.birthDate}}</div>
+                <div class="edit-value" [satPopoverAnchor]="bd" (click)="bd.open()">{{getDateFormat(element.birthStartDate, element.birthEndDate)}}</div>
                 <sat-popover #bd hasBackdrop xAlign="start" yAlign="start">
                     <app-inline-edit *ngIf="bd.isOpen()" [value]="element.birthDate" [type]="'number'"
                                      (newValue)="updateProperty($event,'birthDate', element, bd)"></app-inline-edit>
@@ -86,7 +86,7 @@
         <ng-container matColumnDef="deathDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Death year</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchor]="dd" (click)="dd.open()">{{element.deathDate}}</div>
+                <div class="edit-value" [satPopoverAnchor]="dd" (click)="dd.open()">{{getDateFormat(element.deathStartDate, element.deathEndDate)}}</div>
                 <sat-popover #dd hasBackdrop xAlign="start" yAlign="start">
                     <app-inline-edit *ngIf="dd.isOpen()" [value]="element.deathDate" [type]="'number'"
                                      (newValue)="updateProperty($event,'deathDate', element, dd)"></app-inline-edit>
@@ -98,7 +98,7 @@
         <ng-container matColumnDef="activeDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Activity</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchor]="ad" (click)="ad.open()"></div>
+                <div class="edit-value" [satPopoverAnchor]="ad" (click)="ad.open()">{{getDateFormat(element.flStartDate, element.flEndDate)}}</div>
                 <sat-popover #ad hasBackdrop xAlign="start" yAlign="start">
                     <app-inline-edit *ngIf="ad.isOpen()" [value]="" [type]="'number'"></app-inline-edit>
                 </sat-popover>
@@ -113,6 +113,14 @@
                 <sat-popover #gen hasBackdrop xAlign="start" yAlign="start">
                     <app-inline-edit *ngIf="gen.isOpen()" [value]="element.gender" [type]="'string'"></app-inline-edit>
                 </sat-popover>
+            </td>
+        </ng-container>
+
+        <!-- lexia column-->
+        <ng-container matColumnDef="lexia">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Lexia</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="edit-value" *ngIf="element.humanAsLexia">{{element.humanAsLexia.name}}</div>
             </td>
         </ng-container>
 

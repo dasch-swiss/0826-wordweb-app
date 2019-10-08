@@ -1,15 +1,16 @@
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {
-  ApiServiceError,
-  ApiServiceResult,
-  ListNode,
-  ListsService,
-  OntologyService,
-  Project,
-  ProjectsService,
-  ResourceService
+    ApiServiceError,
+    ApiServiceResult,
+    ListNode,
+    ListsService,
+    OntologyService,
+    Project,
+    ProjectsService,
+    ResourceService
 } from "@knora/core";
+import {ApiService} from "../services/api.service";
 
 @Component({
     selector: "app-categories",
@@ -18,45 +19,51 @@ import {
 })
 export class CategoriesComponent implements OnInit {
 
+    readonly url = "http://rdfh.ch/projects/0826";
+    readonly urlOntology = "http://www.knora.org/ontology/0826/teimww";
+
     constructor(
         private router: Router,
         private projectService: ProjectsService,
         private listService: ListsService,
         private ontologyService: OntologyService,
-        private resourceService: ResourceService
+        private resourceService: ResourceService,
+        private apiService: ApiService
     ) {
     }
 
     ngOnInit() {
         // this.projectService.getProjectByShortcode("0826")
         //     .subscribe((data: Project) => {
-        //             console.log(data);
+        //             console.log("1", data);
         //         },
         //         (error: ApiServiceError) => {
-        //             console.error(error);
+        //             console.error("1", error);
         //         }
         //     );
         //
-        // this.listService.getLists("http://rdfh.ch/projects/0826")
+        // this.listService.getLists(this.url)
         //     .subscribe((data: ListNode[]) => {
-        //         console.log(data);
+        //         console.log("2", data);
         //     }, (error: ApiServiceError) => {
-        //         console.error(error);
+        //         console.error("2", error);
         //     });
         //
-        // this.ontologyService.getProjectOntologies("http://rdfh.ch/projects/0826")
+        // this.ontologyService.getProjectOntologies(this.url)
         //     .subscribe((result: ApiServiceResult) => {
-        //       console.log(result);
+        //         console.log("3", result);
         //     }, (error: ApiServiceError) => {
-        //       console.error(error);
+        //         console.error("3", error);
         //     });
         //
-        // this.resourceService.getResource("http://rdfh.ch/0826/MfU3t95jQiqQ72dmI_bzdQ")
+        // this.resourceService.getResource("http://rdfh.ch/lists/0826/8fwWdBH_Rd2hy26E1FIhQg")
         //     .subscribe((data: any) => {
-        //       console.log(data);
+        //         console.log("4", data);
         //     }, (error: ApiServiceError) => {
-        //       console.error(error);
+        //         console.error("4", error);
         //     });
+
+        console.log(this.apiService.getBooks(true));
     }
 
     showAuthors() {

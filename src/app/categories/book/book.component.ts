@@ -49,7 +49,7 @@ export class BookComponent implements OnInit {
         this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 
-    customFilter(book: Book, filterValue: string): boolean {
+    customFilter(book: any, filterValue: string): boolean {
         const containsInternalID = book.internalID.indexOf(filterValue) > -1;
         const containsTitle = book.title.toLowerCase().indexOf(filterValue) > -1;
         const containEdition = book.edition.toLowerCase().indexOf(filterValue) > -1;
@@ -193,6 +193,10 @@ export class BookComponent implements OnInit {
 
     expansion(element) {
         this.contains(element, this.expandedElements) ? this.expandedElements = this.removeElement(element, this.expandedElements) : this.addElement(element, this.expandedElements);
+    }
+
+    getDateFormat(dateStart: string, dateEnd: string): string {
+        return dateStart === dateEnd ? dateStart : `${dateStart}-${dateEnd}`;
     }
 
 }
