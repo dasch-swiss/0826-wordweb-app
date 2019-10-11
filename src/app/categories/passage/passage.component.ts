@@ -5,16 +5,25 @@ import {ApiService} from "../../services/api.service";
 import {SatPopover} from "@ncstate/sat-popover";
 import {CreateUpdatePassageComponent} from "./create-update-passage/create-update-passage.component";
 import {BookRefComponent} from "../../dialog/book-ref/book-ref.component";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: "app-passage",
   templateUrl: "./passage.component.html",
-  styleUrls: ["./passage.component.scss"]
+  styleUrls: ["./passage.component.scss"],
+    animations: [
+        trigger("detailExpand", [
+            state("collapsed, void", style({height: "0px", minHeight: "0"})),
+            state("expanded", style({height: "*"})),
+            transition("expanded <=> collapsed, void => expanded", animate("225ms cubic-bezier(0.4, 0.0, 0.2, 1)"))
+        ]),
+    ]
 })
 export class PassageComponent implements OnInit {
-    displayedColumns: string[] = ["book", "text", "textHist", "page", "pageHist", "order", "references", "action"];
+    columnsToDisplay: string[] = ["detail", "book", "text", "textHist", "page", "pageHist", "order", "references", "action"];
     passages: any;
     dataSource: MatTableDataSource<Passage>;
+    expandedElements: any[] = [];
     value: string;
 
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -117,6 +126,27 @@ export class PassageComponent implements OnInit {
                 this.resetTable();
             }
         });
+    }
+
+    contains(obj: any, arr: any[]) {
+        for (let i = 0; i < arr.length; i++) {
+            if (JSON.stringify(obj) === JSON.stringify(arr[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    addElement(obj: any, arr: any[]) {
+        arr.push(obj);
+    }
+
+    removeElement(obj: any, arr: any[]) {
+        return arr.filter((element => JSON.stringify(obj) !== JSON.stringify(element)));
+    }
+
+    expansion(element) {
+        this.contains(element, this.expandedElements) ? this.expandedElements = this.removeElement(element, this.expandedElements) : this.addElement(element, this.expandedElements);
     }
 
 }

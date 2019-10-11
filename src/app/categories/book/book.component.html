@@ -20,11 +20,9 @@
         <div class="row-counter">Amount: {{rowCount()}}</div>
     </div>
 
-    <table mat-table matSort
-           [dataSource]="dataSource" multiTemplateDataRows
-           class="mat-elevation-z8">
+    <table mat-table matSort [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
 
-        <ng-container matColumnDef="action">
+        <ng-container matColumnDef="detail">
             <th mat-header-cell *matHeaderCellDef style="width:1rem;"></th>
             <td mat-cell *matCellDef="let element">
                 <div class="action-btn-container">
@@ -59,7 +57,8 @@
         <ng-container matColumnDef="createdDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Composition</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchor]="cd" (click)="cd.open()">{{getDateFormat(element.createdStartDate, element.createdEndDate)}}</div>
+                <div class="edit-value" [satPopoverAnchor]="cd"
+                     (click)="cd.open()">{{getDateFormat(element.createdStartDate, element.createdEndDate)}}</div>
                 <sat-popover #cd hasBackdrop xAlign="start" yAlign="start">
                     <app-inline-edit *ngIf="cd.isOpen()" [value]="element.createdDate" [type]="'number'"
                                      (newValue)="updateProperty($event,'createdDate', element, cd)"></app-inline-edit>
@@ -71,7 +70,8 @@
         <ng-container matColumnDef="publishDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Publication</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchor]="pd" (click)="pd.open()">{{getDateFormat(element.publishedStartDate, element.publishedEndDate)}}</div>
+                <div class="edit-value" [satPopoverAnchor]="pd"
+                     (click)="pd.open()">{{getDateFormat(element.publishedStartDate, element.publishedEndDate)}}</div>
                 <sat-popover #pd hasBackdrop xAlign="start" yAlign="start">
                     <app-inline-edit *ngIf="pd.isOpen()" [value]="element.publishDate" [type]="'number'"
                                      (newValue)="updateProperty($event,'publishDate', element, pd)"></app-inline-edit>
@@ -105,6 +105,22 @@
                 <div class="example-element-detail"
                      [@detailExpand]="contains(element, expandedElements) ? 'expanded' : 'collapsed'">
                     Edition: {{element.edition}}
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- button column -->
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <div class="action-btn-container">
+                    <button mat-button mat-icon-button color="primary" (click)="edit(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-button mat-icon-button color="warn" (click)="delete(element.id)"
+                            [disabled]="element.references !== 0">
+                        <mat-icon>delete</mat-icon>
+                    </button>
                 </div>
             </td>
         </ng-container>

@@ -84,8 +84,68 @@ export class ApiService {
         return this.backendData.getContributors(references);
     }
 
+    getGender(iri: number, references: boolean = false) {
+        return this.backendData.getGender(iri, references);
+    }
+
+    getGenders(references: boolean = false) {
+        return this.backendData.getGenders(references);
+    }
+
+    getGenre(iri: number, references: boolean = false) {
+        return this.backendData.getGenre(iri, references);
+    }
+
     getGenres(references: boolean = false) {
         return this.backendData.getGenres(references);
+    }
+
+    getResearchField(iri: number, references: boolean = false) {
+        return this.backendData.getResearchField(iri, references);
+    }
+
+    getResearchFields(references: boolean = false) {
+        return this.backendData.getResearchFields(references);
+    }
+
+    getStatus(iri: number, references: boolean = false) {
+        return this.backendData.getStatus(iri, references);
+    }
+
+    getStatuses(references: boolean = false) {
+        return this.backendData.getStatuses(references);
+    }
+
+    getImage(iri: number, references: boolean = false) {
+        return this.backendData.getImage(iri, references);
+    }
+
+    getImages(references: boolean = false) {
+        return this.backendData.getImages(references);
+    }
+
+    getMarking(iri: number, references: boolean = false) {
+        return this.backendData.getMarking(iri, references);
+    }
+
+    getMarkings(references: boolean = false) {
+        return this.backendData.getMarkings(references);
+    }
+
+    getFormalClass(iri: number, references: boolean = false) {
+        return this.backendData.getFormalClass(iri, references);
+    }
+
+    getFormalClasses(references: boolean = false) {
+        return this.backendData.getFormalClasses(references);
+    }
+
+    getFunctionVoice(iri: number, references: boolean = false) {
+        return this.backendData.getFunctionVoice(iri, references);
+    }
+
+    getFunctionVoices(references: boolean = false) {
+        return this.backendData.getFunctionVoices(references);
     }
 
     // UPDATE REQUESTS

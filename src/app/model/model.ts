@@ -99,27 +99,27 @@ export interface Status extends WordWebObject {
 
 export interface Genre extends WordWebObject {
     name: string;
-    nodes: Genre[];
+    nodes: Genre[] | number[];
 }
 
 export interface Image extends WordWebObject {
     name: string;
-    nodes: Image[];
+    nodes: Image[] | number[];
 }
 
 export interface Marking extends WordWebObject {
     name: string;
-    nodes: Marking[];
+    nodes: Marking[] | number[];
 }
 
 export interface FormalClass extends WordWebObject {
     name: string;
-    nodes: FormalClass[];
+    nodes: FormalClass[] | number[];
 }
 
 export interface FunctionVoice extends WordWebObject {
     name: string;
-    nodes: FunctionVoice[];
+    nodes: FunctionVoice[] | number[];
 }
 
 export interface TreeGenre extends Genre {

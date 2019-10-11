@@ -1,10 +1,1936 @@
 import {Injectable} from "@angular/core";
-import {Author, Book, Contributor, Language, Lexia, Organisation, Passage, Subject, Venue, WordWebObject} from "../model/model";
+import {
+    Author,
+    Book,
+    Contributor, FormalClass, FunctionVoice,
+    Gender, Genre, Image,
+    Language,
+    Lexia, Marking,
+    Organisation,
+    Passage,
+    ResearchField, Status,
+    Subject,
+    Venue,
+    WordWebObject
+} from "../model/model";
 
 @Injectable({
     providedIn: "root"
 })
 export class BackendDataService {
+    private gen1: Gender = {
+        id: 1,
+        name: "male",
+        order: 0,
+        references: 22,
+        internalComment: ""
+    };
+
+    private gen2: Gender = {
+        id: 2,
+        name: "female",
+        order: 0,
+        references: 2,
+        internalComment: ""
+    };
+
+    private sta1: Status = {
+        id: 1,
+        name: "unedited",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private sta2: Status = {
+        id: 2,
+        name: "check",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private sta3: Status = {
+        id: 3,
+        name: "weak",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private sta4: Status = {
+        id: 4,
+        name: "plausible",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma45: Marking = {
+        id: 45,
+        name: "Author pending",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma44: Marking = {
+        id: 44,
+        name: "Author wrong",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma43: Marking = {
+        id: 43,
+        name: "Author anonymous",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma42: Marking = {
+        id: 42,
+        name: "Author by context",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma41: Marking = {
+        id: 41,
+        name: "Author anonymous",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma40: Marking = {
+        id: 40,
+        name: "Author by context",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma39: Marking = {
+        id: 39,
+        name: "Author epithet",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma38: Marking = {
+        id: 38,
+        name: "Author name",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma37: Marking = {
+        id: 37,
+        name: "Author unmarked",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma36: Marking = {
+        id: 36,
+        name: "Work bibligraphical detail",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma35: Marking = {
+        id: 35,
+        name: "Work pending",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma34: Marking = {
+        id: 34,
+        name: "Work genre or epithet",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma33: Marking = {
+        id: 33,
+        name: "Work title wrong",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma32: Marking = {
+        id: 32,
+        name: "Work by context",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma31: Marking = {
+        id: 31,
+        name: "Work secondary character in Hamlet",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma30: Marking = {
+        id: 30,
+        name: "Work character by epithet",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma29: Marking = {
+        id: 29,
+        name: "Work by character",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma28: Marking = {
+        id: 28,
+        name: "Work title",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma27: Marking = {
+        id: 27,
+        name: "Work unmarked",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma26: Marking = {
+        id: 26,
+        name: "Prose-Poetry switch",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma25: Marking = {
+        id: 25,
+        name: "Anomaly other",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma24: Marking = {
+        id: 24,
+        name: "Grammar",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma23: Marking = {
+        id: 23,
+        name: "Nominalisation",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma22: Marking = {
+        id: 22,
+        name: "Language switch",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma21: Marking = {
+        id: 21,
+        name: "Archaism",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma20: Marking = {
+        id: 20,
+        name: "Italics",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma19: Marking = {
+        id: 19,
+        name: "Typography other",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma18: Marking = {
+        id: 18,
+        name: "Set off",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma17: Marking = {
+        id: 17,
+        name: "Quotation marks",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma16: Marking = {
+        id: 16,
+        name: "like or as",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma15: Marking = {
+        id: 15,
+        name: "Verbal pending",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma14: Marking = {
+        id: 14,
+        name: "Verbal other",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma13: Marking = {
+        id: 13,
+        name: "Metalinguistic noun",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma12: Marking = {
+        id: 12,
+        name: "Other verb",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma11: Marking = {
+        id: 11,
+        name: "Verb to say",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma10: Marking = {
+        id: 10,
+        name: "NAME",
+        nodes: [
+            this.ma27.id, this.ma28.id, this.ma29.id, this.ma30.id, this.ma31.id, this.ma32.id, this.ma33.id,
+            this.ma34.id, this.ma35.id, this.ma36.id, this.ma37.id, this.ma38.id, this.ma39.id, this.ma40.id,
+            this.ma41.id, this.ma42.id, this.ma43.id, this.ma44.id, this.ma45.id
+        ],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma9: Marking = {
+        id: 9,
+        name: "MARKING PENDING",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma8: Marking = {
+        id: 8,
+        name: "MARKING BY CONTEXT",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma7: Marking = {
+        id: 7,
+        name: "MARKING BY GENRE",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma6: Marking = {
+        id: 6,
+        name: "MARKING BY NAME",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma5: Marking = {
+        id: 5,
+        name: "ANOMALY",
+        nodes: [this.ma21.id, this.ma22.id, this.ma23.id, this.ma24.id, this.ma25.id, this.ma26.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma4: Marking = {
+        id: 4,
+        name: "TYPOGRAPHY",
+        nodes: [this.ma17.id, this.ma18.id, this.ma19.id, this.ma20.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma3: Marking = {
+        id: 3,
+        name: "MARKING VERBAL",
+        nodes: [this.ma11.id, this.ma12.id, this.ma13.id, this.ma14.id, this.ma15.id, this.ma16.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma2: Marking = {
+        id: 2,
+        name: "Marked",
+        nodes: [this.ma3.id, this.ma4.id, this.ma5.id, this.ma6.id, this.ma7.id, this.ma8.id, this.ma8.id, this.ma9.id, this.ma10.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma1: Marking = {
+        id: 1,
+        name: "Unmarked",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private ma0: Marking = {
+        id: 0,
+        name: "root",
+        nodes: [this.ma1.id, this.ma2.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private fu13: FunctionVoice = {
+        id: 13,
+        name: "Fictional letter or diary",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private fu12: FunctionVoice = {
+        id: 12,
+        name: "1st-person narrator",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private fu11: FunctionVoice = {
+        id: 11,
+        name: "Interior monologue",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private fu10: FunctionVoice = {
+        id: 10,
+        name: "Dialogue",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private fu9: FunctionVoice = {
+        id: 9,
+        name: "Narrator",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private fu8: FunctionVoice = {
+        id: 8,
+        name: "STAGE DIRECTION",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private fu7: FunctionVoice = {
+        id: 7,
+        name: "FOOTNOTE OR OTHER",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private fu6: FunctionVoice = {
+        id: 6,
+        name: "COMPLETE TEXT",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private fu5: FunctionVoice = {
+        id: 5,
+        name: "ANTHOLOGY ENTRY",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private fu4: FunctionVoice = {
+        id: 4,
+        name: "EPIGRAPH",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private fu3: FunctionVoice = {
+        id: 3,
+        name: "BODY OF TEXT",
+        nodes: [
+            this.fu9.id, this.fu10.id, this.fu11.id, this.fu12.id, this.fu13.id
+        ],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private fu2: FunctionVoice = {
+        id: 2,
+        name: "TITLE",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private fu1: FunctionVoice = {
+        id: 1,
+        name: "CHARACTERNAME",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private fu0: FunctionVoice = {
+        id: 0,
+        name: "root",
+        nodes: [this.fu1.id, this.fu2.id, this.fu3.id, this.fu4.id, this.fu5.id, this.fu6.id, this.fu7.id, this.fu8.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for25: FormalClass = {
+        id: 25,
+        name: "Blot cluster",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for24: FormalClass = {
+        id: 24,
+        name: "Pillow cluster",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for23: FormalClass = {
+        id: 23,
+        name: "Dog cluster",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for22: FormalClass = {
+        id: 22,
+        name: "Tiger cluster",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for21: FormalClass = {
+        id: 21,
+        name: "Scene",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for20: FormalClass = {
+        id: 20,
+        name: "Complete plot",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for19: FormalClass = {
+        id: 19,
+        name: "Visual motif",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for18: FormalClass = {
+        id: 18,
+        name: "Plot element",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for17: FormalClass = {
+        id: 17,
+        name: "Idea",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for16: FormalClass = {
+        id: 16,
+        name: "Booktitle",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for15: FormalClass = {
+        id: 15,
+        name: "Venue or place",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for14: FormalClass = {
+        id: 14,
+        name: "Charactername",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for13: FormalClass = {
+        id: 13,
+        name: "Real person",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for12: FormalClass = {
+        id: 12,
+        name: "Motif with name",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for11: FormalClass = {
+        id: 11,
+        name: "Setpiece (complete text)",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for10: FormalClass = {
+        id: 10,
+        name: "Snowclone",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for9: FormalClass = {
+        id: 9,
+        name: "Keywords",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for8: FormalClass = {
+        id: 8,
+        name: "Passage (longer)",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for7: FormalClass = {
+        id: 7,
+        name: "Phrase (two words to two lines)",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for6: FormalClass = {
+        id: 6,
+        name: "word",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for5: FormalClass = {
+        id: 5,
+        name: "Cluster",
+        nodes: [this.for22.id, this.for23.id, this.for24.id, this.for25.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for4: FormalClass = {
+        id: 4,
+        name: "Summarised",
+        nodes: [this.for17.id, this.for18.id, this.for19.id, this.for20.id, this.for21.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for3: FormalClass = {
+        id: 3,
+        name: "Name",
+        nodes: [this.for12.id, this.for13.id, this.for14.id, this.for15.id, this.for16.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for2: FormalClass = {
+        id: 2,
+        name: "Verbal",
+        nodes: [this.for9.id, this.for10.id, this.for11.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for1: FormalClass = {
+        id: 1,
+        name: "Wörtlich",
+        nodes: [this.for6.id, this.for7.id, this.for8.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private for0: FormalClass = {
+        id: 0,
+        name: "root",
+        nodes: [this.for1.id, this.for2.id, this.for3.id, this.for4.id, this.for5.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre3: Genre = {
+        id: 3,
+        name: "Prose unspecified",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre4: Genre = {
+        id: 4,
+        name: "Crime fiction",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre5: Genre = {
+        id: 5,
+        name: "Biographical or historicizing",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre6: Genre = {
+        id: 6,
+        name: "Gothic",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre7: Genre = {
+        id: 7,
+        name: "Science fiction or fantasy",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre8: Genre = {
+        id: 8,
+        name: "Romance",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre9: Genre = {
+        id: 9,
+        name: "Children's writing",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre10: Genre = {
+        id: 10,
+        name: "Joke or comic or other",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre12: Genre = {
+        id: 12,
+        name: "Poetry unspecified",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre13: Genre = {
+        id: 13,
+        name: "Song or ballad",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre14: Genre = {
+        id: 14,
+        name: "Epic and verse narrative",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre15: Genre = {
+        id: 15,
+        name: "Closet drama",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre16: Genre = {
+        id: 16,
+        name: "Verse satire",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre18: Genre = {
+        id: 18,
+        name: "Theatre",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre19: Genre = {
+        id: 19,
+        name: "Tragedy",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre20: Genre = {
+        id: 20,
+        name: "Comedy",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre21: Genre = {
+        id: 21,
+        name: "History",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre22: Genre = {
+        id: 22,
+        name: "Tragicomedy",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre23: Genre = {
+        id: 23,
+        name: "Romance (Drama)",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre24: Genre = {
+        id: 24,
+        name: "Tragedy or History",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre25: Genre = {
+        id: 25,
+        name: "Masque or other",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre26: Genre = {
+        id: 26,
+        name: "TV, film, radio, games",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre27: Genre = {
+        id: 27,
+        name: "Opera or musical theatre",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre29: Genre = {
+        id: 29,
+        name: "Journalism",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre30: Genre = {
+        id: 30,
+        name: "Academic",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre31: Genre = {
+        id: 31,
+        name: "Popular",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre32: Genre = {
+        id: 32,
+        name: "Anthology",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre33: Genre = {
+        id: 33,
+        name: "Diary",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre34: Genre = {
+        id: 34,
+        name: "Essay",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre35: Genre = {
+        id: 35,
+        name: "Letter",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre36: Genre = {
+        id: 36,
+        name: "Official document",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre37: Genre = {
+        id: 37,
+        name: "Preface or dedication",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre38: Genre = {
+        id: 38,
+        name: "Speech or lecture or sermon",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre39: Genre = {
+        id: 39,
+        name: "Bible or religious pamphlet",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre40: Genre = {
+        id: 40,
+        name: "Nonfiction unspecified",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre41: Genre = {
+        id: 41,
+        name: "Annotated edition",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre43: Genre = {
+        id: 43,
+        name: "Visual arts",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre44: Genre = {
+        id: 44,
+        name: "Instrumental music",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre45: Genre = {
+        id: 45,
+        name: "Dance and performance",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre46: Genre = {
+        id: 46,
+        name: "Cartoon",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre47: Genre = {
+        id: 47,
+        name: "Name or anagram or other",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre48: Genre = {
+        id: 48,
+        name: "Annotation",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre49: Genre = {
+        id: 49,
+        name: "Database",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre50: Genre = {
+        id: 50,
+        name: "Conversation",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre51: Genre = {
+        id: 51,
+        name: "Manuscript commonplace book",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre52: Genre = {
+        id: 52,
+        name: "Tweet or chat or post",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre53: Genre = {
+        id: 53,
+        name: "Advertisement",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre42: Genre = {
+        id: 42,
+        name: "Other genre",
+        nodes: [
+            this.genre43.id, this.genre44.id, this.genre45.id, this.genre46.id, this.genre47.id,
+            this.genre48.id, this.genre49.id, this.genre50.id, this.genre51.id, this.genre52.id,
+            this.genre53.id
+        ],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre28: Genre = {
+        id: 28,
+        name: "Nonfiction",
+        nodes: [
+            this.genre29.id, this.genre30.id, this.genre31.id, this.genre32.id, this.genre33.id,
+            this.genre34.id, this.genre35.id, this.genre36.id, this.genre37.id, this.genre38.id,
+            this.genre39.id, this.genre40.id, this.genre41.id
+        ],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre17: Genre = {
+        id: 17,
+        name: "Drama (Theatre)",
+        nodes: [
+            this.genre18.id, this.genre19.id, this.genre20.id, this.genre21.id, this.genre22.id,
+            this.genre23.id, this.genre24.id, this.genre25.id
+        ],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre11: Genre = {
+        id: 11,
+        name: "Poetry including songs",
+        nodes: [this.genre12.id, this.genre13.id, this.genre14.id, this.genre15.id, this.genre16.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre2: Genre = {
+        id: 2,
+        name: "Prose",
+        nodes: [
+            this.genre3.id, this.genre4.id, this.genre5.id, this.genre6.id, this.genre7.id,
+            this.genre8.id, this.genre9.id, this.genre10.id
+        ],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre1: Genre = {
+        id: 1,
+        name: "Fiction",
+        nodes: [this.genre2.id, this.genre11.id, this.genre17.id, this.genre26.id, this.genre27.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private genre0: Genre = {
+        id: 0,
+        name: "root",
+        nodes: [this.genre1.id, this.genre28.id, this.genre42.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im57: Image = {
+        id: 57,
+        name: "varia",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im56: Image = {
+        id: 56,
+        name: "madness",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im55: Image = {
+        id: 55,
+        name: "jealousy",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im54: Image = {
+        id: 54,
+        name: "love",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im53: Image = {
+        id: 53,
+        name: "arm",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im52: Image = {
+        id: 52,
+        name: "back",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im51: Image = {
+        id: 51,
+        name: "blood",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im50: Image = {
+        id: 50,
+        name: "running",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im49: Image = {
+        id: 49,
+        name: "season",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im48: Image = {
+        id: 48,
+        name: "day",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im47: Image = {
+        id: 47,
+        name: "christian",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im46: Image = {
+        id: 46,
+        name: "pagan",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im45: Image = {
+        id: 45,
+        name: "Psychology",
+        nodes: [this.im54.id, this.im55.id, this.im56.id, this.im57.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im44: Image = {
+        id: 44,
+        name: "Body",
+        nodes: [this.im51.id, this.im52.id, this.im53.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im43: Image = {
+        id: 43,
+        name: "Time",
+        nodes: [this.im48.id, this.im49.id, this.im50.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im42: Image = {
+        id: 42,
+        name: "Religion",
+        nodes: [this.im46.id, this.im47.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im41: Image = {
+        id: 41,
+        name: "art",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im40: Image = {
+        id: 40,
+        name: "dance",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im39: Image = {
+        id: 39,
+        name: "music",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im38: Image = {
+        id: 38,
+        name: "theatre",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im37: Image = {
+        id: 37,
+        name: "debts",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im36: Image = {
+        id: 36,
+        name: "money",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im35: Image = {
+        id: 35,
+        name: "melancholy",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im34: Image = {
+        id: 34,
+        name: "plaster",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im33: Image = {
+        id: 33,
+        name: "bread",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im32: Image = {
+        id: 32,
+        name: "wine",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im31: Image = {
+        id: 31,
+        name: "furniture",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im30: Image = {
+        id: 30,
+        name: "tools",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im29: Image = {
+        id: 29,
+        name: "fashion",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im28: Image = {
+        id: 28,
+        name: "law",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im27: Image = {
+        id: 27,
+        name: "king",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im26: Image = {
+        id: 26,
+        name: "Leisure",
+        nodes: [this.im38.id, this.im39.id, this.im40.id, this.im41.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im25: Image = {
+        id: 25,
+        name: "Economics",
+        nodes: [this.im36.id, this.im37.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im24: Image = {
+        id: 24,
+        name: "Medicine",
+        nodes: [this.im34.id, this.im35.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im23: Image = {
+        id: 23,
+        name: "Food",
+        nodes: [this.im32.id, this.im33.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im22: Image = {
+        id: 22,
+        name: "Objects",
+        nodes: [this.im29.id, this.im30.id, this.im31.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im21: Image = {
+        id: 21,
+        name: "Politics",
+        nodes: [this.im27.id, this.im28.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im20: Image = {
+        id: 20,
+        name: "laurel",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im19: Image = {
+        id: 19,
+        name: "ivy",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im18: Image = {
+        id: 18,
+        name: "moon",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im17: Image = {
+        id: 17,
+        name: "sun",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im16: Image = {
+        id: 16,
+        name: "cloud",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im15: Image = {
+        id: 15,
+        name: "horse",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im14: Image = {
+        id: 14,
+        name: "lion",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im13: Image = {
+        id: 13,
+        name: "woodcock",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im12: Image = {
+        id: 12,
+        name: "crow",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im11: Image = {
+        id: 11,
+        name: "road",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im10: Image = {
+        id: 10,
+        name: "hill",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im9: Image = {
+        id: 9,
+        name: "mountain",
+        nodes: [],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im8: Image = {
+        id: 8,
+        name: "Plants",
+        nodes: [this.im19.id, this.im20.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im7: Image = {
+        id: 7,
+        name: "Weather",
+        nodes: [this.im16.id, this.im17.id, this.im18.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im6: Image = {
+        id: 6,
+        name: "Mammals",
+        nodes: [this.im14.id, this.im15.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im5: Image = {
+        id: 5,
+        name: "Birds",
+        nodes: [this.im12.id, this.im13.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im4: Image = {
+        id: 4,
+        name: "Landscape",
+        nodes: [this.im9.id, this.im10.id, this.im11.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im3: Image = {
+        id: 3,
+        name: "Other image",
+        nodes: [this.im42.id, this.im43.id, this.im44.id, this.im45.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im2: Image = {
+        id: 2,
+        name: "Culture",
+        nodes: [this.im21.id, this.im22.id, this.im23.id, this.im24.id, this.im25.id, this.im26.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im1: Image = {
+        id: 1,
+        name: "Nature",
+        nodes: [this.im4.id, this.im5.id, this.im6.id, this.im7.id, this.im8.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private im0: Image = {
+        id: 0,
+        name: "root",
+        nodes: [this.im1.id, this.im2.id, this.im3.id],
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private re1: ResearchField = {
+        id: 1,
+        name: "Reading",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private re2: ResearchField = {
+        id: 2,
+        name: "Electronic search",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private re3: ResearchField = {
+        id: 3,
+        name: "Secondary (Annotated edition)",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private re4: ResearchField = {
+        id: 4,
+        name: "Secondary (Shakespeare Studies)",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private re5: ResearchField = {
+        id: 5,
+        name: "Secondary (Literature)",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private re6: ResearchField = {
+        id: 6,
+        name: "Secondary (Anthology)",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private re7: ResearchField = {
+        id: 7,
+        name: "Secondary (Annotated Shakespeare edition)",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private re8: ResearchField = {
+        id: 8,
+        name: "Research pending",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
 
     private con1: Contributor = {
         id: 1,
@@ -154,7 +2080,7 @@ export class BackendDataService {
 
     private s3: Subject = {
         id: 3,
-        name: "Literary and Cultural Studies",
+        name: "Literature",
         order: 0,
         references: 0,
         internalComment: ""
@@ -162,7 +2088,7 @@ export class BackendDataService {
 
     private s4: Subject = {
         id: 4,
-        name: "Linguistics",
+        name: "History, (auto-)biography",
         order: 0,
         references: 0,
         internalComment: ""
@@ -170,7 +2096,127 @@ export class BackendDataService {
 
     private s5: Subject = {
         id: 5,
+        name: "Linguistics",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s6: Subject = {
+        id: 6,
         name: "Politics, law, economics",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s7: Subject = {
+        id: 7,
+        name: "Linguistics",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s8: Subject = {
+        id: 8,
+        name: "Sciences, engineering, IT",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s9: Subject = {
+        id: 9,
+        name: "Philosophy, religion",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s10: Subject = {
+        id: 10,
+        name: "Sociology, society, lifestyle",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s11: Subject = {
+        id: 11,
+        name: "TO BE EDITED",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s12: Subject = {
+        id: 12,
+        name: "Psychology, medicine, health",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s13: Subject = {
+        id: 13,
+        name: "WOMAN WRITER",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s14: Subject = {
+        id: 14,
+        name: "Literature (Shakespeare)",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s15: Subject = {
+        id: 15,
+        name: "AFTER TRANSFER FIX BIBLIO OR GENRE",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s16: Subject = {
+        id: 16,
+        name: "EXHAUSTED",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s17: Subject = {
+        id: 17,
+        name: "RESEARCH PENDING",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s18: Subject = {
+        id: 18,
+        name: "MODERN PAGE",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s19: Subject = {
+        id: 19,
+        name: "HISTORICAL PAGE",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private s20: Subject = {
+        id: 20,
+        name: "ACHTUNG MARKING",
         order: 0,
         references: 0,
         internalComment: ""
@@ -1446,23 +3492,49 @@ export class BackendDataService {
     private readonly subjectList: Subject[];
     private readonly contributorList: Contributor[];
     private readonly lexiaList: Lexia[];
+    private readonly genderList: Gender[];
+    private readonly researchFieldList: ResearchField[];
+    private readonly statusList: Status[];
+    private readonly genreList: Genre[];
+    private readonly imageList: Image[];
+    private readonly markingList: Marking[];
+    private readonly formalClassList: FormalClass[];
+    private readonly functionVoiceList: FunctionVoice[];
 
     // Converts allAuthors to objects with id as keys
-    private readonly objBooks: any = {};
-    private readonly objAuthors: any = {};
-    private readonly objPassages: any = {};
-    private readonly objLanguages: any = {};
-    private readonly objVenues: any = {};
-    private readonly objOrganisation: any = {};
-    private readonly objSubjects: any = {};
-    private readonly objContributors: any = {};
-    private readonly objLexia: any = {};
+    private readonly objBooks: Map<string, Book>;
+    private readonly objAuthors: Map<string, Author>;
+    private readonly objPassages: Map<string, Passage>;
+    private readonly objLanguages: Map<string, Language>;
+    private readonly objVenues: Map<string, Venue>;
+    private readonly objOrganisation: Map<string, Organisation>;
+    private readonly objSubjects: Map<string, Subject>;
+    private readonly objContributors: Map<string, Contributor>;
+    private readonly objLexia: Map<string, Lexia>;
+    private readonly objGender: Map<string, Gender>;
+    private readonly objResearchField: Map<string, ResearchField>;
+    private readonly objStatus: Map<string, Status>;
+    private readonly objGenre: Map<string, Genre>;
+    private readonly objImage: Map<string, Image>;
+    private readonly objMarking: Map<string, Marking>;
+    private readonly objFormalClass: Map<string, FormalClass>;
+    private readonly objFunctionVoice: Map<string, FunctionVoice>;
 
     static createObject<T extends WordWebObject>(list: T[]) {
         return list.reduce((acc, cur) => {
             acc[cur.id] = cur;
             return acc;
-        }, {});
+        }, new Map<string, T>());
+    }
+
+    static getNodes<T extends WordWebObject>(ids: number[], collection: Map<string, T>): T[] {
+        return ids.map(id => {
+            const obj = JSON.parse(JSON.stringify((collection[id])));
+            if (obj.nodes.length !== 0) {
+                obj.nodes = this.getNodes(obj.nodes, collection);
+            }
+            return obj;
+        });
     }
 
     constructor() {
@@ -1472,10 +3544,7 @@ export class BackendDataService {
             this.a13, this.a14, this.a15, this.a16, this.a17, this.a18,
             this.a19, this.a20, this.a21, this.a22, this.a23, this.a24
         ];
-        this.objAuthors = this.authorList.reduce((acc, cur) => {
-            acc[cur.id] = cur;
-            return acc;
-        }, {});
+        this.objAuthors = BackendDataService.createObject(this.authorList);
 
         this.bookList = [this.b1, this.b2, this.b3, this.b4, this.b5, this.b6, this.b7, this.b8, this.b9, this.b10];
         this.objBooks = BackendDataService.createObject(this.bookList);
@@ -1492,14 +3561,87 @@ export class BackendDataService {
         this.organisationList = [this.org1, this.org2, this.org3, this.org4, this.org5, this.org6, this.org7];
         this.objOrganisation = BackendDataService.createObject(this.organisationList);
 
-        this.subjectList = [this.s1, this.s2, this.s3, this.s4, this.s5];
+        this.subjectList = [
+            this.s1, this.s2, this.s3, this.s4, this.s5,
+            this.s6, this.s7, this.s8, this.s9, this.s10,
+            this.s11, this.s12, this.s13, this.s14, this.s15,
+            this.s16, this.s17, this.s18, this.s19, this.s20
+        ];
         this.objSubjects = BackendDataService.createObject(this.subjectList);
 
-        this.contributorList = [this.con1, this.con2, this.con3, this.con4, this.con5, this.con6, this.con7, this.con8, this.con9, this.con10];
+        this.contributorList = [
+            this.con1, this.con2, this.con3, this.con4, this.con5,
+            this.con6, this.con7, this.con8, this.con9, this.con10
+        ];
         this.objContributors = BackendDataService.createObject(this.contributorList);
 
-        this.lexiaList = [this.lex1, this.lex2, this.lex3, this.lex4, this.lex5, this.lex6, this.lex7, this.lex8, this.lex9, this.lex10, this.lex11, this.lex12, this.lex13, this.lex14, this.lex15, this.lex16, this.lex17, this.lex18, this.lex19, this.lex20];
+        this.lexiaList = [
+            this.lex1, this.lex2, this.lex3, this.lex4, this.lex5,
+            this.lex6, this.lex7, this.lex8, this.lex9, this.lex10,
+            this.lex11, this.lex12, this.lex13, this.lex14, this.lex15,
+            this.lex16, this.lex17, this.lex18, this.lex19, this.lex20
+        ];
         this.objLexia = BackendDataService.createObject(this.lexiaList);
+
+        this.genderList = [this.gen1, this.gen2];
+        this.objGender = BackendDataService.createObject(this.genderList);
+
+        this.researchFieldList = [
+            this.re1, this.re2, this.re3, this.re4, this.re5,
+            this.re6, this.re7, this.re8
+        ];
+        this.objResearchField = BackendDataService.createObject(this.researchFieldList);
+
+        this.statusList = [this.sta1, this.sta2, this.sta3, this.sta4];
+        this.objStatus = BackendDataService.createObject(this.statusList);
+
+        this.genreList = [
+            this.genre0, this.genre1, this.genre2, this.genre3, this.genre4,
+            this.genre5, this.genre6, this.genre7, this.genre8, this.genre9,
+            this.genre10, this.genre11, this.genre12, this.genre13, this.genre14,
+            this.genre15, this.genre16, this.genre17, this.genre18, this.genre19,
+            this.genre20, this.genre21, this.genre22, this.genre23, this.genre24,
+            this.genre25, this.genre26, this.genre27, this.genre28, this.genre29,
+            this.genre30, this.genre31, this.genre32, this.genre33, this.genre34,
+            this.genre35, this.genre36, this.genre37, this.genre38, this.genre39,
+            this.genre40, this.genre41, this.genre42, this.genre43, this.genre44,
+            this.genre45, this.genre46, this.genre47, this.genre48, this.genre49,
+            this.genre50, this.genre51, this.genre52, this.genre53
+        ];
+        this.objGenre = BackendDataService.createObject(this.genreList);
+
+        this.imageList = [
+            this.im0, this.im1, this.im2, this.im3, this.im4, this.im5, this.im6, this.im7, this.im8, this.im9,
+            this.im10, this.im11, this.im12, this.im13, this.im14, this.im15, this.im16, this.im17, this.im18, this.im19,
+            this.im20, this.im21, this.im22, this.im23, this.im24, this.im25, this.im26, this.im27, this.im28, this.im29,
+            this.im30, this.im31, this.im32, this.im33, this.im34, this.im35, this.im36, this.im37, this.im38, this.im39,
+            this.im40, this.im41, this.im42, this.im43, this.im44, this.im45, this.im46, this.im47, this.im48, this.im49,
+            this.im50, this.im51, this.im52, this.im53, this.im54, this.im55, this.im56, this.im57
+        ];
+        this.objImage = BackendDataService.createObject(this.imageList);
+
+        this.markingList = [
+            this.ma0, this.ma1, this.ma2, this.ma3, this.ma4, this.ma5, this.ma6, this.ma7, this.ma8, this.ma9,
+            this.ma10, this.ma11, this.ma12, this.ma13, this.ma14, this.ma15, this.ma16, this.ma17, this.ma18, this.ma19,
+            this.ma20, this.ma21, this.ma22, this.ma23, this.ma24, this.ma25, this.ma26, this.ma27, this.ma28, this.ma29,
+            this.ma30, this.ma31, this.ma32, this.ma33, this.ma34, this.ma35, this.ma36, this.ma37, this.ma38, this.ma39,
+            this.ma40, this.ma41, this.ma42, this.ma43, this.ma44, this.ma45
+        ];
+        this.objMarking = BackendDataService.createObject(this.markingList);
+
+        this.formalClassList = [
+            this.for0, this.for1, this.for2, this.for3, this.for4, this.for5, this.for6, this.for7, this.for8,
+            this.for9, this.for10, this.for11, this.for12, this.for13, this.for14, this.for15, this.for16,
+            this.for17, this.for18, this.for19, this.for20, this.for21, this.for22, this.for23, this.for24, this.for25
+        ];
+        this.objFormalClass = BackendDataService.createObject(this.formalClassList);
+
+        this.functionVoiceList = [
+            this.fu0, this.fu1, this.fu2, this.fu3, this.fu4, this.fu5, this.fu6, this.fu6, this.fu7,
+            this.fu8, this.fu9, this.fu10, this.fu11, this.fu12, this.fu13
+        ];
+        this.objFunctionVoice = BackendDataService.createObject(this.functionVoiceList);
+        console.log(this.objFunctionVoice);
     }
 
 
@@ -1633,15 +3775,7 @@ export class BackendDataService {
     }
 
     getLanguages(references: boolean) {
-        let copyLanguageList = JSON.parse(JSON.stringify(this.languageList));
-
-        if (references) {
-            copyLanguageList = copyLanguageList.map(language => {
-                return this.getLanguage(language.id, true);
-            });
-        }
-
-        return copyLanguageList;
+        return JSON.parse(JSON.stringify(this.languageList));
     }
 
     getVenue(iri: number, references: boolean) {
@@ -1705,15 +3839,7 @@ export class BackendDataService {
     }
 
     getSubjects(references: boolean) {
-        let copySubjectList = JSON.parse(JSON.stringify(this.subjectList));
-
-        if (references) {
-            copySubjectList = copySubjectList.map(subject => {
-                return this.getSubject(subject.id, true);
-            });
-        }
-
-        return copySubjectList;
+        return JSON.parse(JSON.stringify(this.subjectList));
     }
 
     getContributor(iri: number, references: boolean) {
@@ -1762,50 +3888,131 @@ export class BackendDataService {
         return copyLexiaList;
     }
 
-    getGenres(references: boolean) {
-        const genres = [{
-            id: 1,
-            name: "Fiction",
-            references: 0,
-            lists: [{
-                id: 1,
-                name: "Prose",
-                references: 0,
-                lists: [
-                    {
-                        id: 9,
-                        name: "Crime Fiction",
-                        references: 0,
-                        lists: []
-                    }, {
-                        id: 4,
-                        name: "Gothic",
-                        references: 2,
-                        lists: []
-                    }
-                ]
-            }]
-        }, {
-            id: 2,
-            name: "Non-Fiction",
-            references: 0,
-            lists: [
-                {
-                    id: 3,
-                    name: "Journalism",
-                    references: 0,
-                    lists: []
-                }, {
-                    id: 4,
-                    name: "Academic",
-                    references: 0,
-                    lists: []
-                }
-            ]
+    getGender(iri: number, references: boolean) {
+        if (!this.objGender[iri]) {
+            return {};
         }
-        ];
 
-        return genres;
+        return JSON.parse(JSON.stringify(this.objGender[iri]));
+    }
+
+    getGenders(references: boolean) {
+        return JSON.parse(JSON.stringify(this.genderList));
+    }
+
+    getResearchField(iri: number, references: boolean) {
+        if (!this.objResearchField[iri]) {
+            return {};
+        }
+
+        return JSON.parse(JSON.stringify(this.objResearchField[iri]));
+    }
+
+    getResearchFields(references: boolean) {
+        return JSON.parse(JSON.stringify(this.researchFieldList));
+    }
+
+    getStatus(iri: number, references: boolean) {
+        if (!this.objStatus[iri]) {
+            return {};
+        }
+
+        return JSON.parse(JSON.stringify(this.objStatus[iri]));
+    }
+
+    getStatuses(references: boolean) {
+        return JSON.parse(JSON.stringify(this.statusList));
+    }
+
+    getGenre(iri: number, references: boolean) {
+        if (!this.objGenre[iri]) {
+            return {};
+        }
+
+        const copyGenre = JSON.parse(JSON.stringify(this.objGenre[iri]));
+
+        if (references) {
+            copyGenre.nodes = BackendDataService.getNodes(copyGenre.nodes, this.objGenre);
+        }
+
+        return copyGenre;
+    }
+
+    getGenres(references: boolean) {
+        return JSON.parse(JSON.stringify(this.genreList));
+    }
+
+    getImage(iri: number, references: boolean) {
+        if (!this.objImage[iri]) {
+            return {};
+        }
+
+        const copyImage = JSON.parse(JSON.stringify(this.objImage[iri]));
+
+        if (references) {
+            copyImage.nodes = BackendDataService.getNodes(copyImage.nodes, this.objImage);
+        }
+
+        return copyImage;
+    }
+
+    getImages(references: boolean) {
+        return JSON.parse(JSON.stringify(this.imageList));
+    }
+
+    getMarking(iri: number, references: boolean) {
+        console.log(this.objMarking, iri);
+        if (!this.objMarking[iri]) {
+            return {};
+        }
+
+        const copyMarking = JSON.parse(JSON.stringify(this.objMarking[iri]));
+
+        if (references) {
+            copyMarking.nodes = BackendDataService.getNodes(copyMarking.nodes, this.objMarking);
+        }
+
+        return copyMarking;
+    }
+
+    getMarkings(references: boolean) {
+        return JSON.parse(JSON.stringify(this.markingList));
+    }
+
+    getFormalClass(iri: number, references: boolean) {
+        if (!this.objFormalClass[iri]) {
+            return {};
+        }
+
+        const copyFormalClass = JSON.parse(JSON.stringify(this.objFormalClass[iri]));
+
+        if (references) {
+            copyFormalClass.nodes = BackendDataService.getNodes(copyFormalClass.nodes, this.objFormalClass);
+        }
+
+        return copyFormalClass;
+    }
+
+    getFormalClasses(references: boolean) {
+        return JSON.parse(JSON.stringify(this.formalClassList));
+    }
+
+    getFunctionVoice(iri: number, references: boolean) {
+        if (!this.objFunctionVoice[iri]) {
+            return {};
+        }
+
+        const copyFunction = JSON.parse(JSON.stringify(this.objFunctionVoice[iri]));
+
+        if (references) {
+            copyFunction.nodes = BackendDataService.getNodes(copyFunction.nodes, this.objFunctionVoice);
+        }
+
+        return copyFunction;
+    }
+
+    getFunctionVoices(references: boolean) {
+        return JSON.parse(JSON.stringify(this.functionVoiceList));
     }
 
     updateAuthor(iri: number, newAuthor: Author) {
