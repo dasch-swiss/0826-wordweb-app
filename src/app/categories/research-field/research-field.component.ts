@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 
 @Component({
-  selector: 'app-research-field',
-  templateUrl: './research-field.component.html',
-  styleUrls: ['./research-field.component.scss']
+    selector: "app-research-field",
+    templateUrl: "./research-field.component.html",
+    styleUrls: ["../category.scss"]
 })
 export class ResearchFieldComponent implements OnInit {
 
-  constructor() { }
+    constructor() {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
 }

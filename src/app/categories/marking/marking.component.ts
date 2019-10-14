@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 
 @Component({
-  selector: 'app-marking',
-  templateUrl: './marking.component.html',
-  styleUrls: ['./marking.component.scss']
+    selector: "app-marking",
+    templateUrl: "./marking.component.html",
+    styleUrls: ["../category.scss"]
 })
 export class MarkingComponent implements OnInit {
 
-  constructor() { }
+    constructor() {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
 }

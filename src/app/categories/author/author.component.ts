@@ -8,7 +8,7 @@ import {CreateUpdateAuthorComponent} from "./create-update-author/create-update-
 @Component({
     selector: "app-author",
     templateUrl: "./author.component.html",
-    styleUrls: ["./author.component.scss"]
+    styleUrls: ["../category.scss"]
 })
 export class AuthorComponent implements OnInit {
 

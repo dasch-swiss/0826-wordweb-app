@@ -8,7 +8,7 @@ import {CreateUpdateContributorComponent} from "./create-update-contributor/crea
 @Component({
   selector: "app-contributor",
   templateUrl: "./contributor.component.html",
-  styleUrls: ["./contributor.component.scss"]
+  styleUrls: ["../category.scss"]
 })
 export class ContributorComponent implements OnInit {
 

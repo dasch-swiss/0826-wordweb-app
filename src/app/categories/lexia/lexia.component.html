@@ -31,12 +31,12 @@
         </ng-container>
 
         <!-- lexia column -->
-        <ng-container matColumnDef="lexia">
+        <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Text</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchor]="lx" (click)="lx.open()">{{element.lexia}}</div>
-                <sat-popover #lx hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="lx.isOpen()" [value]="element.lexia" [type]="'string'" (newValue)="updateProperty($event,'lexia', element, lx)"></app-inline-edit>
+                <div class="edit-value" [satPopoverAnchor]="name" (click)="name.open()">{{element.name}}</div>
+                <sat-popover #name hasBackdrop xAlign="start" yAlign="start">
+                    <app-inline-edit *ngIf="name.isOpen()" [value]="element.name" [type]="'string'" (newValue)="updateProperty($event,'name', element, name)"></app-inline-edit>
                 </sat-popover>
             </td>
         </ng-container>

@@ -6,16 +6,16 @@ import {SatPopover} from "@ncstate/sat-popover";
 import {CreateUpdateLanguageComponent} from "./create-update-language/create-update-language.component";
 
 @Component({
-  selector: "app-language",
-  templateUrl: "./language.component.html",
-  styleUrls: ["./language.component.scss"]
+    selector: "app-language",
+    templateUrl: "./language.component.html",
+    styleUrls: ["../category.scss"]
 })
 export class LanguageComponent implements OnInit {
-  displayedColumns: string[] = ["name", "order", "references", "action"];
+    displayedColumns: string[] = ["name", "order", "references", "action"];
     dataSource: MatTableDataSource<Language>;
     value: string;
 
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(private apiService: ApiService,
                 private createLanguageDialog: MatDialog) {

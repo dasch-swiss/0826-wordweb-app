@@ -6,16 +6,16 @@ import {SatPopover} from "@ncstate/sat-popover";
 import {CreateUpdateVenueComponent} from "./create-update-venue/create-update-venue.component";
 
 @Component({
-  selector: "app-venue",
-  templateUrl: "./venue.component.html",
-  styleUrls: ["./venue.component.scss"]
+    selector: "app-venue",
+    templateUrl: "./venue.component.html",
+    styleUrls: ["../category.scss"]
 })
 export class VenueComponent implements OnInit {
     displayedColumns: string[] = ["internalID", "name", "place", "order", "references", "action"];
     dataSource: MatTableDataSource<Book>;
     value: string;
 
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(private apiService: ApiService,
                 private createVenueDialog: MatDialog) {

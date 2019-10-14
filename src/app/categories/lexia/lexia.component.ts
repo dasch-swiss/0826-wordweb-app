@@ -12,7 +12,7 @@ import {CreateUpdateLexiaComponent} from "./create-update-lexia/create-update-le
   styleUrls: ["./lexia.component.scss"]
 })
 export class LexiaComponent implements OnInit {
-displayedColumns: string[] = ["internalID", "lexia", "order", "references", "action"];
+displayedColumns: string[] = ["internalID", "name", "order", "references", "action"];
     dataSource: MatTableDataSource<Lexia>;
     value: string;
 

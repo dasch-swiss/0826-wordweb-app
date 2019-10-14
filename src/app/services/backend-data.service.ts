@@ -34,6 +34,14 @@ export class BackendDataService {
         internalComment: ""
     };
 
+    private gen3: Gender = {
+        id: 3,
+        name: "unknown",
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
     private sta1: Status = {
         id: 1,
         name: "unedited",
@@ -3583,7 +3591,7 @@ export class BackendDataService {
         ];
         this.objLexia = BackendDataService.createObject(this.lexiaList);
 
-        this.genderList = [this.gen1, this.gen2];
+        this.genderList = [this.gen1, this.gen2, this.gen3];
         this.objGender = BackendDataService.createObject(this.genderList);
 
         this.researchFieldList = [
@@ -4151,6 +4159,8 @@ export class BackendDataService {
         p.pagHiste = newPassage.pageHist;
         p.order = newPassage.order;
         p.book = newPassage.book;
+        p.lexias = newPassage.lexias;
+        p.mentionedIn = newPassage.mentionedIn;
         p.wasContributedBy = newPassage.wasContributedBy;
     }
 

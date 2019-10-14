@@ -6,16 +6,16 @@ import {ApiService} from "../../services/api.service";
 import {CreateUpdateOrganisationComponent} from "./create-update-organisation/create-update-organisation.component";
 
 @Component({
-  selector: "app-organisation",
-  templateUrl: "./organisation.component.html",
-  styleUrls: ["./organisation.component.scss"]
+    selector: "app-organisation",
+    templateUrl: "./organisation.component.html",
+    styleUrls: ["../category.scss"]
 })
 export class OrganisationComponent implements OnInit {
     displayedColumns: string[] = ["internalID", "name", "order", "references", "action"];
     dataSource: MatTableDataSource<Organisation>;
     value: string;
 
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(private apiService: ApiService,
                 private createOrganisationDialog: MatDialog) {
