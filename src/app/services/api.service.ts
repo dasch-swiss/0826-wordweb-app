@@ -154,31 +154,47 @@ export class ApiService {
         this.backendData.updateAuthor(iri, author);
     }
 
-    updateBook(iri: number, book: Book) {
-        const data = {
+    updateBook(iri: number, book: any) {
+        const data: Book = {
             id: book.id,
             internalID: book.internalID,
             title: book.title,
-            createdDate: book.createdDate,
-            publishDate: book.publishDate,
+            createdStartDate: book.createdStartDate,
+            createdEndDate: book.createdEndDate,
+            publishedStartDate: book.publishedStartDate,
+            publishedEndDate: book.publishedEndDate,
+            licenseStartDate: book.licenseStartDate,
+            licenseEndDate: book.licenseEndDate,
+            firstPerformanceStartDate: book.firstPerformanceStartDate,
+            firstPerformanceEndDate: book.firstPerformanceEndDate,
             edition: book.edition,
             editionHist: book.editionHist,
             authors: book.authors.map(author => author.id),
             venues: book.venues.map(venue => venue.id),
             organisations: book.organisations.map(organisation => organisation.id),
+            subjects: book.subjects.map(subject => subject.id),
+            language: book.language ? book.language.id : null,
+            bookAsLexia: book.bookAsLexia ? book.bookAsLexia.id : null,
+            internalComment: "",
+            references: 0,
             order: book.order
         };
         this.backendData.updateBook(iri, data);
     }
 
-    updatePassage(iri: number, passage: Passage) {
-        const data = {
+    updatePassage(iri: number, passage: any) {
+        const data: Passage = {
             id: passage.id,
             book: passage.book ? passage.book.id : null,
             text: passage.text,
             textHist: passage.textHist,
             page: passage.page,
             pageHist: passage.pageHist,
+            lexias: passage.lexias.map(lexia => lexia.id),
+            mentionedIn: passage.mentionedIn.map(con => con.id),
+            wasContributedBy: passage.wasContributedBy.id,
+            internalComment: "",
+            references: 0,
             order: passage.order
         };
         this.backendData.updatePassage(iri, data);
