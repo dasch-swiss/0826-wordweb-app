@@ -150,8 +150,26 @@ export class ApiService {
 
     // UPDATE REQUESTS
 
-    updateAuthor(iri: number, author: Author) {
-        this.backendData.updateAuthor(iri, author);
+    updateAuthor(iri: number, author: any) {
+        const data: Author = {
+            id: author.id,
+            internalID: author.internalID,
+            firstName: author.firstName,
+            lastName: author.lastName,
+            gender: author.gender,
+            description: author.description,
+            birthStartDate: author.birthStartDate,
+            birthEndDate: author.birthEndDate,
+            deathStartDate: author.deathStartDate,
+            deathEndDate: author.deathEndDate,
+            flStartDate: author.flStartDate,
+            flEndDate: author.flEndDate,
+            humanAsLexia: author.humanAsLexia ? author.humanAsLexia.id : null,
+            internalComment: "",
+            references: 0,
+            order: author.order
+        };
+        this.backendData.updateAuthor(iri, data);
     }
 
     updateBook(iri: number, book: any) {
@@ -204,12 +222,31 @@ export class ApiService {
         this.backendData.updateLanguage(iri, language);
     }
 
-    updateVenue(iri: number, venue: Venue) {
-        this.backendData.updateVenue(iri, venue);
+    updateVenue(iri: number, venue: any) {
+        const data: Venue = {
+            id: venue.id,
+            internalID: venue.internalID,
+            name: venue.name,
+            place: venue.place,
+            venueAsLexia: venue.venueAsLexia ? venue.venueAsLexia.id : null,
+            internalComment: "",
+            references: 0,
+            order: venue.order
+        };
+        this.backendData.updateVenue(iri, data);
     }
 
-    updateOrganisation(iri: number, organisation: Organisation) {
-        this.backendData.updateOrganisation(iri, organisation);
+    updateOrganisation(iri: number, organisation: any) {
+        const data: Organisation = {
+            id: organisation.id,
+            internalID: organisation.internalID,
+            name: organisation.name,
+            organisationAsLexia: organisation.organisationAsLexia ? organisation.organisationAsLexia.id : null,
+            internalComment: "",
+            references: 0,
+            order: organisation.order
+        };
+        this.backendData.updateOrganisation(iri, data);
     }
 
     updateSubject(iri: number, subject: Subject) {
@@ -220,8 +257,20 @@ export class ApiService {
         this.backendData.updateLexia(iri, lexia);
     }
 
-    updateContributor(iri: number, contributor: Contributor) {
-        this.backendData.updateContributor(iri, contributor);
+    updateContributor(iri: number, contributor: any) {
+        const data: Contributor = {
+            id: contributor.id,
+            internalID: contributor.internalID,
+            firstName: contributor.firstName,
+            lastName: contributor.lastName,
+            gender: contributor.gender,
+            email: contributor.email,
+            humanAsLexia: contributor.humanAsLexia ? contributor.humanAsLexia.id : null,
+            internalComment: "",
+            references: 0,
+            order: contributor.order
+        };
+        this.backendData.updateContributor(iri, data);
     }
 
     // CREATE REQUESTS
