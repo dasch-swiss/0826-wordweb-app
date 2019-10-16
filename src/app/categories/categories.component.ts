@@ -63,7 +63,8 @@ export class CategoriesComponent implements OnInit {
         //         console.error("4", error);
         //     });
 
-        console.log(this.apiService.getFunctionVoice( 0, true));
+        console.log(this.apiService.getLexias(true));
+        console.log(this.apiService.getPassages(true));
     }
 
     showAuthors() {

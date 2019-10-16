@@ -2432,6 +2432,9 @@ export class BackendDataService {
         id: 1,
         internalID: "#002007",
         name: "moist hand indicating arousal",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2441,6 +2444,9 @@ export class BackendDataService {
         id: 2,
         internalID: "#002082",
         name: "I have lived too long",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2451,6 +2457,9 @@ export class BackendDataService {
         id: 3,
         internalID: "#000787",
         name: "devil haunting in the likeness of sb",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2460,6 +2469,9 @@ export class BackendDataService {
         id: 4,
         internalID: "#001082",
         name: "IMAGE - music as perfect harmony",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2469,6 +2481,9 @@ export class BackendDataService {
         id: 5,
         internalID: "#000007",
         name: "pampered jades",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2478,6 +2493,9 @@ export class BackendDataService {
         id: 6,
         internalID: "#001000",
         name: "brain of a cat",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2487,6 +2505,9 @@ export class BackendDataService {
         id: 7,
         internalID: "#002084",
         name: "IMAGE - walled in with something beautiful",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2496,6 +2517,9 @@ export class BackendDataService {
         id: 8,
         internalID: "#002013",
         name: "IMAGE - woman is like a jewel hanging in (Ethiop's) ear",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2505,6 +2529,9 @@ export class BackendDataService {
         id: 9,
         internalID: "#002067",
         name: "great person's revenue on back",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2514,6 +2541,9 @@ export class BackendDataService {
         id: 10,
         internalID: "#000064",
         name: "IMAGE - sea can't wash bloody hands",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2523,6 +2553,9 @@ export class BackendDataService {
         id: 11,
         internalID: "#002077",
         name: "no other proof",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2532,6 +2565,9 @@ export class BackendDataService {
         id: 12,
         internalID: "#000792",
         name: "give out my Anne is sick",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2541,6 +2577,9 @@ export class BackendDataService {
         id: 13,
         internalID: "#002046",
         name: "cannot brook these",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2550,6 +2589,9 @@ export class BackendDataService {
         id: 14,
         internalID: "#001016",
         name: "cannot abide gaping pig",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2559,6 +2601,9 @@ export class BackendDataService {
         id: 15,
         internalID: "#000116",
         name: "prophetic soul",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2568,6 +2613,9 @@ export class BackendDataService {
         id: 16,
         internalID: "#000766",
         name: "adulterate beast",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2577,6 +2625,9 @@ export class BackendDataService {
         id: 17,
         internalID: "#000335",
         name: "Hic et ubique - here, there and everywhere",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2586,6 +2637,9 @@ export class BackendDataService {
         id: 18,
         internalID: "#005005",
         name: "SETPIECE - To be or not to be",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2595,6 +2649,9 @@ export class BackendDataService {
         id: 19,
         internalID: "#000292",
         name: "oh what a falling off",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 1,
         internalComment: ""
@@ -2604,6 +2661,9 @@ export class BackendDataService {
         id: 20,
         internalID: "#001124",
         name: "William Shakespeare",
+        usedIn: [],
+        formalClass: null,
+        image: null,
         order: 0,
         references: 0,
         internalComment: ""
@@ -3065,6 +3125,144 @@ export class BackendDataService {
         internalComment: ""
     };
 
+    private b11: Book = {
+        id: 11,
+        internalID: "@001100",
+        title: "SEC: Allusion 1",
+        createdStartDate: "2003",
+        createdEndDate: "2003",
+        publishedStartDate: "2003",
+        publishedEndDate: "2003",
+        licenseStartDate: "",
+        licenseEndDate: "",
+        firstPerformanceStartDate: "",
+        firstPerformanceEndDate: "",
+        authors: [this.a22.id],
+        venues: [],
+        organisations: [],
+        genres: [],
+        edition: "Allusion 1",
+        editionHist: null,
+        language: this.lang2.id,
+        subjects: [this.s2.id],
+        bookAsLexia: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private pas10: Passage = {
+        id: 10,
+        occursIn: this.b11.id,
+        text: "",
+        page: "",
+        textHist: "",
+        pageHist: "",
+        mentionedIn: [],
+        contains: [],
+        marking: null,
+        researchField: null,
+        status: null,
+        functionVoice: null,
+        publicComment: "",
+        wasContributedBy: this.con8.id,
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private b12: Book = {
+        id: 12,
+        internalID: "@001200",
+        title: "SEC: Allusion 2",
+        createdStartDate: "2006",
+        createdEndDate: "2006",
+        publishedStartDate: "2006",
+        publishedEndDate: "2006",
+        licenseStartDate: "",
+        licenseEndDate: "",
+        firstPerformanceStartDate: "",
+        firstPerformanceEndDate: "",
+        authors: [this.a18.id],
+        venues: [],
+        organisations: [],
+        genres: [],
+        edition: "Allusion 2",
+        editionHist: null,
+        language: this.lang2.id,
+        subjects: [this.s2.id],
+        bookAsLexia: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private pas11: Passage = {
+        id: 11,
+        occursIn: this.b12.id,
+        text: "",
+        page: "",
+        textHist: "",
+        pageHist: "",
+        mentionedIn: [],
+        marking: null,
+        researchField: null,
+        status: null,
+        functionVoice: null,
+        publicComment: "",
+        contains: [],
+        wasContributedBy: this.con8.id,
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private b13: Book = {
+        id: 13,
+        internalID: "@001300",
+        title: "SEC: Allusion 3",
+        createdStartDate: "2008",
+        createdEndDate: "2008",
+        publishedStartDate: "2009",
+        publishedEndDate: "2009",
+        licenseStartDate: "",
+        licenseEndDate: "",
+        firstPerformanceStartDate: "",
+        firstPerformanceEndDate: "",
+        authors: [this.a9.id],
+        venues: [],
+        organisations: [],
+        genres: [],
+        edition: "Allusion 3",
+        editionHist: null,
+        language: this.lang2.id,
+        subjects: [this.s2.id],
+        bookAsLexia: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private pas12: Passage = {
+        id: 12,
+        occursIn: this.b13.id,
+        text: "",
+        page: "",
+        textHist: "",
+        pageHist: "",
+        mentionedIn: [],
+        marking: null,
+        researchField: null,
+        status: null,
+        functionVoice: null,
+        publicComment: "",
+        contains: [],
+        wasContributedBy: this.con8.id,
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
     private b1: Book = {
         id: 1,
         internalID: "@000100",
@@ -3080,6 +3278,7 @@ export class BackendDataService {
         authors: [this.a1.id, this.a8.id, this.a3.id],
         venues: [this.v1.id],
         organisations: [this.org3.id],
+        genres: [],
         edition: "Shakespeare, William.  Romeo and Juliet.",
         editionHist: "Shakespeare, William.  Romeo and Juliet.",
         language: this.lang1.id,
@@ -3092,14 +3291,19 @@ export class BackendDataService {
 
     private pas1: Passage = {
         id: 1,
-        book: this.b1.id,
+        occursIn: this.b1.id,
         text: "thus with a kiss I die",
         textHist: "[or] thus with a kiss I die",
         page: "2",
         pageHist: "2",
-        mentionedIn: [],
+        mentionedIn: [this.pas11.id],
+        marking: null,
+        researchField: null,
+        status: null,
+        functionVoice: null,
+        publicComment: "",
+        contains: [this.lex1.id, this.lex3.id],
         wasContributedBy: this.con1.id,
-        lexias: [this.lex1.id, this.lex3.id],
         order: 0,
         references: 0,
         internalComment: ""
@@ -3107,7 +3311,7 @@ export class BackendDataService {
 
     private pas2: Passage = {
         id: 2,
-        book: this.b1.id,
+        occursIn: this.b1.id,
         text: "My bounty is as boundless as the sea,\n" +
             "My love as deep; the more I give to thee,\n" +
             "The more I have, for both are infinite.",
@@ -3116,9 +3320,14 @@ export class BackendDataService {
             "The more I have, for both are infinite.",
         page: "101-102",
         pageHist: "101-102",
-        mentionedIn: [],
+        mentionedIn: [this.pas12.id],
+        marking: null,
+        researchField: null,
+        status: null,
+        functionVoice: null,
+        publicComment: "",
+        contains: [this.lex5.id],
         wasContributedBy: this.con8.id,
-        lexias: [this.lex5.id],
         order: 0,
         references: 0,
         internalComment: ""
@@ -3139,6 +3348,7 @@ export class BackendDataService {
         authors: [this.a1.id, this.a10.id],
         venues: [this.v3.id],
         organisations: [this.v1.id],
+        genres: [],
         edition: "Shakespeare, William.  Hamlet.",
         editionHist: "Shakespeare, William.  Hamlet.",
         language: this.lang1.id,
@@ -3151,7 +3361,7 @@ export class BackendDataService {
 
     private pas3: Passage = {
         id: 3,
-        book: this.b2.id,
+        occursIn: this.b2.id,
         text: "What a piece of work is a man! How noble in reason! how infinite in faculty! " +
             "in form, in moving, how express and admirable! in action how like an angel! " +
             "in apprehension how like a god! the beauty of the world! the paragon of animals! " +
@@ -3162,9 +3372,14 @@ export class BackendDataService {
             "And yet, to me, what is this quintessence of dust?",
         page: "43-45",
         pageHist: "43-45",
-        mentionedIn: [],
+        mentionedIn: [this.pas11.id],
+        marking: null,
+        researchField: null,
+        status: null,
+        functionVoice: null,
+        publicComment: "",
+        contains: [this.lex7.id, this.lex2.id],
         wasContributedBy: this.con3.id,
-        lexias: [this.lex7.id, this.lex2.id],
         order: 0,
         references: 0,
         internalComment: ""
@@ -3172,14 +3387,19 @@ export class BackendDataService {
 
     private pas4: Passage = {
         id: 4,
-        book: this.b2.id,
+        occursIn: this.b2.id,
         text: "Though this be madness, yet there is method in't.",
         page: "90",
         textHist: "[or] Though this be madness, yet there is method in't.",
         pageHist: "90",
-        mentionedIn: [],
+        mentionedIn: [this.pas12.id],
+        marking: null,
+        researchField: null,
+        status: null,
+        functionVoice: null,
+        publicComment: "",
+        contains: [this.lex1.id, this.lex3.id],
         wasContributedBy: this.con1.id,
-        lexias: [this.lex1.id, this.lex3.id],
         order: 0,
         references: 0,
         internalComment: ""
@@ -3187,7 +3407,7 @@ export class BackendDataService {
 
     private pas5: Passage = {
         id: 5,
-        book: this.b2.id,
+        occursIn: this.b2.id,
         text: "Lord Polonius: What do you read, my lord? \n" +
             "Hamlet: Words, words, words. \n" +
             "Lord Polonius: What is the matter, my lord? \n" +
@@ -3201,8 +3421,13 @@ export class BackendDataService {
         page: "87-92",
         pageHist: "87-92",
         mentionedIn: [],
+        marking: null,
+        researchField: null,
+        status: null,
+        functionVoice: null,
+        publicComment: "",
+        contains: [this.lex7.id, this.lex8.id, this.lex4.id],
         wasContributedBy: this.con3.id,
-        lexias: [this.lex7.id, this.lex8.id, this.lex4.id],
         order: 0,
         references: 0,
         internalComment: ""
@@ -3223,6 +3448,7 @@ export class BackendDataService {
         authors: [this.a1.id],
         venues: [this.v6.id],
         organisations: [this.org5.id],
+        genres: [],
         edition: "The Comedy of Errors, W. Shakespeare, [not_or]",
         editionHist: "The Comedy of Errors, W. Shakespeare, [or]",
         language: this.lang4.id,
@@ -3235,7 +3461,7 @@ export class BackendDataService {
 
     private pas6: Passage = {
         id: 6,
-        book: this.b3.id,
+        occursIn: this.b3.id,
         text: "A heavier task could not have been imposed\n" +
             "Than I to speak my griefs unspeakable;\n" +
             "Yet, that the world may witness that my end\n" +
@@ -3249,8 +3475,13 @@ export class BackendDataService {
             "I'll utter what my sorrow gives me leave.",
         pageHist: "129",
         mentionedIn: [],
+        marking: null,
+        researchField: null,
+        status: null,
+        functionVoice: null,
+        publicComment: "",
+        contains: [this.lex5.id],
         wasContributedBy: this.con5.id,
-        lexias: [this.lex5.id],
         order: 0,
         references: 0,
         internalComment: ""
@@ -3258,7 +3489,7 @@ export class BackendDataService {
 
     private pas7: Passage = {
         id: 7,
-        book: this.b3.id,
+        occursIn: this.b3.id,
         text: "A doubtful warrant of immediate death,\n" +
             "Which though myself would gladly have embraced,\n" +
             "Yet the incessant weepings of my wife,\n" +
@@ -3275,9 +3506,14 @@ export class BackendDataService {
             "That mourned for fashion, ignorant what to fear,\n" +
             "Forced me to seek delays for them and me.",
         pageHist: "205-207",
-        mentionedIn: [],
+        mentionedIn: [this.pas12.id],
+        marking: null,
+        researchField: null,
+        status: null,
+        functionVoice: null,
+        publicComment: "",
+        contains: [this.lex10.id],
         wasContributedBy: this.con10.id,
-        lexias: [this.lex10.id],
         order: 0,
         references: 0,
         internalComment: ""
@@ -3298,6 +3534,7 @@ export class BackendDataService {
         authors: [this.a2.id],
         venues: [this.v4.id],
         organisations: [this.org1.id],
+        genres: [],
         edition: "Tamburlaine, C. Marlowe, [not_or]",
         editionHist: "Tamburlaine, C. Marlowe, [or]",
         language: this.lang3.id,
@@ -3310,16 +3547,21 @@ export class BackendDataService {
 
     private pas8: Passage = {
         id: 8,
-        book: this.b4.id,
+        occursIn: this.b4.id,
         text: "I hold the Fates bound fast in iron chains,\n" +
             "And with my hand turn Fortune's wheel about;",
         page: "14",
         textHist: "[or] I hold the Fates bound fast in iron chains,\n" +
             "And with my hand turn Fortune's wheel about;",
         pageHist: "14",
-        mentionedIn: [],
+        mentionedIn: [this.pas10.id],
+        marking: null,
+        researchField: null,
+        status: null,
+        functionVoice: null,
+        publicComment: "",
+        contains: [this.lex6.id],
         wasContributedBy: this.con4.id,
-        lexias: [this.lex6.id],
         order: 0,
         references: 0,
         internalComment: ""
@@ -3327,14 +3569,19 @@ export class BackendDataService {
 
     private pas9: Passage = {
         id: 9,
-        book: this.b4.id,
+        occursIn: this.b4.id,
         text: "Well, bark, ye dogs; I'll bridle all your tongues",
         page: "4",
         textHist: "[or] Well, bark, ye dogs; I'll bridle all your tongues",
         pageHist: "4",
-        mentionedIn: [],
+        mentionedIn: [this.pas10.id],
+        marking: null,
+        researchField: null,
+        status: null,
+        functionVoice: null,
+        publicComment: "",
+        contains: [this.lex3.id],
         wasContributedBy: this.con8.id,
-        lexias: [this.lex3.id],
         order: 0,
         references: 0,
         internalComment: ""
@@ -3355,6 +3602,7 @@ export class BackendDataService {
         authors: [this.a12.id, this.a19.id],
         venues: [this.v2.id, this.v8.id],
         organisations: [this.org4.id],
+        genres: [],
         edition: "Of Two Evils Choose the Least, [not_or]",
         editionHist: "Of Two Evils Choose the Least, [or]",
         language: this.lang1.id,
@@ -3380,6 +3628,7 @@ export class BackendDataService {
         authors: [this.a10.id],
         venues: [this.v2.id],
         organisations: [this.org3.id, this.org7.id],
+        genres: [],
         edition: "The Cruel Brother, [not_or]",
         editionHist: "The Cruel Brother, [or]",
         language: this.lang4.id,
@@ -3405,6 +3654,7 @@ export class BackendDataService {
         authors: [this.a22.id],
         venues: [],
         organisations: [],
+        genres: [],
         edition: "The Art of Reason, [not_or]",
         editionHist: "The Art of Reason, [or]",
         language: this.lang2.id,
@@ -3430,6 +3680,7 @@ export class BackendDataService {
         authors: [this.a6.id, this.a9.id],
         venues: [this.v1.id],
         organisations: [this.org1.id],
+        genres: [],
         edition: "Five Hundred Points of Good Husbandry, [not_or]",
         editionHist: "Five Hundred Points of Good Husbandry, [or]",
         language: this.lang3.id,
@@ -3455,6 +3706,7 @@ export class BackendDataService {
         authors: [this.a20.id],
         venues: [],
         organisations: [],
+        genres: [],
         edition: "Treatise of God's Effectual Calling, [not_or]",
         editionHist: "Treatise of God's Effectual Calling, [or]",
         language: this.lang3.id,
@@ -3480,6 +3732,7 @@ export class BackendDataService {
         authors: [this.a22.id],
         venues: [this.v5.id],
         organisations: [this.org2.id],
+        genres: [],
         edition: "The Jews' Tragedy, [not_or]",
         editionHist: "The Jews' Tragedy, [or]",
         language: this.lang2.id,
@@ -3554,10 +3807,16 @@ export class BackendDataService {
         ];
         this.objAuthors = BackendDataService.createObject(this.authorList);
 
-        this.bookList = [this.b1, this.b2, this.b3, this.b4, this.b5, this.b6, this.b7, this.b8, this.b9, this.b10];
+        this.bookList = [
+            this.b1, this.b2, this.b3, this.b4, this.b5, this.b6, this.b7, this.b8, this.b9, this.b10,
+            this.b11, this.b12, this.b13
+        ];
         this.objBooks = BackendDataService.createObject(this.bookList);
 
-        this.passageList = [this.pas1, this.pas2, this.pas3, this.pas4, this.pas5, this.pas6, this.pas7, this.pas8, this.pas9];
+        this.passageList = [
+            this.pas1, this.pas2, this.pas3, this.pas4, this.pas5, this.pas6, this.pas7, this.pas8, this.pas9,
+            this.pas10, this.pas11, this.pas12
+        ];
         this.objPassages = BackendDataService.createObject(this.passageList);
 
         this.languageList = [this.lang1, this.lang2, this.lang3, this.lang4, this.lang5];
@@ -3604,17 +3863,13 @@ export class BackendDataService {
         this.objStatus = BackendDataService.createObject(this.statusList);
 
         this.genreList = [
-            this.genre0, this.genre1, this.genre2, this.genre3, this.genre4,
-            this.genre5, this.genre6, this.genre7, this.genre8, this.genre9,
-            this.genre10, this.genre11, this.genre12, this.genre13, this.genre14,
-            this.genre15, this.genre16, this.genre17, this.genre18, this.genre19,
-            this.genre20, this.genre21, this.genre22, this.genre23, this.genre24,
-            this.genre25, this.genre26, this.genre27, this.genre28, this.genre29,
-            this.genre30, this.genre31, this.genre32, this.genre33, this.genre34,
-            this.genre35, this.genre36, this.genre37, this.genre38, this.genre39,
-            this.genre40, this.genre41, this.genre42, this.genre43, this.genre44,
-            this.genre45, this.genre46, this.genre47, this.genre48, this.genre49,
-            this.genre50, this.genre51, this.genre52, this.genre53
+            this.genre0, this.genre1, this.genre2, this.genre3, this.genre4, this.genre5, this.genre6, this.genre7,
+            this.genre8, this.genre9, this.genre10, this.genre11, this.genre12, this.genre13, this.genre14, this.genre15,
+            this.genre16, this.genre17, this.genre18, this.genre19, this.genre20, this.genre21, this.genre22, this.genre23,
+            this.genre24, this.genre25, this.genre26, this.genre27, this.genre28, this.genre29, this.genre30, this.genre31,
+            this.genre32, this.genre33, this.genre34, this.genre35, this.genre36, this.genre37, this.genre38, this.genre39,
+            this.genre40, this.genre41, this.genre42, this.genre43, this.genre44, this.genre45, this.genre46, this.genre47,
+            this.genre48, this.genre49, this.genre50, this.genre51, this.genre52, this.genre53
         ];
         this.objGenre = BackendDataService.createObject(this.genreList);
 
@@ -3649,9 +3904,13 @@ export class BackendDataService {
             this.fu8, this.fu9, this.fu10, this.fu11, this.fu12, this.fu13
         ];
         this.objFunctionVoice = BackendDataService.createObject(this.functionVoiceList);
-        console.log(this.objFunctionVoice);
-    }
 
+        this.passageList.forEach((passage: any) => {
+            passage.contains.forEach(lexiaID => {
+                (this.objLexia[lexiaID] as Lexia).usedIn.push(passage.id);
+            });
+        });
+    }
 
     getAuthor(iri: number, references: boolean) {
         if (!this.objAuthors[iri]) {
@@ -3694,6 +3953,7 @@ export class BackendDataService {
             const venues = [];
             const organisations = [];
             const subjects = [];
+            const genres = [];
 
             for (const author of copyBook.authors) {
                 authors.push(this.getAuthor(author, false));
@@ -3711,10 +3971,15 @@ export class BackendDataService {
                 subjects.push(this.getSubject(subject, false));
             }
 
+            for (const genre of copyBook.genres) {
+                genre.push(this.getGenre(genre, false));
+            }
+
             copyBook.authors = authors;
             copyBook.venues = venues;
             copyBook.organisations = organisations;
             copyBook.subjects = subjects;
+            copyBook.genres = genres;
             copyBook.language = this.getLanguage(copyBook.language, false);
             copyBook.bookAsLexia = this.getLexia(copyBook.bookAsLexia, false);
         }
@@ -3745,7 +4010,7 @@ export class BackendDataService {
             const lexias = [];
             const mentionedIn = [];
 
-            for (const lexia of copyPassage.lexias) {
+            for (const lexia of copyPassage.contains) {
                 lexias.push(this.getLexia(lexia, false));
             }
 
@@ -3753,9 +4018,13 @@ export class BackendDataService {
                 mentionedIn.push(this.getPassage(passage, false));
             }
 
-            copyPassage.lexias = lexias;
+            copyPassage.contains = lexias;
             copyPassage.mentionedIn = mentionedIn;
-            copyPassage.book = this.getBook(copyPassage.book, false);
+            copyPassage.occursIn = this.getBook(copyPassage.occursIn, false);
+            copyPassage.marking = this.getMarking(copyPassage.marking, false);
+            copyPassage.researchField = this.getResearchField(copyPassage.researchField, false);
+            copyPassage.status = this.getStatus(copyPassage.status, false);
+            copyPassage.functionVoice = this.getFunctionVoice(copyPassage.functionVoice, false);
             copyPassage.wasContributedBy = this.getContributor(copyPassage.wasContributedBy, false);
         }
 
@@ -3881,7 +4150,20 @@ export class BackendDataService {
             return {};
         }
 
-        return JSON.parse(JSON.stringify(this.objLexia[iri]));
+        const copyUsedIn = JSON.parse(JSON.stringify(this.objLexia[iri]));
+
+        if (references) {
+
+            const usedIn = [];
+
+            for (const passage of copyUsedIn.usedIn) {
+                usedIn.push(this.getPassage(passage, false));
+            }
+
+            copyUsedIn.usedIn = usedIn;
+        }
+
+        return copyUsedIn;
     }
 
     getLexias(references: boolean) {
@@ -3969,7 +4251,6 @@ export class BackendDataService {
     }
 
     getMarking(iri: number, references: boolean) {
-        console.log(this.objMarking, iri);
         if (!this.objMarking[iri]) {
             return {};
         }
@@ -4084,6 +4365,22 @@ export class BackendDataService {
             }
         }
 
+        // Checks if subject id is valid
+        for (const subject of newBook.subjects) {
+            if (!this.objSubjects[subject as number]) {
+                console.error(`Invalid subject id: ${subject}`);
+                return;
+            }
+        }
+
+        // Checks if genre id is valid
+        for (const genre of newBook.genres) {
+            if (!this.objGenre[genre as number]) {
+                console.error(`Invalid genre id: ${genre}`);
+                return;
+            }
+        }
+
         // Checks if language id is valid
         if (!this.objLanguages[newBook.language as number]) {
             console.error(`Invalid language id: ${newBook.language}`);
@@ -4113,6 +4410,8 @@ export class BackendDataService {
         b.authors = newBook.authors;
         b.venues = newBook.venues;
         b.organisations = newBook.organisations;
+        b.subjects = newBook.subjects;
+        b.genres = newBook.genres;
         b.language = newBook.language;
         b.bookAsLexia = newBook.bookAsLexia;
     }
@@ -4126,7 +4425,7 @@ export class BackendDataService {
         }
 
         // Checks if lexia id is valid
-        for (const lexia of newPassage.lexias) {
+        for (const lexia of newPassage.contains) {
             if (!this.objLexia[lexia as number]) {
                 console.error(`Invalid lexia id: ${lexia}`);
                 return;
@@ -4141,9 +4440,33 @@ export class BackendDataService {
             }
         }
 
-        // Checks if book is valid
-        if (!this.objBooks[newPassage.book as number]) {
-            console.error(`Invalid book id: ${newPassage.book}`);
+        // Checks if book id is valid
+        if (!this.objBooks[newPassage.occursIn as number]) {
+            console.error(`Invalid book id: ${newPassage.occursIn}`);
+            return;
+        }
+
+        // Checks if marking id is valid
+        if (!this.objMarking[newPassage.marking as number]) {
+            console.error(`Invalid marking id: ${newPassage.marking}`);
+            return;
+        }
+
+        // Checks if research field id is valid
+        if (!this.objResearchField[newPassage.researchField as number]) {
+            console.error(`Invalid research field id: ${newPassage.researchField}`);
+            return;
+        }
+
+        // Checks if status id is valid
+        if (!this.objStatus[newPassage.status as number]) {
+            console.error(`Invalid status id: ${newPassage.status}`);
+            return;
+        }
+
+        // Checks if function voice id is valid
+        if (!this.objFunctionVoice[newPassage.functionVoice as number]) {
+            console.error(`Invalid function voice id: ${newPassage.functionVoice}`);
             return;
         }
 
@@ -4157,17 +4480,46 @@ export class BackendDataService {
         p.page = newPassage.page;
         p.textHist = newPassage.textHist;
         p.pagHiste = newPassage.pageHist;
+        p.publicComment = newPassage.publicComment;
         p.order = newPassage.order;
-        p.book = newPassage.book;
-        p.lexias = newPassage.lexias;
+        p.occursIn = newPassage.occursIn;
+        p.marking = newPassage.marking;
+        p.researchField = newPassage.researchField;
+        p.status = newPassage.status;
+        p.functionVoice = newPassage.functionVoice;
+        p.contains = newPassage.contains;
         p.mentionedIn = newPassage.mentionedIn;
         p.wasContributedBy = newPassage.wasContributedBy;
     }
 
     updateLexia(iri: number, newLexia: any) {
         const lexia = this.objLexia[iri];
+
+        // Checks if passage id is valid
+        for (const passage of (newLexia.usedIn)) {
+            if (!this.objPassages[passage as number]) {
+                console.error(`Invalid passage id: ${passage}`);
+                return;
+            }
+        }
+
+        // Checks if formal class id is valid
+        if (!this.objFormalClass[newLexia.formalClass as number]) {
+            console.error(`Invalid formal class id: ${newLexia.formalClass}`);
+            return;
+        }
+
+        // Checks if image id is valid
+        if (!this.objImage[newLexia.image as number]) {
+            console.error(`Invalid image id: ${newLexia.image}`);
+            return;
+        }
+
         lexia.internalID = newLexia.internalID;
-        lexia.lexia = newLexia.lexia;
+        lexia.name = newLexia.name;
+        lexia.usedIn = newLexia.usedIn;
+        lexia.formalClass = newLexia.formalClass;
+        lexia.image = newLexia.image;
         lexia.order = newLexia.order;
     }
 
@@ -4298,6 +4650,7 @@ export class BackendDataService {
             authors: data.authors,
             venues: data.venues,
             subjects: data.subjects,
+            genres: data.genres,
             language: data.language,
             organisations: data.organisations,
             bookAsLexia: data.bookAsLexia,
@@ -4335,9 +4688,14 @@ export class BackendDataService {
             textHist: data.textHist,
             page: data.page,
             pageHist: data.pageHist,
-            book: data.book,
-            lexias: data.lexias,
+            publicComment: data.publicComment,
+            occursIn: data.occursIn,
+            contains: data.contains,
             mentionedIn: data.mentionedIn,
+            marking: data.marking,
+            researchField: data.researchField,
+            status: data.status,
+            functionVoice: data.functionVoice,
             wasContributedBy: data.wasContributedBy,
             internalComment: data.internalComment,
             order: 0,
@@ -4408,6 +4766,9 @@ export class BackendDataService {
             id: this.getID(),
             internalID: data.internalID,
             name: data.name,
+            usedIn: data.usedIn,
+            formalClass: data.formalClass,
+            image: data.image,
             internalComment: data.internalComment,
             order: 0,
             references: 0

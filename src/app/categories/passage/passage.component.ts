@@ -41,7 +41,7 @@ export class PassageComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.dataSource.sortingDataAccessor = ((item, property) => {
+        this.dataSource.sortingDataAccessor = ((item: any, property) => {
             switch (property) {
                 case "book": return item.book.title;
                 default: return item[property];
@@ -55,7 +55,7 @@ export class PassageComponent implements OnInit {
         this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 
-    customFilter(passage: Passage, filterValue: string): boolean {
+    customFilter(passage: any, filterValue: string): boolean {
         const containsEdition = passage.book.title.toLowerCase().indexOf(filterValue) > -1;
         const containsText = passage.text.toLowerCase().indexOf(filterValue) > -1;
 
@@ -112,8 +112,8 @@ export class PassageComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            list: [passage.book],
-            editMod: [passage.book].length > 0,
+            list: [passage.occursIn],
+            editMod: [passage.occursIn].length > 0,
             max: 1
         };
         const dialogRef = this.editionDialog.open(BookRefComponent, dialogConfig);

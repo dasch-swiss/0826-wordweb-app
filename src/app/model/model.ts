@@ -44,6 +44,7 @@ export interface Book extends WordWebObject {
     venues: Venue[] | number[];
     organisations: Organisation[] | number[];
     subjects: Subject[] | number[];
+    genres: Genre[] | number[];
     language: Language | number;
     bookAsLexia: Lexia | number;
 }
@@ -53,9 +54,14 @@ export interface Passage extends WordWebObject {
     textHist: string;
     page: string;
     pageHist: string;
-    book: Book | number;
-    lexias: Lexia[] | number[];
+    publicComment: string;
+    contains: Lexia[] | number[];
     mentionedIn: Passage[] | number[];
+    occursIn: Book | number;
+    marking: Marking | number;
+    researchField: ResearchField | number;
+    status: Status | number;
+    functionVoice: FunctionVoice | number;
     wasContributedBy: Contributor | number;
 }
 
@@ -75,6 +81,9 @@ export interface Organisation extends WordWebObject {
 export interface Lexia extends WordWebObject {
     internalID: string;
     name: string;
+    usedIn: Passage[] | number [];
+    formalClass: FormalClass | number;
+    image: Image | number;
 }
 
 export interface Language extends WordWebObject {
