@@ -27,8 +27,7 @@
             <td mat-cell *matCellDef="let element">
                 <div class="action-btn-container">
                     <button mat-button mat-icon-button color="primary" (click)="expansion(element)">
-                        <mat-icon *ngIf="!contains(element, expandedElements)">chevron_right</mat-icon>
-                        <mat-icon *ngIf="contains(element, expandedElements)">expand_more</mat-icon>
+                        <mat-icon>{{contains(element, expandedElements) ? 'expand_more' : 'chevron_right'}}</mat-icon>
                     </button>
                 </div>
             </td>

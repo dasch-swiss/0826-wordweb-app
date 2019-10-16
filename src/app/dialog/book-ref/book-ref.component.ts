@@ -55,7 +55,7 @@ export class BookRefComponent implements OnInit {
     }
 
     applyFilter(value: string) {
-        this.filteredList = this.allBooks.filter((book) => {
+        this.filteredList = this.allBooks.filter((book: any) => {
             const containsID = book.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
             const containsTitle = book.title.toLowerCase().indexOf(value.toLowerCase()) > -1;
             const containsAuthorName = book.authors.filter(author => {
