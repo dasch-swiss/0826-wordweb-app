@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {Book, Venue} from "../../model/model";
 import {ApiService} from "../../services/api.service";
-import {SatPopover} from "@ncstate/sat-popover";
 import {CreateUpdateVenueComponent} from "./create-update-venue/create-update-venue.component";
 
 @Component({
@@ -70,14 +69,6 @@ export class VenueComponent implements OnInit {
 
     delete(id: number) {
         console.log(`Venue ID: ${id}`);
-    }
-
-    updateProperty(event: string | number, property: string, venue: Venue, popover: SatPopover) {
-        venue[property] = event;
-        this.apiService.updateVenue(venue.id, venue);
-        this.resetTable();
-        this.applyFilter(this.value ? this.value : "");
-        popover.close();
     }
 
 }

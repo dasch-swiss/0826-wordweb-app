@@ -4,9 +4,9 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {ApiService} from "../../../services/api.service";
 
 @Component({
-  selector: "app-create-update-lexia",
-  templateUrl: "./create-update-lexia.component.html",
-  styleUrls: ["./create-update-lexia.component.scss"]
+    selector: "app-create-update-lexia",
+    templateUrl: "./create-update-lexia.component.html",
+    styleUrls: ["./create-update-lexia.component.scss"]
 })
 export class CreateUpdateLexiaComponent implements OnInit {
     lexia: any;
@@ -21,7 +21,7 @@ export class CreateUpdateLexiaComponent implements OnInit {
     ngOnInit() {
         this.form = new FormGroup({
             internalID: new FormControl(this.editMod ? this.lexia.internalID : "", []),
-            lexia: new FormControl(this.editMod ? this.lexia.lexia : "", [Validators.required])
+            name: new FormControl(this.editMod ? this.lexia.name : "", [Validators.required])
         });
     }
 
@@ -31,15 +31,15 @@ export class CreateUpdateLexiaComponent implements OnInit {
 
     submit() {
         if (this.editMod) {
-          this.lexia.internalID = this.form.get("internalID").value;
-            this.lexia.lexia = this.form.get("lexia").value;
+            this.lexia.internalID = this.form.get("internalID").value;
+            this.lexia.name = this.form.get("name").value;
             // update request
             this.apiService.updateLexia(this.lexia.id, this.lexia);
             this.dialogRef.close({refresh: true});
         } else {
             const newLexia = {
                 internalID: this.form.get("internalID").value,
-                lexia: this.form.get("lexia").value,
+                lexia: this.form.get("name").value,
             };
             // create request
             this.apiService.createLexia(newLexia);

@@ -5,7 +5,7 @@
         <mat-dialog-content>
             <table>
                 <tr>
-                    <td class="title-column">Interne ID:</td>
+                    <td class="title-column">Internal ID:</td>
                     <td colspan="2">
                         <mat-form-field>
                             <input matInput type="text" formControlName="internalID" required>
@@ -14,7 +14,7 @@
                 </tr>
 
                 <tr>
-                    <td class="title-column">Normalisierter Titel:</td>
+                    <td class="title-column">Normalised Titel:</td>
                     <td colspan="2">
                         <mat-form-field>
                             <input matInput type="text" formControlName="title" required>
@@ -23,7 +23,7 @@
                 </tr>
 
                 <tr class="reference">
-                    <td class="title-column">Autoren:</td>
+                    <td class="title-column">Authors:</td>
                     <td>
                         <mat-chip-list class="mat-chip-list-stacked" *ngIf="authorList.length<MAX_CHIPS">
                             <mat-chip *ngFor="let author of authorList">
@@ -51,21 +51,21 @@
                 </tr>
 
                 <tr class="reference">
-                    <td class="title-column">Venue:</td>
+                    <td class="title-column">Venues:</td>
                     <td>
                         <mat-chip-list class="mat-chip-list-stacked" *ngIf="venueList.length<MAX_CHIPS">
                             <mat-chip *ngFor="let venue of venueList">
                                 <mat-chip-avatar>
                                     <mat-icon>theaters</mat-icon>
                                 </mat-chip-avatar>
-                                {{venue.name}}, {{venue.city}}
+                                {{venue.name}}, {{venue.place}}
                                 <mat-icon matChipRemove (click)="removeVenue(venue)">cancel</mat-icon>
                             </mat-chip>
                         </mat-chip-list>
                         <mat-chip-list *ngIf="venueList.length>=4">
                             <mat-chip (click)="addVenue()">
                                 <mat-chip-avatar>
-                                    <mat-icon>account_circle</mat-icon>
+                                    <mat-icon>theaters</mat-icon>
                                 </mat-chip-avatar>
                                 {{venueList.length}} ausgewählt ...
                             </mat-chip>
@@ -79,7 +79,7 @@
                 </tr>
 
                 <tr class="reference">
-                    <td class="title-column">Organisation:</td>
+                    <td class="title-column">Organisations:</td>
                     <td>
                         <mat-chip-list class="mat-chip-list-stacked" *ngIf="organisationList.length<MAX_CHIPS">
                             <mat-chip *ngFor="let organisation of organisationList">
@@ -93,7 +93,7 @@
                         <mat-chip-list *ngIf="organisationList.length>=4">
                             <mat-chip (click)="addOrganisation()">
                                 <mat-chip-avatar>
-                                    <mat-icon>account_circle</mat-icon>
+                                    <mat-icon>business</mat-icon>
                                 </mat-chip-avatar>
                                 {{organisationList.length}} ausgewählt ...
                             </mat-chip>
@@ -106,27 +106,31 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <td class="title-column">Genre:</td>
-                    <td colspan="2">
-                        <mat-form-field>
-                            <mat-select>
-                                <mat-option>None</mat-option>
-                                <mat-option *ngFor="let state of states" [value]="state">{{state}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                <tr class="reference">
+                    <td class="title-column">Language:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="languageList.length<MAX_CHIPS">
+                            <mat-chip *ngFor="let language of languageList">
+                                <mat-chip-avatar>
+                                    <mat-icon>record_voice_over</mat-icon>
+                                </mat-chip-avatar>
+                                {{language.name}}
+                                <mat-icon matChipRemove (click)="removeLanguage(language)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <mat-chip-list *ngIf="languageList.length>=4">
+                            <mat-chip (click)="addOrganisation()">
+                                <mat-chip-avatar>
+                                    <mat-icon>record_voice_over</mat-icon>
+                                </mat-chip-avatar>
+                                {{languageList.length}} ausgewählt ...
+                            </mat-chip>
+                        </mat-chip-list>
                     </td>
-                </tr>
-
-                <tr>
-                    <td class="title-column">Subject:</td>
-                    <td colspan="2">
-                        <mat-form-field>
-                            <mat-select>
-                                <mat-option>None</mat-option>
-                                <mat-option *ngFor="let state of states" [value]="state">{{state}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addLanguage()">
+                            <mat-icon>{{addOrEdit(languageList)}}</mat-icon>
+                        </button>
                     </td>
                 </tr>
 

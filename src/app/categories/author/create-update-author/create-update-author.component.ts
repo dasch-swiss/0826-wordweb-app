@@ -25,6 +25,7 @@ export class CreateUpdateAuthorComponent implements OnInit {
             firstName: new FormControl(this.editMod ? this.author.firstName : "", [Validators.required]),
             lastName: new FormControl(this.editMod ? this.author.lastName : "", [Validators.required]),
             description: new FormControl(this.editMod ? this.author.description : "", []),
+            gender: new FormControl(this.editMod ? this.author.gender : "", []),
             birthDate: new FormControl(this.editMod ? this.author.birthDate : "", []),
             deathDate: new FormControl(this.editMod ? this.author.deathDate : "", []),
             activeDate: new FormControl(this.editMod ? this.author.activeDate : "", [])
@@ -43,7 +44,7 @@ export class CreateUpdateAuthorComponent implements OnInit {
             this.author.description = this.form.get("description").value;
             this.author.birthDate = this.form.get("birthDate").value;
             this.author.deathDate = this.form.get("deathDate").value;
-            this.author.gender = "m";
+            this.author.gender = this.form.get("gender").value;
             // update request
             this.apiService.updateAuthor(this.author.id, this.author);
             this.dialogRef.close({refresh: true});
@@ -55,7 +56,7 @@ export class CreateUpdateAuthorComponent implements OnInit {
                 description: this.form.get("description").value,
                 birthDate: this.form.get("birthDate").value,
                 deathDate: this.form.get("deathDate").value,
-                gender: "m"
+                gender: this.form.get("gender").value
             };
             // create request
             this.apiService.createAuthor(newAuthor);

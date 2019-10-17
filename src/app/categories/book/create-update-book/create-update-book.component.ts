@@ -1,12 +1,13 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Author, Organisation, Venue} from "../../../model/model";
+import {Author, Language, Organisation, Venue} from "../../../model/model";
 import {ApiService} from "../../../services/api.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material";
 import {Router} from "@angular/router";
 import {AuthorRefComponent} from "../../../dialog/author-ref/author-ref.component";
 import {VenueRefComponent} from "../../../dialog/venue-ref/venue-ref.component";
 import {OrganisationRefComponent} from "../../../dialog/organisation-ref/organisation-ref.component";
+import {LanguageRefComponent} from "../../../dialog/language-ref/language-ref.component";
 
 @Component({
     selector: "app-create-update-book",
@@ -21,20 +22,13 @@ export class CreateUpdateBookComponent implements OnInit {
     authorList: Author[];
     venueList: Venue[];
     organisationList: Organisation[];
-
-    states: string[] = [
-        "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
-        "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky",
-        "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
-        "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico",
-        "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania",
-        "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont",
-        "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
-    ];
+    languageList: Language[];
 
     constructor(private apiService: ApiService,
                 private authorDialog: MatDialog,
                 private venueDialog: MatDialog,
+                private organisationDialog: MatDialog,
+                private languageDialog: MatDialog,
                 private router: Router,
                 private dialogRef: MatDialogRef<CreateUpdateBookComponent>,
                 @Inject(MAT_DIALOG_DATA) data) {
@@ -56,6 +50,7 @@ export class CreateUpdateBookComponent implements OnInit {
         this.authorList = this.editMod ? this.book.authors : [];
         this.venueList = this.editMod ? this.book.venues : [];
         this.organisationList = this.editMod ? this.book.organisations : [];
+        this.languageList = this.editMod ? [this.book.language] : [];
     }
 
     cancel() {
@@ -145,7 +140,7 @@ export class CreateUpdateBookComponent implements OnInit {
             editMod: this.organisationList.length > 0,
             max: 10
         };
-        const dialogRef = this.venueDialog.open(OrganisationRefComponent, dialogConfig);
+        const dialogRef = this.organisationDialog.open(OrganisationRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.submit) {
                 this.organisationList = data.data;
@@ -161,12 +156,37 @@ export class CreateUpdateBookComponent implements OnInit {
         }
     }
 
+    addLanguage() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            list: this.languageList,
+            editMod: this.languageList.length > 0,
+            max: 1
+        };
+        const dialogRef = this.languageDialog.open(LanguageRefComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.submit) {
+                this.languageList = data.data;
+            }
+        });
+    }
+
+    removeLanguage(language: Language) {
+        const index = this.languageList.indexOf(language);
+
+        if (index >= 0) {
+            this.languageList.splice(index, 1);
+        }
+    }
+
     addOrEdit(list: any[]): string {
         return list.length === 0 ? "add" : "edit";
     }
 
     getTitle(): string {
-        return this.editMod ? "Buch bearbeiten" : "Neues Buch erstellen";
+        return this.editMod ? "Edit book" : "Create new book";
     }
 
     getButtonText(): string {

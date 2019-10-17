@@ -18,15 +18,15 @@ export class AuthorRefComponent implements OnInit {
     max: number;
 
     constructor(private dialogRef: MatDialogRef<AuthorRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
-        if (data["editMod"]) {
-            this.clonedList = [...data["list"]];
+        if (data.editMod) {
+            this.clonedList = [...data.list];
             this.closeList();
         } else {
-            this.clonedList = data["list"].length !== 0 ? [...data["list"]] : [];
+            this.clonedList = data.list.length !== 0 ? [...data.list] : [];
             this.openList();
         }
 
-        this.max = data["max"];
+        this.max = data.max;
     }
 
     ngOnInit() {

@@ -4,8 +4,6 @@ import {Gender} from "../../model/model";
 import {MatSort} from "@angular/material/sort";
 import {ApiService} from "../../services/api.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {CreateUpdateLanguageComponent} from "../language/create-update-language/create-update-language.component";
-import {SatPopover} from "@ncstate/sat-popover";
 
 @Component({
     selector: "app-gender",
@@ -71,14 +69,6 @@ export class GenderComponent implements OnInit {
 
     delete(id: number) {
         console.log(`Book ID: ${id}`);
-    }
-
-    updateProperty(event: string | number, property: string, gender: Gender, popover: SatPopover) {
-        // gender[property] = event;
-        // this.apiService.updateLanguage(language.id, language);
-        // this.resetTable();
-        // this.applyFilter(this.value ? this.value : "");
-        // popover.close();
     }
 
 }

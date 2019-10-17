@@ -21,6 +21,7 @@ export class CreateUpdateContributorComponent implements OnInit {
 
     ngOnInit() {
         this.form = new FormGroup({
+            internalID: new FormControl(this.editMod ? this.contributor.internalID : "", [Validators.required]),
             firstName: new FormControl(this.editMod ? this.contributor.firstName : "", [Validators.required]),
             lastName: new FormControl(this.editMod ? this.contributor.lastName : "", [Validators.required]),
             gender: new FormControl(this.editMod ? this.contributor.gender : "", []),
@@ -34,6 +35,7 @@ export class CreateUpdateContributorComponent implements OnInit {
 
     submit() {
         if (this.editMod) {
+            this.contributor.internalID = this.form.get("internalID").value;
             this.contributor.firstName = this.form.get("firstName").value;
             this.contributor.lastName = this.form.get("lastName").value;
             this.contributor.email = this.form.get("email").value;
@@ -43,6 +45,7 @@ export class CreateUpdateContributorComponent implements OnInit {
             this.dialogRef.close({refresh: true});
         } else {
             const newContributor = {
+                internalID: this.form.get("internalID").value,
                 firstName: this.form.get("firstName").value,
                 lastName: this.form.get("lastName").value,
                 gender: this.form.get("gender").value,
@@ -55,11 +58,11 @@ export class CreateUpdateContributorComponent implements OnInit {
     }
 
     getTitle(): string {
-        return this.editMod ? "Autor bearbeiten" : "Neuen Autor erstellen";
+        return this.editMod ? "Edit contributor" : "Create new contributor";
     }
 
     getButtonText(): string {
-        return this.editMod ? "SPEICHERN" : "ERSTELLEN";
+        return this.editMod ? "SAVE" : "CREATE";
     }
 
 }

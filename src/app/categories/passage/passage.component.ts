@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {Passage} from "../../model/model";
 import {ApiService} from "../../services/api.service";
-import {SatPopover} from "@ncstate/sat-popover";
 import {CreateUpdatePassageComponent} from "./create-update-passage/create-update-passage.component";
 import {BookRefComponent} from "../../dialog/book-ref/book-ref.component";
 import {animate, state, style, transition, trigger} from "@angular/animations";
@@ -97,14 +96,6 @@ export class PassageComponent implements OnInit {
 
     delete(id: number) {
         console.log(`Passage ID: ${id}`);
-    }
-
-    updateProperty(event: string | number, property: string, passage: Passage, popover: SatPopover) {
-        passage[property] = event;
-        this.apiService.updatePassage(passage.id, passage);
-        this.resetTable();
-        this.applyFilter(this.value ? this.value : "");
-        popover.close();
     }
 
     editBook(passage: Passage) {

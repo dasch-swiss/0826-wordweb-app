@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {ApiService} from "../../services/api.service";
-import {SatPopover} from "@ncstate/sat-popover";
 import { Contributor} from "../../model/model";
 import {CreateUpdateContributorComponent} from "./create-update-contributor/create-update-contributor.component";
 
@@ -69,14 +68,6 @@ export class ContributorComponent implements OnInit {
                 this.dataSource.sort = this.sort;
             }
         });
-    }
-
-    updateProperty(event: string | number, property: string, contributor: Contributor, popover: SatPopover) {
-        contributor[property] = event;
-        this.apiService.updateContributor(contributor.id, contributor);
-        this.resetTable();
-        this.applyFilter(this.value ? this.value : "");
-        popover.close();
     }
 
     openCreateContributor() {

@@ -1,22 +1,20 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
-import {Book, Lexia} from "../../model/model";
-import {SatPopover} from "@ncstate/sat-popover";
+import {Lexia} from "../../model/model";
 import {ApiService} from "../../services/api.service";
-import {CreateUpdateBookComponent} from "../book/create-update-book/create-update-book.component";
 import {CreateUpdateLexiaComponent} from "./create-update-lexia/create-update-lexia.component";
 
 @Component({
-  selector: "app-lexia",
-  templateUrl: "./lexia.component.html",
-  styleUrls: ["./lexia.component.scss"]
+    selector: "app-lexia",
+    templateUrl: "./lexia.component.html",
+    styleUrls: ["../category.scss"]
 })
 export class LexiaComponent implements OnInit {
-displayedColumns: string[] = ["internalID", "name", "order", "references", "action"];
+    displayedColumns: string[] = ["internalID", "name", "order", "references", "action"];
     dataSource: MatTableDataSource<Lexia>;
     value: string;
 
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(private apiService: ApiService,
                 private createLexiaDialog: MatDialog) {
@@ -69,14 +67,6 @@ displayedColumns: string[] = ["internalID", "name", "order", "references", "acti
     }
 
     deleteRow(id: number) {
-    }
-
-    updateProperty(event: string | number, property: string, lexia: Lexia, popover: SatPopover) {
-        lexia[property] = event;
-        this.apiService.updateLexia(lexia.id, lexia);
-        this.resetTable();
-        this.applyFilter(this.value ? this.value : "");
-        popover.close();
     }
 
 }

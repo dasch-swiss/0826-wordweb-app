@@ -3,7 +3,6 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {Book} from "../../model/model";
 import {ApiService} from "../../services/api.service";
-import {SatPopover} from "@ncstate/sat-popover";
 import {CreateUpdateBookComponent} from "./create-update-book/create-update-book.component";
 import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
 import {VenueRefComponent} from "../../dialog/venue-ref/venue-ref.component";
@@ -104,14 +103,6 @@ export class BookComponent implements OnInit {
 
     delete(id: number) {
         console.log(`Book ID: ${id}`);
-    }
-
-    updateProperty(event: string | number, property: string, book: Book, popover: SatPopover) {
-        book[property] = event;
-        this.apiService.updateBook(book.id, book);
-        this.resetTable();
-        this.applyFilter(this.value ? this.value : "");
-        popover.close();
     }
 
     editAuthor(book: Book) {

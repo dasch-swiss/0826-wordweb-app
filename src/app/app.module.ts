@@ -52,6 +52,7 @@ import {PassageRefComponent} from "./dialog/passage-ref/passage-ref.component";
 import {AppInitService} from "./app-init.service";
 import {KuiCoreConfigToken} from "@knora/core";
 import {HttpClientModule} from "@angular/common/http";
+import {LanguageRefComponent} from "./dialog/language-ref/language-ref.component";
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
@@ -94,7 +95,8 @@ export function initializeApp(appInitService: AppInitService) {
         OrganisationRefComponent,
         VenueRefComponent,
         LexiaRefComponent,
-        PassageRefComponent
+        PassageRefComponent,
+        LanguageRefComponent
     ],
     imports: [
         BrowserModule,
@@ -143,7 +145,8 @@ export function initializeApp(appInitService: AppInitService) {
         AuthorRefComponent,
         BookRefComponent,
         OrganisationRefComponent,
-        VenueRefComponent
+        VenueRefComponent,
+        LanguageRefComponent
     ]
 })
 export class AppModule {

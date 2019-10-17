@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {Author} from "../../model/model";
 import {ApiService} from "../../services/api.service";
-import {SatPopover} from "@ncstate/sat-popover";
 import {CreateUpdateAuthorComponent} from "./create-update-author/create-update-author.component";
 
 @Component({
@@ -49,14 +48,6 @@ export class AuthorComponent implements OnInit {
 
     edit(author: Author) {
         this.createOrEditResource(true, author);
-    }
-
-    updateProperty(event: string | number, property: string, author: Author, popover: SatPopover) {
-        author[property] = event;
-        this.apiService.updateAuthor(author.id, author);
-        this.resetTable();
-        this.applyFilter(this.value ? this.value : "");
-        popover.close();
     }
 
     createOrEditResource(editMod: boolean, resource: Author = null) {

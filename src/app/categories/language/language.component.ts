@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {ApiService} from "../../services/api.service";
 import {Language} from "../../model/model";
-import {SatPopover} from "@ncstate/sat-popover";
 import {CreateUpdateLanguageComponent} from "./create-update-language/create-update-language.component";
 
 @Component({
@@ -70,14 +69,5 @@ export class LanguageComponent implements OnInit {
     delete(id: number) {
         console.log(`Book ID: ${id}`);
     }
-
-    updateProperty(event: string | number, property: string, language: Language, popover: SatPopover) {
-        language[property] = event;
-        this.apiService.updateLanguage(language.id, language);
-        this.resetTable();
-        this.applyFilter(this.value ? this.value : "");
-        popover.close();
-    }
-
 }
 

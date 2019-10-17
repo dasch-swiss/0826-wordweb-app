@@ -4,15 +4,18 @@
     <h2>List of Contributors</h2>
 
     <div class="filter-container">
+
         <div class="create-btn-container">
             <button mat-raised-button type="button" color="primary" (click)="create()"><mat-icon>add</mat-icon>Verfasser erstellen</button>
         </div>
+
         <mat-form-field>
             <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter" (keydown.escape)="clear()">
             <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
+
         <div class="row-counter">Anzahl: {{rowCount()}}</div>
     </div>
 
@@ -22,11 +25,7 @@
         <ng-container matColumnDef="internalID">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Internal ID</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchor]="intID" (click)="intID.open()">{{element.internalID}}</div>
-                <sat-popover #intID hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="intID.isOpen()" [value]="element.internalID" [type]="'string'"
-                                     (newValue)="updateProperty($event,'internalID', element, intID)"></app-inline-edit>
-                </sat-popover>
+                <div>{{element.internalID}}</div>
             </td>
         </ng-container>
 
@@ -34,11 +33,7 @@
         <ng-container matColumnDef="firstName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Vorname</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchor]="fn" (click)="fn.open()">{{element.firstName}}</div>
-                <sat-popover #fn hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="fn.isOpen()" [value]="element.firstName" [type]="'string'"
-                                     (newValue)="updateProperty($event,'firstName', element, fn)"></app-inline-edit>
-                </sat-popover>
+                <div>{{element.firstName}}</div>
             </td>
         </ng-container>
 
@@ -46,11 +41,7 @@
         <ng-container matColumnDef="lastName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Nachname</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchor]="ln" (click)="ln.open()">{{element.lastName}}</div>
-                <sat-popover #ln hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="ln.isOpen()" [value]="element.lastName" [type]="'string'"
-                                     (newValue)="updateProperty($event,'lastName', element, ln)"></app-inline-edit>
-                </sat-popover>
+                <div>{{element.lastName}}</div>
             </td>
         </ng-container>
 
@@ -58,10 +49,7 @@
         <ng-container matColumnDef="gender">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Geschlecht</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchor]="gen" (click)="gen.open()">{{element.gender}}</div>
-                <sat-popover #gen hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="gen.isOpen()" [value]="element.gender" [type]="'string'"></app-inline-edit>
-                </sat-popover>
+                <div>{{element.gender}}</div>
             </td>
         </ng-container>
 
@@ -69,11 +57,7 @@
         <ng-container matColumnDef="email">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchor]="em" (click)="em.open()">{{element.email}}</div>
-                <sat-popover #em hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="em.isOpen()" [value]="element.email" [type]="'string'"
-                                     (newValue)="updateProperty($event,'email', element, em)"></app-inline-edit>
-                </sat-popover>
+                <div>{{element.email}}</div>
             </td>
         </ng-container>
 
@@ -81,11 +65,7 @@
         <ng-container matColumnDef="order">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Reihenfolge</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" [satPopoverAnchor]="or" (click)="or.open()">{{element.order}}</div>
-                <sat-popover #or hasBackdrop xAlign="start" yAlign="start">
-                    <app-inline-edit *ngIf="or.isOpen()" [value]="element.order" [type]="'number'"
-                                     (newValue)="updateProperty($event,'order', element, or)"></app-inline-edit>
-                </sat-popover>
+                <div>{{element.order}}</div>
             </td>
         </ng-container>
 

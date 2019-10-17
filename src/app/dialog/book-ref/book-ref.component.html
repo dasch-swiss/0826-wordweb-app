@@ -32,7 +32,7 @@
         <mat-form-field>
             <input [(ngModel)]="filterWord" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
                    (keydown.escape)="clear()">
-            <button *ngIf="filterWord" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+            <button *ngIf="filterWord" mat-button matSuffix mat-icon-button (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
@@ -92,7 +92,7 @@
         <mat-form-field>
             <input [(ngModel)]="filterWord" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
                    (keydown.escape)="clear()">
-            <button *ngIf="filterWord" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
+            <button *ngIf="filterWord" mat-button matSuffix mat-icon-button (click)="clear()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>

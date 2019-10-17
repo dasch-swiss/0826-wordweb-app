@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {Organisation} from "../../model/model";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
-import {SatPopover} from "@ncstate/sat-popover";
 import {ApiService} from "../../services/api.service";
 import {CreateUpdateOrganisationComponent} from "./create-update-organisation/create-update-organisation.component";
 
@@ -67,15 +66,7 @@ export class OrganisationComponent implements OnInit {
         });
     }
 
-    delete() {
-    }
-
-    updateProperty(event: string | number, property: string, organisation: Organisation, popover: SatPopover) {
-        organisation[property] = event;
-        this.apiService.updateOrganisation(organisation.id, organisation);
-        this.resetTable();
-        this.applyFilter(this.value ? this.value : "");
-        popover.close();
+    deleteRow(id: number) {
     }
 
 }

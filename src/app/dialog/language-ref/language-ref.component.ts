@@ -1,23 +1,23 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {Book, Organisation, Venue} from "../../model/model";
+import {Language} from "../../model/model";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {ApiService} from "../../services/api.service";
 
 @Component({
-    selector: "app-organisation-ref",
-    templateUrl: "./organisation-ref.component.html",
+    selector: "app-language-ref",
+    templateUrl: "./language-ref.component.html",
     styleUrls: ["../category-ref.scss"]
 })
-export class OrganisationRefComponent implements OnInit {
+export class LanguageRefComponent implements OnInit {
     addingModus: boolean;
     clonedList: any[];
-    allOrganistions: Organisation[];
-    filteredList: Organisation[];
+    allLanguages: Language[];
+    filteredList: Language[];
     filterWord: string;
     listChanged: boolean;
     max: number;
 
-    constructor(private dialogRef: MatDialogRef<OrganisationRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+    constructor(private dialogRef: MatDialogRef<LanguageRefComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         if (data.editMod) {
             this.clonedList = [...data.list];
             this.closeList();
@@ -30,8 +30,8 @@ export class OrganisationRefComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.allOrganistions = this.apiService.getOrganisations(true);
-        this.filteredList = [...this.allOrganistions];
+        this.allLanguages = this.apiService.getLanguages(true);
+        this.filteredList = [...this.allLanguages];
         this.listChanged = false;
     }
 
@@ -43,22 +43,22 @@ export class OrganisationRefComponent implements OnInit {
         this.addingModus = false;
     }
 
-    addOrganisation(organisation: Organisation) {
-        this.clonedList.push(organisation);
+    addLanguage(language: Language) {
+        this.clonedList.push(language);
         this.listChanged = true;
     }
 
-    removeOrganisation(id: number) {
-        this.clonedList = this.clonedList.filter((organisation) => organisation.id !== id);
+    removeLanguage(id: number) {
+        this.clonedList = this.clonedList.filter((language) => language.id !== id);
         this.listChanged = true;
     }
 
     applyFilter(value: string) {
-        this.filteredList = this.allOrganistions.filter((organisation) => (organisation.name.toLowerCase().indexOf(value.toLowerCase()) > -1));
+        this.filteredList = this.allLanguages.filter((language) => (language.name.toLowerCase().indexOf(value.toLowerCase()) > -1));
     }
 
     isUsed(id: number): boolean {
-        return this.clonedList.filter((organisation) => organisation.id === id).length !== 0;
+        return this.clonedList.filter((language) => language.id === id).length !== 0;
     }
 
     hasMaximum(): boolean | null {
@@ -67,7 +67,7 @@ export class OrganisationRefComponent implements OnInit {
 
     clear() {
         this.filterWord = "";
-        this.filteredList = [...this.allOrganistions];
+        this.filteredList = [...this.allLanguages];
     }
 
     cancel() {
@@ -78,14 +78,15 @@ export class OrganisationRefComponent implements OnInit {
         this.dialogRef.close({submit: true, data: [...this.clonedList]});
     }
 
-    chooseElement(organisation: Organisation) {
-        if ((this.clonedList.length !== 0) && (this.clonedList[0].id === organisation.id)) {
+    chooseElement(language: Language) {
+        if ((this.clonedList.length !== 0) && (this.clonedList[0].id === language.id)) {
             return;
         }
 
         this.clonedList = [];
-        this.clonedList.push(organisation);
+        this.clonedList.push(language);
         this.listChanged = true;
     }
+
 
 }
