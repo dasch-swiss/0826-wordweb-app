@@ -1,17 +1,18 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
-import {Book} from "../../model/model";
+import {Author, Book} from "../../model/model";
 import {ApiService} from "../../services/api.service";
 import {CreateUpdateBookComponent} from "./create-update-book/create-update-book.component";
 import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
 import {VenueRefComponent} from "../../dialog/venue-ref/venue-ref.component";
+import {CategoryRefComponent} from "../../dialog/category-ref.component";
 
 @Component({
-  selector: "app-book",
-  templateUrl: "./book.component.html",
-  styleUrls: ["./book.component.scss"],
-      animations: [
+    selector: "app-book",
+    templateUrl: "./book.component.html",
+    styleUrls: ["./book.component.scss"],
+    animations: [
         trigger("detailExpand", [
             state("collapsed, void", style({height: "0px", minHeight: "0"})),
             state("expanded", style({height: "*"})),
@@ -25,22 +26,24 @@ export class BookComponent implements OnInit {
     expandedElements: any[] = [];
     value: string;
 
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(private apiService: ApiService,
                 private authorDialog: MatDialog,
                 private venueDialog: MatDialog,
                 private organisationDialog: MatDialog,
                 private createBookDialog: MatDialog) {
+    }
+
+    ngOnInit() {
         this.resetTable();
     }
 
     resetTable() {
-        this.dataSource = new MatTableDataSource(this.apiService.getBooks(true));
-    }
-
-    ngOnInit() {
-      this.dataSource.sort = this.sort;
+        this.apiService.getBooks(true).subscribe((books) => {
+            this.dataSource = new MatTableDataSource(books);
+            this.dataSource.sort = this.sort;
+        });
     }
 
     applyFilter(filterValue: string) {
@@ -73,7 +76,7 @@ export class BookComponent implements OnInit {
     }
 
     rowCount() {
-        return this.dataSource.filteredData.length;
+        return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
     create() {
@@ -99,6 +102,29 @@ export class BookComponent implements OnInit {
                 this.dataSource.sort = this.sort;
             }
         });
+
+        // const dialogConfig = new MatDialogConfig();
+        // dialogConfig.disableClose = true;
+        // dialogConfig.autoFocus = true;
+        // dialogConfig.data = {
+        //     res: resource,
+        //     resType: "author",
+        //     props: ["internalID", "firstName", "lastName"],
+        //     filter: (author: Author, value: string) => {
+        //         const containsID = author.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
+        //         const containsFirstName = author.firstName.toLowerCase().indexOf(value.toLowerCase()) > -1;
+        //         const containsLastName = author.lastName.toLowerCase().indexOf(value.toLowerCase()) > -1;
+        //
+        //         return containsID || containsFirstName || containsLastName;
+        //     },
+        //     btnTxt: "select author",
+        //     titleTxt: "Add author",
+        //     editMode: true
+        // };
+        // const dialogRef = this.authorDialog.open(CategoryRefComponent, dialogConfig);
+        // dialogRef.afterClosed().subscribe((data) => {
+        //     console.log(data);
+        // });
     }
 
     delete(id: number) {

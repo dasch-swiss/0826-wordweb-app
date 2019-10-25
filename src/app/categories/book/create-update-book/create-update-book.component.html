@@ -1,5 +1,5 @@
 <div class="container">
-    <form [formGroup]="form" (ngSubmit)="submit()">
+    <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="languages | async as lang; else loading;">
         <h2>{{getTitle()}}</h2>
 
         <mat-dialog-content>
@@ -14,7 +14,7 @@
                 </tr>
 
                 <tr>
-                    <td class="title-column">Normalised Titel:</td>
+                    <td class="title-column">Normalised Title:</td>
                     <td colspan="2">
                         <mat-form-field>
                             <input matInput type="text" formControlName="title" required>
@@ -34,7 +34,7 @@
                                 <mat-icon matChipRemove (click)="removeAuthor(author)">cancel</mat-icon>
                             </mat-chip>
                         </mat-chip-list>
-                        <mat-chip-list *ngIf="authorList.length>=4">
+                        <mat-chip-list *ngIf="authorList.length>=MAX_CHIPS">
                             <mat-chip (click)="addAuthor()">
                                 <mat-chip-avatar>
                                     <mat-icon>account_circle</mat-icon>
@@ -62,7 +62,7 @@
                                 <mat-icon matChipRemove (click)="removeVenue(venue)">cancel</mat-icon>
                             </mat-chip>
                         </mat-chip-list>
-                        <mat-chip-list *ngIf="venueList.length>=4">
+                        <mat-chip-list *ngIf="venueList.length>=MAX_CHIPS">
                             <mat-chip (click)="addVenue()">
                                 <mat-chip-avatar>
                                     <mat-icon>theaters</mat-icon>
@@ -90,7 +90,7 @@
                                 <mat-icon matChipRemove (click)="removeOrganisation(organisation)">cancel</mat-icon>
                             </mat-chip>
                         </mat-chip-list>
-                        <mat-chip-list *ngIf="organisationList.length>=4">
+                        <mat-chip-list *ngIf="organisationList.length>=MAX_CHIPS">
                             <mat-chip (click)="addOrganisation()">
                                 <mat-chip-avatar>
                                     <mat-icon>business</mat-icon>
@@ -106,31 +106,110 @@
                     </td>
                 </tr>
 
-                <tr class="reference">
+                <tr>
                     <td class="title-column">Language:</td>
-                    <td>
-                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="languageList.length<MAX_CHIPS">
-                            <mat-chip *ngFor="let language of languageList">
-                                <mat-chip-avatar>
-                                    <mat-icon>record_voice_over</mat-icon>
-                                </mat-chip-avatar>
-                                {{language.name}}
-                                <mat-icon matChipRemove (click)="removeLanguage(language)">cancel</mat-icon>
-                            </mat-chip>
-                        </mat-chip-list>
-                        <mat-chip-list *ngIf="languageList.length>=4">
-                            <mat-chip (click)="addOrganisation()">
-                                <mat-chip-avatar>
-                                    <mat-icon>record_voice_over</mat-icon>
-                                </mat-chip-avatar>
-                                {{languageList.length}} ausgewählt ...
-                            </mat-chip>
-                        </mat-chip-list>
+                    <td colspan="2">
+                        <mat-form-field class="full-width">
+                            <mat-select formControlName="language">
+                                <mat-option *ngFor="let language of lang" [value]="language.id">{{language.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </td>
-                    <td class="last-row">
-                        <button mat-button mat-icon-button type="button" color="accent" (click)="addLanguage()">
-                            <mat-icon>{{addOrEdit(languageList)}}</mat-icon>
-                        </button>
+                </tr>
+
+                <tr>
+                    <td class="title-column">
+                        <mat-checkbox formControlName="createdCheck" (change)="onChange($event, 'created')">Created Date</mat-checkbox>
+                    </td>
+                    <td formGroupName="created" colspan="2">
+                        <table>
+                            <tr>
+                                <td>
+                                    <mat-form-field>
+                                        <input matInput type="number" formControlName="createdStartDate">
+                                        <mat-hint align="start">Start Year</mat-hint>
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <mat-form-field>
+                                        <input matInput type="number" formControlName="createdEndDate">
+                                        <mat-hint align="start">End Year</mat-hint>
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="title-column">
+                        <mat-checkbox formControlName="publishedCheck" (change)="onChange($event, 'published')">Published Date</mat-checkbox>
+                    </td>
+                    <td formGroupName="published" colspan="2">
+                        <table>
+                            <tr>
+                                <td>
+                                    <mat-form-field>
+                                        <input matInput type="number" formControlName="publishedStartDate">
+                                        <mat-hint align="start">Start Year</mat-hint>
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <mat-form-field>
+                                        <input matInput type="number" formControlName="publishedEndDate">
+                                        <mat-hint align="start">End Year</mat-hint>
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="title-column">
+                        <mat-checkbox formControlName="licensedCheck" (change)="onChange($event, 'licensed')">Licensed Date</mat-checkbox>
+                    </td>
+                    <td formGroupName="licensed" colspan="2">
+                        <table>
+                            <tr>
+                                <td>
+                                    <mat-form-field>
+                                        <input matInput type="number" formControlName="licenseStartDate">
+                                        <mat-hint align="start">Start Year</mat-hint>
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <mat-form-field>
+                                        <input matInput type="number" formControlName="licenseEndDate">
+                                        <mat-hint align="start">End Year</mat-hint>
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="title-column">
+                        <mat-checkbox formControlName="firstPerformedCheck" (change)="onChange($event, 'firstPerformed')">First Performed Date</mat-checkbox>
+                    </td>
+                    <td formGroupName="firstPerformed" colspan="2">
+                        <table>
+                            <tr>
+                                <td>
+                                    <mat-form-field>
+                                        <input matInput type="number" formControlName="firstPerformedStartDate">
+                                        <mat-hint align="start">Start Year</mat-hint>
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <mat-form-field>
+                                        <input matInput type="number" formControlName="firstPerformedEndDate">
+                                        <mat-hint align="start">End Year</mat-hint>
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
 
@@ -142,4 +221,8 @@
             <button [disabled]="form.invalid" mat-flat-button type="submit" color="primary">{{getButtonText()}}</button>
         </mat-dialog-actions>
     </form>
+
+    <ng-template #loading>
+        Loading data ....
+    </ng-template>
 </div>

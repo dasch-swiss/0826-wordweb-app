@@ -1,13 +1,13 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {ApiService} from "../../services/api.service";
-import { Contributor} from "../../model/model";
+import {Contributor} from "../../model/model";
 import {CreateUpdateContributorComponent} from "./create-update-contributor/create-update-contributor.component";
 
 @Component({
-  selector: "app-contributor",
-  templateUrl: "./contributor.component.html",
-  styleUrls: ["../category.scss"]
+    selector: "app-contributor",
+    templateUrl: "./contributor.component.html",
+    styleUrls: ["../category.scss"]
 })
 export class ContributorComponent implements OnInit {
 
@@ -15,19 +15,21 @@ export class ContributorComponent implements OnInit {
     dataSource: MatTableDataSource<Contributor>;
     value: string;
 
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(private apiService: ApiService,
                 private createContributorDialog: MatDialog) {
+    }
+
+    ngOnInit() {
         this.resetTable();
     }
 
     resetTable() {
-        this.dataSource = new MatTableDataSource(this.apiService.getContributors());
-    }
-
-    ngOnInit() {
-        this.dataSource.sort = this.sort;
+        this.apiService.getContributors(true).subscribe((contributors) => {
+            this.dataSource = new MatTableDataSource(contributors);
+            this.dataSource.sort = this.sort;
+        });
     }
 
     applyFilter(filterValue: string) {
@@ -39,14 +41,14 @@ export class ContributorComponent implements OnInit {
     }
 
     rowCount() {
-        return this.dataSource.filteredData.length;
+        return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
     delete(id: number) {
     }
 
     create() {
-      this.createOrEditResource(false);
+        this.createOrEditResource(false);
     }
 
     edit(contributor: Contributor) {

@@ -11,8 +11,9 @@
 
       th {
         border: 1px solid white;
-        //background-color: rgb(64, 84, 178);
-        background-color: rgb(210, 210, 210);
+        background-color: rgb(64, 84, 178);
+        //background-color: rgb(210, 210, 210);
+        color: white;
         text-align: left;
         position: sticky;
         top: 0px;
@@ -46,13 +47,14 @@
   }
 
   .full-data-container {
-    margin-top: 1rem;
+    padding: 0 1rem;
 
     max-height: 0px;
     overflow-y: hidden;
     transition: ease-in-out 200ms max-height;
 
     mat-form-field {
+      margin-top: 2rem;
       width: 100%;
     }
 
@@ -73,6 +75,7 @@
           text-align: left;
           background-color: lightgray;
           position: sticky;
+          font-weight: normal;
           top: 0px;
         }
 
@@ -103,6 +106,8 @@
 
   .add-btn-container {
     margin-top: 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
   }
 
   .action-btn-container {

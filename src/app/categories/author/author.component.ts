@@ -19,15 +19,19 @@ export class AuthorComponent implements OnInit {
 
     constructor(public apiService: ApiService,
                 private createAuthorDialog: MatDialog) {
+    }
+
+    ngOnInit() {
         this.resetTable();
     }
 
     resetTable() {
-        this.dataSource = new MatTableDataSource(this.apiService.getAuthors(true));
-    }
+        this.apiService.getAuthors(true).subscribe((authors) => {
+            console.log(authors);
+            this.dataSource = new MatTableDataSource(authors);
+            this.dataSource.sort = this.sort;
+        });
 
-    ngOnInit() {
-        this.dataSource.sort = this.sort;
     }
 
     applyFilter(filterValue: string) {
@@ -39,7 +43,7 @@ export class AuthorComponent implements OnInit {
     }
 
     rowCount() {
-        return this.dataSource.filteredData.length;
+        return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
     create() {
@@ -54,7 +58,7 @@ export class AuthorComponent implements OnInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.width = "450px";
+        dialogConfig.width = "550px";
         dialogConfig.data = {
             resource: resource,
             editMod: editMod,

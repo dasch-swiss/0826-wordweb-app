@@ -20,7 +20,7 @@ export class CreateUpdateLanguageComponent implements OnInit {
 
     ngOnInit() {
         this.form = new FormGroup({
-            language: new FormControl(this.editMod ? this.language.name : "", [Validators.required])
+            name: new FormControl(this.editMod ? this.language.name : "", [Validators.required])
         });
     }
 
@@ -30,13 +30,13 @@ export class CreateUpdateLanguageComponent implements OnInit {
 
     submit() {
         if (this.editMod) {
-            this.language.name = this.form.get("language").value;
+            this.language.name = this.form.get("name").value;
             // update request
             this.apiService.updateLanguage(this.language.id, this.language);
             this.dialogRef.close({refresh: true});
         } else {
             const newLanguage = {
-                name: this.form.get("language").value,
+                name: this.form.get("name").value,
             };
             // create request
             this.apiService.createLanguage(newLanguage);
@@ -45,11 +45,11 @@ export class CreateUpdateLanguageComponent implements OnInit {
     }
 
     getTitle(): string {
-        return this.editMod ? "Sprache bearbeiten" : "Neue Sprache erstellen";
+        return this.editMod ? "Edit language" : "Create new language";
     }
 
     getButtonText(): string {
-        return this.editMod ? "SPEICHERN" : "ERSTELLEN";
+        return this.editMod ? "SAVE" : "CREATE";
     }
 
 }

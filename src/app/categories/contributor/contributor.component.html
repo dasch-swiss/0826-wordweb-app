@@ -31,7 +31,7 @@
 
         <!-- first name -->
         <ng-container matColumnDef="firstName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Vorname</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Firstname</th>
             <td mat-cell *matCellDef="let element">
                 <div>{{element.firstName}}</div>
             </td>
@@ -39,7 +39,7 @@
 
         <!-- last name -->
         <ng-container matColumnDef="lastName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nachname</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</th>
             <td mat-cell *matCellDef="let element">
                 <div>{{element.lastName}}</div>
             </td>
@@ -47,9 +47,9 @@
 
         <!-- gender column-->
         <ng-container matColumnDef="gender">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Geschlecht</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Gender</th>
             <td mat-cell *matCellDef="let element">
-                <div>{{element.gender}}</div>
+                <div *ngIf="element.gender">{{element.gender.name}}</div>
             </td>
         </ng-container>
 
@@ -63,7 +63,7 @@
 
         <!-- order-->
         <ng-container matColumnDef="order">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Reihenfolge</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Order</th>
             <td mat-cell *matCellDef="let element">
                 <div>{{element.order}}</div>
             </td>
@@ -71,7 +71,7 @@
 
         <!-- reference-->
         <ng-container matColumnDef="references">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Referenzen</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>References</th>
             <td mat-cell *matCellDef="let element">
                 <div class="read-only-value">{{element.references}}</div>
             </td>

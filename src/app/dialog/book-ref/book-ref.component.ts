@@ -4,12 +4,12 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {ApiService} from "../../services/api.service";
 
 @Component({
-  selector: "app-book-ref",
-  templateUrl: "./book-ref.component.html",
-  styleUrls: ["../category-ref.scss"]
+    selector: "app-book-ref",
+    templateUrl: "./book-ref.component.html",
+    styleUrls: ["../category-ref.scss"]
 })
 export class BookRefComponent implements OnInit {
-   addingModus: boolean;
+    addingModus: boolean;
     clonedList: any[];
     allBooks: Book[];
     filteredList: Book[];
@@ -30,8 +30,11 @@ export class BookRefComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.allBooks = this.apiService.getBooks(true);
-        this.filteredList = [...this.allBooks];
+        this.apiService.getBooks(true).subscribe((books) => {
+            this.allBooks = books;
+            this.filteredList = [...this.allBooks];
+        });
+
         this.listChanged = false;
     }
 
@@ -63,7 +66,7 @@ export class BookRefComponent implements OnInit {
                 return fullName.toLowerCase().indexOf(value.toLowerCase()) > -1;
             }).length > 0;
 
-            return containsID || containsTitle || containsAuthorName ;
+            return containsID || containsTitle || containsAuthorName;
         });
     }
 

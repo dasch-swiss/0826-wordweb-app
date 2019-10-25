@@ -24,7 +24,7 @@ import {VenueComponent} from "./categories/venue/venue.component";
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 import {
     MatButtonModule,
-    MatCardModule,
+    MatCardModule, MatCheckboxModule,
     MatChipsModule,
     MatDialogModule, MatDividerModule,
     MatIconModule, MatInputModule, MatSelectModule, MatSortModule,
@@ -53,6 +53,9 @@ import {AppInitService} from "./app-init.service";
 import {KuiCoreConfigToken} from "@knora/core";
 import {HttpClientModule} from "@angular/common/http";
 import {LanguageRefComponent} from "./dialog/language-ref/language-ref.component";
+import {CategoryRefComponent} from "./dialog/category-ref.component";
+import { CreateUpdateGenderComponent } from './categories/gender/create-update-gender/create-update-gender.component';
+import { CreateUpdateStatusComponent } from './categories/status/create-update-status/create-update-status.component';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
@@ -90,13 +93,16 @@ export function initializeApp(appInitService: AppInitService) {
         CreateUpdateOrganisationComponent,
         CreateUpdateVenueComponent,
         CreateUpdatePassageComponent,
+        CreateUpdateGenderComponent,
+        CreateUpdateStatusComponent,
         AuthorRefComponent,
         BookRefComponent,
         OrganisationRefComponent,
         VenueRefComponent,
         LexiaRefComponent,
         PassageRefComponent,
-        LanguageRefComponent
+        LanguageRefComponent,
+        CategoryRefComponent
     ],
     imports: [
         BrowserModule,
@@ -114,6 +120,7 @@ export function initializeApp(appInitService: AppInitService) {
         MatDialogModule,
         MatTableModule,
         MatDividerModule,
+        MatCheckboxModule,
         SatPopoverModule,
         FormsModule,
         ReactiveFormsModule,
@@ -142,11 +149,14 @@ export function initializeApp(appInitService: AppInitService) {
         CreateUpdateOrganisationComponent,
         CreateUpdatePassageComponent,
         CreateUpdateVenueComponent,
+        CreateUpdateGenderComponent,
+        CreateUpdateStatusComponent,
         AuthorRefComponent,
         BookRefComponent,
         OrganisationRefComponent,
         VenueRefComponent,
-        LanguageRefComponent
+        LanguageRefComponent,
+        CategoryRefComponent
     ]
 })
 export class AppModule {

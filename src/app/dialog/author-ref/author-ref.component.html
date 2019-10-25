@@ -1,6 +1,6 @@
 <div class="dialog-multiple" *ngIf="max!==1">
 
-    <h2>Autoren auswählen</h2>
+    <h2>Add authors</h2>
 
     <div class="result-container">
         <table class="chosen-data-table">
@@ -59,17 +59,15 @@
         </div>
     </div>
 
-    <div class="add-btn-container" *ngIf="!addingModus">
-        <button mat-flat-button color="accent" (click)="openList()">
-            <mat-icon>add</mat-icon>
-            Autoren hinzufügen
+    <div class="add-btn-container">
+        <button *ngIf="!addingModus" mat-button color="primary" (click)="openList()">
+            <mat-icon>keyboard_arrow_down</mat-icon>
+            select author
         </button>
-    </div>
 
-    <div class="add-btn-container" *ngIf="addingModus">
-        <button mat-flat-button color="accent" (click)="closeList()">
+        <button *ngIf="addingModus" mat-button color="primary" (click)="closeList()">
             <mat-icon>keyboard_arrow_up</mat-icon>
-            Zuklappen
+            close list
         </button>
     </div>
 

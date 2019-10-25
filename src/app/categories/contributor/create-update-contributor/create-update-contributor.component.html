@@ -1,5 +1,5 @@
 <div class="container">
-    <form [formGroup]="form" (ngSubmit)="submit()">
+    <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="genders | async as gen; else loading">
         <h2>{{getTitle()}}</h2>
 
         <mat-dialog-content>
@@ -35,7 +35,9 @@
                     <td class="title-column">Gender</td>
                     <td colspan="2">
                         <mat-form-field class="full-width">
-                            <input matInput type="text" formControlName="gender">
+                            <mat-select formControlName="gender">
+                                <mat-option *ngFor="let gender of gen" [value]="gender.id">{{gender.name}}</mat-option>
+                            </mat-select>
                         </mat-form-field>
                     </td>
                 </tr>
@@ -63,5 +65,9 @@
             <button [disabled]="form.invalid" type="submit" mat-flat-button color="primary">{{getButtonText()}}</button>
         </mat-dialog-actions>
     </form>
+
+    <ng-template #loading>
+        Loading data ....
+    </ng-template>
 
 </div>

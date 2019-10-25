@@ -13,6 +13,7 @@ export class CreateUpdateContributorComponent implements OnInit {
     contributor: any;
     editMod: boolean;
     form: FormGroup;
+    genders: any;
 
     constructor(private dialogRef: MatDialogRef<CreateUpdateContributorComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.contributor = JSON.parse(JSON.stringify(data.resource)) as Contributor;
@@ -20,11 +21,13 @@ export class CreateUpdateContributorComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.genders = this.apiService.getGenders();
+
         this.form = new FormGroup({
             internalID: new FormControl(this.editMod ? this.contributor.internalID : "", [Validators.required]),
             firstName: new FormControl(this.editMod ? this.contributor.firstName : "", [Validators.required]),
             lastName: new FormControl(this.editMod ? this.contributor.lastName : "", [Validators.required]),
-            gender: new FormControl(this.editMod ? this.contributor.gender : "", []),
+            gender: new FormControl(this.editMod ? this.contributor.gender.id : "", [Validators.required]),
             email: new FormControl(this.editMod ? this.contributor.email : "", [])
         });
     }

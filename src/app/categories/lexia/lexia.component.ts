@@ -18,15 +18,18 @@ export class LexiaComponent implements OnInit {
 
     constructor(private apiService: ApiService,
                 private createLexiaDialog: MatDialog) {
+    }
+
+    ngOnInit() {
         this.resetTable();
     }
 
     resetTable() {
-        this.dataSource = new MatTableDataSource(this.apiService.getLexias());
-    }
-
-    ngOnInit() {
-        this.dataSource.sort = this.sort;
+        this.apiService.getLexias().subscribe((lexias) => {
+            console.log(lexias);
+            this.dataSource = new MatTableDataSource(lexias);
+            this.dataSource.sort = this.sort;
+        });
     }
 
     applyFilter(filterValue: string) {
@@ -38,7 +41,7 @@ export class LexiaComponent implements OnInit {
     }
 
     rowCount() {
-        return this.dataSource.filteredData.length;
+        return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
     create() {

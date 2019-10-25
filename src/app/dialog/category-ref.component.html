@@ -1,0 +1,72 @@
+<div class="dialog-multiple" *ngIf="refInfo.maxRes!==1 && refInfo && fullList">
+
+    <h2>Add authors</h2>
+
+    <div class="result-container">
+        <table class="chosen-data-table">
+            <tr class="header-row">
+                <th *ngFor="let prop of refInfo.props">{{prop}}</th>
+                <th></th>
+            </tr>
+            <tr class="data-row" *ngFor="let category of selectedCat">
+                <td *ngFor="let prop of refInfo.props">{{category[prop]}}</td>
+                <td class="delete-cell">
+                    <button class="remove-button" (click)="removeCategory(category.id)">-</button>
+                </td>
+            </tr>
+            <tr class="empty-row" *ngIf="selectedCat.length === 0">
+                <td colspan="4">Noch keine Autoren hinzugefügt</td>
+            </tr>
+        </table>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="full-data-container" [class.opened]="refInfo.editMode">
+        <mat-form-field>
+            <input [(ngModel)]="filterWord" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
+                   (keydown.escape)="clear()">
+            <button *ngIf="filterWord" mat-button matSuffix mat-icon-button (click)="clear()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <div class="full-data-table-container">
+            <table class="full-data-table">
+                <tr>
+                    <th *ngFor="let prop of refInfo.props">{{prop}}</th>
+                    <th></th>
+                </tr>
+                <tr class="data-row" *ngFor="let category of filteredList">
+                    <td *ngFor="let prop of refInfo.props">{{category[prop]}}</td>
+                    <td>
+                        <button type="button" class="add-button" [disabled]="isUsed(category.id) || hasMaximum()"
+                                (click)="addCategory(category)">+
+                        </button>
+                    </td>
+                </tr>
+                <tr class="empty-row" *ngIf="filteredList.length === 0">
+                    <td colspan="4">Autorenliste ist leer!</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="add-btn-container">
+        <button *ngIf="!listOpen" mat-button color="primary" (click)="openList()">
+            <mat-icon>keyboard_arrow_down</mat-icon>
+            select author
+        </button>
+
+        <button *ngIf="listOpen" mat-button color="primary" (click)="closeList()">
+            <mat-icon>keyboard_arrow_up</mat-icon>
+            close list
+        </button>
+    </div>
+
+    <div class="action-btn-container">
+        <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
+        <button type="button" mat-flat-button color="primary" [disabled]="!selectionChanged" (click)="save()">ÜBERNEHMEN
+        </button>
+    </div>
+
+</div>

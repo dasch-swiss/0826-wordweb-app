@@ -18,15 +18,17 @@ export class OrganisationComponent implements OnInit {
 
     constructor(private apiService: ApiService,
                 private createOrganisationDialog: MatDialog) {
+    }
+
+    ngOnInit() {
         this.resetTable();
     }
 
     resetTable() {
-        this.dataSource = new MatTableDataSource(this.apiService.getOrganisations());
-    }
-
-    ngOnInit() {
-        this.dataSource.sort = this.sort;
+        this.apiService.getOrganisations().subscribe((organisations) => {
+            this.dataSource = new MatTableDataSource(organisations);
+            this.dataSource.sort = this.sort;
+        });
     }
 
     applyFilter(filterValue: string) {
@@ -38,7 +40,7 @@ export class OrganisationComponent implements OnInit {
     }
 
     rowCount() {
-        return this.dataSource.filteredData.length;
+        return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
     create() {

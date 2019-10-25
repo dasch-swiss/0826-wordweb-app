@@ -27,12 +27,15 @@ export class AuthorRefComponent implements OnInit {
         }
 
         this.max = data.max;
+        this.listChanged = false;
+        this.filteredList = [];
     }
 
     ngOnInit() {
-        this.allAuthors = this.apiService.getAuthors();
-        this.filteredList = [...this.allAuthors];
-        this.listChanged = false;
+        this.apiService.getAuthors().subscribe((authors) => {
+            this.allAuthors = authors;
+            this.filteredList = [...this.allAuthors];
+        });
     }
 
     openList() {

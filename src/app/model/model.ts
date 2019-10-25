@@ -9,7 +9,7 @@ export interface Human extends WordWebObject {
     internalID: string;
     firstName: string;
     lastName: string;
-    gender: string;
+    gender: Gender | number;
     humanAsLexia: Lexia | number;
 }
 
@@ -40,6 +40,8 @@ export interface Book extends WordWebObject {
     firstPerformanceEndDate: string;
     edition: string;
     editionHist: string;
+    publicComment: string;
+    commentForPassage: boolean;
     authors: Author[] | number[];
     venues: Venue[] | number[];
     organisations: Organisation[] | number[];
@@ -135,3 +137,16 @@ export interface TreeGenre extends Genre {
     isVisible: boolean;
     isExpanded: boolean;
 }
+
+export interface IRefInfo {
+    res: Category[];
+    resType: string;
+    props: string[];
+    filter: (category: Category, value: string) => boolean;
+    btnTxt: string;
+    titleTxt: string;
+    editMode: boolean;
+    maxRes?: number;
+}
+
+export type Category = Author | Book | Contributor;

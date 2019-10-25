@@ -18,15 +18,17 @@ export class LanguageComponent implements OnInit {
 
     constructor(private apiService: ApiService,
                 private createLanguageDialog: MatDialog) {
+    }
+
+    ngOnInit() {
         this.resetTable();
     }
 
     resetTable() {
-        this.dataSource = new MatTableDataSource(this.apiService.getLanguages());
-    }
-
-    ngOnInit() {
-        this.dataSource.sort = this.sort;
+        this.apiService.getLanguages().subscribe((languages) => {
+            this.dataSource = new MatTableDataSource(languages);
+            this.dataSource.sort = this.sort;
+        });
     }
 
     applyFilter(filterValue: string) {
@@ -38,7 +40,7 @@ export class LanguageComponent implements OnInit {
     }
 
     rowCount() {
-        return this.dataSource.filteredData.length;
+        return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
     create() {
@@ -67,7 +69,7 @@ export class LanguageComponent implements OnInit {
     }
 
     delete(id: number) {
-        console.log(`Book ID: ${id}`);
+        console.log(`Language ID: ${id}`);
     }
 }
 

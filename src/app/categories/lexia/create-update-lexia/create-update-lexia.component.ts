@@ -39,7 +39,7 @@ export class CreateUpdateLexiaComponent implements OnInit {
         } else {
             const newLexia = {
                 internalID: this.form.get("internalID").value,
-                lexia: this.form.get("name").value,
+                name: this.form.get("name").value,
             };
             // create request
             this.apiService.createLexia(newLexia);
@@ -48,11 +48,11 @@ export class CreateUpdateLexiaComponent implements OnInit {
     }
 
     getTitle(): string {
-        return this.editMod ? "Sprache bearbeiten" : "Neue Sprache erstellen";
+        return this.editMod ? "Edit lexia" : "Create new lexia";
     }
 
     getButtonText(): string {
-        return this.editMod ? "SPEICHERN" : "ERSTELLEN";
+        return this.editMod ? "SAVE" : "CREATE";
     }
 
 }

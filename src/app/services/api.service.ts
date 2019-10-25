@@ -1,151 +1,201 @@
 import {Injectable} from "@angular/core";
-import {Contributor, Lexia, Subject, Organisation, Book, Passage, Language, Venue, Author} from "../model/model";
+import {
+    Contributor,
+    Lexia,
+    Subject,
+    Organisation,
+    Book,
+    Passage,
+    Language,
+    Venue,
+    Author,
+    Gender,
+    Genre,
+    ResearchField, Status, Image, Marking, FormalClass, FunctionVoice
+} from "../model/model";
 import {BackendDataService} from "./backend-data.service";
+import {Observable, of} from "rxjs";
+import {delay} from "rxjs/operators";
 
 @Injectable({
     providedIn: "root"
 })
 export class ApiService {
+    static readonly DELAY = 500;
 
     constructor(private backendData: BackendDataService) {
     }
 
     // READ REQUEST
 
-    getBook(iri: number, references: boolean = false) {
-        return this.backendData.getBook(iri, references);
+    getBook(iri: number, references: boolean = false): Observable<Book> {
+        return of(this.backendData.getBook(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getBooks(references: boolean = false) {
-        return this.backendData.getBooks(references);
+    getBooks(references: boolean = false): Observable<Book[]> {
+        return of(this.backendData.getBooks(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getAuthor(iri: number, references: boolean = false) {
-        return this.backendData.getAuthor(iri, references);
+    getAuthor(iri: number, references: boolean = false): Observable<Author> {
+        return of(this.backendData.getAuthor(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getAuthors(references: boolean = false) {
-        return this.backendData.getAuthors(references);
+    getAuthors(references: boolean = false): Observable<Author[]> {
+        return of(this.backendData.getAuthors(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getPassage(iri: number, references: boolean = false) {
-        return this.backendData.getPassage(iri, references);
+    getPassage(iri: number, references: boolean = false): Observable<Passage> {
+        return of(this.backendData.getPassage(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getPassages(references: boolean = false) {
-        return this.backendData.getPassages(references);
+    getPassages(references: boolean = false): Observable<Passage[]> {
+        return of(this.backendData.getPassages(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getLanguage(iri: number, references: boolean = false) {
-        return this.backendData.getLanguage(iri, references);
+    getLanguage(iri: number, references: boolean = false): Observable<Language> {
+        return of(this.backendData.getLanguage(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getLanguages(references: boolean = false) {
-        return this.backendData.getLanguages(references);
+    getLanguages(references: boolean = false): Observable<Language[]> {
+        return of(this.backendData.getLanguages(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getVenue(iri: number, references: boolean = false) {
-        return this.backendData.getVenue(iri, references);
+    getVenue(iri: number, references: boolean = false): Observable<Venue> {
+        return of(this.backendData.getVenue(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getVenues(references: boolean = false) {
-        return this.backendData.getVenues(references);
+    getVenues(references: boolean = false): Observable<Venue[]> {
+        return of(this.backendData.getVenues(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getOrganisation(iri: number, references: boolean = false) {
-        return this.backendData.getOrganisation(iri, references);
+    getOrganisation(iri: number, references: boolean = false): Observable<Organisation> {
+        return of(this.backendData.getOrganisation(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getOrganisations(references: boolean = false) {
-        return this.backendData.getOrganisations(references);
+    getOrganisations(references: boolean = false): Observable<Organisation[]> {
+        return of(this.backendData.getOrganisations(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getSubject(iri: number, references: boolean = false) {
-        return this.backendData.getSubject(iri, references);
+    getSubject(iri: number, references: boolean = false): Observable<Subject> {
+        return of(this.backendData.getSubject(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getSubjects(references: boolean = false) {
-        return this.backendData.getSubjects(references);
+    getSubjects(references: boolean = false): Observable<Subject[]> {
+        return of(this.backendData.getSubjects(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getLexia(iri: number, references: boolean = false) {
-        return this.backendData.getLexia(iri, references);
+    getLexia(iri: number, references: boolean = false): Observable<Lexia> {
+        return of(this.backendData.getLexia(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getLexias(references: boolean = false) {
-        return this.backendData.getLexias(references);
+    getLexias(references: boolean = false): Observable<Lexia[]> {
+        return of(this.backendData.getLexias(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getContributor(iri: number, references: boolean = false) {
-        return this.backendData.getContributor(iri, references);
+    getContributor(iri: number, references: boolean = false): Observable<Contributor> {
+        return of(this.backendData.getContributor(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getContributors(references: boolean = false) {
-        return this.backendData.getContributors(references);
+    getContributors(references: boolean = false): Observable<Contributor[]> {
+        return of(this.backendData.getContributors(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getGender(iri: number, references: boolean = false) {
-        return this.backendData.getGender(iri, references);
+    getGender(iri: number, references: boolean = false): Observable<Gender> {
+        return of(this.backendData.getGender(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getGenders(references: boolean = false) {
-        return this.backendData.getGenders(references);
+    getGenders(references: boolean = false): Observable<Gender[]> {
+        return of(this.backendData.getGenders(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getGenre(iri: number, references: boolean = false) {
-        return this.backendData.getGenre(iri, references);
+    getGenre(iri: number, references: boolean = false): Observable<Genre> {
+        return of(this.backendData.getGenre(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getGenres(references: boolean = false) {
-        return this.backendData.getGenres(references);
+    getGenres(references: boolean = false): Observable<Genre[]> {
+        return of(this.backendData.getGenres(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getResearchField(iri: number, references: boolean = false) {
-        return this.backendData.getResearchField(iri, references);
+    getResearchField(iri: number, references: boolean = false): Observable<ResearchField> {
+        return of(this.backendData.getResearchField(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getResearchFields(references: boolean = false) {
-        return this.backendData.getResearchFields(references);
+    getResearchFields(references: boolean = false): Observable<ResearchField[]> {
+        return of(this.backendData.getResearchFields(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getStatus(iri: number, references: boolean = false) {
-        return this.backendData.getStatus(iri, references);
+    getStatus(iri: number, references: boolean = false): Observable<Status> {
+        return of(this.backendData.getStatus(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getStatuses(references: boolean = false) {
-        return this.backendData.getStatuses(references);
+    getStatuses(references: boolean = false): Observable<Status[]> {
+        return of(this.backendData.getStatuses(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getImage(iri: number, references: boolean = false) {
-        return this.backendData.getImage(iri, references);
+    getImage(iri: number, references: boolean = false): Observable<Image> {
+        return of(this.backendData.getImage(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getImages(references: boolean = false) {
-        return this.backendData.getImages(references);
+    getImages(references: boolean = false): Observable<Image[]> {
+        return of(this.backendData.getImages(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getMarking(iri: number, references: boolean = false) {
-        return this.backendData.getMarking(iri, references);
+    getMarking(iri: number, references: boolean = false): Observable<Marking> {
+        return of(this.backendData.getMarking(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getMarkings(references: boolean = false) {
-        return this.backendData.getMarkings(references);
+    getMarkings(references: boolean = false): Observable<Marking[]> {
+        return of(this.backendData.getMarkings(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getFormalClass(iri: number, references: boolean = false) {
-        return this.backendData.getFormalClass(iri, references);
+    getFormalClass(iri: number, references: boolean = false): Observable<FormalClass> {
+        return of(this.backendData.getFormalClass(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getFormalClasses(references: boolean = false) {
-        return this.backendData.getFormalClasses(references);
+    getFormalClasses(references: boolean = false): Observable<FormalClass[]> {
+        return of(this.backendData.getFormalClasses(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getFunctionVoice(iri: number, references: boolean = false) {
-        return this.backendData.getFunctionVoice(iri, references);
+    getFunctionVoice(iri: number, references: boolean = false): Observable<FunctionVoice> {
+        return of(this.backendData.getFunctionVoice(iri, references))
+            .pipe(delay(ApiService.DELAY));
     }
 
-    getFunctionVoices(references: boolean = false) {
-        return this.backendData.getFunctionVoices(references);
+    getFunctionVoices(references: boolean = false): Observable<FunctionVoice[]> {
+        return of(this.backendData.getFunctionVoices(references))
+            .pipe(delay(ApiService.DELAY));
     }
 
     // UPDATE REQUESTS
@@ -164,7 +214,7 @@ export class ApiService {
             deathEndDate: author.deathEndDate,
             flStartDate: author.flStartDate,
             flEndDate: author.flEndDate,
-            humanAsLexia: author.humanAsLexia ? author.humanAsLexia.id : null,
+            humanAsLexia: author.humanAsLexia ? author.humanAsLexia : null,
             internalComment: "",
             references: 0,
             order: author.order
@@ -187,6 +237,8 @@ export class ApiService {
             firstPerformanceEndDate: book.firstPerformanceEndDate,
             edition: book.edition,
             editionHist: book.editionHist,
+            publicComment: book.publicComment,
+            commentForPassage: book.commentForPassage,
             authors: book.authors.map(author => author.id),
             venues: book.venues.map(venue => venue.id),
             organisations: book.organisations.map(organisation => organisation.id),
@@ -271,7 +323,7 @@ export class ApiService {
             lastName: contributor.lastName,
             gender: contributor.gender,
             email: contributor.email,
-            humanAsLexia: contributor.humanAsLexia ? contributor.humanAsLexia.id : null,
+            humanAsLexia: contributor.humanAsLexia ? contributor.humanAsLexia : null,
             internalComment: "",
             references: 0,
             order: contributor.order
@@ -304,6 +356,14 @@ export class ApiService {
 
     createLanguage(data: any) {
         this.backendData.createLanguage(data);
+    }
+
+    createGender(data: any) {
+        this.backendData.createGender(data);
+    }
+
+    createStatus(data: any) {
+        this.backendData.createStatus(data);
     }
 
     createVenue(data: any) {

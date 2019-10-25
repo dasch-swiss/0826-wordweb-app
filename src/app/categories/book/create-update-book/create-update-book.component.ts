@@ -8,6 +8,7 @@ import {AuthorRefComponent} from "../../../dialog/author-ref/author-ref.componen
 import {VenueRefComponent} from "../../../dialog/venue-ref/venue-ref.component";
 import {OrganisationRefComponent} from "../../../dialog/organisation-ref/organisation-ref.component";
 import {LanguageRefComponent} from "../../../dialog/language-ref/language-ref.component";
+import {CustomValidators} from "../../../customValidators";
 
 @Component({
     selector: "app-create-update-book",
@@ -22,7 +23,7 @@ export class CreateUpdateBookComponent implements OnInit {
     authorList: Author[];
     venueList: Venue[];
     organisationList: Organisation[];
-    languageList: Language[];
+    languages: any;
 
     constructor(private apiService: ApiService,
                 private authorDialog: MatDialog,
@@ -37,20 +38,60 @@ export class CreateUpdateBookComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.languages = this.apiService.getLanguages();
+
         this.form = new FormGroup({
             internalID: new FormControl(this.editMod ? this.book.internalID : "", [Validators.required]),
             title: new FormControl(this.editMod ? this.book.title : "", [Validators.required]),
-            // author: new FormControl("", []),
-            // subject: new FormControl("", []),
-            // genre: new FormControl("", []),
-            // venue: new FormControl("", []),
-            // organisation: new FormControl("", [])
+            language: new FormControl(this.editMod ? this.book.language.id : "", [Validators.required]),
+            createdCheck: new FormControl(this.editMod ? this.book.createdStartDate : "", []),
+            created: new FormGroup( {
+                createdStartDate: new FormControl(this.editMod ? this.book.createdStartDate : "", [Validators.required]),
+                createdEndDate: new FormControl(this.editMod ? this.book.createdEndDate : "", [Validators.required])
+            }, [CustomValidators.correctYearSpan("createdStartDate", "createdEndDate")]),
+            publishedCheck: new FormControl(this.editMod ? this.book.publishedStartDate : "", []),
+            published: new FormGroup({
+                publishedStartDate: new FormControl(this.editMod ? this.book.publishedStartDate : "", [Validators.required]),
+                publishedEndDate: new FormControl(this.editMod ? this.book.publishedEndDate : "", [Validators.required])
+            }, [CustomValidators.correctYearSpan("publishedStartDate", "publishedEndDate")]),
+            licensedCheck: new FormControl(this.editMod ? this.book.licenseStartDate : "", []),
+            licensed: new FormGroup({
+                licenseStartDate: new FormControl(this.editMod ? this.book.licenseStartDate : "", [Validators.required]),
+                licenseEndDate: new FormControl(this.editMod ? this.book.licenseEndDate : "", [Validators.required])
+            }, [CustomValidators.correctYearSpan("licenseStartDate", "licenseEndDate")]),
+            firstPerformedCheck: new FormControl(this.editMod ? this.book.firstPerformedStartDate : "", []),
+            firstPerformed: new FormGroup({
+                firstPerformedStartDate: new FormControl(this.editMod ? this.book.firstPerformedStartDate : "", [Validators.required]),
+                firstPerformedEndDate: new FormControl(this.editMod ? this.book.firstPerformedEndDate : "", [Validators.required])
+            }, [CustomValidators.correctYearSpan("firstPerformedStartDate", "firstPerformedEndDate")]),
         });
 
         this.authorList = this.editMod ? this.book.authors : [];
         this.venueList = this.editMod ? this.book.venues : [];
         this.organisationList = this.editMod ? this.book.organisations : [];
-        this.languageList = this.editMod ? [this.book.language] : [];
+
+        if (!this.book) {
+            this.form.get("created").disable();
+            this.form.get("published").disable();
+            this.form.get("licensed").disable();
+            this.form.get("firstPerformed").disable();
+        }
+
+        if (this.book && !this.book.createdStartDate) {
+            this.form.get("created").disable();
+        }
+
+        if (this.book && !this.book.publishedStartDate) {
+            this.form.get("published").disable();
+        }
+
+        if (this.book && !this.book.licenseStartDate) {
+            this.form.get("licensed").disable();
+        }
+
+        if (this.book && !this.book.firstPerformedStartDate) {
+            this.form.get("firstPerformed").disable();
+        }
     }
 
     cancel() {
@@ -156,29 +197,8 @@ export class CreateUpdateBookComponent implements OnInit {
         }
     }
 
-    addLanguage() {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
-        dialogConfig.data = {
-            list: this.languageList,
-            editMod: this.languageList.length > 0,
-            max: 1
-        };
-        const dialogRef = this.languageDialog.open(LanguageRefComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe((data) => {
-            if (data.submit) {
-                this.languageList = data.data;
-            }
-        });
-    }
-
-    removeLanguage(language: Language) {
-        const index = this.languageList.indexOf(language);
-
-        if (index >= 0) {
-            this.languageList.splice(index, 1);
-        }
+    onChange(event, groupName: string) {
+        event.checked ? this.form.get(groupName).enable() : this.form.get(groupName).disable();
     }
 
     addOrEdit(list: any[]): string {

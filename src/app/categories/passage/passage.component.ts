@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
-import {Passage} from "../../model/model";
+import {Book, Passage} from "../../model/model";
 import {ApiService} from "../../services/api.service";
 import {CreateUpdatePassageComponent} from "./create-update-passage/create-update-passage.component";
 import {BookRefComponent} from "../../dialog/book-ref/book-ref.component";
@@ -20,7 +20,6 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 })
 export class PassageComponent implements OnInit {
     columnsToDisplay: string[] = ["detail", "book", "text", "textHist", "page", "pageHist", "order", "references", "action"];
-    passages: any;
     dataSource: MatTableDataSource<Passage>;
     expandedElements: any[] = [];
     value: string;
@@ -30,35 +29,35 @@ export class PassageComponent implements OnInit {
     constructor(private apiService: ApiService,
                 private passageDialog: MatDialog,
                 private editionDialog: MatDialog) {
+    }
+
+    static customFilter(passage: Passage, filterValue: string): boolean {
+        const containsEdition = (passage.occursIn as Book).title.toLowerCase().indexOf(filterValue) > -1;
+        const containsText = passage.text.toLowerCase().indexOf(filterValue) > -1;
+
+        return containsEdition || containsText;
+    }
+
+    ngOnInit() {
         this.resetTable();
     }
 
     resetTable() {
-        this.passages = this.apiService.getPassages(true);
-        this.dataSource = new MatTableDataSource(this.passages);
-        console.log(this.apiService.getPassages(true));
-    }
-
-    ngOnInit() {
-        this.dataSource.sortingDataAccessor = ((item: any, property) => {
-            switch (property) {
-                case "book": return item.book.title;
-                default: return item[property];
-            }
+        this.apiService.getPassages(true).subscribe((passages) => {
+            this.dataSource = new MatTableDataSource(passages);
+            this.dataSource.sort = this.sort;
+            this.dataSource.sortingDataAccessor = ((item: any, property) => {
+                switch (property) {
+                    case "book": return item.occursIn.title;
+                    default: return item[property];
+                }
+            });
         });
-        this.dataSource.sort = this.sort;
     }
 
     applyFilter(filterValue: string) {
-        this.dataSource.filterPredicate = this.customFilter;
+        this.dataSource.filterPredicate = PassageComponent.customFilter;
         this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-
-    customFilter(passage: any, filterValue: string): boolean {
-        const containsEdition = passage.book.title.toLowerCase().indexOf(filterValue) > -1;
-        const containsText = passage.text.toLowerCase().indexOf(filterValue) > -1;
-
-        return containsEdition || containsText;
     }
 
     clear() {
@@ -66,7 +65,7 @@ export class PassageComponent implements OnInit {
     }
 
     rowCount() {
-        return this.dataSource.filteredData.length;
+        return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
     create() {

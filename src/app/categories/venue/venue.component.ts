@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
-import {Book, Venue} from "../../model/model";
+import {Venue} from "../../model/model";
 import {ApiService} from "../../services/api.service";
 import {CreateUpdateVenueComponent} from "./create-update-venue/create-update-venue.component";
 
@@ -11,26 +11,27 @@ import {CreateUpdateVenueComponent} from "./create-update-venue/create-update-ve
 })
 export class VenueComponent implements OnInit {
     displayedColumns: string[] = ["internalID", "name", "place", "order", "references", "action"];
-    dataSource: MatTableDataSource<Book>;
+    dataSource: MatTableDataSource<Venue>;
     value: string;
 
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(private apiService: ApiService,
                 private createVenueDialog: MatDialog) {
+    }
+
+    ngOnInit() {
         this.resetTable();
     }
 
     resetTable() {
-        this.dataSource = new MatTableDataSource(this.apiService.getVenues(true));
-    }
-
-    ngOnInit() {
-        this.dataSource.sort = this.sort;
+        this.apiService.getVenues(true).subscribe((venues) => {
+            this.dataSource = new MatTableDataSource(venues);
+            this.dataSource.sort = this.sort;
+        });
     }
 
     applyFilter(filterValue: string) {
-        // this.dataSource.filterPredicate = this.customFilter;
         this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 
@@ -39,7 +40,7 @@ export class VenueComponent implements OnInit {
     }
 
     rowCount() {
-        return this.dataSource.filteredData.length;
+        return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
     create() {
