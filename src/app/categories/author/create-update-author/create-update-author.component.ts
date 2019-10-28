@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from "@angular/material";
 import {ApiService} from "../../../services/api.service";
 import {CustomValidators} from "../../../customValidators";
 
@@ -16,7 +16,10 @@ export class CreateUpdateAuthorComponent implements OnInit {
     genders: any;
     activeDisabled: boolean;
 
-    constructor(private dialogRef: MatDialogRef<CreateUpdateAuthorComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+    constructor(private dialogRef: MatDialogRef<CreateUpdateAuthorComponent>,
+                @Inject(MAT_DIALOG_DATA) data,
+                private apiService: ApiService,
+                private snackBar: MatSnackBar) {
         this.author = JSON.parse(JSON.stringify(data.resource));
         this.editMod = data.editMod;
         this.activeDisabled = true;
@@ -85,6 +88,7 @@ export class CreateUpdateAuthorComponent implements OnInit {
             // update request
             this.apiService.updateAuthor(this.author.id, this.author);
             this.dialogRef.close({refresh: true});
+            this.snackBar.open("Author edited");
         } else {
             const newAuthor = {
                 internalID: this.form.get("internalID").value,
@@ -104,6 +108,7 @@ export class CreateUpdateAuthorComponent implements OnInit {
             // create request
             this.apiService.createAuthor(newAuthor);
             this.dialogRef.close({refresh: true});
+            this.snackBar.open("Author Created");
         }
     }
 

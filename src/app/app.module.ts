@@ -23,11 +23,12 @@ import {SubjectComponent} from "./categories/subject/subject.component";
 import {VenueComponent} from "./categories/venue/venue.component";
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 import {
+    MAT_SNACK_BAR_DEFAULT_OPTIONS,
     MatButtonModule,
     MatCardModule, MatCheckboxModule,
     MatChipsModule,
     MatDialogModule, MatDividerModule,
-    MatIconModule, MatInputModule, MatSelectModule, MatSortModule,
+    MatIconModule, MatInputModule, MatSelectModule, MatSnackBarModule, MatSortModule,
     MatTableModule
 } from "@angular/material";
 import {SatPopoverModule} from "@ncstate/sat-popover";
@@ -43,19 +44,19 @@ import {CreateUpdateLexiaComponent} from "./categories/lexia/create-update-lexia
 import {CreateUpdateOrganisationComponent} from "./categories/organisation/create-update-organisation/create-update-organisation.component";
 import {CreateUpdateVenueComponent} from "./categories/venue/create-update-venue/create-update-venue.component";
 import {CreateUpdatePassageComponent} from "./categories/passage/create-update-passage/create-update-passage.component";
+import {CreateUpdateGenderComponent} from "./categories/gender/create-update-gender/create-update-gender.component";
+import {CreateUpdateStatusComponent} from "./categories/status/create-update-status/create-update-status.component";
 import {AuthorRefComponent} from "./dialog/author-ref/author-ref.component";
 import {BookRefComponent} from "./dialog/book-ref/book-ref.component";
 import {OrganisationRefComponent} from "./dialog/organisation-ref/organisation-ref.component";
 import {VenueRefComponent} from "./dialog/venue-ref/venue-ref.component";
 import {LexiaRefComponent} from "./dialog/lexia-ref/lexia-ref.component";
 import {PassageRefComponent} from "./dialog/passage-ref/passage-ref.component";
+import {LanguageRefComponent} from "./dialog/language-ref/language-ref.component";
+import {CategoryRefComponent} from "./dialog/category-ref.component";
 import {AppInitService} from "./app-init.service";
 import {KuiCoreConfigToken} from "@knora/core";
 import {HttpClientModule} from "@angular/common/http";
-import {LanguageRefComponent} from "./dialog/language-ref/language-ref.component";
-import {CategoryRefComponent} from "./dialog/category-ref.component";
-import { CreateUpdateGenderComponent } from './categories/gender/create-update-gender/create-update-gender.component';
-import { CreateUpdateStatusComponent } from './categories/status/create-update-status/create-update-status.component';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
@@ -121,6 +122,7 @@ export function initializeApp(appInitService: AppInitService) {
         MatTableModule,
         MatDividerModule,
         MatCheckboxModule,
+        MatSnackBarModule,
         SatPopoverModule,
         FormsModule,
         ReactiveFormsModule,
@@ -137,6 +139,9 @@ export function initializeApp(appInitService: AppInitService) {
         {
             provide: KuiCoreConfigToken,
             useFactory: () => AppInitService.coreConfig
+        },
+        {
+            provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2000}
         }
     ],
     bootstrap: [AppComponent],
