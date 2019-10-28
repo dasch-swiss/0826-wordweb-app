@@ -1,6 +1,6 @@
 <div class="container">
     <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="languages | async as lang; else loading;">
-        <h2>{{getTitle()}}</h2>
+        <div mat-dialog-title>{{getTitle()}}</div>
 
         <mat-dialog-content>
             <table>
@@ -102,6 +102,62 @@
                     <td class="last-row">
                         <button mat-button mat-icon-button type="button" color="accent" (click)="addOrganisation()">
                             <mat-icon>{{addOrEdit(organisationList)}}</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr class="reference">
+                    <td class="title-column">Subjects:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="subjectList.length<MAX_CHIPS">
+                            <mat-chip *ngFor="let subject of subjectList">
+                                <mat-chip-avatar>
+                                    <mat-icon>subject</mat-icon>
+                                </mat-chip-avatar>
+                                {{subject.name}}
+                                <mat-icon matChipRemove (click)="removeSubject(subject)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <mat-chip-list *ngIf="subjectList.length>=MAX_CHIPS">
+                            <mat-chip (click)="addSubject()">
+                                <mat-chip-avatar>
+                                    <mat-icon>subject</mat-icon>
+                                </mat-chip-avatar>
+                                {{subjectList.length}} ausgewählt ...
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addSubject()">
+                            <mat-icon>{{addOrEdit(subjectList)}}</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr class="reference">
+                    <td class="title-column">Genres:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="genreList.length<MAX_CHIPS">
+                            <mat-chip *ngFor="let genre of genreList">
+                                <mat-chip-avatar>
+                                    <mat-icon>mood</mat-icon>
+                                </mat-chip-avatar>
+                                {{genre.name}}
+                                <mat-icon matChipRemove (click)="removeGenre(genre)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <mat-chip-list *ngIf="genreList.length>=MAX_CHIPS">
+                            <mat-chip (click)="addGenre()">
+                                <mat-chip-avatar>
+                                    <mat-icon>mood</mat-icon>
+                                </mat-chip-avatar>
+                                {{genreList.length}} ausgewählt ...
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addGenre()">
+                            <mat-icon>{{addOrEdit(genreList)}}</mat-icon>
                         </button>
                     </td>
                 </tr>

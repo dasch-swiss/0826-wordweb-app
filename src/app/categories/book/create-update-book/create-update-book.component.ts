@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Author, Language, Organisation, Venue} from "../../../model/model";
+import {Author, Genre, Language, Organisation, Subject, Venue} from "../../../model/model";
 import {ApiService} from "../../../services/api.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material";
 import {Router} from "@angular/router";
@@ -23,6 +23,8 @@ export class CreateUpdateBookComponent implements OnInit {
     authorList: Author[];
     venueList: Venue[];
     organisationList: Organisation[];
+    subjectList: Subject[];
+    genreList: Genre[];
     languages: any;
 
     constructor(private apiService: ApiService,
@@ -45,7 +47,7 @@ export class CreateUpdateBookComponent implements OnInit {
             title: new FormControl(this.editMod ? this.book.title : "", [Validators.required]),
             language: new FormControl(this.editMod ? this.book.language.id : "", [Validators.required]),
             createdCheck: new FormControl(this.editMod ? this.book.createdStartDate : "", []),
-            created: new FormGroup( {
+            created: new FormGroup({
                 createdStartDate: new FormControl(this.editMod ? this.book.createdStartDate : "", [Validators.required]),
                 createdEndDate: new FormControl(this.editMod ? this.book.createdEndDate : "", [Validators.required])
             }, [CustomValidators.correctYearSpan("createdStartDate", "createdEndDate")]),
@@ -69,6 +71,8 @@ export class CreateUpdateBookComponent implements OnInit {
         this.authorList = this.editMod ? this.book.authors : [];
         this.venueList = this.editMod ? this.book.venues : [];
         this.organisationList = this.editMod ? this.book.organisations : [];
+        this.subjectList = this.editMod ? this.book.subjects : [];
+        this.genreList = this.editMod ? this.book.genres : [];
 
         if (!this.book) {
             this.form.get("created").disable();
@@ -105,6 +109,8 @@ export class CreateUpdateBookComponent implements OnInit {
             this.book.authors = this.authorList;
             this.book.venues = this.venueList;
             this.book.organisations = this.organisationList;
+            this.book.subjects = this.subjectList;
+            this.book.genres = this.genreList;
             // update request
             this.apiService.updateBook(this.book.id, this.book);
             this.dialogRef.close({refresh: true});
@@ -114,7 +120,9 @@ export class CreateUpdateBookComponent implements OnInit {
                 title: this.form.get("title").value,
                 authors: this.authorList,
                 venues: this.venueList,
-                organisations: this.organisationList
+                organisations: this.organisationList,
+                subjects: this.subjectList,
+                genres: this.genreList
             };
             // create request
             this.apiService.createBook(newBook);
@@ -195,6 +203,18 @@ export class CreateUpdateBookComponent implements OnInit {
         if (index >= 0) {
             this.organisationList.splice(index, 1);
         }
+    }
+
+    addSubject() {
+    }
+
+    removeSubject(subject: Subject) {
+    }
+
+    addGenre() {
+    }
+
+    removeGenre(genre: Genre) {
     }
 
     onChange(event, groupName: string) {
