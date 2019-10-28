@@ -32,15 +32,19 @@ export class CreateUpdateGenderComponent implements OnInit {
         if (this.editMod) {
             this.gender.name = this.form.get("name").value;
             // update request
-            this.apiService.updateLanguage(this.gender.id, this.gender);
-            this.dialogRef.close({refresh: true});
+            this.apiService.updateLanguage(this.gender.id, this.gender)
+                .subscribe((data) => {
+                    this.dialogRef.close({refresh: true});
+                });
         } else {
             const newGender = {
                 name: this.form.get("name").value,
             };
             // create request
-            this.apiService.createGender(newGender);
-            this.dialogRef.close({refresh: true});
+            this.apiService.createGender(newGender)
+                .subscribe((data) => {
+                    this.dialogRef.close({refresh: true});
+                });
         }
     }
 

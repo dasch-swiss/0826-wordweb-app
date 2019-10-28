@@ -13,11 +13,15 @@ import {
     Venue,
     WordWebObject
 } from "../model/model";
+import {Observable, of} from "rxjs";
+import {delay} from "rxjs/operators";
 
 @Injectable({
     providedIn: "root"
 })
 export class BackendDataService {
+    static readonly DELAY = 500;
+
     private gen1: Gender = {
         id: 1,
         name: "male",
@@ -3938,7 +3942,7 @@ export class BackendDataService {
         });
     }
 
-    getAuthor(iri: number, references: boolean) {
+    getAuthor(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objAuthors[iri]) {
             return {};
         }
@@ -3946,29 +3950,29 @@ export class BackendDataService {
         const copyAuthor = JSON.parse(JSON.stringify(this.objAuthors[iri]));
 
         if (references) {
-            copyAuthor.humanAsLexia = this.getLexia(copyAuthor.humanAsLexia, false);
-            copyAuthor.gender = this.getGender(copyAuthor.gender, false);
+            copyAuthor.humanAsLexia = this.getLexia(copyAuthor.humanAsLexia, false, true);
+            copyAuthor.gender = this.getGender(copyAuthor.gender, false, true);
         }
 
-        return copyAuthor;
+        return onlyData ? copyAuthor : of(copyAuthor).pipe(delay(BackendDataService.DELAY));
     }
 
-    getAuthors(references: boolean) {
+    getAuthors(references: boolean, onlyData: boolean = false) {
         let copyAuthorList = JSON.parse(JSON.stringify(this.authorList));
 
         if (references) {
             copyAuthorList = copyAuthorList.map(author => {
-                return this.getAuthor(author.id, true);
+                return this.getAuthor(author.id, true, true);
             });
         }
 
         // Sort after internalID
         // copyAuthorList.sort((a, b) => (a.internalID > b.internalID) ? 1 : ( (b.internalID > a.internalID) ? -1 : 0));
 
-        return copyAuthorList;
+        return onlyData ? copyAuthorList : of(copyAuthorList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getBook(iri: number, references: boolean) {
+    getBook(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objBooks[iri]) {
             return {};
         }
@@ -3983,23 +3987,23 @@ export class BackendDataService {
             const genres = [];
 
             for (const author of copyBook.authors) {
-                authors.push(this.getAuthor(author, false));
+                authors.push(this.getAuthor(author, false, true));
             }
 
             for (const venue of copyBook.venues) {
-                venues.push(this.getVenue(venue, false));
+                venues.push(this.getVenue(venue, false, true));
             }
 
             for (const organisation of copyBook.organisations) {
-                organisations.push(this.getOrganisation(organisation, false));
+                organisations.push(this.getOrganisation(organisation, false, true));
             }
 
             for (const subject of copyBook.subjects) {
-                subjects.push(this.getSubject(subject, false));
+                subjects.push(this.getSubject(subject, false, true));
             }
 
             for (const genre of copyBook.genres) {
-                genre.push(this.getGenre(genre, false));
+                genre.push(this.getGenre(genre, false, true));
             }
 
             copyBook.authors = authors;
@@ -4007,26 +4011,26 @@ export class BackendDataService {
             copyBook.organisations = organisations;
             copyBook.subjects = subjects;
             copyBook.genres = genres;
-            copyBook.language = this.getLanguage(copyBook.language, false);
-            copyBook.bookAsLexia = this.getLexia(copyBook.bookAsLexia, false);
+            copyBook.language = this.getLanguage(copyBook.language, false, true);
+            copyBook.bookAsLexia = this.getLexia(copyBook.bookAsLexia, false, true);
         }
 
-        return copyBook;
+        return onlyData ? copyBook : of(copyBook).pipe(delay(BackendDataService.DELAY));
     }
 
-    getBooks(references: boolean) {
+    getBooks(references: boolean, onlyData: boolean = false) {
         let copyBookList = JSON.parse(JSON.stringify(this.bookList));
 
         if (references) {
             copyBookList = copyBookList.map(book => {
-                return this.getBook(book.id, true);
+                return this.getBook(book.id, true, true);
             });
         }
 
-        return copyBookList;
+        return onlyData ? copyBookList : of(copyBookList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getPassage(iri: number, references: boolean) {
+    getPassage(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objPassages[iri]) {
             return {};
         }
@@ -4038,51 +4042,55 @@ export class BackendDataService {
             const mentionedIn = [];
 
             for (const lexia of copyPassage.contains) {
-                lexias.push(this.getLexia(lexia, false));
+                lexias.push(this.getLexia(lexia, false, true));
             }
 
             for (const passage of copyPassage.mentionedIn) {
-                mentionedIn.push(this.getPassage(passage, false));
+                mentionedIn.push(this.getPassage(passage, false, true));
             }
 
             copyPassage.contains = lexias;
             copyPassage.mentionedIn = mentionedIn;
-            copyPassage.occursIn = this.getBook(copyPassage.occursIn, false);
-            copyPassage.marking = this.getMarking(copyPassage.marking, false);
-            copyPassage.researchField = this.getResearchField(copyPassage.researchField, false);
-            copyPassage.status = this.getStatus(copyPassage.status, false);
-            copyPassage.functionVoice = this.getFunctionVoice(copyPassage.functionVoice, false);
-            copyPassage.wasContributedBy = this.getContributor(copyPassage.wasContributedBy, false);
+            copyPassage.occursIn = this.getBook(copyPassage.occursIn, false, true);
+            copyPassage.marking = this.getMarking(copyPassage.marking, false, true);
+            copyPassage.researchField = this.getResearchField(copyPassage.researchField, false, true);
+            copyPassage.status = this.getStatus(copyPassage.status, false, true);
+            copyPassage.functionVoice = this.getFunctionVoice(copyPassage.functionVoice, false, true);
+            copyPassage.wasContributedBy = this.getContributor(copyPassage.wasContributedBy, false, true);
         }
 
-        return copyPassage;
+        return onlyData ? copyPassage : of(copyPassage).pipe(delay(BackendDataService.DELAY));
     }
 
-    getPassages(references: boolean) {
+    getPassages(references: boolean, onlyData: boolean = false) {
         let copyPassageList = JSON.parse(JSON.stringify(this.passageList));
 
         if (references) {
             copyPassageList = copyPassageList.map(passage => {
-                return this.getPassage(passage.id, true);
+                return this.getPassage(passage.id, true, true);
             });
         }
 
-        return copyPassageList;
+        return onlyData ? copyPassageList : of(copyPassageList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getLanguage(iri: number, references: boolean) {
+    getLanguage(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objLanguages[iri]) {
             return {};
         }
 
-        return JSON.parse(JSON.stringify(this.objLanguages[iri]));
+        const copyLang = JSON.parse(JSON.stringify(this.objLanguages[iri]));
+
+        return onlyData ? copyLang : of(copyLang).pipe(delay(BackendDataService.DELAY));
     }
 
-    getLanguages(references: boolean) {
-        return JSON.parse(JSON.stringify(this.languageList));
+    getLanguages(references: boolean, onlyData: boolean = false) {
+        const copyLangList = JSON.parse(JSON.stringify(this.languageList));
+
+        return onlyData ? copyLangList : of(copyLangList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getVenue(iri: number, references: boolean) {
+    getVenue(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objVenues[iri]) {
             return {};
         }
@@ -4090,25 +4098,25 @@ export class BackendDataService {
         const copyVenue = JSON.parse(JSON.stringify(this.objVenues[iri]));
 
         if (references) {
-            copyVenue.venueAsLexia = this.getLexia(copyVenue.venueAsLexia, false);
+            copyVenue.venueAsLexia = this.getLexia(copyVenue.venueAsLexia, false, true);
         }
 
-        return copyVenue;
+        return onlyData ? copyVenue : of(copyVenue).pipe(delay(BackendDataService.DELAY));
     }
 
-    getVenues(references: boolean) {
+    getVenues(references: boolean, onlyData: boolean = false) {
         let copyVenueList = JSON.parse(JSON.stringify(this.venueList));
 
         if (references) {
             copyVenueList = copyVenueList.map(venue => {
-                return this.getVenue(venue.id, true);
+                return this.getVenue(venue.id, true, true);
             });
         }
 
-        return copyVenueList;
+        return onlyData ? copyVenueList : of(copyVenueList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getOrganisation(iri: number, references: boolean) {
+    getOrganisation(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objOrganisation[iri]) {
             return {};
         }
@@ -4116,37 +4124,41 @@ export class BackendDataService {
         const copyOrganisation = JSON.parse(JSON.stringify(this.objOrganisation[iri]));
 
         if (references) {
-            copyOrganisation.organisationAsLexia = this.getLexia(copyOrganisation.organisationAsLexia, false);
+            copyOrganisation.organisationAsLexia = this.getLexia(copyOrganisation.organisationAsLexia, false, true);
         }
 
-        return copyOrganisation;
+        return onlyData ? copyOrganisation : of(copyOrganisation).pipe(delay(BackendDataService.DELAY));
     }
 
-    getOrganisations(references: boolean) {
+    getOrganisations(references: boolean, onlyData: boolean = false) {
         let copyOrganisationList = JSON.parse(JSON.stringify(this.organisationList));
 
         if (references) {
             copyOrganisationList = copyOrganisationList.map(organisation => {
-                return this.getOrganisation(organisation.id, true);
+                return this.getOrganisation(organisation.id, true, true);
             });
         }
 
-        return copyOrganisationList;
+        return onlyData ? copyOrganisationList : of(copyOrganisationList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getSubject(iri: number, references: boolean) {
+    getSubject(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objSubjects[iri]) {
             return {};
         }
 
-        return JSON.parse(JSON.stringify(this.objSubjects[iri]));
+        const copySubject = JSON.parse(JSON.stringify(this.objSubjects[iri]));
+
+        return onlyData ? copySubject : of(copySubject).pipe(delay(BackendDataService.DELAY));
     }
 
-    getSubjects(references: boolean) {
-        return JSON.parse(JSON.stringify(this.subjectList));
+    getSubjects(references: boolean, onlyData: boolean = false) {
+        const copySubjectList = JSON.parse(JSON.stringify(this.subjectList));
+
+        return onlyData ? copySubjectList : of(copySubjectList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getContributor(iri: number, references: boolean) {
+    getContributor(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objContributors[iri]) {
             return {};
         }
@@ -4154,26 +4166,26 @@ export class BackendDataService {
         const copyContributor = JSON.parse(JSON.stringify(this.objContributors[iri]));
 
         if (references) {
-            copyContributor.humanAsLexia = this.getLexia(copyContributor.humanAsLexia, false);
-            copyContributor.gender = this.getGender(copyContributor.gender, false);
+            copyContributor.humanAsLexia = this.getLexia(copyContributor.humanAsLexia, false, true);
+            copyContributor.gender = this.getGender(copyContributor.gender, false, true);
         }
 
-        return copyContributor;
+        return onlyData ? copyContributor : of(copyContributor).pipe(delay(BackendDataService.DELAY));
     }
 
-    getContributors(references: boolean) {
+    getContributors(references: boolean, onlyData: boolean = false) {
         let copyContributorList = JSON.parse(JSON.stringify(this.contributorList));
 
         if (references) {
             copyContributorList = copyContributorList.map(contributor => {
-                return this.getContributor(contributor.id, true);
+                return this.getContributor(contributor.id, true, true);
             });
         }
 
-        return copyContributorList;
+        return onlyData ? copyContributorList : of(copyContributorList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getLexia(iri: number, references: boolean) {
+    getLexia(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objLexia[iri]) {
             return {};
         }
@@ -4181,68 +4193,77 @@ export class BackendDataService {
         const copyUsedIn = JSON.parse(JSON.stringify(this.objLexia[iri]));
 
         if (references) {
-
             const usedIn = [];
-
             for (const passage of copyUsedIn.usedIn) {
-                usedIn.push(this.getPassage(passage, false));
+                usedIn.push(this.getPassage(passage, false, true));
             }
-
             copyUsedIn.usedIn = usedIn;
         }
 
-        return copyUsedIn;
+        return onlyData ? copyUsedIn : of(copyUsedIn).pipe(delay(BackendDataService.DELAY));
     }
 
-    getLexias(references: boolean) {
+    getLexias(references: boolean, onlyData: boolean = false) {
         let copyLexiaList = JSON.parse(JSON.stringify(this.lexiaList));
 
         if (references) {
             copyLexiaList = copyLexiaList.map(lexia => {
-                return this.getLexia(lexia.id, true);
+                return this.getLexia(lexia.id, true, true);
             });
         }
 
-        return copyLexiaList;
+        return onlyData ? copyLexiaList : of(copyLexiaList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getGender(iri: number, references: boolean) {
+    getGender(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objGender[iri]) {
             return {};
         }
 
-        return JSON.parse(JSON.stringify(this.objGender[iri]));
+        const copyGender = JSON.parse(JSON.stringify(this.objGender[iri]));
+
+        return onlyData ? copyGender : of(copyGender).pipe(delay(BackendDataService.DELAY));
     }
 
-    getGenders(references: boolean) {
-        return JSON.parse(JSON.stringify(this.genderList));
+    getGenders(references: boolean, onlyData: boolean = false) {
+        const copyGenderList = JSON.parse(JSON.stringify(this.genderList));
+
+        return onlyData ? copyGenderList : of(copyGenderList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getResearchField(iri: number, references: boolean) {
+    getResearchField(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objResearchField[iri]) {
             return {};
         }
 
-        return JSON.parse(JSON.stringify(this.objResearchField[iri]));
+        const copyResearchField = JSON.parse(JSON.stringify(this.objResearchField[iri]));
+
+        return onlyData ? copyResearchField : of(copyResearchField).pipe(delay(BackendDataService.DELAY));
     }
 
-    getResearchFields(references: boolean) {
-        return JSON.parse(JSON.stringify(this.researchFieldList));
+    getResearchFields(references: boolean, onlyData: boolean = false) {
+        const copyResearchFieldList = JSON.parse(JSON.stringify(this.researchFieldList));
+
+        return onlyData ? copyResearchFieldList : of(copyResearchFieldList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getStatus(iri: number, references: boolean) {
+    getStatus(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objStatus[iri]) {
             return {};
         }
 
-        return JSON.parse(JSON.stringify(this.objStatus[iri]));
+        const copyStatus =  JSON.parse(JSON.stringify(this.objStatus[iri]));
+
+        return onlyData ? copyStatus : of(copyStatus).pipe(delay(BackendDataService.DELAY));
     }
 
-    getStatuses(references: boolean) {
-        return JSON.parse(JSON.stringify(this.statusList));
+    getStatuses(references: boolean, onlyData: boolean = false) {
+        const copyStatus =  JSON.parse(JSON.stringify(this.statusList));
+
+        return onlyData ? copyStatus : of(copyStatus).pipe(delay(BackendDataService.DELAY));
     }
 
-    getGenre(iri: number, references: boolean) {
+    getGenre(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objGenre[iri]) {
             return {};
         }
@@ -4253,14 +4274,16 @@ export class BackendDataService {
             copyGenre.nodes = BackendDataService.getNodes(copyGenre.nodes, this.objGenre);
         }
 
-        return copyGenre;
+        return onlyData ? copyGenre : of(copyGenre).pipe(delay(BackendDataService.DELAY));
     }
 
-    getGenres(references: boolean) {
-        return JSON.parse(JSON.stringify(this.genreList));
+    getGenres(references: boolean, onlyData: boolean = false) {
+        const copyGenreList = JSON.parse(JSON.stringify(this.genreList));
+
+        return onlyData ? copyGenreList : of(copyGenreList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getImage(iri: number, references: boolean) {
+    getImage(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objImage[iri]) {
             return {};
         }
@@ -4271,14 +4294,16 @@ export class BackendDataService {
             copyImage.nodes = BackendDataService.getNodes(copyImage.nodes, this.objImage);
         }
 
-        return copyImage;
+        return onlyData ? copyImage : of(copyImage).pipe(delay(BackendDataService.DELAY));
     }
 
-    getImages(references: boolean) {
-        return JSON.parse(JSON.stringify(this.imageList));
+    getImages(references: boolean, onlyData: boolean = false) {
+        const imageList = JSON.parse(JSON.stringify(this.imageList));
+
+        return onlyData ? imageList : of(imageList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getMarking(iri: number, references: boolean) {
+    getMarking(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objMarking[iri]) {
             return {};
         }
@@ -4289,14 +4314,16 @@ export class BackendDataService {
             copyMarking.nodes = BackendDataService.getNodes(copyMarking.nodes, this.objMarking);
         }
 
-        return copyMarking;
+        return onlyData ? copyMarking : of(copyMarking).pipe(delay(BackendDataService.DELAY));
     }
 
-    getMarkings(references: boolean) {
-        return JSON.parse(JSON.stringify(this.markingList));
+    getMarkings(references: boolean, onlyData: boolean = false) {
+        const markingList = JSON.parse(JSON.stringify(this.markingList));
+
+        return onlyData ? markingList : of(markingList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getFormalClass(iri: number, references: boolean) {
+    getFormalClass(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objFormalClass[iri]) {
             return {};
         }
@@ -4307,14 +4334,16 @@ export class BackendDataService {
             copyFormalClass.nodes = BackendDataService.getNodes(copyFormalClass.nodes, this.objFormalClass);
         }
 
-        return copyFormalClass;
+        return onlyData ? copyFormalClass : of(copyFormalClass).pipe(delay(BackendDataService.DELAY));
     }
 
-    getFormalClasses(references: boolean) {
-        return JSON.parse(JSON.stringify(this.formalClassList));
+    getFormalClasses(references: boolean, onlyData: boolean = false) {
+        const copyFormalClassList =  JSON.parse(JSON.stringify(this.formalClassList));
+
+        return onlyData ? copyFormalClassList : of(copyFormalClassList).pipe(delay(BackendDataService.DELAY));
     }
 
-    getFunctionVoice(iri: number, references: boolean) {
+    getFunctionVoice(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objFunctionVoice[iri]) {
             return {};
         }
@@ -4325,11 +4354,13 @@ export class BackendDataService {
             copyFunction.nodes = BackendDataService.getNodes(copyFunction.nodes, this.objFunctionVoice);
         }
 
-        return copyFunction;
+        return onlyData ? copyFunction : of(copyFunction).pipe(delay(BackendDataService.DELAY));
     }
 
-    getFunctionVoices(references: boolean) {
-        return JSON.parse(JSON.stringify(this.functionVoiceList));
+    getFunctionVoices(references: boolean, onlyData: boolean = false) {
+        const copyFunctionVoiceList = JSON.parse(JSON.stringify(this.functionVoiceList));
+
+        return onlyData ? copyFunctionVoiceList : of(copyFunctionVoiceList).pipe(delay(BackendDataService.DELAY));
     }
 
     updateAuthor(iri: number, newAuthor: Author) {
@@ -4359,6 +4390,8 @@ export class BackendDataService {
         a.humanAsLexia = newAuthor.humanAsLexia;
         a.order = newAuthor.order;
         a.internalComment = newAuthor.internalComment;
+
+        return of({status: 200}).pipe(delay(BackendDataService.DELAY));
     }
 
     updateBook(iri: number, newBook: Book) {
@@ -4442,6 +4475,8 @@ export class BackendDataService {
         b.genres = newBook.genres;
         b.language = newBook.language;
         b.bookAsLexia = newBook.bookAsLexia;
+
+        return of({status: 200}).pipe(delay(BackendDataService.DELAY));
     }
 
     updatePassage(iri: number, newPassage: Passage) {
@@ -4518,6 +4553,8 @@ export class BackendDataService {
         p.contains = newPassage.contains;
         p.mentionedIn = newPassage.mentionedIn;
         p.wasContributedBy = newPassage.wasContributedBy;
+
+        return of({status: 200}).pipe(delay(BackendDataService.DELAY));
     }
 
     updateLexia(iri: number, newLexia: any) {
@@ -4549,6 +4586,8 @@ export class BackendDataService {
         lexia.formalClass = newLexia.formalClass;
         lexia.image = newLexia.image;
         lexia.order = newLexia.order;
+
+        return of({status: 200}).pipe(delay(BackendDataService.DELAY));
     }
 
     updateLanguage(iri: number, newLanguage: any) {
@@ -4560,6 +4599,8 @@ export class BackendDataService {
 
         l.name = newLanguage.name;
         l.order = newLanguage.order;
+
+        return of({status: 200}).pipe(delay(BackendDataService.DELAY));
     }
 
     updateOrganisation(iri: number, newOrganisation: Organisation) {
@@ -4580,15 +4621,20 @@ export class BackendDataService {
         o.name = newOrganisation.name;
         o.order = newOrganisation.order;
         o.organisationAsLexia = newOrganisation.organisationAsLexia;
+
+        return of({status: 200}).pipe(delay(BackendDataService.DELAY));
     }
 
-    updateSubject(iri: number, newSbject: any) {
+    updateSubject(iri: number, newSubject: any) {
         const subject = this.objSubjects[iri];
-        subject.name = newSbject.name;
-        subject.order = newSbject.order;
+        subject.name = newSubject.name;
+        subject.order = newSubject.order;
+
+        return of({status: 200}).pipe(delay(BackendDataService.DELAY));
     }
 
-    updateGenre(iri: number, genre: any) {
+    updateGenre(iri: number, genre: any, onlyData: boolean = false) {
+        return of({status: 200}).pipe(delay(BackendDataService.DELAY));
     }
 
     updateContributor(iri: number, newContributor: Contributor) {
@@ -4613,6 +4659,8 @@ export class BackendDataService {
         con.humanAsLexia = newContributor.humanAsLexia;
         con.order = newContributor.order;
         con.internalComment = newContributor.internalComment;
+
+        return of({status: 200}).pipe(delay(BackendDataService.DELAY));
     }
 
     updateVenue(iri: number, newVenue: Venue) {
@@ -4633,12 +4681,15 @@ export class BackendDataService {
         v.place = newVenue.place;
         v.order = newVenue.order;
         v.internalComment = newVenue.internalComment;
+
+        return of({status: 200}).pipe(delay(BackendDataService.DELAY));
     }
 
     createAuthor(data: any) {
         // TODO if id of lexia is valid
+        const newID = this.getID();
         const newAuthor: Author = {
-            id: this.getID(),
+            id: newID,
             internalID: data.internalID,
             firstName: data.firstName,
             lastName: data.lastName,
@@ -4657,12 +4708,15 @@ export class BackendDataService {
         };
         this.authorList.push(newAuthor);
         this.objAuthors[newAuthor.id] = newAuthor;
+
+        return of({status: 200, id: newID}).pipe(delay(BackendDataService.DELAY));
     }
 
     createBook(data: any) {
         // TODO if id of authors, venues and organisations are valid
+        const newID = this.getID();
         const newBook: Book = {
-            id: this.getID(),
+            id: newID,
             internalID: data.internalID,
             title: data.title,
             createdStartDate: data.createdStartDate,
@@ -4690,12 +4744,15 @@ export class BackendDataService {
         };
         this.bookList.push(newBook);
         this.objBooks[newBook.id] = newBook;
+
+        return of({status: 200, id: newID}).pipe(delay(BackendDataService.DELAY));
     }
 
     createContributor(data: any) {
         // TODO if id of lexia is valid
+        const newID = this.getID();
         const newContributor: Contributor = {
-            id: this.getID(),
+            id: newID,
             internalID: data.internalID,
             firstName: data.firstName,
             lastName: data.lastName,
@@ -4708,12 +4765,15 @@ export class BackendDataService {
         };
         this.contributorList.push(newContributor);
         this.objContributors[newContributor.id] = newContributor;
+
+        return of({status: 200, id: newID}).pipe(delay(BackendDataService.DELAY));
     }
 
     createPassage(data: any) {
         // TODO if id of passages, lexias, contributor, book are valid
+        const newID = this.getID();
         const newPassage: Passage = {
-            id: this.getID(),
+            id: newID,
             text: data.text,
             textHist: data.textHist,
             page: data.page,
@@ -4733,12 +4793,15 @@ export class BackendDataService {
         };
         this.passageList.push(newPassage);
         this.objPassages[newPassage.id] = newPassage;
+
+        return of({status: 200, id: newID}).pipe(delay(BackendDataService.DELAY));
     }
 
     createVenue(data: any) {
         // TODO if id of lexia is valid
+        const newID = this.getID();
         const newVenue: Venue = {
-            id: this.getID(),
+            id: newID,
             internalID: data.internalID,
             name: data.name,
             place: data.place,
@@ -4749,12 +4812,15 @@ export class BackendDataService {
         };
         this.venueList.push(newVenue);
         this.objVenues[newVenue.id] = newVenue;
+
+        return of({status: 200, id: newID}).pipe(delay(BackendDataService.DELAY));
     }
 
     createOrganisation(data: any) {
         // TODO if id of lexia is valid
+        const newID = this.getID();
         const newOrganisation: Organisation = {
-            id: this.getID(),
+            id: newID,
             internalID: data.internalID,
             name: data.name,
             organisationAsLexia: data.organisationAsLexia,
@@ -4764,11 +4830,14 @@ export class BackendDataService {
         };
         this.organisationList.push(newOrganisation);
         this.objOrganisation[newOrganisation.id] = newOrganisation;
+
+        return of({status: 200, id: newID}).pipe(delay(BackendDataService.DELAY));
     }
 
     createLanguage(data: any) {
+        const newID = this.getID();
         const newLanguage: Language = {
-            id: this.getID(),
+            id: newID,
             name: data.name,
             internalComment: data.internalComment,
             order: 0,
@@ -4776,11 +4845,14 @@ export class BackendDataService {
         };
         this.languageList.push(newLanguage);
         this.objLanguages[newLanguage.id] = newLanguage;
+
+        return of({status: 200, id: newID}).pipe(delay(BackendDataService.DELAY));
     }
 
     createGender(data: any) {
+        const newID = this.getID();
         const newGender: Gender = {
-            id: this.getID(),
+            id: newID,
             name: data.name,
             internalComment: data.internalComment,
             order: 0,
@@ -4788,11 +4860,14 @@ export class BackendDataService {
         };
         this.genderList.push(newGender);
         this.objGender[newGender.id] = newGender;
+
+        return of({status: 200, id: newID}).pipe(delay(BackendDataService.DELAY));
     }
 
     createStatus(data: any) {
+        const newID = this.getID();
         const newStatus: Status = {
-            id: this.getID(),
+            id: newID,
             name: data.name,
             internalComment: data.internalComment,
             order: 0,
@@ -4800,11 +4875,14 @@ export class BackendDataService {
         };
         this.statusList.push(newStatus);
         this.objStatus[newStatus.id] = newStatus;
+
+        return of({status: 200, id: newID}).pipe(delay(BackendDataService.DELAY));
     }
 
     createSubject(data: any) {
+        const newID = this.getID();
         const newSubject: Subject = {
-            id: this.getID(),
+            id: newID,
             name: data.name,
             internalComment: data.internalComment,
             order: 0,
@@ -4813,11 +4891,14 @@ export class BackendDataService {
         this.subjectList.push(newSubject);
         this.objSubjects[newSubject.id] = newSubject;
 
+        return of({status: 200, id: newID}).pipe(delay(BackendDataService.DELAY));
+
     }
 
     createLexia(data: any) {
+        const newID = this.getID();
         const newLexia: Lexia = {
-            id: this.getID(),
+            id: newID,
             internalID: data.internalID,
             name: data.name,
             usedIn: data.usedIn,
@@ -4829,9 +4910,12 @@ export class BackendDataService {
         };
         this.lexiaList.push(newLexia);
         this.objLexia[newLexia.id] = newLexia;
+
+        return of({status: 200, id: newID}).pipe(delay(BackendDataService.DELAY));
     }
 
     createGenre(data: any) {
+        const newID = this.getID();
     }
 
     getID(): number {

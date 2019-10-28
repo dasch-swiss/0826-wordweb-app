@@ -34,16 +34,20 @@ export class CreateUpdateOrganisationComponent implements OnInit {
             this.organisation.internalID = this.form.get("internalID").value;
             this.organisation.name = this.form.get("name").value;
             // update request
-            this.apiService.updateOrganisation(this.organisation.id, this.organisation);
-            this.dialogRef.close({refresh: true});
+            this.apiService.updateOrganisation(this.organisation.id, this.organisation)
+                .subscribe((data) => {
+                    this.dialogRef.close({refresh: true});
+                });
         } else {
             const newOrganisation = {
                 internalID: this.form.get("internalID").value,
                 name: this.form.get("name").value
             };
             // create request
-            this.apiService.createOrganistaion(newOrganisation);
-            this.dialogRef.close({refresh: true});
+            this.apiService.createOrganistaion(newOrganisation)
+                .subscribe((data) => {
+                    this.dialogRef.close({refresh: true});
+                });
         }
     }
 

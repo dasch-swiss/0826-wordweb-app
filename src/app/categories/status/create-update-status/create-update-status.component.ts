@@ -32,15 +32,19 @@ export class CreateUpdateStatusComponent implements OnInit {
         if (this.editMod) {
             this.status.name = this.form.get("name").value;
             // update request
-            this.apiService.updateLanguage(this.status.id, this.status);
-            this.dialogRef.close({refresh: true});
+            this.apiService.updateLanguage(this.status.id, this.status)
+                .subscribe((data) => {
+                  this.dialogRef.close({refresh: true});
+                });
         } else {
             const newStatus = {
                 name: this.form.get("name").value,
             };
             // create request
-            this.apiService.createStatus(newStatus);
-            this.dialogRef.close({refresh: true});
+            this.apiService.createStatus(newStatus)
+                .subscribe((data) => {
+                  this.dialogRef.close({refresh: true});
+                });
         }
     }
 

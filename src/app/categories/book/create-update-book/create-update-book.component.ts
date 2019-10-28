@@ -112,8 +112,10 @@ export class CreateUpdateBookComponent implements OnInit {
             this.book.subjects = this.subjectList;
             this.book.genres = this.genreList;
             // update request
-            this.apiService.updateBook(this.book.id, this.book);
-            this.dialogRef.close({refresh: true});
+            this.apiService.updateBook(this.book.id, this.book)
+                .subscribe((data) => {
+                    this.dialogRef.close({refresh: true});
+                });
         } else {
             const newBook = {
                 internalID: this.form.get("internalID").value,
@@ -125,8 +127,10 @@ export class CreateUpdateBookComponent implements OnInit {
                 genres: this.genreList
             };
             // create request
-            this.apiService.createBook(newBook);
-            this.dialogRef.close({refresh: true});
+            this.apiService.createBook(newBook)
+                .subscribe((data) => {
+                    this.dialogRef.close({refresh: true});
+                });
         }
     }
 

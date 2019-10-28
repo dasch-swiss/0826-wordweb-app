@@ -32,15 +32,18 @@ export class CreateUpdateLanguageComponent implements OnInit {
         if (this.editMod) {
             this.language.name = this.form.get("name").value;
             // update request
-            this.apiService.updateLanguage(this.language.id, this.language);
-            this.dialogRef.close({refresh: true});
-        } else {
+            this.apiService.updateLanguage(this.language.id, this.language)
+                .subscribe((data) => {
+                    this.dialogRef.close({refresh: true});
+                });
             const newLanguage = {
                 name: this.form.get("name").value,
             };
             // create request
-            this.apiService.createLanguage(newLanguage);
-            this.dialogRef.close({refresh: true});
+            this.apiService.createLanguage(newLanguage)
+                .subscribe((data) => {
+                    this.dialogRef.close({refresh: true});
+                });
         }
     }
 

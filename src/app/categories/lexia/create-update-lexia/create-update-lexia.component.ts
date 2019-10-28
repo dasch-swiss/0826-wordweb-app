@@ -34,16 +34,20 @@ export class CreateUpdateLexiaComponent implements OnInit {
             this.lexia.internalID = this.form.get("internalID").value;
             this.lexia.name = this.form.get("name").value;
             // update request
-            this.apiService.updateLexia(this.lexia.id, this.lexia);
-            this.dialogRef.close({refresh: true});
+            this.apiService.updateLexia(this.lexia.id, this.lexia)
+                .subscribe((data) => {
+                    this.dialogRef.close({refresh: true});
+                });
         } else {
             const newLexia = {
                 internalID: this.form.get("internalID").value,
                 name: this.form.get("name").value,
             };
             // create request
-            this.apiService.createLexia(newLexia);
-            this.dialogRef.close({refresh: true});
+            this.apiService.createLexia(newLexia)
+                .subscribe((data) => {
+                    this.dialogRef.close({refresh: true});
+                });
         }
     }
 

@@ -86,9 +86,11 @@ export class CreateUpdateAuthorComponent implements OnInit {
             this.author.humanAsLexia =  "";
             this.author.internalComment = "";
             // update request
-            this.apiService.updateAuthor(this.author.id, this.author);
-            this.dialogRef.close({refresh: true});
-            this.snackBar.open("Author edited");
+            this.apiService.updateAuthor(this.author.id, this.author)
+                .subscribe(data => {
+                    this.dialogRef.close({refresh: true});
+                    this.snackBar.open("Author edited");
+                });
         } else {
             const newAuthor = {
                 internalID: this.form.get("internalID").value,
@@ -106,9 +108,11 @@ export class CreateUpdateAuthorComponent implements OnInit {
                 internalComment: ""
             };
             // create request
-            this.apiService.createAuthor(newAuthor);
-            this.dialogRef.close({refresh: true});
-            this.snackBar.open("Author Created");
+            this.apiService.createAuthor(newAuthor)
+                .subscribe(data => {
+                    this.dialogRef.close({refresh: true});
+                    this.snackBar.open("Author Created");
+                });
         }
     }
 

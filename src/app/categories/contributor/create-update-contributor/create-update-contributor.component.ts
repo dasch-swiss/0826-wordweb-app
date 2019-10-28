@@ -44,8 +44,10 @@ export class CreateUpdateContributorComponent implements OnInit {
             this.contributor.email = this.form.get("email").value;
             this.contributor.gender = this.form.get("gender").value;
             // update request
-            this.apiService.updateContributor(this.contributor.id, this.contributor);
-            this.dialogRef.close({refresh: true});
+            this.apiService.updateContributor(this.contributor.id, this.contributor)
+                .subscribe((data) => {
+                    this.dialogRef.close({refresh: true});
+                });
         } else {
             const newContributor = {
                 internalID: this.form.get("internalID").value,
@@ -55,8 +57,10 @@ export class CreateUpdateContributorComponent implements OnInit {
                 email: this.form.get("email").value
             };
             // create request
-            this.apiService.createContributor(newContributor);
-            this.dialogRef.close({refresh: true});
+            this.apiService.createContributor(newContributor)
+                .subscribe((data) => {
+                    this.dialogRef.close({refresh: true});
+                });
         }
     }
 

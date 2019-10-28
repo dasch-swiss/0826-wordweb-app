@@ -36,8 +36,10 @@ export class CreateUpdateVenueComponent implements OnInit {
             this.venue.name = this.form.get("name").value;
             this.venue.place = this.form.get("place").value;
             // update request
-            this.apiService.updateVenue(this.venue.id, this.venue);
-            this.dialogRef.close({refresh: true});
+            this.apiService.updateVenue(this.venue.id, this.venue)
+                .subscribe((data) => {
+                    this.dialogRef.close({refresh: true});
+                });
         } else {
             const newVenue = {
                 internalID: this.form.get("internalID").value,
@@ -45,8 +47,10 @@ export class CreateUpdateVenueComponent implements OnInit {
                 place: this.form.get("place").value
             };
             // create request
-            this.apiService.createVenue(newVenue);
-            this.dialogRef.close({refresh: true});
+            this.apiService.createVenue(newVenue)
+                .subscribe((data) => {
+                    this.dialogRef.close({refresh: true});
+                });
         }
     }
 

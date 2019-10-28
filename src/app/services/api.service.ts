@@ -14,193 +14,156 @@ import {
     ResearchField, Status, Image, Marking, FormalClass, FunctionVoice
 } from "../model/model";
 import {BackendDataService} from "./backend-data.service";
-import {Observable, of} from "rxjs";
-import {delay} from "rxjs/operators";
+import {Observable} from "rxjs";
 
 @Injectable({
     providedIn: "root"
 })
 export class ApiService {
-    static readonly DELAY = 500;
-
     constructor(private backendData: BackendDataService) {
     }
 
     // READ REQUEST
 
     getBook(iri: number, references: boolean = false): Observable<Book> {
-        return of(this.backendData.getBook(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getBook(iri, references);
     }
 
     getBooks(references: boolean = false): Observable<Book[]> {
-        return of(this.backendData.getBooks(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getBooks(references);
     }
 
     getAuthor(iri: number, references: boolean = false): Observable<Author> {
-        return of(this.backendData.getAuthor(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getAuthor(iri, references);
     }
 
     getAuthors(references: boolean = false): Observable<Author[]> {
-        return of(this.backendData.getAuthors(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getAuthors(references);
     }
 
     getPassage(iri: number, references: boolean = false): Observable<Passage> {
-        return of(this.backendData.getPassage(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getPassage(iri, references);
     }
 
     getPassages(references: boolean = false): Observable<Passage[]> {
-        return of(this.backendData.getPassages(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getPassages(references);
     }
 
     getLanguage(iri: number, references: boolean = false): Observable<Language> {
-        return of(this.backendData.getLanguage(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getLanguage(iri, references);
     }
 
     getLanguages(references: boolean = false): Observable<Language[]> {
-        return of(this.backendData.getLanguages(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getLanguages(references);
     }
 
     getVenue(iri: number, references: boolean = false): Observable<Venue> {
-        return of(this.backendData.getVenue(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getVenue(iri, references);
     }
 
     getVenues(references: boolean = false): Observable<Venue[]> {
-        return of(this.backendData.getVenues(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getVenues(references);
     }
 
     getOrganisation(iri: number, references: boolean = false): Observable<Organisation> {
-        return of(this.backendData.getOrganisation(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getOrganisation(iri, references);
     }
 
     getOrganisations(references: boolean = false): Observable<Organisation[]> {
-        return of(this.backendData.getOrganisations(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getOrganisations(references);
     }
 
     getSubject(iri: number, references: boolean = false): Observable<Subject> {
-        return of(this.backendData.getSubject(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getSubject(iri, references);
     }
 
     getSubjects(references: boolean = false): Observable<Subject[]> {
-        return of(this.backendData.getSubjects(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getSubjects(references);
     }
 
     getLexia(iri: number, references: boolean = false): Observable<Lexia> {
-        return of(this.backendData.getLexia(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getLexia(iri, references);
     }
 
     getLexias(references: boolean = false): Observable<Lexia[]> {
-        return of(this.backendData.getLexias(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getLexias(references);
     }
 
     getContributor(iri: number, references: boolean = false): Observable<Contributor> {
-        return of(this.backendData.getContributor(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getContributor(iri, references);
     }
 
     getContributors(references: boolean = false): Observable<Contributor[]> {
-        return of(this.backendData.getContributors(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getContributors(references);
     }
 
     getGender(iri: number, references: boolean = false): Observable<Gender> {
-        return of(this.backendData.getGender(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getGender(iri, references);
     }
 
     getGenders(references: boolean = false): Observable<Gender[]> {
-        return of(this.backendData.getGenders(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getGenders(references);
     }
 
     getGenre(iri: number, references: boolean = false): Observable<Genre> {
-        return of(this.backendData.getGenre(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getGenre(iri, references);
     }
 
     getGenres(references: boolean = false): Observable<Genre[]> {
-        return of(this.backendData.getGenres(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getGenres(references);
     }
 
     getResearchField(iri: number, references: boolean = false): Observable<ResearchField> {
-        return of(this.backendData.getResearchField(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getResearchField(iri, references);
     }
 
     getResearchFields(references: boolean = false): Observable<ResearchField[]> {
-        return of(this.backendData.getResearchFields(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getResearchFields(references);
     }
 
     getStatus(iri: number, references: boolean = false): Observable<Status> {
-        return of(this.backendData.getStatus(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getStatus(iri, references);
     }
 
     getStatuses(references: boolean = false): Observable<Status[]> {
-        return of(this.backendData.getStatuses(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getStatuses(references);
     }
 
     getImage(iri: number, references: boolean = false): Observable<Image> {
-        return of(this.backendData.getImage(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getImage(iri, references);
     }
 
     getImages(references: boolean = false): Observable<Image[]> {
-        return of(this.backendData.getImages(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getImages(references);
     }
 
     getMarking(iri: number, references: boolean = false): Observable<Marking> {
-        return of(this.backendData.getMarking(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getMarking(iri, references);
     }
 
     getMarkings(references: boolean = false): Observable<Marking[]> {
-        return of(this.backendData.getMarkings(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getMarkings(references);
     }
 
     getFormalClass(iri: number, references: boolean = false): Observable<FormalClass> {
-        return of(this.backendData.getFormalClass(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getFormalClass(iri, references);
     }
 
     getFormalClasses(references: boolean = false): Observable<FormalClass[]> {
-        return of(this.backendData.getFormalClasses(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getFormalClasses(references);
     }
 
     getFunctionVoice(iri: number, references: boolean = false): Observable<FunctionVoice> {
-        return of(this.backendData.getFunctionVoice(iri, references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getFunctionVoice(iri, references);
     }
 
     getFunctionVoices(references: boolean = false): Observable<FunctionVoice[]> {
-        return of(this.backendData.getFunctionVoices(references))
-            .pipe(delay(ApiService.DELAY));
+        return this.backendData.getFunctionVoices(references);
     }
 
     // UPDATE REQUESTS
 
-    updateAuthor(iri: number, author: any) {
+    updateAuthor(iri: number, author: any): Observable<any> {
         const data: Author = {
             id: author.id,
             internalID: author.internalID,
@@ -219,10 +182,10 @@ export class ApiService {
             references: 0,
             order: author.order
         };
-        this.backendData.updateAuthor(iri, data);
+        return this.backendData.updateAuthor(iri, data);
     }
 
-    updateBook(iri: number, book: any) {
+    updateBook(iri: number, book: any): Observable<any> {
         const data: Book = {
             id: book.id,
             internalID: book.internalID,
@@ -250,10 +213,10 @@ export class ApiService {
             references: 0,
             order: book.order
         };
-        this.backendData.updateBook(iri, data);
+        return this.backendData.updateBook(iri, data);
     }
 
-    updatePassage(iri: number, passage: any) {
+    updatePassage(iri: number, passage: any): Observable<any> {
         const data: Passage = {
             id: passage.id,
             occursIn: passage.occursIn ? passage.occursIn.id : null,
@@ -273,14 +236,14 @@ export class ApiService {
             references: 0,
             order: passage.order
         };
-        this.backendData.updatePassage(iri, data);
+        return this.backendData.updatePassage(iri, data);
     }
 
-    updateLanguage(iri: number, language: Language) {
-        this.backendData.updateLanguage(iri, language);
+    updateLanguage(iri: number, language: Language): Observable<any> {
+        return this.backendData.updateLanguage(iri, language);
     }
 
-    updateVenue(iri: number, venue: any) {
+    updateVenue(iri: number, venue: any): Observable<any> {
         const data: Venue = {
             id: venue.id,
             internalID: venue.internalID,
@@ -291,10 +254,10 @@ export class ApiService {
             references: 0,
             order: venue.order
         };
-        this.backendData.updateVenue(iri, data);
+        return this.backendData.updateVenue(iri, data);
     }
 
-    updateOrganisation(iri: number, organisation: any) {
+    updateOrganisation(iri: number, organisation: any): Observable<any> {
         const data: Organisation = {
             id: organisation.id,
             internalID: organisation.internalID,
@@ -304,18 +267,18 @@ export class ApiService {
             references: 0,
             order: organisation.order
         };
-        this.backendData.updateOrganisation(iri, data);
+        return this.backendData.updateOrganisation(iri, data);
     }
 
-    updateSubject(iri: number, subject: Subject) {
-        this.backendData.updateSubject(iri, subject);
+    updateSubject(iri: number, subject: Subject): Observable<any> {
+        return this.backendData.updateSubject(iri, subject);
     }
 
-    updateLexia(iri: number, lexia: Lexia) {
-        this.backendData.updateLexia(iri, lexia);
+    updateLexia(iri: number, lexia: Lexia): Observable<any> {
+        return this.backendData.updateLexia(iri, lexia);
     }
 
-    updateContributor(iri: number, contributor: any) {
+    updateContributor(iri: number, contributor: any): Observable<any> {
         const data: Contributor = {
             id: contributor.id,
             internalID: contributor.internalID,
@@ -328,61 +291,61 @@ export class ApiService {
             references: 0,
             order: contributor.order
         };
-        this.backendData.updateContributor(iri, data);
+        return this.backendData.updateContributor(iri, data);
     }
 
     // CREATE REQUESTS
 
-    createAuthor(data: any) {
-        this.backendData.createAuthor(data);
+    createAuthor(data: any): Observable<any> {
+        return this.backendData.createAuthor(data);
     }
 
-    createBook(data: any) {
+    createBook(data: any): Observable<any> {
         // converts reference to IDs
         data.authors = data.authors.map(author => author.id);
         data.venues = data.venues.map(venue => venue.id);
         data.organisations = data.organisations.map(organisation => organisation.id);
-        this.backendData.createBook(data);
+        return this.backendData.createBook(data);
     }
 
-    createPassage(data: any) {
+    createPassage(data: any): Observable<any> {
         // converts reference to IDs
         if (data.edition) {
             data.edition = data.edition.id;
         }
         // data.edition = data.edition ? data.edition.id;
-        this.backendData.createPassage(data);
+        return this.backendData.createPassage(data);
     }
 
-    createLanguage(data: any) {
-        this.backendData.createLanguage(data);
+    createLanguage(data: any): Observable<any> {
+        return this.backendData.createLanguage(data);
     }
 
-    createGender(data: any) {
-        this.backendData.createGender(data);
+    createGender(data: any): Observable<any> {
+        return this.backendData.createGender(data);
     }
 
-    createStatus(data: any) {
-        this.backendData.createStatus(data);
+    createStatus(data: any): Observable<any> {
+        return this.backendData.createStatus(data);
     }
 
-    createVenue(data: any) {
-        this.backendData.createVenue(data);
+    createVenue(data: any): Observable<any> {
+        return this.backendData.createVenue(data);
     }
 
-    createOrganistaion(data: any) {
-        this.backendData.createOrganisation(data);
+    createOrganistaion(data: any): Observable<any> {
+        return this.backendData.createOrganisation(data);
     }
 
-    createSubject(data: any) {
-        this.backendData.createSubject(data);
+    createSubject(data: any): Observable<any> {
+        return this.backendData.createSubject(data);
     }
 
-    createLexia(data: any) {
-        this.backendData.createLexia(data);
+    createLexia(data: any): Observable<any> {
+        return this.backendData.createLexia(data);
     }
 
-    createContributor(data: any) {
-        this.backendData.createContributor(data);
+    createContributor(data: any): Observable<any> {
+        return this.backendData.createContributor(data);
     }
 }
