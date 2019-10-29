@@ -119,8 +119,8 @@ export class PassageComponent implements OnInit {
     }
 
     contains(obj: any, arr: any[]) {
-        for (let i = 0; i < arr.length; i++) {
-            if (JSON.stringify(obj) === JSON.stringify(arr[i])) {
+        for (const i of arr) {
+            if (JSON.stringify(obj) === JSON.stringify(i)) {
                 return true;
             }
         }

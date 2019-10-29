@@ -24,6 +24,7 @@ export class CreateUpdateBookComponent implements OnInit {
     subjectList: Subject[];
     genreList: Genre[];
     languages: any;
+    toggleText: string;
 
     constructor(private apiService: ApiService,
                 private authorDialog: MatDialog,
@@ -64,7 +65,7 @@ export class CreateUpdateBookComponent implements OnInit {
                 firstPerformedEndDate: new FormControl(this.book ? this.book.firstPerformedEndDate : "", [Validators.required])
             }, [CustomValidators.correctYearSpan("firstPerformedStartDate", "firstPerformedEndDate")]),
             publicComment: new FormControl(this.book ? this.book.publicComment : "", []),
-            commentForPassage: new FormControl(this.book ? this.book.commentForPassage : false, [Validators.required]),
+            commentForPassage: new FormControl(this.book ? this.book.commentForPassage : true, [Validators.required]),
             internalComment: new FormControl(this.book ? this.book.internalComment : "", []),
             order: new FormControl(this.book ? this.book.order : 0, [])
         });
@@ -99,6 +100,8 @@ export class CreateUpdateBookComponent implements OnInit {
         this.organisationList = this.book ? this.book.organisations : [];
         this.subjectList = this.book ? this.book.subjects : [];
         this.genreList = this.book ? this.book.genres : [];
+
+        this.changeToggleText(this.form.get("commentForPassage").value);
     }
 
     cancel() {
@@ -227,6 +230,10 @@ export class CreateUpdateBookComponent implements OnInit {
     }
 
     removeGenre(genre: Genre) {
+    }
+
+    changeToggleText(checked) {
+        this.toggleText = checked ? "Public comment is visible in passages" : "Public comment is not visible in passages";
     }
 
     onChange(event, groupName: string) {

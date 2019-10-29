@@ -92,6 +92,7 @@ export class BookComponent implements OnInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
+        dialogConfig.width = "700px";
         dialogConfig.data = {
             resource: resource,
             editMod: editMod,
@@ -194,7 +195,7 @@ export class BookComponent implements OnInit {
 
     contains(obj: any, arr: any[]) {
         for (const i of arr) {
-            if (JSON.stringify(obj) === JSON.stringify(arr[i])) {
+            if (JSON.stringify(obj) === JSON.stringify(i)) {
                 return true;
             }
         }

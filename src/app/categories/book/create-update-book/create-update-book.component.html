@@ -291,8 +291,17 @@
                     <td class="title-column">Public Comment</td>
                     <td colspan="2">
                         <mat-form-field class="full-width">
-                            <textarea matInput formControlName="publicComment"></textarea>
+                            <textarea rows="5" matInput formControlName="publicComment"></textarea>
                         </mat-form-field>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="title-column">
+                        Visability
+                    </td>
+                    <td colspan="2">
+                            <mat-slide-toggle formControlName="commentForPassage" (change)="changeToggleText($event.checked)">{{toggleText}}</mat-slide-toggle>
                     </td>
                 </tr>
 
@@ -300,7 +309,7 @@
                     <td class="title-column">Internal Comment</td>
                     <td colspan="2">
                         <mat-form-field class="full-width">
-                            <textarea matInput formControlName="internalComment"></textarea>
+                            <textarea rows="5" matInput formControlName="internalComment"></textarea>
                         </mat-form-field>
                     </td>
                 </tr>

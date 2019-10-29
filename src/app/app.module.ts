@@ -28,7 +28,7 @@ import {
     MatCardModule, MatCheckboxModule,
     MatChipsModule,
     MatDialogModule, MatDividerModule,
-    MatIconModule, MatInputModule, MatSelectModule, MatSnackBarModule, MatSortModule,
+    MatIconModule, MatInputModule, MatSelectModule, MatSlideToggleModule, MatSnackBarModule, MatSortModule,
     MatTableModule
 } from "@angular/material";
 import {SatPopoverModule} from "@ncstate/sat-popover";
@@ -123,6 +123,7 @@ export function initializeApp(appInitService: AppInitService) {
         MatDividerModule,
         MatCheckboxModule,
         MatSnackBarModule,
+        MatSlideToggleModule,
         SatPopoverModule,
         FormsModule,
         ReactiveFormsModule,
