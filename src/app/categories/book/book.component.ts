@@ -41,6 +41,7 @@ export class BookComponent implements OnInit {
 
     resetTable() {
         this.apiService.getBooks(true).subscribe((books) => {
+            console.log(books);
             this.dataSource = new MatTableDataSource(books);
             this.dataSource.sort = this.sort;
         });
@@ -192,7 +193,7 @@ export class BookComponent implements OnInit {
     }
 
     contains(obj: any, arr: any[]) {
-        for (let i = 0; i < arr.length; i++) {
+        for (const i of arr) {
             if (JSON.stringify(obj) === JSON.stringify(arr[i])) {
                 return true;
             }

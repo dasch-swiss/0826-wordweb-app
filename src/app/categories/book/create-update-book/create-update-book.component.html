@@ -22,6 +22,24 @@
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="title-column">Edition:</td>
+                    <td colspan="2">
+                        <mat-form-field>
+                            <input matInput type="text" formControlName="edition">
+                        </mat-form-field>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="title-column">Edition Hist:</td>
+                    <td colspan="2">
+                        <mat-form-field>
+                            <input matInput type="text" formControlName="editionHist">
+                        </mat-form-field>
+                    </td>
+                </tr>
+
                 <tr class="reference">
                     <td class="title-column">Authors:</td>
                     <td>
@@ -266,6 +284,24 @@
                                 </td>
                             </tr>
                         </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="title-column">Public Comment</td>
+                    <td colspan="2">
+                        <mat-form-field class="full-width">
+                            <textarea matInput formControlName="publicComment"></textarea>
+                        </mat-form-field>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="title-column">Internal Comment</td>
+                    <td colspan="2">
+                        <mat-form-field class="full-width">
+                            <textarea matInput formControlName="internalComment"></textarea>
+                        </mat-form-field>
                     </td>
                 </tr>
 

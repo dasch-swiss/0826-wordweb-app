@@ -1,8 +1,10 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialogConfig, MatDialogRef, MatSnackBar} from "@angular/material";
 import {ApiService} from "../../../services/api.service";
 import {CustomValidators} from "../../../customValidators";
+import {VenueRefComponent} from "../../../dialog/venue-ref/venue-ref.component";
+import {Lexia, Venue} from "../../../model/model";
 
 @Component({
     selector: "app-create-update-author",
@@ -10,11 +12,13 @@ import {CustomValidators} from "../../../customValidators";
     styleUrls: ["./create-update-author.component.scss"]
 })
 export class CreateUpdateAuthorComponent implements OnInit {
+    readonly MAX_CHIPS: number = 4;
     author: any;
     editMod: boolean;
     form: FormGroup;
     genders: any;
     activeDisabled: boolean;
+    lexiaList: Lexia[];
 
     constructor(private dialogRef: MatDialogRef<CreateUpdateAuthorComponent>,
                 @Inject(MAT_DIALOG_DATA) data,
@@ -50,6 +54,8 @@ export class CreateUpdateAuthorComponent implements OnInit {
                 flEndDate: new FormControl(this.editMod ? this.author.flEndDate : "", [Validators.required])
             }, [CustomValidators.correctYearSpan("flStartDate", "flEndDate")])
         });
+
+        this.lexiaList = this.editMod ? (this.author.humanAsLexia ? [this.author.humanAsLexia] : []) : [];
 
         if (!this.author) {
             this.form.get("birth").disable();
@@ -116,12 +122,22 @@ export class CreateUpdateAuthorComponent implements OnInit {
         }
     }
 
+    addLexia() {
+    }
+
+    removeLexia(lexia: Lexia) {
+    }
+
     onChange(event, groupName: string) {
         event.checked ? this.form.get(groupName).enable() : this.form.get(groupName).disable();
     }
 
     cancel() {
         this.dialogRef.close({refresh: false});
+    }
+
+    addOrEdit(list: any[]): string {
+        return list.length === 0 ? "add" : "edit";
     }
 
     getTitle(): string {

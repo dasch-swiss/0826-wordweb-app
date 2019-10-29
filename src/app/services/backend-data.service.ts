@@ -13,7 +13,7 @@ import {
     Venue,
     WordWebObject
 } from "../model/model";
-import {Observable, of} from "rxjs";
+import {of} from "rxjs";
 import {delay} from "rxjs/operators";
 
 @Injectable({
@@ -3146,7 +3146,7 @@ export class BackendDataService {
         authors: [this.a22.id],
         venues: [],
         organisations: [],
-        genres: [],
+        genres: [this.genre45.id],
         edition: "Allusion 1",
         editionHist: null,
         language: this.lang2.id,
@@ -3290,7 +3290,7 @@ export class BackendDataService {
         authors: [this.a1.id, this.a8.id, this.a3.id],
         venues: [this.v1.id],
         organisations: [this.org3.id],
-        genres: [],
+        genres: [this.genre1.id, this.genre5.id],
         edition: "Shakespeare, William.  Romeo and Juliet.",
         editionHist: "Shakespeare, William.  Romeo and Juliet.",
         language: this.lang1.id,
@@ -3362,7 +3362,7 @@ export class BackendDataService {
         authors: [this.a1.id, this.a10.id],
         venues: [this.v3.id],
         organisations: [this.v1.id],
-        genres: [],
+        genres: [this.genre23.id],
         edition: "Shakespeare, William.  Hamlet.",
         editionHist: "Shakespeare, William.  Hamlet.",
         language: this.lang1.id,
@@ -3464,7 +3464,7 @@ export class BackendDataService {
         authors: [this.a1.id],
         venues: [this.v6.id],
         organisations: [this.org5.id],
-        genres: [],
+        genres: [this.genre49.id],
         edition: "The Comedy of Errors, W. Shakespeare, [not_or]",
         editionHist: "The Comedy of Errors, W. Shakespeare, [or]",
         language: this.lang4.id,
@@ -3552,7 +3552,7 @@ export class BackendDataService {
         authors: [this.a2.id],
         venues: [this.v4.id],
         organisations: [this.org1.id],
-        genres: [],
+        genres: [this.genre21.id],
         edition: "Tamburlaine, C. Marlowe, [not_or]",
         editionHist: "Tamburlaine, C. Marlowe, [or]",
         language: this.lang3.id,
@@ -3622,7 +3622,7 @@ export class BackendDataService {
         authors: [this.a12.id, this.a19.id],
         venues: [this.v2.id, this.v8.id],
         organisations: [this.org4.id],
-        genres: [],
+        genres: [this.genre10.id],
         edition: "Of Two Evils Choose the Least, [not_or]",
         editionHist: "Of Two Evils Choose the Least, [or]",
         language: this.lang1.id,
@@ -3650,7 +3650,7 @@ export class BackendDataService {
         authors: [this.a10.id],
         venues: [this.v2.id],
         organisations: [this.org3.id, this.org7.id],
-        genres: [],
+        genres: [this.genre4.id],
         edition: "The Cruel Brother, [not_or]",
         editionHist: "The Cruel Brother, [or]",
         language: this.lang4.id,
@@ -3678,7 +3678,7 @@ export class BackendDataService {
         authors: [this.a22.id],
         venues: [],
         organisations: [],
-        genres: [],
+        genres: [this.genre50.id],
         edition: "The Art of Reason, [not_or]",
         editionHist: "The Art of Reason, [or]",
         language: this.lang2.id,
@@ -3706,7 +3706,7 @@ export class BackendDataService {
         authors: [this.a6.id, this.a9.id],
         venues: [this.v1.id],
         organisations: [this.org1.id],
-        genres: [],
+        genres: [this.genre3.id],
         edition: "Five Hundred Points of Good Husbandry, [not_or]",
         editionHist: "Five Hundred Points of Good Husbandry, [or]",
         language: this.lang3.id,
@@ -3734,7 +3734,7 @@ export class BackendDataService {
         authors: [this.a20.id],
         venues: [],
         organisations: [],
-        genres: [],
+        genres: [this.genre12.id],
         edition: "Treatise of God's Effectual Calling, [not_or]",
         editionHist: "Treatise of God's Effectual Calling, [or]",
         language: this.lang3.id,
@@ -4003,7 +4003,7 @@ export class BackendDataService {
             }
 
             for (const genre of copyBook.genres) {
-                genre.push(this.getGenre(genre, false, true));
+                genres.push(this.getGenre(genre, false, true));
             }
 
             copyBook.authors = authors;

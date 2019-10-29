@@ -30,9 +30,11 @@ export class LanguageRefComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.allLanguages = this.apiService.getLanguages(true);
-        this.filteredList = [...this.allLanguages];
-        this.listChanged = false;
+        this.apiService.getLanguages(true).subscribe((languages) => {
+            this.allLanguages = languages;
+            this.filteredList = [...this.allLanguages];
+            this.listChanged = false;
+        });
     }
 
     openList() {

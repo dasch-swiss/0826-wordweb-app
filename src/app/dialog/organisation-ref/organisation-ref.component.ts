@@ -30,9 +30,12 @@ export class OrganisationRefComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.allOrganistions = this.apiService.getOrganisations(true);
-        this.filteredList = [...this.allOrganistions];
-        this.listChanged = false;
+        this.apiService.getOrganisations(true)
+            .subscribe((organisations) => {
+                this.allOrganistions = organisations;
+                this.filteredList = [...this.allOrganistions];
+                this.listChanged = false;
+            });
     }
 
     openList() {

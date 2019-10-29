@@ -31,9 +31,12 @@ export class VenueRefComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.allVenues = this.apiService.getVenues();
-        this.filteredList = [...this.allVenues];
-        this.listChanged = false;
+        this.apiService.getVenues()
+            .subscribe((venues) => {
+                this.allVenues = venues;
+                this.filteredList = [...this.allVenues];
+                this.listChanged = false;
+            });
     }
 
     openList() {
