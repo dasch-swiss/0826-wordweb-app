@@ -229,6 +229,10 @@ input[type=search] + button:focus {
   background-color: #000;
 }
 
+.white-bg {
+  background-color: #ffffff;
+}
+
 .light-gray-bg {
   background-color: #f9f8f8;
 }
