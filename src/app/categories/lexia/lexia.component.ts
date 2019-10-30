@@ -25,7 +25,7 @@ export class LexiaComponent implements OnInit {
     }
 
     resetTable() {
-        this.apiService.getLexias().subscribe((lexias) => {
+        this.apiService.getLexias(true).subscribe((lexias) => {
             console.log(lexias);
             this.dataSource = new MatTableDataSource(lexias);
             this.dataSource.sort = this.sort;
@@ -56,6 +56,7 @@ export class LexiaComponent implements OnInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
+        dialogConfig.width = "650px";
         dialogConfig.data = {
             resource: resource,
             editMod: editMod,

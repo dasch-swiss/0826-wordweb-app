@@ -8,7 +8,7 @@
         <div class="create-btn-container">
             <button mat-raised-button type="button" color="primary" (click)="create()">
                 <mat-icon>add</mat-icon>
-                Create Language
+                Create Gender
             </button>
         </div>
 
@@ -27,7 +27,7 @@
 
         <!-- name column -->
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Geschlecht</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Gender</th>
             <td mat-cell *matCellDef="let element">
                 <div>{{element.name}}</div>
             </td>
@@ -35,7 +35,7 @@
 
         <!-- order column -->
         <ng-container matColumnDef="order">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Reihenfolge</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Order</th>
             <td mat-cell *matCellDef="let element">
                 <div>{{element.order}}</div>
             </td>
@@ -43,7 +43,7 @@
 
         <!-- reference column -->
         <ng-container matColumnDef="references">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Referenzen</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Referencen</th>
             <td mat-cell *matCellDef="let element">
                 <div class="read-only-value">{{element.references}}</div>
             </td>

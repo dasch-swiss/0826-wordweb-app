@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Author, Genre, Language, Organisation, Subject, Venue} from "../../../model/model";
+import {Author, Genre, Language, Lexia, Organisation, Subject, Venue} from "../../../model/model";
 import {ApiService} from "../../../services/api.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material";
 import {Router} from "@angular/router";
@@ -23,6 +23,7 @@ export class CreateUpdateBookComponent implements OnInit {
     organisationList: Organisation[];
     subjectList: Subject[];
     genreList: Genre[];
+    lexiaList: Lexia[];
     languages: any;
     toggleText: string;
 
@@ -95,6 +96,7 @@ export class CreateUpdateBookComponent implements OnInit {
 
         this.languages = this.apiService.getLanguages();
 
+        this.lexiaList = this.book ? (Object.keys(this.book.bookAsLexia).length === 0 ? [] : [this.book.bookAsLexia]) : [];
         this.authorList = this.book ? this.book.authors : [];
         this.venueList = this.book ? this.book.venues : [];
         this.organisationList = this.book ? this.book.organisations : [];
@@ -230,6 +232,12 @@ export class CreateUpdateBookComponent implements OnInit {
     }
 
     removeGenre(genre: Genre) {
+    }
+
+    addLexia() {
+    }
+
+    removeLexia(lexia: Lexia) {
     }
 
     changeToggleText(checked) {

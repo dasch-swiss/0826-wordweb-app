@@ -8,16 +8,7 @@
                     <td class="title-column">Text</td>
                     <td colspan="2">
                         <mat-form-field>
-                            <textarea matInput formControlName="text" required></textarea>
-                        </mat-form-field>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="title-column">Text hist.</td>
-                    <td colspan="2">
-                        <mat-form-field class="full-width">
-                            <textarea matInput formControlName="textHist"></textarea>
+                            <textarea rows="5" matInput formControlName="text" required></textarea>
                         </mat-form-field>
                     </td>
                 </tr>
@@ -32,11 +23,216 @@
                 </tr>
 
                 <tr>
+                    <td class="title-column">Text hist.</td>
+                    <td colspan="2">
+                        <mat-form-field class="full-width">
+                            <textarea rows="5" matInput formControlName="textHist"></textarea>
+                        </mat-form-field>
+                    </td>
+                </tr>
+
+                <tr>
                     <td class="title-column">Page hist.</td>
                     <td colspan="2">
                         <mat-form-field class="full-width">
                             <input matInput type="text" formControlName="pageHist">
                         </mat-form-field>
+                    </td>
+                </tr>
+
+                <tr class="reference">
+                    <td class="title-column">Book:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="bookList.length<MAX_CHIPS">
+                            <mat-chip *ngFor="let book of bookList">
+                                <mat-chip-avatar>
+                                    <mat-icon>book</mat-icon>
+                                </mat-chip-avatar>
+                                {{book.title}}
+                                <mat-icon matChipRemove (click)="removeBook(book)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <mat-chip-list *ngIf="bookList.length>=MAX_CHIPS">
+                            <mat-chip (click)="addBook()">
+                                <mat-chip-avatar>
+                                    <mat-icon>book</mat-icon>
+                                </mat-chip-avatar>
+                                {{bookList.length}} ausgewählt ...
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addBook()">
+                            <mat-icon>{{addOrEdit(bookList)}}</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr class="reference">
+                    <td class="title-column">Lexias:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="lexiaList.length<MAX_CHIPS">
+                            <mat-chip *ngFor="let lexia of lexiaList">
+                                <mat-chip-avatar>
+                                    <mat-icon>short_text</mat-icon>
+                                </mat-chip-avatar>
+                                {{lexia.name}}
+                                <mat-icon matChipRemove (click)="removeLexia(lexia)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <mat-chip-list *ngIf="lexiaList.length>=MAX_CHIPS">
+                            <mat-chip (click)="addLexia()">
+                                <mat-chip-avatar>
+                                    <mat-icon>short_text</mat-icon>
+                                </mat-chip-avatar>
+                                {{lexiaList.length}} ausgewählt ...
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addLexia()">
+                            <mat-icon>{{addOrEdit(lexiaList)}}</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr class="reference">
+                    <td class="title-column">Mentioned in:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="passageList.length<MAX_CHIPS">
+                            <mat-chip *ngFor="let passage of passageList">
+                                <mat-chip-avatar>
+                                    <mat-icon>library_books</mat-icon>
+                                </mat-chip-avatar>
+                                PassageID: {{passage.id}}
+                                <mat-icon matChipRemove (click)="removePassage(passage)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <mat-chip-list *ngIf="passageList.length>=MAX_CHIPS">
+                            <mat-chip (click)="addPassage()">
+                                <mat-chip-avatar>
+                                    <mat-icon>library_books</mat-icon>
+                                </mat-chip-avatar>
+                                {{passageList.length}} ausgewählt ...
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addPassage()">
+                            <mat-icon>{{addOrEdit(passageList)}}</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr class="reference">
+                    <td class="title-column">Marking:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="markingList.length<MAX_CHIPS">
+                            <mat-chip *ngFor="let marking of markingList">
+                                <mat-chip-avatar>
+                                    <mat-icon>check</mat-icon>
+                                </mat-chip-avatar>
+                                {{marking.name}}
+                                <mat-icon matChipRemove (click)="removeMarking(marking)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <mat-chip-list *ngIf="markingList.length>=MAX_CHIPS">
+                            <mat-chip (click)="addMarking()">
+                                <mat-chip-avatar>
+                                    <mat-icon>check</mat-icon>
+                                </mat-chip-avatar>
+                                {{markingList.length}} ausgewählt ...
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addMarking()">
+                            <mat-icon>{{addOrEdit(markingList)}}</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr class="reference">
+                    <td class="title-column">Research field:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="researchFieldList.length<MAX_CHIPS">
+                            <mat-chip *ngFor="let researchField of researchFieldList">
+                                <mat-chip-avatar>
+                                    <mat-icon>school</mat-icon>
+                                </mat-chip-avatar>
+                                {{researchField.name}}
+                                <mat-icon matChipRemove (click)="removeResearchField(researchField)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <mat-chip-list *ngIf="researchFieldList.length>=MAX_CHIPS">
+                            <mat-chip (click)="addResearchField()">
+                                <mat-chip-avatar>
+                                    <mat-icon>school</mat-icon>
+                                </mat-chip-avatar>
+                                {{researchFieldList.length}} ausgewählt ...
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addResearchField()">
+                            <mat-icon>{{addOrEdit(researchFieldList)}}</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr class="reference">
+                    <td class="title-column">Function voice:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="functionVoiceList.length<MAX_CHIPS">
+                            <mat-chip *ngFor="let functionVoice of functionVoiceList">
+                                <mat-chip-avatar>
+                                    <mat-icon>insert_comment</mat-icon>
+                                </mat-chip-avatar>
+                                {{functionVoice.name}}
+                                <mat-icon matChipRemove (click)="removeFunctionVoice(functionVoice)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <mat-chip-list *ngIf="functionVoiceList.length>=MAX_CHIPS">
+                            <mat-chip (click)="addFunctionVoice()">
+                                <mat-chip-avatar>
+                                    <mat-icon>insert_comment</mat-icon>
+                                </mat-chip-avatar>
+                                {{functionVoiceList.length}} ausgewählt ...
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addFunctionVoice()">
+                            <mat-icon>{{addOrEdit(functionVoiceList)}}</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr class="reference">
+                    <td class="title-column">Contributed by:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="contributorList.length<MAX_CHIPS">
+                            <mat-chip *ngFor="let contributor of contributorList">
+                                <mat-chip-avatar>
+                                    <mat-icon>folder_shared</mat-icon>
+                                </mat-chip-avatar>
+                                {{contributor.firstName}} {{contributor.lastName}}
+                                <mat-icon matChipRemove (click)="removeContributor(contributor)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <mat-chip-list *ngIf="contributorList.length>=MAX_CHIPS">
+                            <mat-chip (click)="addContributor()">
+                                <mat-chip-avatar>
+                                    <mat-icon>folder_shared</mat-icon>
+                                </mat-chip-avatar>
+                                {{contributorList.length}} ausgewählt ...
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addContributor()">
+                            <mat-icon>{{addOrEdit(contributorList)}}</mat-icon>
+                        </button>
                     </td>
                 </tr>
 

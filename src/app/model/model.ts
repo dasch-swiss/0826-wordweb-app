@@ -61,8 +61,8 @@ export interface Passage extends WordWebObject {
     mentionedIn: Passage[] | number[];
     occursIn: Book | number;
     marking: Marking | number;
-    researchField: ResearchField | number;
     status: Status | number;
+    researchField: ResearchField | number;
     functionVoice: FunctionVoice | number;
     wasContributedBy: Contributor | number;
 }

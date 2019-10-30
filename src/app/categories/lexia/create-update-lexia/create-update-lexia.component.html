@@ -22,11 +22,90 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                <tr class="reference">
+                    <td class="title-column">Used in:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="passageList.length<MAX_CHIPS">
+                            <mat-chip *ngFor="let passage of passageList">
+                                <mat-chip-avatar>
+                                    <mat-icon>library_books</mat-icon>
+                                </mat-chip-avatar>
+                                PassageID: {{passage.id}}
+                                <mat-icon matChipRemove (click)="removePassage(passage)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <mat-chip-list *ngIf="passageList.length>=MAX_CHIPS">
+                            <mat-chip (click)="addPassage()">
+                                <mat-chip-avatar>
+                                    <mat-icon>library_books</mat-icon>
+                                </mat-chip-avatar>
+                                {{passageList.length}} ausgewählt ...
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addPassage()">
+                            <mat-icon>{{addOrEdit(passageList)}}</mat-icon>
+                        </button>
+                    </td>
                 </tr>
+
+                <tr class="reference">
+                    <td class="title-column">Formal class:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="formalClassList.length<MAX_CHIPS">
+                            <mat-chip *ngFor="let formalClass of formalClassList">
+                                <mat-chip-avatar>
+                                    <mat-icon>library_books</mat-icon>
+                                </mat-chip-avatar>
+                                {{formalClass.name}}
+                                <mat-icon matChipRemove (click)="removeFormalClass(formalClass)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <mat-chip-list *ngIf="formalClassList.length>=MAX_CHIPS">
+                            <mat-chip (click)="addFormalClass()">
+                                <mat-chip-avatar>
+                                    <mat-icon>library_books</mat-icon>
+                                </mat-chip-avatar>
+                                {{formalClassList.length}} ausgewählt ...
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addFormalClass()">
+                            <mat-icon>{{addOrEdit(formalClassList)}}</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr class="reference">
+                    <td class="title-column">Image:</td>
+                    <td>
+                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="imageList.length<MAX_CHIPS">
+                            <mat-chip *ngFor="let image of imageList">
+                                <mat-chip-avatar>
+                                    <mat-icon>library_books</mat-icon>
+                                </mat-chip-avatar>
+                                {{image.name}}
+                                <mat-icon matChipRemove (click)="removeImage(image)">cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <mat-chip-list *ngIf="imageList.length>=MAX_CHIPS">
+                            <mat-chip (click)="addImage()">
+                                <mat-chip-avatar>
+                                    <mat-icon>library_books</mat-icon>
+                                </mat-chip-avatar>
+                                {{imageList.length}} ausgewählt ...
+                            </mat-chip>
+                        </mat-chip-list>
+                    </td>
+                    <td class="last-row">
+                        <button mat-button mat-icon-button type="button" color="accent" (click)="addImage()">
+                            <mat-icon>{{addOrEdit(imageList)}}</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+
             </table>
 
         </mat-dialog-content>

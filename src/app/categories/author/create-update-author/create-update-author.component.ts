@@ -55,7 +55,7 @@ export class CreateUpdateAuthorComponent implements OnInit {
             }, [CustomValidators.correctYearSpan("flStartDate", "flEndDate")])
         });
 
-        this.lexiaList = this.editMod ? (this.author.humanAsLexia ? [this.author.humanAsLexia] : []) : [];
+        this.lexiaList = this.author ? (Object.keys(this.author.humanAsLexia).length === 0 ? [] : [this.author.humanAsLexia]) : [];
 
         if (!this.author) {
             this.form.get("birth").disable();

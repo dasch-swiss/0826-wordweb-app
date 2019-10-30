@@ -80,6 +80,7 @@ export class PassageComponent implements OnInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
+        dialogConfig.width = "650px";
         dialogConfig.data = {
             resource: resource,
             editMod: editMod,
