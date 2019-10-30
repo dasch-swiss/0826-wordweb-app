@@ -18,6 +18,7 @@ import {ResearchFieldComponent} from "./categories/research-field/research-field
 import {StatusComponent} from "./categories/status/status.component";
 import {SubjectComponent} from "./categories/subject/subject.component";
 import {VenueComponent} from "./categories/venue/venue.component";
+import {FormalClassComponent} from "./categories/formal-class/formal-class.component";
 
 const routes: Routes = [
   {path: "categories", component: CategoriesComponent},
@@ -25,6 +26,7 @@ const routes: Routes = [
   {path: "author", component: AuthorComponent},
   {path: "book", component: BookComponent},
   {path: "contributor", component: ContributorComponent},
+  {path: "formal", component: FormalClassComponent},
   {path: "function", component: FunctionVoiceComponent},
   {path: "gender", component: GenderComponent},
   {path: "genre", component: GenreComponent},

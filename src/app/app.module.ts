@@ -21,6 +21,7 @@ import {ResearchFieldComponent} from "./categories/research-field/research-field
 import {StatusComponent} from "./categories/status/status.component";
 import {SubjectComponent} from "./categories/subject/subject.component";
 import {VenueComponent} from "./categories/venue/venue.component";
+import {FormalClassComponent} from "./categories/formal-class/formal-class.component";
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 import {
     MAT_SNACK_BAR_DEFAULT_OPTIONS,
@@ -103,7 +104,8 @@ export function initializeApp(appInitService: AppInitService) {
         LexiaRefComponent,
         PassageRefComponent,
         LanguageRefComponent,
-        CategoryRefComponent
+        CategoryRefComponent,
+        FormalClassComponent
     ],
     imports: [
         BrowserModule,

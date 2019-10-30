@@ -76,6 +76,10 @@ export class CategoriesComponent implements OnInit {
         this.router.navigate(["contributor"]);
     }
 
+    showFormalClasses() {
+        this.router.navigate(["formal"]);
+    }
+
     showFunctionVoices() {
         this.router.navigate(["function"]);
     }
