@@ -41,7 +41,6 @@ export interface Book extends WordWebObject {
     edition: string;
     editionHist: string;
     publicComment: string;
-    commentForPassage: boolean;
     authors: Author[] | number[];
     venues: Venue[] | number[];
     organisations: Organisation[] | number[];

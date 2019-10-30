@@ -66,7 +66,6 @@ export class CreateUpdateBookComponent implements OnInit {
                 firstPerformedEndDate: new FormControl(this.book ? this.book.firstPerformedEndDate : "", [Validators.required])
             }, [CustomValidators.correctYearSpan("firstPerformedStartDate", "firstPerformedEndDate")]),
             publicComment: new FormControl(this.book ? this.book.publicComment : "", []),
-            commentForPassage: new FormControl(this.book ? this.book.commentForPassage : true, [Validators.required]),
             internalComment: new FormControl(this.book ? this.book.internalComment : "", []),
             order: new FormControl(this.book ? this.book.order : 0, [])
         });

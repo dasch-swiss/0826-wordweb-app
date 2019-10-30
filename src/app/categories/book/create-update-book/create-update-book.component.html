@@ -97,7 +97,7 @@
                 </tr>
 
                 <tr class="reference">
-                    <td class="title-column">Organisations:</td>
+                    <td class="title-column">Company:</td>
                     <td>
                         <mat-chip-list class="mat-chip-list-stacked" *ngIf="organisationList.length<MAX_CHIPS">
                             <mat-chip *ngFor="let organisation of organisationList">
@@ -321,15 +321,6 @@
                         <mat-form-field class="full-width">
                             <textarea rows="5" matInput formControlName="publicComment"></textarea>
                         </mat-form-field>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="title-column">
-                        Visability
-                    </td>
-                    <td colspan="2">
-                            <mat-slide-toggle formControlName="commentForPassage" (change)="changeToggleText($event.checked)">{{toggleText}}</mat-slide-toggle>
                     </td>
                 </tr>
 

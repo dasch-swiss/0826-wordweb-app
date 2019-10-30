@@ -201,7 +201,6 @@ export class ApiService {
             edition: book.edition,
             editionHist: book.editionHist,
             publicComment: book.publicComment,
-            commentForPassage: book.commentForPassage,
             authors: book.authors.map(author => author.id),
             venues: book.venues.map(venue => venue.id),
             organisations: book.organisations.map(organisation => organisation.id),
