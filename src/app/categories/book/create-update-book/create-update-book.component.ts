@@ -101,8 +101,6 @@ export class CreateUpdateBookComponent implements OnInit {
         this.organisationList = this.book ? this.book.organisations : [];
         this.subjectList = this.book ? this.book.subjects : [];
         this.genreList = this.book ? this.book.genres : [];
-
-        this.changeToggleText(this.form.get("commentForPassage").value);
     }
 
     cancel() {
@@ -237,10 +235,6 @@ export class CreateUpdateBookComponent implements OnInit {
     }
 
     removeLexia(lexia: Lexia) {
-    }
-
-    changeToggleText(checked) {
-        this.toggleText = checked ? "Public comment is visible in passages" : "Public comment is not visible in passages";
     }
 
     onChange(event, groupName: string) {
