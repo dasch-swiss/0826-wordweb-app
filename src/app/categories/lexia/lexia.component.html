@@ -6,7 +6,7 @@
     <div class="filter-container">
 
         <div class="create-btn-container">
-            <button mat-raised-button type="button" color="primary" (click)="create()"><mat-icon>add</mat-icon>Lexia erstellen</button>
+            <button mat-raised-button type="button" color="primary" (click)="create()"><mat-icon>add</mat-icon>Create Lexia</button>
         </div>
 
         <mat-form-field>
@@ -16,7 +16,7 @@
             </button>
         </mat-form-field>
 
-        <div class="row-counter">Anzahl: {{rowCount()}}</div>
+        <div class="row-counter">Amount: {{rowCount()}}</div>
     </div>
 
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
@@ -39,7 +39,7 @@
 
         <!-- order column -->
         <ng-container matColumnDef="order">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Reihenfolge</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Order</th>
             <td mat-cell *matCellDef="let element">
                 <div>{{element.order}}</div>
             </td>
@@ -47,7 +47,7 @@
 
         <!-- reference column -->
         <ng-container matColumnDef="references">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Referenzen</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>References</th>
             <td mat-cell *matCellDef="let element">
                 <div class="read-only-value">{{element.references}}</div>
             </td>
