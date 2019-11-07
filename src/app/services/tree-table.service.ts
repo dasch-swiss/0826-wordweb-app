@@ -29,31 +29,31 @@ export class TreeTableService {
         return acc;
     }
 
-    traverseTree2(treeTable) {
+    traverseExpand(treeTable) {
         treeTable.nodes.map((node) => {
             node.isVisible = true;
             if (node.isExpanded && (node.nodes.length > 0)) {
-                this.traverseTree2(node);
+                this.traverseExpand(node);
             }
         });
     }
 
-    traverseTree3(treeTable) {
+    traverseClose(treeTable) {
         treeTable.nodes.map((node) => {
             node.isVisible = false;
             if (node.nodes.length > 0) {
-                this.traverseTree3(node);
+                this.traverseClose(node);
             }
         });
     }
 
     close(rootNode: any) {
         rootNode.isExpanded = false;
-        this.traverseTree3(rootNode);
+        this.traverseClose(rootNode);
     }
 
     expand(rootNode: any) {
         rootNode.isExpanded = true;
-        this.traverseTree2(rootNode);
+        this.traverseExpand(rootNode);
     }
 }
