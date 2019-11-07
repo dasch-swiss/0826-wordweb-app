@@ -17,7 +17,7 @@ export class GenreComponent implements OnInit {
     value: string;
 
     constructor(private apiService: ApiService,
-                private treeService: TreeTableService) {
+                private treeTableService: TreeTableService) {
         this.value = "";
     }
 
@@ -29,9 +29,10 @@ export class GenreComponent implements OnInit {
         this.apiService.getGenre(0, true)
             .subscribe((genre) => {
                 this.genres = genre.nodes as Genre[];
-                this.treeTable = this.treeService.toTreeTable(this.genres);
-                const newTree = this.treeTable.reduce((acc, element) => this.treeService.flattenTree(acc, element), []);
-                this.dataSource = this.generateDataSource(newTree);
+                console.log(this.treeTable, this.genres);
+                this.treeTable = this.genres.map((g) => this.treeTableService.toTreeTable(g));
+                this.flattenTree();
+                console.log(this.treeTable, this.genres);
             });
     }
 
@@ -59,10 +60,14 @@ export class GenreComponent implements OnInit {
         return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
-    bla(element: any) {
-        element.isExpanded ? this.treeService.close(element) : this.treeService.expand(element);
-        const newTree = this.treeTable.reduce((acc, bla) => this.treeService.flattenTree(acc, bla), []);
-        this.dataSource = this.generateDataSource(newTree);
+    flattenTree() {
+        const flattenTree = this.treeTable.reduce((acc, bla) => this.treeTableService.flattenTree(acc, bla), []);
+        this.dataSource = this.generateDataSource(flattenTree);
+    }
+
+    nodeClick(element: any) {
+        element.isExpanded ? this.treeTableService.close(element) : this.treeTableService.expand(element);
+        this.flattenTree();
     }
 
 }

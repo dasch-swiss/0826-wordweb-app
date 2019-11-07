@@ -8,29 +8,24 @@ export class TreeTableService {
     constructor() {
     }
 
-    toTreeTable(rootNode: any) {
-        const depth = 0;
-        const treeTable = JSON.parse(JSON.stringify(rootNode));
-        return this.traverseTree(depth, treeTable);
+    traverse(root: any, depth: number, f: (node: any, depth: number) => void) {
+        f(root, depth++);
+        return root.nodes.map(n => this.traverse(n, depth, f));
     }
 
-    traverseTree(counter, treeTable) {
-        treeTable.map((el) => {
-            el.isVisible = true;
-            el.isExpanded = true;
-            el.depth = counter;
-            return el.nodes.length > 0 ? this.traverseTree((counter + 1), el.nodes) : el;
+    toTreeTable(root: any): any {
+        const cloneRoot = JSON.parse(JSON.stringify(root));
+        this.traverse(cloneRoot, 0, (node: any, depth: number) => {
+            node.isVisible = true;
+            node.isExpanded = true;
+            node.depth = depth;
         });
-        return treeTable;
+        return cloneRoot;
     }
 
-    flattenTree(acc, element) {
-        acc.push(element);
-        if (element.nodes.length > 0) {
-            element.nodes.map((el) => {
-                this.flattenTree(acc, el);
-            });
-        }
+    flattenTree(acc: any[], root: any) {
+        acc.push(root);
+        root.nodes.map(n => this.flattenTree(acc, n));
         return acc;
     }
 
