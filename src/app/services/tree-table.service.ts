@@ -33,4 +33,32 @@ export class TreeTableService {
         }
         return acc;
     }
+
+    traverseTree2(treeTable) {
+        treeTable.nodes.map((node) => {
+            node.isVisible = true;
+            if (node.isExpanded && (node.nodes.length > 0)) {
+                this.traverseTree2(node);
+            }
+        });
+    }
+
+    traverseTree3(treeTable) {
+        treeTable.nodes.map((node) => {
+            node.isVisible = false;
+            if (node.nodes.length > 0) {
+                this.traverseTree3(node);
+            }
+        });
+    }
+
+    close(rootNode: any) {
+        rootNode.isExpanded = false;
+        this.traverseTree3(rootNode);
+    }
+
+    expand(rootNode: any) {
+        rootNode.isExpanded = true;
+        this.traverseTree2(rootNode);
+    }
 }

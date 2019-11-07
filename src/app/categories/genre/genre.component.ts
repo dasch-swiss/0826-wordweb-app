@@ -22,14 +22,21 @@ export class GenreComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.resetTable();
+    }
+
+    resetTable() {
         this.apiService.getGenre(0, true)
             .subscribe((genre) => {
                 this.genres = genre.nodes as Genre[];
                 this.treeTable = this.treeService.toTreeTable(this.genres);
                 const newTree = this.treeTable.reduce((acc, element) => this.treeService.flattenTree(acc, element), []);
-
-                this.dataSource = new MatTableDataSource(newTree);
+                this.dataSource = this.generateDataSource(newTree);
             });
+    }
+
+    generateDataSource(newTree): MatTableDataSource<any> {
+        return new MatTableDataSource(newTree.filter(x => x.isVisible));
     }
 
     edit(element) {
@@ -50,6 +57,12 @@ export class GenreComponent implements OnInit {
 
     rowCount() {
         return this.dataSource ? this.dataSource.filteredData.length : 0;
+    }
+
+    bla(element: any) {
+        element.isExpanded ? this.treeService.close(element) : this.treeService.expand(element);
+        const newTree = this.treeTable.reduce((acc, bla) => this.treeService.flattenTree(acc, bla), []);
+        this.dataSource = this.generateDataSource(newTree);
     }
 
 }
