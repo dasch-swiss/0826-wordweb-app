@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {ApiService} from "../../../services/api.service";
+import {Lexia} from "../../../model/model";
 
 @Component({
     selector: "app-create-update-venue",
@@ -9,29 +10,27 @@ import {ApiService} from "../../../services/api.service";
     styleUrls: ["./create-update-venue.component.scss"]
 })
 export class CreateUpdateVenueComponent implements OnInit {
+    readonly MAX_CHIPS: number = 4;
     venue: any;
-    editMod: boolean;
     form: FormGroup;
+    lexiaList: Lexia[];
 
     constructor(private dialogRef: MatDialogRef<CreateUpdateVenueComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.venue = JSON.parse(JSON.stringify(data.resource));
-        this.editMod = data.editMod;
     }
 
     ngOnInit() {
         this.form = new FormGroup({
-            internalID: new FormControl(this.editMod ? this.venue.internalID : "", []),
-            name: new FormControl(this.editMod ? this.venue.name : "", [Validators.required]),
-            place: new FormControl(this.editMod ? this.venue.place : "", [])
+            internalID: new FormControl(this.venue ? this.venue.internalID : "", []),
+            name: new FormControl(this.venue ? this.venue.name : "", [Validators.required]),
+            place: new FormControl(this.venue ? this.venue.place : "", [])
         });
-    }
 
-    cancel() {
-        this.dialogRef.close({refresh: false});
+        this.lexiaList = this.venue ? (Object.keys(this.venue.venueAsLexia).length === 0 ? [] : [this.venue.venueAsLexia]) : [];
     }
 
     submit() {
-        if (this.editMod) {
+        if (this.venue) {
             this.venue.internalID = this.form.get("internalID").value;
             this.venue.name = this.form.get("name").value;
             this.venue.place = this.form.get("place").value;
@@ -54,12 +53,26 @@ export class CreateUpdateVenueComponent implements OnInit {
         }
     }
 
+    cancel() {
+        this.dialogRef.close({refresh: false});
+    }
+
+    addLexia() {
+    }
+
+    removeLexia(lexia: Lexia) {
+    }
+
+    addOrEdit(list: any[]): string {
+        return list.length === 0 ? "add" : "edit";
+    }
+
     getTitle(): string {
-        return this.editMod ? "Edit venue" : "Create new venue";
+        return this.venue ? "Edit venue" : "Create new venue";
     }
 
     getButtonText(): string {
-        return this.editMod ? "SAVE" : "CREATE";
+        return this.venue ? "SAVE" : "CREATE";
     }
 
 }

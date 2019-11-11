@@ -1,10 +1,9 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogConfig, MatDialogRef, MatSnackBar} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from "@angular/material";
 import {ApiService} from "../../../services/api.service";
 import {CustomValidators} from "../../../customValidators";
-import {VenueRefComponent} from "../../../dialog/venue-ref/venue-ref.component";
-import {Lexia, Venue} from "../../../model/model";
+import {Lexia} from "../../../model/model";
 
 @Component({
     selector: "app-create-update-author",
@@ -14,10 +13,8 @@ import {Lexia, Venue} from "../../../model/model";
 export class CreateUpdateAuthorComponent implements OnInit {
     readonly MAX_CHIPS: number = 4;
     author: any;
-    editMod: boolean;
     form: FormGroup;
     genders: any;
-    activeDisabled: boolean;
     lexiaList: Lexia[];
 
     constructor(private dialogRef: MatDialogRef<CreateUpdateAuthorComponent>,
@@ -25,33 +22,31 @@ export class CreateUpdateAuthorComponent implements OnInit {
                 private apiService: ApiService,
                 private snackBar: MatSnackBar) {
         this.author = JSON.parse(JSON.stringify(data.resource));
-        this.editMod = data.editMod;
-        this.activeDisabled = true;
     }
 
     ngOnInit() {
         this.genders = this.apiService.getGenders();
 
         this.form = new FormGroup({
-            internalID: new FormControl(this.editMod ? this.author.internalID : "", [Validators.required]),
-            firstName: new FormControl(this.editMod ? this.author.firstName : "", [Validators.required]),
-            lastName: new FormControl(this.editMod ? this.author.lastName : "", [Validators.required]),
-            description: new FormControl(this.editMod ? this.author.description : "", []),
-            gender: new FormControl(this.editMod ? this.author.gender.id : "", [Validators.required]),
-            birthCheck: new FormControl(this.editMod && this.author.birthStartDate, []),
+            internalID: new FormControl(this.author ? this.author.internalID : "", [Validators.required]),
+            firstName: new FormControl(this.author ? this.author.firstName : "", [Validators.required]),
+            lastName: new FormControl(this.author ? this.author.lastName : "", [Validators.required]),
+            description: new FormControl(this.author ? this.author.description : "", []),
+            gender: new FormControl(this.author ? this.author.gender.id : "", [Validators.required]),
+            birthCheck: new FormControl(this.author && this.author.birthStartDate, []),
             birth: new FormGroup({
-                birthStartDate: new FormControl(this.editMod ? this.author.birthStartDate : "", [Validators.required]),
-                birthEndDate: new FormControl(this.editMod ? this.author.birthEndDate : "", [Validators.required]),
+                birthStartDate: new FormControl(this.author ? this.author.birthStartDate : "", [Validators.required]),
+                birthEndDate: new FormControl(this.author ? this.author.birthEndDate : "", [Validators.required]),
             }, [CustomValidators.correctYearSpan("birthStartDate", "birthEndDate")]),
-            deathCheck: new FormControl(this.editMod && this.author.deathStartDate, []),
+            deathCheck: new FormControl(this.author && this.author.deathStartDate, []),
             death: new FormGroup({
-                deathStartDate: new FormControl(this.editMod ? this.author.deathStartDate : "", [Validators.required]),
-                deathEndDate: new FormControl(this.editMod ? this.author.deathEndDate : "", [Validators.required]),
+                deathStartDate: new FormControl(this.author ? this.author.deathStartDate : "", [Validators.required]),
+                deathEndDate: new FormControl(this.author ? this.author.deathEndDate : "", [Validators.required]),
             }, [CustomValidators.correctYearSpan("deathStartDate", "deathEndDate")]),
-            flCheck: new FormControl(this.editMod && this.author.flStartDate, []),
+            flCheck: new FormControl(this.author && this.author.flStartDate, []),
             fl: new FormGroup({
-                flStartDate: new FormControl(this.editMod ? this.author.flStartDate : "", [Validators.required]),
-                flEndDate: new FormControl(this.editMod ? this.author.flEndDate : "", [Validators.required])
+                flStartDate: new FormControl(this.author ? this.author.flStartDate : "", [Validators.required]),
+                flEndDate: new FormControl(this.author ? this.author.flEndDate : "", [Validators.required])
             }, [CustomValidators.correctYearSpan("flStartDate", "flEndDate")])
         });
 
@@ -77,7 +72,7 @@ export class CreateUpdateAuthorComponent implements OnInit {
     }
 
     submit() {
-        if (this.editMod) {
+        if (this.author) {
             this.author.internalID = this.form.get("internalID").value;
             this.author.firstName = this.form.get("firstName").value;
             this.author.lastName = this.form.get("lastName").value;
@@ -122,6 +117,10 @@ export class CreateUpdateAuthorComponent implements OnInit {
         }
     }
 
+    cancel() {
+        this.dialogRef.close({refresh: false});
+    }
+
     addLexia() {
     }
 
@@ -132,20 +131,16 @@ export class CreateUpdateAuthorComponent implements OnInit {
         event.checked ? this.form.get(groupName).enable() : this.form.get(groupName).disable();
     }
 
-    cancel() {
-        this.dialogRef.close({refresh: false});
-    }
-
     addOrEdit(list: any[]): string {
         return list.length === 0 ? "add" : "edit";
     }
 
     getTitle(): string {
-        return this.editMod ? "Edit author" : "Create new author";
+        return this.author ? "Edit author" : "Create new author";
     }
 
     getButtonText(): string {
-        return this.editMod ? "SAVE" : "CREATE";
+        return this.author ? "SAVE" : "CREATE";
     }
 
 }

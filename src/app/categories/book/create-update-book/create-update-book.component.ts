@@ -1,9 +1,8 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Author, Genre, Language, Lexia, Organisation, Subject, Venue} from "../../../model/model";
+import {Author, Genre, Lexia, Organisation, Subject, Venue} from "../../../model/model";
 import {ApiService} from "../../../services/api.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material";
-import {Router} from "@angular/router";
 import {AuthorRefComponent} from "../../../dialog/author-ref/author-ref.component";
 import {VenueRefComponent} from "../../../dialog/venue-ref/venue-ref.component";
 import {OrganisationRefComponent} from "../../../dialog/organisation-ref/organisation-ref.component";
@@ -25,14 +24,12 @@ export class CreateUpdateBookComponent implements OnInit {
     genreList: Genre[];
     lexiaList: Lexia[];
     languages: any;
-    toggleText: string;
 
     constructor(private apiService: ApiService,
                 private authorDialog: MatDialog,
                 private venueDialog: MatDialog,
                 private organisationDialog: MatDialog,
                 private languageDialog: MatDialog,
-                private router: Router,
                 private dialogRef: MatDialogRef<CreateUpdateBookComponent>,
                 @Inject(MAT_DIALOG_DATA) data) {
         this.book = JSON.parse(JSON.stringify(data.resource));
@@ -103,10 +100,6 @@ export class CreateUpdateBookComponent implements OnInit {
         this.genreList = this.book ? this.book.genres : [];
     }
 
-    cancel() {
-        this.dialogRef.close({refresh: false});
-    }
-
     submit() {
         if (this.book) {
             this.book.internalID = this.form.get("internalID").value;
@@ -137,6 +130,10 @@ export class CreateUpdateBookComponent implements OnInit {
                     this.dialogRef.close({refresh: true});
                 });
         }
+    }
+
+    cancel() {
+        this.dialogRef.close({refresh: false});
     }
 
     addAuthor() {

@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {ApiService} from "../../../services/api.service";
+import {Lexia} from "../../../model/model";
 
 @Component({
   selector: "app-create-update-organisation",
@@ -9,28 +10,26 @@ import {ApiService} from "../../../services/api.service";
   styleUrls: ["./create-update-organisation.component.scss"]
 })
 export class CreateUpdateOrganisationComponent implements OnInit {
+    readonly MAX_CHIPS: number = 4;
     organisation: any;
-    editMod: boolean;
     form: FormGroup;
+    lexiaList: Lexia[];
 
     constructor(private dialogRef: MatDialogRef<CreateUpdateOrganisationComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.organisation = JSON.parse(JSON.stringify(data.resource));
-        this.editMod = data.editMod;
     }
 
     ngOnInit() {
         this.form = new FormGroup({
-            internalID: new FormControl(this.editMod ? this.organisation.internalID : "", []),
-            name: new FormControl(this.editMod ? this.organisation.name : "", [Validators.required])
+            internalID: new FormControl(this.organisation ? this.organisation.internalID : "", []),
+            name: new FormControl(this.organisation ? this.organisation.name : "", [Validators.required])
         });
-    }
 
-    cancel() {
-        this.dialogRef.close({refresh: false});
+        this.lexiaList = this.organisation ? (Object.keys(this.organisation.organisationAsLexia).length === 0 ? [] : [this.organisation.organisationAsLexia]) : [];
     }
 
     submit() {
-        if (this.editMod) {
+        if (this.organisation) {
             this.organisation.internalID = this.form.get("internalID").value;
             this.organisation.name = this.form.get("name").value;
             // update request
@@ -51,12 +50,26 @@ export class CreateUpdateOrganisationComponent implements OnInit {
         }
     }
 
+    cancel() {
+        this.dialogRef.close({refresh: false});
+    }
+
+    addLexia() {
+    }
+
+    removeLexia(lexia: Lexia) {
+    }
+
+    addOrEdit(list: any[]): string {
+        return list.length === 0 ? "add" : "edit";
+    }
+
     getTitle(): string {
-        return this.editMod ? "Sprache bearbeiten" : "Neue Sprache erstellen";
+        return this.organisation ? "Edit company" : "Create new company";
     }
 
     getButtonText(): string {
-        return this.editMod ? "SPEICHERN" : "ERSTELLEN";
+        return this.organisation ? "SAVE" : "CREATE";
     }
 
 }

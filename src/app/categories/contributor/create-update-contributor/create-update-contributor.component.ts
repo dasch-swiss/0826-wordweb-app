@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ApiService} from "../../../services/api.service";
-import {Contributor} from "../../../model/model";
+import {Contributor, Lexia} from "../../../model/model";
 
 @Component({
   selector: "app-create-update-contributor",
@@ -10,34 +10,32 @@ import {Contributor} from "../../../model/model";
   styleUrls: ["./create-update-contributor.component.scss"]
 })
 export class CreateUpdateContributorComponent implements OnInit {
+    readonly MAX_CHIPS: number = 4;
     contributor: any;
-    editMod: boolean;
     form: FormGroup;
+    lexiaList: Lexia[];
     genders: any;
 
     constructor(private dialogRef: MatDialogRef<CreateUpdateContributorComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.contributor = JSON.parse(JSON.stringify(data.resource)) as Contributor;
-        this.editMod = data.editMod;
     }
 
     ngOnInit() {
         this.genders = this.apiService.getGenders();
 
         this.form = new FormGroup({
-            internalID: new FormControl(this.editMod ? this.contributor.internalID : "", [Validators.required]),
-            firstName: new FormControl(this.editMod ? this.contributor.firstName : "", [Validators.required]),
-            lastName: new FormControl(this.editMod ? this.contributor.lastName : "", [Validators.required]),
-            gender: new FormControl(this.editMod ? this.contributor.gender.id : "", [Validators.required]),
-            email: new FormControl(this.editMod ? this.contributor.email : "", [])
+            internalID: new FormControl(this.contributor ? this.contributor.internalID : "", [Validators.required]),
+            firstName: new FormControl(this.contributor ? this.contributor.firstName : "", [Validators.required]),
+            lastName: new FormControl(this.contributor ? this.contributor.lastName : "", [Validators.required]),
+            gender: new FormControl(this.contributor ? this.contributor.gender.id : "", [Validators.required]),
+            email: new FormControl(this.contributor ? this.contributor.email : "", [])
         });
-    }
 
-    cancel() {
-        this.dialogRef.close({refresh: false});
+        this.lexiaList = this.contributor ? (Object.keys(this.contributor.humanAsLexia).length === 0 ? [] : [this.contributor.humanAsLexia]) : [];
     }
 
     submit() {
-        if (this.editMod) {
+        if (this.contributor) {
             this.contributor.internalID = this.form.get("internalID").value;
             this.contributor.firstName = this.form.get("firstName").value;
             this.contributor.lastName = this.form.get("lastName").value;
@@ -64,12 +62,26 @@ export class CreateUpdateContributorComponent implements OnInit {
         }
     }
 
+    addLexia() {
+    }
+
+    removeLexia(lexia: Lexia) {
+    }
+
+    cancel() {
+        this.dialogRef.close({refresh: false});
+    }
+
+    addOrEdit(list: any[]): string {
+        return list.length === 0 ? "add" : "edit";
+    }
+
     getTitle(): string {
-        return this.editMod ? "Edit contributor" : "Create new contributor";
+        return this.contributor ? "Edit contributor" : "Create new contributor";
     }
 
     getButtonText(): string {
-        return this.editMod ? "SAVE" : "CREATE";
+        return this.contributor ? "SAVE" : "CREATE";
     }
 
 }

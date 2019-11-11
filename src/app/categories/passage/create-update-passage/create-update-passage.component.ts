@@ -12,7 +12,6 @@ import {Book, Contributor, FunctionVoice, Lexia, Marking, Passage, ResearchField
 export class CreateUpdatePassageComponent implements OnInit {
     readonly MAX_CHIPS: number = 4;
     passage: any;
-    editMod: boolean;
     form: FormGroup;
     statuses: any;
     lexiaList: Lexia[];
@@ -25,17 +24,16 @@ export class CreateUpdatePassageComponent implements OnInit {
 
     constructor(private dialogRef: MatDialogRef<CreateUpdatePassageComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.passage = JSON.parse(JSON.stringify(data.resource));
-        this.editMod = data.editMod;
         console.log(this.passage);
     }
 
     ngOnInit() {
         this.form = new FormGroup({
-            text: new FormControl(this.editMod ? this.passage.text : "", []),
-            textHist: new FormControl(this.editMod ? this.passage.textHist : "", []),
-            page: new FormControl(this.editMod ? this.passage.page : "", []),
-            pageHist: new FormControl(this.editMod ? this.passage.pageHist : "", []),
-            status: new FormControl(this.editMod ? this.passage.status.id : "", [])
+            text: new FormControl(this.passage ? this.passage.text : "", []),
+            textHist: new FormControl(this.passage ? this.passage.textHist : "", []),
+            page: new FormControl(this.passage ? this.passage.page : "", []),
+            pageHist: new FormControl(this.passage ? this.passage.pageHist : "", []),
+            status: new FormControl(this.passage ? this.passage.status.id : "", [])
         });
 
         this.statuses = this.apiService.getStatuses();
@@ -50,7 +48,7 @@ export class CreateUpdatePassageComponent implements OnInit {
     }
 
     submit() {
-        if (this.editMod) {
+        if (this.passage) {
             this.passage.text = this.form.get("text").value;
             this.passage.textHist = this.form.get("textHist").value;
             this.passage.page = this.form.get("page").value;
@@ -123,11 +121,11 @@ export class CreateUpdatePassageComponent implements OnInit {
     }
 
     getTitle(): string {
-        return this.editMod ? "Edit passage" : "Create new passage";
+        return this.passage ? "Edit passage" : "Create new passage";
     }
 
     getButtonText(): string {
-        return this.editMod ? "SAVE" : "CREATE";
+        return this.passage ? "SAVE" : "CREATE";
     }
 
 }

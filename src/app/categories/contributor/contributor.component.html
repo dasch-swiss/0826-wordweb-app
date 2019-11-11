@@ -6,7 +6,7 @@
     <div class="filter-container">
 
         <div class="create-btn-container">
-            <button mat-raised-button type="button" color="primary" (click)="create()"><mat-icon>add</mat-icon>Verfasser erstellen</button>
+            <button mat-raised-button type="button" color="primary" (click)="create()"><mat-icon>add</mat-icon>Create Contributor</button>
         </div>
 
         <mat-form-field>
@@ -16,7 +16,7 @@
             </button>
         </mat-form-field>
 
-        <div class="row-counter">Anzahl: {{rowCount()}}</div>
+        <div class="row-counter">Amount: {{rowCount()}}</div>
     </div>
 
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">

@@ -1,8 +1,10 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {ApiService} from "../../services/api.service";
-import {Genre} from "../../model/model";
-import {MatTableDataSource} from "@angular/material";
+import {Genre, Language} from "../../model/model";
+import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
 import {TreeTableService} from "../../services/tree-table.service";
+import {CreateUpdateLanguageComponent} from "../language/create-update-language/create-update-language.component";
+import {CreateUpdateGenreComponent} from "./create-update-genre/create-update-genre.component";
 
 @Component({
     selector: "app-genre",
@@ -16,8 +18,11 @@ export class GenreComponent implements OnInit {
     displayedColumns: string[] = ["name", "references", "action"];
     value: string;
 
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
+
     constructor(private apiService: ApiService,
-                private treeTableService: TreeTableService) {
+                private treeTableService: TreeTableService,
+                private createGenreDialog: MatDialog) {
         this.value = "";
     }
 
@@ -29,10 +34,8 @@ export class GenreComponent implements OnInit {
         this.apiService.getGenre(0, true)
             .subscribe((genre) => {
                 this.genres = genre.nodes as Genre[];
-                console.log(this.treeTable, this.genres);
                 this.treeTable = this.genres.map((g) => this.treeTableService.toTreeTable(g));
                 this.flattenTree();
-                console.log(this.treeTable, this.genres);
             });
     }
 
@@ -40,8 +43,29 @@ export class GenreComponent implements OnInit {
         return new MatTableDataSource(newTree.filter(x => x.isVisible));
     }
 
-    edit(element) {
-        console.log(element);
+    create() {
+        this.createOrEditResource(false);
+    }
+
+    edit(language: Language) {
+        this.createOrEditResource(true, language);
+    }
+
+    createOrEditResource(editMod: boolean, resource: Language = null) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            resource: resource,
+            editMod: editMod,
+        };
+        const dialogRef = this.createGenreDialog.open(CreateUpdateGenreComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.refresh) {
+                this.resetTable();
+                this.dataSource.sort = this.sort;
+            }
+        });
     }
 
     formatIndentation(node: any): string {

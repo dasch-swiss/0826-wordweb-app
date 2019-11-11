@@ -12,7 +12,6 @@ import {FormalClass, Image, Passage} from "../../../model/model";
 export class CreateUpdateLexiaComponent implements OnInit {
     readonly MAX_CHIPS: number = 4;
     lexia: any;
-    editMod: boolean;
     form: FormGroup;
     passageList: Passage[];
     formalClassList: FormalClass[];
@@ -20,13 +19,12 @@ export class CreateUpdateLexiaComponent implements OnInit {
 
     constructor(private dialogRef: MatDialogRef<CreateUpdateLexiaComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.lexia = JSON.parse(JSON.stringify(data.resource));
-        this.editMod = data.editMod;
     }
 
     ngOnInit() {
         this.form = new FormGroup({
-            internalID: new FormControl(this.editMod ? this.lexia.internalID : "", []),
-            name: new FormControl(this.editMod ? this.lexia.name : "", [Validators.required])
+            internalID: new FormControl(this.lexia ? this.lexia.internalID : "", []),
+            name: new FormControl(this.lexia ? this.lexia.name : "", [Validators.required])
         });
 
         this.passageList = this.lexia ? this.lexia.usedIn : [];
@@ -39,7 +37,7 @@ export class CreateUpdateLexiaComponent implements OnInit {
     }
 
     submit() {
-        if (this.editMod) {
+        if (this.lexia) {
             this.lexia.internalID = this.form.get("internalID").value;
             this.lexia.name = this.form.get("name").value;
             // update request
@@ -83,11 +81,11 @@ export class CreateUpdateLexiaComponent implements OnInit {
     }
 
     getTitle(): string {
-        return this.editMod ? "Edit lexia" : "Create new lexia";
+        return this.lexia ? "Edit lexia" : "Create new lexia";
     }
 
     getButtonText(): string {
-        return this.editMod ? "SAVE" : "CREATE";
+        return this.lexia ? "SAVE" : "CREATE";
     }
 
 }

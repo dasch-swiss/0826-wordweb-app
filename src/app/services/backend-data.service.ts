@@ -1944,6 +1944,295 @@ export class BackendDataService {
         internalComment: ""
     };
 
+    private lex1: Lexia = {
+        id: 1,
+        internalID: "#002007",
+        name: "moist hand indicating arousal",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex2: Lexia = {
+        id: 2,
+        internalID: "#002082",
+        name: "I have lived too long",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+
+    };
+
+    private lex3: Lexia = {
+        id: 3,
+        internalID: "#000787",
+        name: "devil haunting in the likeness of sb",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex4: Lexia = {
+        id: 4,
+        internalID: "#001082",
+        name: "IMAGE - music as perfect harmony",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex5: Lexia = {
+        id: 5,
+        internalID: "#000007",
+        name: "pampered jades",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex6: Lexia = {
+        id: 6,
+        internalID: "#001000",
+        name: "brain of a cat",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex7: Lexia = {
+        id: 7,
+        internalID: "#002084",
+        name: "IMAGE - walled in with something beautiful",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex8: Lexia = {
+        id: 8,
+        internalID: "#002013",
+        name: "IMAGE - woman is like a jewel hanging in (Ethiop's) ear",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex9: Lexia = {
+        id: 9,
+        internalID: "#002067",
+        name: "great person's revenue on back",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex10: Lexia = {
+        id: 10,
+        internalID: "#000064",
+        name: "IMAGE - sea can't wash bloody hands",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex11: Lexia = {
+        id: 11,
+        internalID: "#002077",
+        name: "no other proof",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex12: Lexia = {
+        id: 12,
+        internalID: "#000792",
+        name: "give out my Anne is sick",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex13: Lexia = {
+        id: 13,
+        internalID: "#002046",
+        name: "cannot brook these",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex14: Lexia = {
+        id: 14,
+        internalID: "#001016",
+        name: "cannot abide gaping pig",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex15: Lexia = {
+        id: 15,
+        internalID: "#000116",
+        name: "prophetic soul",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex16: Lexia = {
+        id: 16,
+        internalID: "#000766",
+        name: "adulterate beast",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex17: Lexia = {
+        id: 17,
+        internalID: "#000335",
+        name: "Hic et ubique - here, there and everywhere",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex18: Lexia = {
+        id: 18,
+        internalID: "#005005",
+        name: "SETPIECE - To be or not to be",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex19: Lexia = {
+        id: 19,
+        internalID: "#000292",
+        name: "oh what a falling off",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 1,
+        internalComment: ""
+    };
+
+    private lex20: Lexia = {
+        id: 20,
+        internalID: "#001124",
+        name: "William Shakespeare",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private lex21: Lexia = {
+        id: 21,
+        internalID: "#001125",
+        name: "Hamlet",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private lex22: Lexia = {
+        id: 22,
+        internalID: "#001125",
+        name: "Regula Hohl",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private lex23: Lexia = {
+        id: 23,
+        internalID: "#001126",
+        name: "Cockpit",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
+    private lex24: Lexia = {
+        id: 24,
+        internalID: "#001127",
+        name: "King's Men",
+        usedIn: [],
+        formalClass: null,
+        image: null,
+        order: 0,
+        references: 0,
+        internalComment: ""
+    };
+
     private con1: Contributor = {
         id: 1,
         internalID: "&004001",
@@ -1951,7 +2240,7 @@ export class BackendDataService {
         lastName: "Hohl",
         email: "r.hohl@unibas.ch",
         gender: this.gen2.id,
-        humanAsLexia: null,
+        humanAsLexia: this.lex22.id,
         order: 0,
         references: 22,
         internalComment: ""
@@ -2301,7 +2590,7 @@ export class BackendDataService {
         internalID: "#008003",
         name: "Cockpit",
         place: "London",
-        venueAsLexia: null,
+        venueAsLexia: this.lex23.id,
         order: 0,
         references: 23,
         internalComment: ""
@@ -2366,7 +2655,7 @@ export class BackendDataService {
         id: 1,
         internalID: "#009001",
         name: "King's Men",
-        organisationAsLexia: null,
+        organisationAsLexia: this.lex24.id,
         order: 0,
         references: 17,
         internalComment: ""
@@ -2429,247 +2718,6 @@ export class BackendDataService {
         organisationAsLexia: null,
         order: 0,
         references: 18,
-        internalComment: ""
-    };
-
-    private lex1: Lexia = {
-        id: 1,
-        internalID: "#002007",
-        name: "moist hand indicating arousal",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex2: Lexia = {
-        id: 2,
-        internalID: "#002082",
-        name: "I have lived too long",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-
-    };
-
-    private lex3: Lexia = {
-        id: 3,
-        internalID: "#000787",
-        name: "devil haunting in the likeness of sb",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex4: Lexia = {
-        id: 4,
-        internalID: "#001082",
-        name: "IMAGE - music as perfect harmony",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex5: Lexia = {
-        id: 5,
-        internalID: "#000007",
-        name: "pampered jades",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex6: Lexia = {
-        id: 6,
-        internalID: "#001000",
-        name: "brain of a cat",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex7: Lexia = {
-        id: 7,
-        internalID: "#002084",
-        name: "IMAGE - walled in with something beautiful",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex8: Lexia = {
-        id: 8,
-        internalID: "#002013",
-        name: "IMAGE - woman is like a jewel hanging in (Ethiop's) ear",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex9: Lexia = {
-        id: 9,
-        internalID: "#002067",
-        name: "great person's revenue on back",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex10: Lexia = {
-        id: 10,
-        internalID: "#000064",
-        name: "IMAGE - sea can't wash bloody hands",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex11: Lexia = {
-        id: 11,
-        internalID: "#002077",
-        name: "no other proof",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex12: Lexia = {
-        id: 12,
-        internalID: "#000792",
-        name: "give out my Anne is sick",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex13: Lexia = {
-        id: 13,
-        internalID: "#002046",
-        name: "cannot brook these",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex14: Lexia = {
-        id: 14,
-        internalID: "#001016",
-        name: "cannot abide gaping pig",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex15: Lexia = {
-        id: 15,
-        internalID: "#000116",
-        name: "prophetic soul",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex16: Lexia = {
-        id: 16,
-        internalID: "#000766",
-        name: "adulterate beast",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex17: Lexia = {
-        id: 17,
-        internalID: "#000335",
-        name: "Hic et ubique - here, there and everywhere",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex18: Lexia = {
-        id: 18,
-        internalID: "#005005",
-        name: "SETPIECE - To be or not to be",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex19: Lexia = {
-        id: 19,
-        internalID: "#000292",
-        name: "oh what a falling off",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 1,
-        internalComment: ""
-    };
-
-    private lex20: Lexia = {
-        id: 20,
-        internalID: "#001124",
-        name: "William Shakespeare",
-        usedIn: [],
-        formalClass: null,
-        image: null,
-        order: 0,
-        references: 0,
         internalComment: ""
     };
 
@@ -3362,7 +3410,7 @@ export class BackendDataService {
         editionHist: "Shakespeare, William.  Hamlet.",
         language: this.lang1.id,
         subjects: [this.s5.id],
-        bookAsLexia: null,
+        bookAsLexia: this.lex21.id,
         order: 0,
         references: 2,
         internalComment: ""
@@ -3860,10 +3908,9 @@ export class BackendDataService {
         this.objContributors = BackendDataService.createObject(this.contributorList);
 
         this.lexiaList = [
-            this.lex1, this.lex2, this.lex3, this.lex4, this.lex5,
-            this.lex6, this.lex7, this.lex8, this.lex9, this.lex10,
-            this.lex11, this.lex12, this.lex13, this.lex14, this.lex15,
-            this.lex16, this.lex17, this.lex18, this.lex19, this.lex20
+            this.lex1, this.lex2, this.lex3, this.lex4, this.lex5, this.lex6, this.lex7, this.lex8, this.lex9,
+            this.lex10, this.lex11, this.lex12, this.lex13, this.lex14, this.lex15, this.lex16, this.lex17, this.lex18, this.lex19,
+            this.lex20, this.lex21, this.lex22, this.lex23, this.lex24
         ];
         this.objLexia = BackendDataService.createObject(this.lexiaList);
 

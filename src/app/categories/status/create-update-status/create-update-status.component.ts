@@ -10,17 +10,15 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class CreateUpdateStatusComponent implements OnInit {
     status: any;
-    editMod: boolean;
     form: FormGroup;
 
     constructor(private dialogRef: MatDialogRef<CreateUpdateStatusComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.status = JSON.parse(JSON.stringify(data.resource));
-        this.editMod = data.editMod;
     }
 
     ngOnInit() {
         this.form = new FormGroup({
-            name: new FormControl(this.editMod ? this.status.name : "", [Validators.required])
+            name: new FormControl(this.status ? this.status.name : "", [Validators.required])
         });
     }
 
@@ -29,7 +27,7 @@ export class CreateUpdateStatusComponent implements OnInit {
     }
 
     submit() {
-        if (this.editMod) {
+        if (this.status) {
             this.status.name = this.form.get("name").value;
             // update request
             this.apiService.updateLanguage(this.status.id, this.status)
@@ -49,11 +47,11 @@ export class CreateUpdateStatusComponent implements OnInit {
     }
 
     getTitle(): string {
-        return this.editMod ? "Edit status" : "Create new status";
+        return this.status ? "Edit status" : "Create new status";
     }
 
     getButtonText(): string {
-        return this.editMod ? "SAVE" : "CREATE";
+        return this.status ? "SAVE" : "CREATE";
     }
 
 }

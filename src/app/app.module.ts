@@ -58,6 +58,7 @@ import {CategoryRefComponent} from "./dialog/category-ref.component";
 import {AppInitService} from "./app-init.service";
 import {KuiCoreConfigToken} from "@knora/core";
 import {HttpClientModule} from "@angular/common/http";
+import { CreateUpdateGenreComponent } from './categories/genre/create-update-genre/create-update-genre.component';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
@@ -105,7 +106,8 @@ export function initializeApp(appInitService: AppInitService) {
         PassageRefComponent,
         LanguageRefComponent,
         CategoryRefComponent,
-        FormalClassComponent
+        FormalClassComponent,
+        CreateUpdateGenreComponent
     ],
     imports: [
         BrowserModule,
@@ -159,6 +161,7 @@ export function initializeApp(appInitService: AppInitService) {
         CreateUpdateVenueComponent,
         CreateUpdateGenderComponent,
         CreateUpdateStatusComponent,
+        CreateUpdateGenreComponent,
         AuthorRefComponent,
         BookRefComponent,
         OrganisationRefComponent,

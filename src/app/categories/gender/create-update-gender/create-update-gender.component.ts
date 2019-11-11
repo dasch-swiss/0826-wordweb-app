@@ -10,17 +10,15 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class CreateUpdateGenderComponent implements OnInit {
     gender: any;
-    editMod: boolean;
     form: FormGroup;
 
     constructor(private dialogRef: MatDialogRef<CreateUpdateGenderComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.gender = JSON.parse(JSON.stringify(data.resource));
-        this.editMod = data.editMod;
     }
 
     ngOnInit() {
         this.form = new FormGroup({
-            name: new FormControl(this.editMod ? this.gender.name : "", [Validators.required])
+            name: new FormControl(this.gender ? this.gender.name : "", [Validators.required])
         });
     }
 
@@ -29,7 +27,7 @@ export class CreateUpdateGenderComponent implements OnInit {
     }
 
     submit() {
-        if (this.editMod) {
+        if (this.gender) {
             this.gender.name = this.form.get("name").value;
             // update request
             this.apiService.updateLanguage(this.gender.id, this.gender)
@@ -49,11 +47,11 @@ export class CreateUpdateGenderComponent implements OnInit {
     }
 
     getTitle(): string {
-        return this.editMod ? "Edit gender" : "Create new gender";
+        return this.gender ? "Edit gender" : "Create new gender";
     }
 
     getButtonText(): string {
-        return this.editMod ? "SAVE" : "CREATE";
+        return this.gender ? "SAVE" : "CREATE";
     }
 
 }

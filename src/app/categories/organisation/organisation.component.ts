@@ -25,7 +25,8 @@ export class OrganisationComponent implements OnInit {
     }
 
     resetTable() {
-        this.apiService.getOrganisations().subscribe((organisations) => {
+        this.apiService.getOrganisations(true).subscribe((organisations) => {
+            console.log(organisations);
             this.dataSource = new MatTableDataSource(organisations);
             this.dataSource.sort = this.sort;
         });
