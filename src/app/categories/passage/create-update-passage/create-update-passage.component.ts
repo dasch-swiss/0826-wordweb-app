@@ -1,8 +1,9 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material";
 import {ApiService} from "../../../services/api.service";
-import {Book, Contributor, FunctionVoice, Lexia, Marking, Passage, ResearchField} from "../../../model/model";
+import {Author, Book, Contributor, FunctionVoice, Lexia, Marking, Passage, ResearchField} from "../../../model/model";
+import {CategoryRefComponent} from "../../../dialog/category-ref.component";
 
 @Component({
     selector: "app-create-update-passage",
@@ -22,7 +23,12 @@ export class CreateUpdatePassageComponent implements OnInit {
     functionVoiceList: FunctionVoice[];
     contributorList: Contributor[];
 
-    constructor(private dialogRef: MatDialogRef<CreateUpdatePassageComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+    constructor(private bookDialog: MatDialog,
+                private lexiaDialog: MatDialog,
+                private contributorDialog: MatDialog,
+                private dialogRef: MatDialogRef<CreateUpdatePassageComponent>,
+                @Inject(MAT_DIALOG_DATA) data,
+                private apiService: ApiService) {
         this.passage = JSON.parse(JSON.stringify(data.resource));
         console.log(this.passage);
     }
@@ -74,12 +80,65 @@ export class CreateUpdatePassageComponent implements OnInit {
     }
 
     addBook() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            res: this.bookList,
+            resType: "book",
+            props: ["internalID", "title"],
+            filter: (book: Book, value: string): boolean => {
+                const containsID = book.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                const containsTitle = book.title.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                // const containsAuthorName = book.authors.filter(author => {
+                //     const fullName = `${author.firstName} ${author.lastName}`;
+                //     return fullName.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                // }).length > 0;
+
+                // return containsID || containsTitle || containsAuthorName;
+                return containsID || containsTitle;
+            },
+            btnTxt: "select book",
+            titleTxt: "Add Book",
+            editMode: true
+        };
+
+        const dialogRef = this.bookDialog.open(CategoryRefComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.submit) {
+                this.bookList = data.data;
+            }
+        });
     }
 
     removeBook(book: Book) {
     }
 
     addLexia() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            res: this.lexiaList,
+            resType: "lexia",
+            props: ["internalID", "name"],
+            filter: (lexia: Lexia, value: string): boolean => {
+                const containsID = lexia.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                const containsName = lexia.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+
+                return containsID || containsName;
+            },
+            btnTxt: "select lexia",
+            titleTxt: "Add Lexia",
+            editMode: true
+        };
+
+        const dialogRef = this.lexiaDialog.open(CategoryRefComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.submit) {
+                this.lexiaList = data.data;
+            }
+        });
     }
 
     removeLexia(lexia: Lexia) {
@@ -110,10 +169,34 @@ export class CreateUpdatePassageComponent implements OnInit {
     }
 
     addContributor() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            res: this.contributorList,
+            resType: "contributor",
+            props: ["internalID", "firstName", "lastName"],
+            filter: (con: Contributor, value: string): boolean => {
+                const containsID = con.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                const containsFirstName = con.firstName.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                const containsLastName = con.lastName.toLowerCase().indexOf(value.toLowerCase()) > -1;
+
+                return containsID || containsFirstName || containsLastName;
+            },
+            btnTxt: "select contributor",
+            titleTxt: "Add Contributor",
+            editMode: true
+        };
+
+        const dialogRef = this.contributorDialog.open(CategoryRefComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.submit) {
+                this.contributorList = data.data;
+            }
+        });
     }
 
     removeContributor(contributor: Contributor) {
-
     }
 
     addOrEdit(list: any[]): string {

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LexiaRefComponent } from './lexia-ref.component';
+import { TreeRefComponent } from './tree-ref.component';
 
-describe('LexiaRefComponent', () => {
-  let component: LexiaRefComponent;
-  let fixture: ComponentFixture<LexiaRefComponent>;
+describe('LanguageRefComponent', () => {
+  let component: TreeRefComponent;
+  let fixture: ComponentFixture<TreeRefComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LexiaRefComponent ]
+      declarations: [ TreeRefComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LexiaRefComponent);
+    fixture = TestBed.createComponent(TreeRefComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -3,10 +3,9 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Author, Genre, Lexia, Organisation, Subject, Venue} from "../../../model/model";
 import {ApiService} from "../../../services/api.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material";
-import {AuthorRefComponent} from "../../../dialog/author-ref/author-ref.component";
-import {VenueRefComponent} from "../../../dialog/venue-ref/venue-ref.component";
-import {OrganisationRefComponent} from "../../../dialog/organisation-ref/organisation-ref.component";
 import {CustomValidators} from "../../../customValidators";
+import {CategoryRefComponent} from "../../../dialog/category-ref.component";
+import {TreeRefComponent} from "../../../dialog/tree-ref/tree-ref.component";
 
 @Component({
     selector: "app-create-update-book",
@@ -30,6 +29,9 @@ export class CreateUpdateBookComponent implements OnInit {
                 private venueDialog: MatDialog,
                 private organisationDialog: MatDialog,
                 private languageDialog: MatDialog,
+                private lexiaDialog: MatDialog,
+                private genreDialog: MatDialog,
+                private subjectDialog: MatDialog,
                 private dialogRef: MatDialogRef<CreateUpdateBookComponent>,
                 @Inject(MAT_DIALOG_DATA) data) {
         this.book = JSON.parse(JSON.stringify(data.resource));
@@ -92,7 +94,7 @@ export class CreateUpdateBookComponent implements OnInit {
 
         this.languages = this.apiService.getLanguages();
 
-        this.lexiaList = this.book ? (Object.keys(this.book.bookAsLexia).length === 0 ? [] : [this.book.bookAsLexia]) : [];
+        this.lexiaList = this.book ? this.book.bookAsLexia ? [this.book.bookAsLexia] : [] : [];
         this.authorList = this.book ? this.book.authors : [];
         this.venueList = this.book ? this.book.venues : [];
         this.organisationList = this.book ? this.book.organisations : [];
@@ -141,11 +143,22 @@ export class CreateUpdateBookComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            list: this.authorList,
-            editMod: this.authorList.length > 0,
-            max: 10
+            res: this.authorList,
+            resType: "author",
+            props: ["internalID", "firstName", "lastName"],
+            filter: (author: Author, value: string): boolean => {
+                const containsID = author.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                const containsFirstName = author.firstName.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                const containsLastName = author.lastName.toLowerCase().indexOf(value.toLowerCase()) > -1;
+
+                return containsID || containsFirstName || containsLastName;
+            },
+            btnTxt: "select author",
+            titleTxt: "Add author",
+            editMode: true
         };
-        const dialogRef = this.authorDialog.open(AuthorRefComponent, dialogConfig);
+
+        const dialogRef = this.authorDialog.open(CategoryRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.submit) {
                 this.authorList = data.data;
@@ -166,11 +179,22 @@ export class CreateUpdateBookComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            list: this.venueList,
-            editMod: this.venueList.length > 0,
-            max: 10
+            res: this.venueList,
+            resType: "venue",
+            props: ["internalID", "name", "place"],
+            filter: (venue: Venue, value: string): boolean => {
+                const containsID = venue.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                const containsName = venue.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                const containsCity = venue.place.toLowerCase().indexOf(value.toLowerCase()) > -1;
+
+                return containsID || containsName || containsCity;
+            },
+            btnTxt: "select venue",
+            titleTxt: "Add venue",
+            editMode: true
         };
-        const dialogRef = this.venueDialog.open(VenueRefComponent, dialogConfig);
+
+        const dialogRef = this.venueDialog.open(CategoryRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.submit) {
                 this.venueList = data.data;
@@ -191,11 +215,21 @@ export class CreateUpdateBookComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            list: this.organisationList,
-            editMod: this.organisationList.length > 0,
-            max: 10
+            res: this.organisationList,
+            resType: "organisation",
+            props: ["internalID", "name"],
+            filter: (organisation: Organisation, value: string): boolean => {
+                const containsID = organisation.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                const containsName = organisation.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+
+                return containsID || containsName;
+            },
+            btnTxt: "select company",
+            titleTxt: "Add company",
+            editMode: true
         };
-        const dialogRef = this.organisationDialog.open(OrganisationRefComponent, dialogConfig);
+
+        const dialogRef = this.organisationDialog.open(CategoryRefComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.submit) {
                 this.organisationList = data.data;
@@ -212,6 +246,24 @@ export class CreateUpdateBookComponent implements OnInit {
     }
 
     addSubject() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            res: this.subjectList,
+            resType: "subject",
+            props: ["name"],
+            btnTxt: "select subject",
+            titleTxt: "Add Subject",
+            editMode: true
+        };
+
+        const dialogRef = this.subjectDialog.open(TreeRefComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.submit) {
+                this.subjectList = data.data;
+            }
+        });
     }
 
     removeSubject(subject: Subject) {
@@ -223,15 +275,67 @@ export class CreateUpdateBookComponent implements OnInit {
     }
 
     addGenre() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            res: this.genreList,
+            resType: "genre",
+            props: ["name"],
+            btnTxt: "select genre",
+            titleTxt: "Add Genre",
+            editMode: true
+        };
+
+        const dialogRef = this.genreDialog.open(TreeRefComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.submit) {
+                this.genreList = data.data;
+            }
+        });
     }
 
     removeGenre(genre: Genre) {
+        const index = this.genreList.indexOf(genre);
+
+        if (index >= 0) {
+            this.genreList.splice(index, 1);
+        }
     }
 
     addLexia() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            res: this.lexiaList,
+            resType: "lexia",
+            props: ["internalID", "name"],
+            filter: (lexia: Lexia, value: string): boolean => {
+                const containsID = lexia.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                const containsName = lexia.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+
+                return containsID || containsName;
+            },
+            btnTxt: "select lexia",
+            titleTxt: "Add Lexia",
+            editMode: true
+        };
+
+        const dialogRef = this.lexiaDialog.open(CategoryRefComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.submit) {
+                this.lexiaList = data.data;
+            }
+        });
     }
 
     removeLexia(lexia: Lexia) {
+        const index = this.lexiaList.indexOf(lexia);
+
+        if (index >= 0) {
+            this.lexiaList.splice(index, 1);
+        }
     }
 
     onChange(event, groupName: string) {

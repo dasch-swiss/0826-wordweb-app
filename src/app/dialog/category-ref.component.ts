@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {ApiService} from "../services/api.service";
-import {Author, Category, IRefInfo} from "../model/model";
+import {Author, Category, IRefInfo, Property} from "../model/model";
 
 @Component({
     selector: "app-category-ref",
@@ -9,21 +9,44 @@ import {Author, Category, IRefInfo} from "../model/model";
     styleUrls: ["./category-ref.scss"]
 })
 export class CategoryRefComponent implements OnInit {
-    readonly refInfo: IRefInfo;
-    private fullList: Category[];
-    private filteredList: Category[];
+    private refInfo: IRefInfo;
+    fullList: Category[];
+    filteredList: Category[];
     filterWord: string;
     listOpen: boolean;
     selectionChanged: boolean;
     selectedCat: Category[];
 
-    constructor(private apiService: ApiService, private dialogRef: MatDialogRef<CategoryRefComponent>, @Inject(MAT_DIALOG_DATA) data) {
-        this.refInfo = data;
+    static validateData(data: any): IRefInfo {
+        const newRefInfo = {
+            res: Array.isArray(data.res) ? data.res : [data.res],
+            resType: data.resType,
+            props: data.props,
+            btnTxt: data.btnTxt,
+            titleTxt: data.titleTxt,
+            editMode: data.editMode,
+        };
+
+        if (data.maxRes) {
+            newRefInfo["maxRes"] = data.maxRes;
+        }
+
+        if (data.filter) {
+            newRefInfo["filter"] = data.filter;
+        }
+
+        return newRefInfo;
+    }
+
+    constructor(private apiService: ApiService, private dialogRef: MatDialogRef<CategoryRefComponent>, @Inject(MAT_DIALOG_DATA) public data) {
         this.selectionChanged = false;
         this.filteredList = [];
+        this.selectedCat = [];
     }
 
     ngOnInit() {
+        this.refInfo = CategoryRefComponent.validateData(this.data);
+
         switch (this.refInfo.resType) {
             case "author": {
                 this.apiService.getAuthors().subscribe((authors) => {
@@ -33,10 +56,46 @@ export class CategoryRefComponent implements OnInit {
                 break;
             }
             case "book": {
-                this.apiService.getBooks().subscribe((books) => {
+                this.apiService.getBooks(true).subscribe((books) => {
                     this.fullList = books;
                     this.filteredList = [...this.fullList];
                 });
+                break;
+            }
+            case "passage": {
+                this.apiService.getPassages().subscribe((passages) => {
+                   this.fullList = passages;
+                   this.filteredList = [...this.fullList];
+                });
+                break;
+            }
+            case "lexia": {
+                this.apiService.getLexias().subscribe((lexias) => {
+                    this.fullList = lexias;
+                    this.filteredList = [...this.fullList];
+                });
+                break;
+            }
+            case "organisation": {
+                this.apiService.getOrganisations().subscribe((organisations) => {
+                    this.fullList = organisations;
+                    this.filteredList = [...this.fullList];
+                });
+                break;
+            }
+            case "venue": {
+                this.apiService.getVenues().subscribe((venues) => {
+                    this.fullList = venues;
+                    this.filteredList = [...this.fullList];
+                });
+                break;
+            }
+            case "contributor": {
+                this.apiService.getContributors().subscribe((contributor) => {
+                    this.fullList = contributor;
+                    this.filteredList = [...this.fullList];
+                });
+                break;
             }
         }
 
@@ -93,14 +152,22 @@ export class CategoryRefComponent implements OnInit {
         this.dialogRef.close({submit: true, data: [...this.selectedCat]});
     }
 
-    chooseElement(author: Author) {
-        if ((this.selectedCat.length !== 0) && (this.selectedCat[0].id === author.id)) {
-            return;
+    getPropValue(category: Category, prop: Property): string[] {
+        if (prop.subPropNames) {
+            const authors = category[prop.propName];
+            console.log("a", authors, category);
+            // const subPropValues = [];
+            // for (const author of authors) {
+            //     const name = [];
+            //     for (const subPropName of prop.subPropNames) {
+            //         name.push(author.subPropName);
+            //     }
+            //     subPropValues.push(name.join(" "));
+            // }
+            // return subPropValues;
+        } else {
+            return category[prop.propName];
         }
-
-        this.selectedCat = [];
-        this.selectedCat.push(author);
-        this.selectionChanged = true;
     }
 
 }

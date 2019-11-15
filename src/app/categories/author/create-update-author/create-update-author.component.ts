@@ -1,9 +1,10 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar} from "@angular/material";
 import {ApiService} from "../../../services/api.service";
 import {CustomValidators} from "../../../customValidators";
 import {Lexia} from "../../../model/model";
+import {CategoryRefComponent} from "../../../dialog/category-ref.component";
 
 @Component({
     selector: "app-create-update-author",
@@ -17,7 +18,8 @@ export class CreateUpdateAuthorComponent implements OnInit {
     genders: any;
     lexiaList: Lexia[];
 
-    constructor(private dialogRef: MatDialogRef<CreateUpdateAuthorComponent>,
+    constructor(private lexiaDialog: MatDialog,
+                private dialogRef: MatDialogRef<CreateUpdateAuthorComponent>,
                 @Inject(MAT_DIALOG_DATA) data,
                 private apiService: ApiService,
                 private snackBar: MatSnackBar) {
@@ -50,7 +52,7 @@ export class CreateUpdateAuthorComponent implements OnInit {
             }, [CustomValidators.correctYearSpan("flStartDate", "flEndDate")])
         });
 
-        this.lexiaList = this.author ? (Object.keys(this.author.humanAsLexia).length === 0 ? [] : [this.author.humanAsLexia]) : [];
+        this.lexiaList = this.author ? this.author.humanAsLexia  ? [this.author.humanAsLexia] : [] : [];
 
         if (!this.author) {
             this.form.get("birth").disable();
@@ -84,7 +86,7 @@ export class CreateUpdateAuthorComponent implements OnInit {
             this.author.deathEndDate = this.form.get("death").status === "DISABLED" ? "" : this.form.get("death").get("deathEndDate").value;
             this.author.flStartDate = this.form.get("fl").status === "DISABLED" ? "" : this.form.get("fl").get("flStartDate").value;
             this.author.flEndDate = this.form.get("fl").status === "DISABLED" ? "" : this.form.get("fl").get("flEndDate").value;
-            this.author.humanAsLexia =  "";
+            this.author.humanAsLexia = "";
             this.author.internalComment = "";
             // update request
             this.apiService.updateAuthor(this.author.id, this.author)
@@ -122,6 +124,30 @@ export class CreateUpdateAuthorComponent implements OnInit {
     }
 
     addLexia() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            res: this.lexiaList,
+            resType: "lexia",
+            props: ["internalID", "name"],
+            filter: (lexia: Lexia, value: string): boolean => {
+                const containsID = lexia.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                const containsName = lexia.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+
+                return containsID || containsName;
+            },
+            btnTxt: "select lexia",
+            titleTxt: "Add Lexia",
+            editMode: true
+        };
+
+        const dialogRef = this.lexiaDialog.open(CategoryRefComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.submit) {
+                this.lexiaList = data.data;
+            }
+        });
     }
 
     removeLexia(lexia: Lexia) {

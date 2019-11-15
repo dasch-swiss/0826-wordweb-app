@@ -89,22 +89,27 @@ export interface Lexia extends WordWebObject {
 
 export interface Language extends WordWebObject {
     name: string;
+    nodes: Language[] | number [];
 }
 
 export interface Subject extends WordWebObject {
     name: string;
+    nodes: Subject[] | number [];
 }
 
 export interface Gender extends WordWebObject {
     name: string;
+    nodes: Gender[] | number [];
 }
 
 export interface ResearchField extends WordWebObject {
     name: string;
+    nodes: ResearchField[] | number [];
 }
 
 export interface Status extends WordWebObject {
     name: string;
+    nodes: Status[] | number [];
 }
 
 export interface Genre extends WordWebObject {
@@ -138,14 +143,21 @@ export interface TreeGenre extends Genre {
 }
 
 export interface IRefInfo {
-    res: Category[];
+    res: any[];
     resType: string;
-    props: string[];
-    filter: (category: Category, value: string) => boolean;
+    props: Property[];
+    filter?: (category: Category, value: string) => boolean;
     btnTxt: string;
     titleTxt: string;
     editMode: boolean;
     maxRes?: number;
 }
 
-export type Category = Author | Book | Contributor;
+export interface Property {
+    propName: string;
+    subPropNames: string[];
+}
+
+export type Category = Author | Book | Contributor | Lexia | Passage | Organisation | Venue;
+
+export type TreeCategory = Genre | Image | Status | Marking | FormalClass | FunctionVoice | ResearchField | Subject | Language;

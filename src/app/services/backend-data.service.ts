@@ -13,8 +13,18 @@ import {
     Venue,
     WordWebObject
 } from "../model/model";
-import {of} from "rxjs";
+import {of, throwError} from "rxjs";
 import {delay} from "rxjs/operators";
+
+export class ApiError {
+    status: number;
+    errorMsg: string;
+
+    constructor(status: number, errorMsg: string) {
+        this.status = status;
+        this.errorMsg = errorMsg;
+    }
+}
 
 @Injectable({
     providedIn: "root"
@@ -25,6 +35,7 @@ export class BackendDataService {
     private gen1: Gender = {
         id: 1,
         name: "male",
+        nodes: [],
         order: 0,
         references: 22,
         internalComment: ""
@@ -33,6 +44,7 @@ export class BackendDataService {
     private gen2: Gender = {
         id: 2,
         name: "female",
+        nodes: [],
         order: 0,
         references: 2,
         internalComment: ""
@@ -41,14 +53,25 @@ export class BackendDataService {
     private gen3: Gender = {
         id: 3,
         name: "unknown",
+        nodes: [],
         order: 0,
         references: 0,
+        internalComment: ""
+    };
+
+    private gen0: Gender = {
+        id: 0,
+        name: "root",
+        nodes: [this.gen1.id, this.gen2.id, this.gen3.id],
+        order: 0,
+        references: 10,
         internalComment: ""
     };
 
     private sta1: Status = {
         id: 1,
         name: "unedited",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -57,6 +80,7 @@ export class BackendDataService {
     private sta2: Status = {
         id: 2,
         name: "check",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -65,6 +89,7 @@ export class BackendDataService {
     private sta3: Status = {
         id: 3,
         name: "weak",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -73,8 +98,18 @@ export class BackendDataService {
     private sta4: Status = {
         id: 4,
         name: "plausible",
+        nodes: [],
         order: 0,
         references: 0,
+        internalComment: ""
+    };
+
+    private sta0: Status = {
+        id: 0,
+        name: "root",
+        nodes: [this.sta1.id, this.sta2.id, this.sta3.id, this.sta4.id],
+        order: 0,
+        references: 10,
         internalComment: ""
     };
 
@@ -1883,6 +1918,7 @@ export class BackendDataService {
     private re1: ResearchField = {
         id: 1,
         name: "Reading",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -1891,6 +1927,7 @@ export class BackendDataService {
     private re2: ResearchField = {
         id: 2,
         name: "Electronic search",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -1899,6 +1936,7 @@ export class BackendDataService {
     private re3: ResearchField = {
         id: 3,
         name: "Secondary (Annotated edition)",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -1907,6 +1945,7 @@ export class BackendDataService {
     private re4: ResearchField = {
         id: 4,
         name: "Secondary (Shakespeare Studies)",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -1915,6 +1954,7 @@ export class BackendDataService {
     private re5: ResearchField = {
         id: 5,
         name: "Secondary (Literature)",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -1923,6 +1963,7 @@ export class BackendDataService {
     private re6: ResearchField = {
         id: 6,
         name: "Secondary (Anthology)",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -1931,6 +1972,7 @@ export class BackendDataService {
     private re7: ResearchField = {
         id: 7,
         name: "Secondary (Annotated Shakespeare edition)",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -1939,8 +1981,18 @@ export class BackendDataService {
     private re8: ResearchField = {
         id: 8,
         name: "Research pending",
+        nodes: [],
         order: 0,
         references: 0,
+        internalComment: ""
+    };
+
+    private re0: ResearchField = {
+        id: 0,
+        name: "root",
+        nodes: [this.re1.id, this.re2.id, this.re3.id, this.re4.id, this.re5.id, this.re6.id, this.re7.id, this.re8.id],
+        order: 0,
+        references: 10,
         internalComment: ""
     };
 
@@ -2366,6 +2418,7 @@ export class BackendDataService {
     private s1: Subject = {
         id: 1,
         name: "Art, architecture, music",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2374,6 +2427,7 @@ export class BackendDataService {
     private s2: Subject = {
         id: 2,
         name: "History, (auto-)biography",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2382,6 +2436,7 @@ export class BackendDataService {
     private s3: Subject = {
         id: 3,
         name: "Literature",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2390,6 +2445,7 @@ export class BackendDataService {
     private s4: Subject = {
         id: 4,
         name: "History, (auto-)biography",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2398,6 +2454,7 @@ export class BackendDataService {
     private s5: Subject = {
         id: 5,
         name: "Linguistics",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2406,6 +2463,7 @@ export class BackendDataService {
     private s6: Subject = {
         id: 6,
         name: "Politics, law, economics",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2414,6 +2472,7 @@ export class BackendDataService {
     private s7: Subject = {
         id: 7,
         name: "Linguistics",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2422,6 +2481,7 @@ export class BackendDataService {
     private s8: Subject = {
         id: 8,
         name: "Sciences, engineering, IT",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2430,6 +2490,7 @@ export class BackendDataService {
     private s9: Subject = {
         id: 9,
         name: "Philosophy, religion",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2438,6 +2499,7 @@ export class BackendDataService {
     private s10: Subject = {
         id: 10,
         name: "Sociology, society, lifestyle",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2446,6 +2508,7 @@ export class BackendDataService {
     private s11: Subject = {
         id: 11,
         name: "TO BE EDITED",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2454,6 +2517,7 @@ export class BackendDataService {
     private s12: Subject = {
         id: 12,
         name: "Psychology, medicine, health",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2462,6 +2526,7 @@ export class BackendDataService {
     private s13: Subject = {
         id: 13,
         name: "WOMAN WRITER",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2470,6 +2535,7 @@ export class BackendDataService {
     private s14: Subject = {
         id: 14,
         name: "Literature (Shakespeare)",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2478,6 +2544,7 @@ export class BackendDataService {
     private s15: Subject = {
         id: 15,
         name: "AFTER TRANSFER FIX BIBLIO OR GENRE",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2486,6 +2553,7 @@ export class BackendDataService {
     private s16: Subject = {
         id: 16,
         name: "EXHAUSTED",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2494,6 +2562,7 @@ export class BackendDataService {
     private s17: Subject = {
         id: 17,
         name: "RESEARCH PENDING",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2502,6 +2571,7 @@ export class BackendDataService {
     private s18: Subject = {
         id: 18,
         name: "MODERN PAGE",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2510,6 +2580,7 @@ export class BackendDataService {
     private s19: Subject = {
         id: 19,
         name: "HISTORICAL PAGE",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2518,14 +2589,28 @@ export class BackendDataService {
     private s20: Subject = {
         id: 20,
         name: "ACHTUNG MARKING",
+        nodes: [],
         order: 0,
         references: 0,
+        internalComment: ""
+    };
+
+    private s0: Subject = {
+        id: 0,
+        name: "root",
+        nodes: [
+            this.s1.id, this.s2.id, this.s3.id, this.s4.id, this.s5.id, this.s6.id, this.s7.id, this.s8.id, this.s9.id, this.s10.id,
+            this.s11.id, this.s12.id, this.s13.id, this.s14.id, this.s15.id, this.s16.id, this.s17.id, this.s18.id, this.s19.id, this.s20.id
+        ],
+        order: 0,
+        references: 10,
         internalComment: ""
     };
 
     private lang1: Language = {
         id: 1,
         name: "Englisch",
+        nodes: [],
         order: 0,
         references: 10,
         internalComment: ""
@@ -2534,6 +2619,7 @@ export class BackendDataService {
     private lang2: Language = {
         id: 2,
         name: "Deutsch",
+        nodes: [],
         order: 0,
         references: 1,
         internalComment: ""
@@ -2542,6 +2628,7 @@ export class BackendDataService {
     private lang3: Language = {
         id: 3,
         name: "Französisch",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2550,6 +2637,7 @@ export class BackendDataService {
     private lang4: Language = {
         id: 4,
         name: "Italienisch",
+        nodes: [],
         order: 0,
         references: 0,
         internalComment: ""
@@ -2558,8 +2646,20 @@ export class BackendDataService {
     private lang5: Language = {
         id: 5,
         name: "Spanisch",
+        nodes: [],
         order: 0,
         references: 0,
+        internalComment: ""
+    };
+
+    private lang0: Language = {
+        id: 0,
+        name: "root",
+        nodes: [
+            this.lang1.id, this.lang2.id, this.lang3.id, this.lang4.id, this.lang5.id
+        ],
+        order: 0,
+        references: 10,
         internalComment: ""
     };
 
@@ -3884,7 +3984,7 @@ export class BackendDataService {
         ];
         this.objPassages = BackendDataService.createObject(this.passageList);
 
-        this.languageList = [this.lang1, this.lang2, this.lang3, this.lang4, this.lang5];
+        this.languageList = [this.lang0, this.lang1, this.lang2, this.lang3, this.lang4, this.lang5];
         this.objLanguages = BackendDataService.createObject(this.languageList);
 
         this.venueList = [this.v1, this.v2, this.v3, this.v4, this.v5, this.v6, this.v7, this.v8];
@@ -3894,7 +3994,7 @@ export class BackendDataService {
         this.objOrganisation = BackendDataService.createObject(this.organisationList);
 
         this.subjectList = [
-            this.s1, this.s2, this.s3, this.s4, this.s5,
+            this.s0, this.s1, this.s2, this.s3, this.s4, this.s5,
             this.s6, this.s7, this.s8, this.s9, this.s10,
             this.s11, this.s12, this.s13, this.s14, this.s15,
             this.s16, this.s17, this.s18, this.s19, this.s20
@@ -3914,16 +4014,16 @@ export class BackendDataService {
         ];
         this.objLexia = BackendDataService.createObject(this.lexiaList);
 
-        this.genderList = [this.gen1, this.gen2, this.gen3];
+        this.genderList = [this.gen0, this.gen1, this.gen2, this.gen3];
         this.objGender = BackendDataService.createObject(this.genderList);
 
         this.researchFieldList = [
-            this.re1, this.re2, this.re3, this.re4, this.re5,
+            this.re0, this.re1, this.re2, this.re3, this.re4, this.re5,
             this.re6, this.re7, this.re8
         ];
         this.objResearchField = BackendDataService.createObject(this.researchFieldList);
 
-        this.statusList = [this.sta1, this.sta2, this.sta3, this.sta4];
+        this.statusList = [this.sta0, this.sta1, this.sta2, this.sta3, this.sta4];
         this.objStatus = BackendDataService.createObject(this.statusList);
 
         this.genreList = [
@@ -3976,9 +4076,15 @@ export class BackendDataService {
         });
     }
 
+    /**
+     * Gets the author data
+     * @param iri id number of the resources
+     * @param references flag to return references as objects instead of id number
+     * @param onlyData flag to return object instead of an observable
+     */
     getAuthor(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objAuthors[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "author iri not valid"));
         }
 
         const copyAuthor = JSON.parse(JSON.stringify(this.objAuthors[iri]));
@@ -4008,7 +4114,7 @@ export class BackendDataService {
 
     getBook(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objBooks[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "book iri not valid"));
         }
 
         const copyBook = JSON.parse(JSON.stringify(this.objBooks[iri]));
@@ -4066,7 +4172,7 @@ export class BackendDataService {
 
     getPassage(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objPassages[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "passage iri not valid"));
         }
 
         const copyPassage = JSON.parse(JSON.stringify(this.objPassages[iri]));
@@ -4110,10 +4216,14 @@ export class BackendDataService {
 
     getLanguage(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objLanguages[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "language iri not valid"));
         }
 
         const copyLang = JSON.parse(JSON.stringify(this.objLanguages[iri]));
+
+        if (references) {
+            copyLang.nodes = BackendDataService.getNodes(copyLang.nodes, this.objLanguages);
+        }
 
         return onlyData ? copyLang : of(copyLang).pipe(delay(BackendDataService.DELAY));
     }
@@ -4126,7 +4236,7 @@ export class BackendDataService {
 
     getVenue(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objVenues[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "venue iri not valid"));
         }
 
         const copyVenue = JSON.parse(JSON.stringify(this.objVenues[iri]));
@@ -4152,7 +4262,7 @@ export class BackendDataService {
 
     getOrganisation(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objOrganisation[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "organisation iri not valid"));
         }
 
         const copyOrganisation = JSON.parse(JSON.stringify(this.objOrganisation[iri]));
@@ -4178,10 +4288,14 @@ export class BackendDataService {
 
     getSubject(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objSubjects[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "subject iri not valid"));
         }
 
         const copySubject = JSON.parse(JSON.stringify(this.objSubjects[iri]));
+
+        if (references) {
+            copySubject.nodes = BackendDataService.getNodes(copySubject.nodes, this.objSubjects);
+        }
 
         return onlyData ? copySubject : of(copySubject).pipe(delay(BackendDataService.DELAY));
     }
@@ -4194,7 +4308,7 @@ export class BackendDataService {
 
     getContributor(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objContributors[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "contributor iri not valid"));
         }
 
         const copyContributor = JSON.parse(JSON.stringify(this.objContributors[iri]));
@@ -4221,7 +4335,7 @@ export class BackendDataService {
 
     getLexia(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objLexia[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "lexia iri not valid"));
         }
 
         const copyUsedIn = JSON.parse(JSON.stringify(this.objLexia[iri]));
@@ -4251,10 +4365,14 @@ export class BackendDataService {
 
     getGender(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objGender[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "gender iri not valid"));
         }
 
         const copyGender = JSON.parse(JSON.stringify(this.objGender[iri]));
+
+        if (references) {
+            copyGender.nodes = BackendDataService.getNodes(copyGender.nodes, this.objGender);
+        }
 
         return onlyData ? copyGender : of(copyGender).pipe(delay(BackendDataService.DELAY));
     }
@@ -4267,10 +4385,14 @@ export class BackendDataService {
 
     getResearchField(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objResearchField[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "research field iri not valid"));
         }
 
         const copyResearchField = JSON.parse(JSON.stringify(this.objResearchField[iri]));
+
+        if (references) {
+            copyResearchField.nodes = BackendDataService.getNodes(copyResearchField.nodes, this.objResearchField);
+        }
 
         return onlyData ? copyResearchField : of(copyResearchField).pipe(delay(BackendDataService.DELAY));
     }
@@ -4283,23 +4405,27 @@ export class BackendDataService {
 
     getStatus(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objStatus[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "status iri not valid"));
         }
 
-        const copyStatus =  JSON.parse(JSON.stringify(this.objStatus[iri]));
+        const copyStatus = JSON.parse(JSON.stringify(this.objStatus[iri]));
+
+        if (references) {
+            copyStatus.nodes = BackendDataService.getNodes(copyStatus.nodes, this.objStatus);
+        }
 
         return onlyData ? copyStatus : of(copyStatus).pipe(delay(BackendDataService.DELAY));
     }
 
     getStatuses(references: boolean, onlyData: boolean = false) {
-        const copyStatus =  JSON.parse(JSON.stringify(this.statusList));
+        const copyStatus = JSON.parse(JSON.stringify(this.statusList));
 
         return onlyData ? copyStatus : of(copyStatus).pipe(delay(BackendDataService.DELAY));
     }
 
     getGenre(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objGenre[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "genre iri not valid"));
         }
 
         const copyGenre = JSON.parse(JSON.stringify(this.objGenre[iri]));
@@ -4319,7 +4445,7 @@ export class BackendDataService {
 
     getImage(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objImage[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "image iri not valid"));
         }
 
         const copyImage = JSON.parse(JSON.stringify(this.objImage[iri]));
@@ -4339,7 +4465,7 @@ export class BackendDataService {
 
     getMarking(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objMarking[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "marking iri not valid"));
         }
 
         const copyMarking = JSON.parse(JSON.stringify(this.objMarking[iri]));
@@ -4359,7 +4485,7 @@ export class BackendDataService {
 
     getFormalClass(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objFormalClass[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "formal class iri not valid"));
         }
 
         const copyFormalClass = JSON.parse(JSON.stringify(this.objFormalClass[iri]));
@@ -4372,14 +4498,14 @@ export class BackendDataService {
     }
 
     getFormalClasses(references: boolean, onlyData: boolean = false) {
-        const copyFormalClassList =  JSON.parse(JSON.stringify(this.formalClassList));
+        const copyFormalClassList = JSON.parse(JSON.stringify(this.formalClassList));
 
         return onlyData ? copyFormalClassList : of(copyFormalClassList).pipe(delay(BackendDataService.DELAY));
     }
 
     getFunctionVoice(iri: number, references: boolean, onlyData: boolean = false) {
         if (!this.objFunctionVoice[iri]) {
-            return {};
+            return onlyData ? null : throwError(new ApiError(0, "function voice iri not valid"));
         }
 
         const copyFunction = JSON.parse(JSON.stringify(this.objFunctionVoice[iri]));
@@ -4402,13 +4528,12 @@ export class BackendDataService {
 
         // Checks if iri is valid
         if (!a) {
-            return;
+            return throwError(new ApiError(0, "update author: iri not valid"));
         }
 
         // Checks if humanAsLexia is valid
         if (newAuthor.humanAsLexia && !this.objLexia[newAuthor.humanAsLexia as number]) {
-            console.error(`Invalid humanAsLexia id: ${newAuthor.humanAsLexia}`);
-            return;
+            return throwError(new ApiError(0, "update author: invalid humanAsLexia id"));
         }
 
         a.internalID = newAuthor.internalID;
@@ -4434,59 +4559,52 @@ export class BackendDataService {
 
         // Checks if iri is valid
         if (!b) {
-            return;
+            return throwError(new ApiError(0, "update book: iri not valid"));
         }
 
         // Checks if author id is valid
         for (const author of newBook.authors) {
             if (!this.objAuthors[author as number]) {
-                console.error(`Invalid author id: ${author}`);
-                return;
+                return throwError(new ApiError(0, "update book: Invalid author id"));
             }
         }
 
         // Checks if venue id is valid
         for (const venue of newBook.venues) {
             if (!this.objVenues[venue as number]) {
-                console.error(`Invalid venue id: ${venue}`);
-                return;
+                return throwError(new ApiError(0, "update book: Invalid venue id"));
             }
         }
 
         // Checks if organisation id is valid
         for (const organisation of newBook.organisations) {
             if (!this.objOrganisation[organisation as number]) {
-                console.error(`Invalid organisation id: ${organisation}`);
-                return;
+                return throwError(new ApiError(0, "update book: Invalid organisation id"));
             }
         }
 
         // Checks if subject id is valid
         for (const subject of newBook.subjects) {
             if (!this.objSubjects[subject as number]) {
-                console.error(`Invalid subject id: ${subject}`);
-                return;
+                return throwError(new ApiError(0, "update book: Invalid subject id"));
             }
         }
 
         // Checks if genre id is valid
         for (const genre of newBook.genres) {
             if (!this.objGenre[genre as number]) {
-                console.error(`Invalid genre id: ${genre}`);
-                return;
+                return throwError(new ApiError(0, "update book: Invalid genre id"));
             }
         }
 
         // Checks if language id is valid
         if (!this.objLanguages[newBook.language as number]) {
-            console.error(`Invalid language id: ${newBook.language}`);
-            return;
+            return throwError(new ApiError(0, "update book: Invalid language id"));
         }
 
         // Checks if bookAsLexia is valid
-        if (!this.objLexia[newBook.bookAsLexia as number]) {
-            console.error(`Invalid bookAsLexia id: ${newBook.bookAsLexia}`);
-            return;
+        if (newBook.bookAsLexia !== null && !this.objLexia[newBook.bookAsLexia as number]) {
+            return throwError(new ApiError(0, "update book: Invalid lexia id"));
         }
 
         b.internalID = newBook.internalID;
@@ -4519,59 +4637,51 @@ export class BackendDataService {
 
         // Checks if iri is valid
         if (!p) {
-            return;
+            return throwError(new ApiError(0, "update passage: iri not valid"));
         }
 
         // Checks if lexia id is valid
         for (const lexia of newPassage.contains) {
             if (!this.objLexia[lexia as number]) {
-                console.error(`Invalid lexia id: ${lexia}`);
-                return;
+                return throwError(new ApiError(0, "update passage: invalid lexia id"));
             }
         }
 
         // Checks if passage id is valid
         for (const passage of (newPassage.mentionedIn)) {
             if (!this.objPassages[passage as number]) {
-                console.error(`Invalid passage id: ${passage}`);
-                return;
+                return throwError(new ApiError(0, "update passage: invalid passage id"));
             }
         }
 
         // Checks if book id is valid
         if (!this.objBooks[newPassage.occursIn as number]) {
-            console.error(`Invalid book id: ${newPassage.occursIn}`);
-            return;
+            return throwError(new ApiError(0, "update passage: invalid book id"));
         }
 
         // Checks if marking id is valid
         if (!this.objMarking[newPassage.marking as number]) {
-            console.error(`Invalid marking id: ${newPassage.marking}`);
-            return;
+            return throwError(new ApiError(0, "update passage: invalid marking id"));
         }
 
         // Checks if research field id is valid
         if (!this.objResearchField[newPassage.researchField as number]) {
-            console.error(`Invalid research field id: ${newPassage.researchField}`);
-            return;
+            return throwError(new ApiError(0, "update passage: invalid research field id"));
         }
 
         // Checks if status id is valid
         if (!this.objStatus[newPassage.status as number]) {
-            console.error(`Invalid status id: ${newPassage.status}`);
-            return;
+            return throwError(new ApiError(0, "update passage: invalid status id"));
         }
 
         // Checks if function voice id is valid
         if (!this.objFunctionVoice[newPassage.functionVoice as number]) {
-            console.error(`Invalid function voice id: ${newPassage.functionVoice}`);
-            return;
+            return throwError(new ApiError(0, "update passage: invalid function voice id"));
         }
 
         // Checks if contributor is valid
         if (!this.objContributors[newPassage.wasContributedBy as number]) {
-            console.error(`Invalid contributor id: ${newPassage.wasContributedBy}`);
-            return;
+            return throwError(new ApiError(0, "update passage: invalid contributor id"));
         }
 
         p.text = newPassage.text;
@@ -4593,34 +4703,36 @@ export class BackendDataService {
     }
 
     updateLexia(iri: number, newLexia: any) {
-        const lexia = this.objLexia[iri];
+        const l = this.objLexia[iri];
+
+        // Checks if iri is valid
+        if (!l) {
+            return throwError(new ApiError(0, "update lexia: iri not valid"));
+        }
 
         // Checks if passage id is valid
         for (const passage of (newLexia.usedIn)) {
             if (!this.objPassages[passage as number]) {
-                console.error(`Invalid passage id: ${passage}`);
-                return;
+                return throwError(new ApiError(0, "update lexia: invalid passage id"));
             }
         }
 
         // Checks if formal class id is valid
         if (!this.objFormalClass[newLexia.formalClass as number]) {
-            console.error(`Invalid formal class id: ${newLexia.formalClass}`);
-            return;
+            return throwError(new ApiError(0, "update lexia: invalid formal class id"));
         }
 
         // Checks if image id is valid
         if (!this.objImage[newLexia.image as number]) {
-            console.error(`Invalid image id: ${newLexia.image}`);
-            return;
+            return throwError(new ApiError(0, "update lexia: invalid image id"));
         }
 
-        lexia.internalID = newLexia.internalID;
-        lexia.name = newLexia.name;
-        lexia.usedIn = newLexia.usedIn;
-        lexia.formalClass = newLexia.formalClass;
-        lexia.image = newLexia.image;
-        lexia.order = newLexia.order;
+        l.internalID = newLexia.internalID;
+        l.name = newLexia.name;
+        l.usedIn = newLexia.usedIn;
+        l.formalClass = newLexia.formalClass;
+        l.image = newLexia.image;
+        l.order = newLexia.order;
 
         return of({status: 200}).pipe(delay(BackendDataService.DELAY));
     }
@@ -4629,7 +4741,7 @@ export class BackendDataService {
         const l = this.objLanguages[iri];
 
         if (!l) {
-            return;
+            return throwError(new ApiError(0, "update language: iri not valid"));
         }
 
         l.name = newLanguage.name;
@@ -4643,13 +4755,12 @@ export class BackendDataService {
 
         // Checks if iri is valid
         if (!o) {
-            return;
+            return throwError(new ApiError(0, "update organisation: iri not valid"));
         }
 
         // Checks if organisationAsLexia is valid
-        if (!this.objLexia[newOrganisation.organisationAsLexia as number]) {
-            console.error(`Invalid organisationAsLexia id: ${newOrganisation.organisationAsLexia}`);
-            return;
+        if (newOrganisation.organisationAsLexia && !this.objLexia[newOrganisation.organisationAsLexia as number]) {
+            return throwError(new ApiError(0, "update organisation: invalid organisationAsLexia id"));
         }
 
         o.internalID = newOrganisation.internalID;
@@ -4661,39 +4772,52 @@ export class BackendDataService {
     }
 
     updateSubject(iri: number, newSubject: any) {
-        const subject = this.objSubjects[iri];
-        subject.name = newSubject.name;
-        subject.order = newSubject.order;
+        const s = this.objSubjects[iri];
+
+        // Checks if iri is valid
+        if (!s) {
+            return throwError(new ApiError(0, "update subject: iri not valid"));
+        }
+
+        s.name = newSubject.name;
+        s.order = newSubject.order;
 
         return of({status: 200}).pipe(delay(BackendDataService.DELAY));
     }
 
     updateGenre(iri: number, genre: any, onlyData: boolean = false) {
+        const g = this.objGenre[iri];
+
+        // Checks if iri is valid
+        if (!g) {
+            return throwError(new ApiError(0, "update genre: iri not valid"));
+        }
+
         return of({status: 200}).pipe(delay(BackendDataService.DELAY));
     }
 
     updateContributor(iri: number, newContributor: Contributor) {
-        const con = this.objOrganisation[iri];
+        console.log(newContributor.humanAsLexia);
+        const c = this.objOrganisation[iri];
 
         // Checks if iri is valid
-        if (!con) {
-            return;
+        if (!c) {
+            return throwError(new ApiError(0, "update contributor: iri not valid"));
         }
 
         // Checks if humanAsLexia is valid
-        if (!this.objLexia[newContributor.humanAsLexia as number]) {
-            console.error(`Invalid humanAsLexia id: ${newContributor.humanAsLexia}`);
-            return;
+        if (newContributor.humanAsLexia && !this.objLexia[newContributor.humanAsLexia as number]) {
+            return throwError(new ApiError(0, "update contributor: invalid humanAsLexia id"));
         }
 
-        con.internalID = newContributor.internalID;
-        con.firstName = newContributor.firstName;
-        con.lastName = newContributor.lastName;
-        con.email = newContributor.email;
-        con.gender = newContributor.gender;
-        con.humanAsLexia = newContributor.humanAsLexia;
-        con.order = newContributor.order;
-        con.internalComment = newContributor.internalComment;
+        c.internalID = newContributor.internalID;
+        c.firstName = newContributor.firstName;
+        c.lastName = newContributor.lastName;
+        c.email = newContributor.email;
+        c.gender = newContributor.gender;
+        c.humanAsLexia = newContributor.humanAsLexia;
+        c.order = newContributor.order;
+        c.internalComment = newContributor.internalComment;
 
         return of({status: 200}).pipe(delay(BackendDataService.DELAY));
     }
@@ -4703,13 +4827,12 @@ export class BackendDataService {
 
         // Checks if iri is valid
         if (!v) {
-            return;
+            return throwError(new ApiError(0, "update venue: iri not valid"));
         }
 
         // Checks if venueAsLexia is valid
-        if (!this.objLexia[newVenue.venueAsLexia as number]) {
-            console.error(`Invalid venueAsLexia id: ${newVenue.venueAsLexia}`);
-            return;
+        if (newVenue.venueAsLexia && !this.objLexia[newVenue.venueAsLexia as number]) {
+            return throwError(new ApiError(0, "update venue: invalid venueAsLexia id"));
         }
 
         v.name = newVenue.name;
@@ -4873,6 +4996,7 @@ export class BackendDataService {
         const newLanguage: Language = {
             id: newID,
             name: data.name,
+            nodes: data.nodes,
             internalComment: data.internalComment,
             order: 0,
             references: 0
@@ -4888,6 +5012,7 @@ export class BackendDataService {
         const newGender: Gender = {
             id: newID,
             name: data.name,
+            nodes: data.nodes,
             internalComment: data.internalComment,
             order: 0,
             references: 0
@@ -4903,6 +5028,7 @@ export class BackendDataService {
         const newStatus: Status = {
             id: newID,
             name: data.name,
+            nodes: data.nodes,
             internalComment: data.internalComment,
             order: 0,
             references: 0
@@ -4918,6 +5044,7 @@ export class BackendDataService {
         const newSubject: Subject = {
             id: newID,
             name: data.name,
+            nodes: data.nodes,
             internalComment: data.internalComment,
             order: 0,
             references: 0

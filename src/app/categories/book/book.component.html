@@ -49,7 +49,7 @@
         <ng-container matColumnDef="authors">
             <th mat-header-cell *matHeaderCellDef>Autor</th>
             <td mat-cell *matCellDef="let element">
-                <div class="edit-value" (click)="editAuthor(element)">
+                <div>
                     <div *ngFor="let author of element.authors">{{author.firstName}} {{author.lastName}}</div>
                 </div>
             </td>

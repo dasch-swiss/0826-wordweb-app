@@ -1,8 +1,9 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material";
 import {ApiService} from "../../../services/api.service";
 import {Lexia} from "../../../model/model";
+import {CategoryRefComponent} from "../../../dialog/category-ref.component";
 
 @Component({
     selector: "app-create-update-venue",
@@ -15,8 +16,11 @@ export class CreateUpdateVenueComponent implements OnInit {
     form: FormGroup;
     lexiaList: Lexia[];
 
-    constructor(private dialogRef: MatDialogRef<CreateUpdateVenueComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+    constructor(private lexiaDialog: MatDialog,
+                private dialogRef: MatDialogRef<CreateUpdateVenueComponent>,
+                @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.venue = JSON.parse(JSON.stringify(data.resource));
+        console.log(this.venue);
     }
 
     ngOnInit() {
@@ -26,7 +30,7 @@ export class CreateUpdateVenueComponent implements OnInit {
             place: new FormControl(this.venue ? this.venue.place : "", [])
         });
 
-        this.lexiaList = this.venue ? (Object.keys(this.venue.venueAsLexia).length === 0 ? [] : [this.venue.venueAsLexia]) : [];
+        this.lexiaList = this.venue ? this.venue.venueAsLexia  ? [this.venue.venueAsLexia] : [] : [];
     }
 
     submit() {
@@ -58,6 +62,30 @@ export class CreateUpdateVenueComponent implements OnInit {
     }
 
     addLexia() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            res: this.lexiaList,
+            resType: "lexia",
+            props: ["internalID", "name"],
+            filter: (lexia: Lexia, value: string): boolean => {
+                const containsID = lexia.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                const containsName = lexia.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+
+                return containsID || containsName;
+            },
+            btnTxt: "select lexia",
+            titleTxt: "Add Lexia",
+            editMode: true
+        };
+
+        const dialogRef = this.lexiaDialog.open(CategoryRefComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.submit) {
+                this.lexiaList = data.data;
+            }
+        });
     }
 
     removeLexia(lexia: Lexia) {

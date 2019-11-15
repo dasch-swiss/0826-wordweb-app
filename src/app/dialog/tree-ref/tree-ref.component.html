@@ -1,4 +1,4 @@
-<div class="dialog-multiple" *ngIf="refInfo && fullList">
+<div class="dialog-multiple" *ngIf="refInfo && flattenTreeTable">
 
     <h2>{{refInfo.titleTxt}}</h2>
 
@@ -23,28 +23,25 @@
     <mat-divider></mat-divider>
 
     <div class="full-data-container" [class.opened]="listOpen">
-        <mat-form-field>
-            <input [(ngModel)]="filterWord" matInput placeholder="Filter" (input)="applyFilter($event.target.value)"
-                   (keydown.escape)="clear()">
-            <button *ngIf="filterWord" mat-button matSuffix mat-icon-button (click)="clear()">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-form-field>
-        <div class="full-data-table-container">
+        <div class="full-data-table-container" style="margin-top: 3rem;">
             <table class="full-data-table">
                 <tr>
                     <th *ngFor="let prop of refInfo.props">{{prop}}</th>
                     <th></th>
                 </tr>
-                <tr class="data-row" *ngFor="let category of filteredList">
-                    <td *ngFor="let prop of refInfo.props">{{category[prop]}}</td>
+                <tr class="data-row" *ngFor="let category of flattenTreeTable" [ngStyle]="{'visibility': category.isVisible ? 'visible' : 'collapse'}">
+                    <td *ngFor="let prop of refInfo.props">
+                        <span [innerHTML]="formatIndentation(category)"></span>
+                        <span *ngIf="category.nodes.length" (click)="nodeClick(category)">
+                            {{category.isExpanded ? '▾' : '▸'}}</span> {{category[prop]}}
+                    </td>
                     <td>
-                        <button type="button" class="add-button" [disabled]="isUsed(category.id) || hasMaximum()"
+                        <button type="button" class="add-button" [ngStyle]="{'visibility': category.nodes.length || !category.isVisible ? 'hidden' : 'visible'}" [disabled]="isUsed(category.id) || hasMaximum()"
                                 (click)="addCategory(category)">+
                         </button>
                     </td>
                 </tr>
-                <tr class="empty-row" *ngIf="filteredList.length === 0">
+                <tr class="empty-row" *ngIf="flattenTreeTable.length === 0">
                     <td colspan="4">Autorenliste ist leer!</td>
                 </tr>
             </table>
@@ -65,7 +62,7 @@
 
     <div class="action-btn-container">
         <button type="button" mat-button color="primary" (click)="cancel()">ABBRECHEN</button>
-        <button type="button" mat-flat-button color="primary" [disabled]="!selectionChanged" (click)="save()">ÜBERNEHMEN
+        <button type="button" mat-flat-button color="primary" [disabled]="false" (click)="save()">ÜBERNEHMEN
         </button>
     </div>
 

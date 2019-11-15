@@ -278,6 +278,7 @@ export class ApiService {
     }
 
     updateContributor(iri: number, contributor: any): Observable<any> {
+        console.log(contributor.humanAsLexia);
         const data: Contributor = {
             id: contributor.id,
             internalID: contributor.internalID,
@@ -285,7 +286,7 @@ export class ApiService {
             lastName: contributor.lastName,
             gender: contributor.gender,
             email: contributor.email,
-            humanAsLexia: contributor.humanAsLexia ? contributor.humanAsLexia : null,
+            humanAsLexia: contributor.humanAsLexia ? Array.isArray(contributor.humanAsLexia) ? contributor.humanAsLexia[0].id : null : null,
             internalComment: "",
             references: 0,
             order: contributor.order
@@ -344,7 +345,19 @@ export class ApiService {
         return this.backendData.createLexia(data);
     }
 
-    createContributor(data: any): Observable<any> {
+    createContributor(contributor: any): Observable<any> {
+        const data: Contributor = {
+            id: contributor.id,
+            internalID: contributor.internalID,
+            firstName: contributor.firstName,
+            lastName: contributor.lastName,
+            gender: contributor.gender,
+            email: contributor.email,
+            humanAsLexia: contributor.humanAsLexia ? Array.isArray(contributor.humanAsLexia) ? contributor.humanAsLexia[0].id : null : null,
+            internalComment: "",
+            references: 0,
+            order: contributor.order
+        };
         return this.backendData.createContributor(data);
     }
 }

@@ -35,12 +35,8 @@ export class GenreComponent implements OnInit {
             .subscribe((genre) => {
                 this.genres = genre.nodes as Genre[];
                 this.treeTable = this.genres.map((g) => this.treeTableService.toTreeTable(g));
-                this.flattenTree();
+                this.dataSource = this.flattenTree();
             });
-    }
-
-    generateDataSource(newTree): MatTableDataSource<any> {
-        return new MatTableDataSource(newTree.filter(x => x.isVisible));
     }
 
     create() {
@@ -84,14 +80,14 @@ export class GenreComponent implements OnInit {
         return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
-    flattenTree() {
+    flattenTree(): MatTableDataSource<any> {
         const flattenTree = this.treeTable.reduce((acc, bla) => this.treeTableService.flattenTree(acc, bla), []);
-        this.dataSource = this.generateDataSource(flattenTree);
+        return new MatTableDataSource(flattenTree.filter(x => x.isVisible));
     }
 
     nodeClick(element: any) {
         element.isExpanded ? this.treeTableService.close(element) : this.treeTableService.expand(element);
-        this.flattenTree();
+        this.dataSource = this.flattenTree();
     }
 
 }

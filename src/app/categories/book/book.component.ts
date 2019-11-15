@@ -1,12 +1,9 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
-import {Author, Book} from "../../model/model";
+import {Book} from "../../model/model";
 import {ApiService} from "../../services/api.service";
 import {CreateUpdateBookComponent} from "./create-update-book/create-update-book.component";
-import {AuthorRefComponent} from "../../dialog/author-ref/author-ref.component";
-import {VenueRefComponent} from "../../dialog/venue-ref/venue-ref.component";
-import {CategoryRefComponent} from "../../dialog/category-ref.component";
 
 @Component({
     selector: "app-book",
@@ -104,93 +101,10 @@ export class BookComponent implements OnInit {
                 this.dataSource.sort = this.sort;
             }
         });
-
-        // const dialogConfig = new MatDialogConfig();
-        // dialogConfig.disableClose = true;
-        // dialogConfig.autoFocus = true;
-        // dialogConfig.data = {
-        //     res: resource,
-        //     resType: "author",
-        //     props: ["internalID", "firstName", "lastName"],
-        //     filter: (author: Author, value: string) => {
-        //         const containsID = author.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
-        //         const containsFirstName = author.firstName.toLowerCase().indexOf(value.toLowerCase()) > -1;
-        //         const containsLastName = author.lastName.toLowerCase().indexOf(value.toLowerCase()) > -1;
-        //
-        //         return containsID || containsFirstName || containsLastName;
-        //     },
-        //     btnTxt: "select author",
-        //     titleTxt: "Add author",
-        //     editMode: true
-        // };
-        // const dialogRef = this.authorDialog.open(CategoryRefComponent, dialogConfig);
-        // dialogRef.afterClosed().subscribe((data) => {
-        //     console.log(data);
-        // });
     }
 
     delete(id: number) {
         console.log(`Book ID: ${id}`);
-    }
-
-    editAuthor(book: Book) {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
-        dialogConfig.data = {
-            list: book.authors,
-            editMod: book.authors.length > 0
-        };
-        const dialogRef = this.authorDialog.open(AuthorRefComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe((data) => {
-            if (data.submit) {
-                const copyBook = JSON.parse(JSON.stringify(book));
-                copyBook.authors = data.data;
-                // update request
-                this.apiService.updateBook(copyBook.id, copyBook);
-                this.resetTable();
-            }
-        });
-    }
-
-    editVenue(book: Book) {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
-        dialogConfig.data = {
-            list: book.venues,
-            editMod: book.venues.length > 0
-        };
-        const dialogRef = this.venueDialog.open(VenueRefComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe((data) => {
-            if (data.submit) {
-                const copyBook = JSON.parse(JSON.stringify(book));
-                copyBook.venues = data.data;
-                // update request
-                this.apiService.updateBook(copyBook.id, copyBook);
-                this.resetTable();
-            }
-        });
-    }
-
-    editOrganisation(book: Book) {
-        // const dialogConfig = new MatDialogConfig();
-        // dialogConfig.disableClose = true;
-        // dialogConfig.autoFocus = true;
-        // dialogConfig.data = {
-        //     list: book.organisations,
-        //     editMod: book.organisations.length > 0
-        // };
-        // const dialogRef = this.organisationDialog.open(OrganisationRefComponent, dialogConfig);
-        // dialogRef.afterClosed().subscribe((data) => {
-        //     if (data.submit) {
-        //         const copyBook = JSON.parse(JSON.stringify(book));
-        //         copyBook.organisations = data.data;
-        //         // update request
-        //         this.apiService.updateBook(copyBook.id, copyBook);
-        //         this.resetTable();
-        //     }
-        // });
     }
 
     contains(obj: any, arr: any[]) {

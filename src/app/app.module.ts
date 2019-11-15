@@ -47,18 +47,15 @@ import {CreateUpdateVenueComponent} from "./categories/venue/create-update-venue
 import {CreateUpdatePassageComponent} from "./categories/passage/create-update-passage/create-update-passage.component";
 import {CreateUpdateGenderComponent} from "./categories/gender/create-update-gender/create-update-gender.component";
 import {CreateUpdateStatusComponent} from "./categories/status/create-update-status/create-update-status.component";
+import {CreateUpdateGenreComponent} from "./categories/genre/create-update-genre/create-update-genre.component";
 import {AuthorRefComponent} from "./dialog/author-ref/author-ref.component";
 import {BookRefComponent} from "./dialog/book-ref/book-ref.component";
-import {OrganisationRefComponent} from "./dialog/organisation-ref/organisation-ref.component";
-import {VenueRefComponent} from "./dialog/venue-ref/venue-ref.component";
-import {LexiaRefComponent} from "./dialog/lexia-ref/lexia-ref.component";
 import {PassageRefComponent} from "./dialog/passage-ref/passage-ref.component";
-import {LanguageRefComponent} from "./dialog/language-ref/language-ref.component";
+import {TreeRefComponent} from "./dialog/tree-ref/tree-ref.component";
 import {CategoryRefComponent} from "./dialog/category-ref.component";
 import {AppInitService} from "./app-init.service";
 import {KuiCoreConfigToken} from "@knora/core";
 import {HttpClientModule} from "@angular/common/http";
-import { CreateUpdateGenreComponent } from './categories/genre/create-update-genre/create-update-genre.component';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
@@ -100,11 +97,8 @@ export function initializeApp(appInitService: AppInitService) {
         CreateUpdateStatusComponent,
         AuthorRefComponent,
         BookRefComponent,
-        OrganisationRefComponent,
-        VenueRefComponent,
-        LexiaRefComponent,
         PassageRefComponent,
-        LanguageRefComponent,
+        TreeRefComponent,
         CategoryRefComponent,
         FormalClassComponent,
         CreateUpdateGenreComponent
@@ -164,9 +158,7 @@ export function initializeApp(appInitService: AppInitService) {
         CreateUpdateGenreComponent,
         AuthorRefComponent,
         BookRefComponent,
-        OrganisationRefComponent,
-        VenueRefComponent,
-        LanguageRefComponent,
+        TreeRefComponent,
         CategoryRefComponent
     ]
 })

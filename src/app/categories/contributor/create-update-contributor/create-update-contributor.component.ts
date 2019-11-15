@@ -1,13 +1,14 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ApiService} from "../../../services/api.service";
 import {Contributor, Lexia} from "../../../model/model";
+import {CategoryRefComponent} from "../../../dialog/category-ref.component";
 
 @Component({
-  selector: "app-create-update-contributor",
-  templateUrl: "./create-update-contributor.component.html",
-  styleUrls: ["./create-update-contributor.component.scss"]
+    selector: "app-create-update-contributor",
+    templateUrl: "./create-update-contributor.component.html",
+    styleUrls: ["./create-update-contributor.component.scss"]
 })
 export class CreateUpdateContributorComponent implements OnInit {
     readonly MAX_CHIPS: number = 4;
@@ -16,7 +17,9 @@ export class CreateUpdateContributorComponent implements OnInit {
     lexiaList: Lexia[];
     genders: any;
 
-    constructor(private dialogRef: MatDialogRef<CreateUpdateContributorComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
+    constructor(private lexiaDialog: MatDialog,
+                private dialogRef: MatDialogRef<CreateUpdateContributorComponent>,
+                @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.contributor = JSON.parse(JSON.stringify(data.resource)) as Contributor;
     }
 
@@ -31,7 +34,7 @@ export class CreateUpdateContributorComponent implements OnInit {
             email: new FormControl(this.contributor ? this.contributor.email : "", [])
         });
 
-        this.lexiaList = this.contributor ? (Object.keys(this.contributor.humanAsLexia).length === 0 ? [] : [this.contributor.humanAsLexia]) : [];
+        this.lexiaList = this.contributor ? this.contributor.humanAsLexia  ? [this.contributor.humanAsLexia] : [] : [];
     }
 
     submit() {
@@ -41,6 +44,7 @@ export class CreateUpdateContributorComponent implements OnInit {
             this.contributor.lastName = this.form.get("lastName").value;
             this.contributor.email = this.form.get("email").value;
             this.contributor.gender = this.form.get("gender").value;
+            this.contributor.humanAsLexia = this.lexiaList;
             // update request
             this.apiService.updateContributor(this.contributor.id, this.contributor)
                 .subscribe((data) => {
@@ -52,7 +56,8 @@ export class CreateUpdateContributorComponent implements OnInit {
                 firstName: this.form.get("firstName").value,
                 lastName: this.form.get("lastName").value,
                 gender: this.form.get("gender").value,
-                email: this.form.get("email").value
+                email: this.form.get("email").value,
+                humanAsLexia : this.lexiaList
             };
             // create request
             this.apiService.createContributor(newContributor)
@@ -63,6 +68,30 @@ export class CreateUpdateContributorComponent implements OnInit {
     }
 
     addLexia() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            res: this.lexiaList,
+            resType: "lexia",
+            props: ["internalID", "name"],
+            filter: (lexia: Lexia, value: string): boolean => {
+                const containsID = lexia.internalID.toLowerCase().indexOf(value.toLowerCase()) > -1;
+                const containsName = lexia.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+
+                return containsID || containsName;
+            },
+            btnTxt: "select lexia",
+            titleTxt: "Add Lexia",
+            editMode: true
+        };
+
+        const dialogRef = this.lexiaDialog.open(CategoryRefComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe((data) => {
+            if (data.submit) {
+                this.lexiaList = data.data;
+            }
+        });
     }
 
     removeLexia(lexia: Lexia) {

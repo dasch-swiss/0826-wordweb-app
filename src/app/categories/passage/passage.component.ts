@@ -44,6 +44,7 @@ export class PassageComponent implements OnInit {
 
     resetTable() {
         this.apiService.getPassages(true).subscribe((passages) => {
+            console.log(passages);
             this.dataSource = new MatTableDataSource(passages);
             this.dataSource.sort = this.sort;
             this.dataSource.sortingDataAccessor = ((item: any, property) => {
