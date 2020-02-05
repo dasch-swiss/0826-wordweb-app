@@ -1,8 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {
-    ApiServiceError,
-    ApiServiceResult,
     ListNode,
     ListsService,
     OntologyService,
@@ -11,6 +9,7 @@ import {
     ResourceService
 } from "@knora/core";
 import {ApiService} from "../services/api.service";
+import {KnoraApiConfig, KnoraApiConnection, ReadListValue, ReadResource} from "@knora/api";
 
 @Component({
     selector: "app-categories",
@@ -21,6 +20,8 @@ export class CategoriesComponent implements OnInit {
 
     readonly url = "http://rdfh.ch/projects/0826";
     readonly urlOntology = "http://www.knora.org/ontology/0826/teimww";
+
+    knoraApiConnection: KnoraApiConnection;
 
     constructor(
         private router: Router,
@@ -62,6 +63,72 @@ export class CategoriesComponent implements OnInit {
         //     }, (error: ApiServiceError) => {
         //         console.error("4", error);
         //     });
+
+        const config = new KnoraApiConfig("http", "0.0.0.0", 3333);
+        this.knoraApiConnection = new KnoraApiConnection(config);
+        // console.log(this.knoraApiConnection);
+
+        this.knoraApiConnection.v2.auth.login("email", "root@example.com", "test").subscribe(
+            login => {
+
+                this.knoraApiConnection.v2.res.getResource("http://rdfh.ch/0826/x8CLJKwhR_qwxQHVCysQXw").subscribe(
+                    (res: ReadResource) => {
+                        console.log(res);
+
+                        const vals1 = res.getValues("http://0.0.0.0:3333/ontology/0826/teimww/v2#hasGenre");
+
+                        const vals = res.getValuesAs("http://0.0.0.0:3333/ontology/0826/teimww/v2#hasGenre", ReadListValue);
+
+                        console.log(vals);
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+
+                const gravsearch = `
+                PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+                PREFIX teimww: <http://0.0.0.0:3333/ontology/0826/teimww/simple/v2#>
+
+                CONSTRUCT {
+                    ?book knora-api:isMainResource true .
+                    ?book teimww:bookInternalId ?internalID .
+                    ?book teimww:edition ?edition .
+                    ?book teimww:createdDate ?createdDate .
+                    ?book teimww:publishDate ?publishDate .
+                    ?book teimww:isWrittenBy ?writtenBy .
+                    ?book teimww:performedBy ?performedBy .
+                    ?book teimww:performedIn ?performedIn .
+                    ?book teimww:hasLanguage ?hasLanguage .
+                    ?book teimww:hasGenre ?hasGenre .
+                    ?book teimww:hasSubject ?hasSubject .
+                } WHERE {
+                    ?book a teimww:book .
+                    ?book teimww:bookInternalId ?internalID .
+                    ?book teimww:edition ?edition .
+                    ?book teimww:createdDate ?createdDate .
+                    ?book teimww:publishDate ?publishDate .
+                    ?book teimww:isWrittenBy ?writtenBy .
+                    ?book teimww:performedBy ?performedBy .
+                    ?book teimww:performedIn ?performedIn .
+                    ?book teimww:hasLanguage ?hasLanguage .
+                    ?book teimww:hasGenre ?hasGenre .
+                    ?book teimww:hasSubject ?hasSubject .
+                }
+                ORDER BY ?createdDate
+
+                OFFSET 1
+
+                `;
+
+                this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch).subscribe(
+                    searchRes => {
+                        console.log(searchRes);
+                    }
+                );
+
+            }
+        );
     }
 
     showAuthors() {
