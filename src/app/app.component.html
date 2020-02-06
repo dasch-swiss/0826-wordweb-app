@@ -1,1 +1,48 @@
-<router-outlet></router-outlet>
+<div>
+
+    <mat-sidenav-container>
+
+        <mat-sidenav #sidenav>
+            <mat-nav-list>
+                <a mat-list-item (click)="sidenav.toggle()">
+                        <mat-icon>close</mat-icon>
+                </a>
+                <a href="http://wordweb-idem.ch/index.html" mat-list-item>HOME</a>
+                <a href="http://wordweb-idem.ch/about-us.html" mat-list-item>ABOUT</a>
+                <a href="http://wordweb-idem.ch/portfolio.html" mat-list-item>PUBLICATION</a>
+                <a href="http://wordweb-idem.ch/contact.html" mat-list-item>CONTACT</a>
+                <a href="http://wordweb-idem.ch/ui-elements.html" mat-list-item>READING</a>
+            </mat-nav-list>
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+
+            <mat-toolbar>
+                <mat-toolbar-row style="justify-content: space-between">
+                    <button mat-icon-button fxShow="true" fxHide.gt-xs (click)="sidenav.toggle()">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+                    <a mat-button>SEARCH</a>
+                    <div fxShow="true" fxHide.lt-sm>
+                        <a href="http://wordweb-idem.ch/index.html" mat-button>HOME</a>
+                        <a href="http://wordweb-idem.ch/about-us.html" mat-button>ABOUT</a>
+                        <a href="http://wordweb-idem.ch/portfolio.html" mat-button>PUBLICATION</a>
+                        <a href="http://wordweb-idem.ch/contact.html" mat-button>CONTACT</a>
+                        <a href="http://wordweb-idem.ch/ui-elements.html" mat-button>READING</a>
+                    </div>
+                </mat-toolbar-row>
+            </mat-toolbar>
+
+            <main class="content">
+                <router-outlet></router-outlet>
+            </main>
+
+            <footer>
+                © 2020 WordWeb | Made by WordWeb at DHLab
+            </footer>
+
+        </mat-sidenav-content>
+
+    </mat-sidenav-container>
+
+</div>

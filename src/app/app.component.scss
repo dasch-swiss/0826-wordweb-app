@@ -1,0 +1,75 @@
+mat-toolbar {
+  color: white;
+  background: url("../assets/manuscript-2.jpg");background-size:cover ; background-position: center!important;
+
+  a {
+    font-family: 'Open Sans', sans-serif !important;
+    font-weight: bold;
+  }
+
+  a:hover {
+    color: rgb(159,11,11);
+  }
+
+  button:hover {
+    color: rgb(159,11,11);
+  }
+
+  div {
+    //background: rgba(0,0,0, 0.15);
+
+    a {
+      font-family: 'Open Sans', sans-serif !important;
+      font-weight: bold;
+    }
+
+    a:hover {
+      color: rgb(159,11,11);
+      //background: rgba(255,255,255, 0.7);
+    }
+  }
+}
+
+mat-sidenav-container {
+  min-height: 100vh; // same height as browser window height
+
+  mat-sidenav-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; // same height as browser window height
+
+    .content {
+      flex: 1; // child will set to an equal size inside the container
+    }
+
+    main {
+
+      display: flex;
+      flex-direction: column;
+
+      // Select all direct descendants only of the <main> element
+      // that are not <router-outlet> elements:
+      > *:not(router-outlet) {
+
+        flex: 1; // child will set to an equal size inside the container
+        display: block;
+
+      }
+
+    }
+  }
+
+}
+
+
+footer {
+  //position: absolute;
+  //width: 100%;
+  //bottom: 0;
+  height: 8rem;
+  line-height: 8rem;
+  background-color: black;
+
+  color: white;
+  text-align: center;
+}

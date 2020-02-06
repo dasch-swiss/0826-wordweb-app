@@ -56,6 +56,11 @@ import {CategoryRefComponent} from "./dialog/category-ref.component";
 import {AppInitService} from "./app-init.service";
 import {KuiCoreConfigToken} from "@knora/core";
 import {HttpClientModule} from "@angular/common/http";
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatListModule} from "@angular/material/list";
+import {SearchComponent} from "./search/search.component";
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
@@ -101,7 +106,8 @@ export function initializeApp(appInitService: AppInitService) {
         TreeRefComponent,
         CategoryRefComponent,
         FormalClassComponent,
-        CreateUpdateGenreComponent
+        CreateUpdateGenreComponent,
+        SearchComponent
     ],
     imports: [
         BrowserModule,
@@ -125,7 +131,11 @@ export function initializeApp(appInitService: AppInitService) {
         SatPopoverModule,
         FormsModule,
         ReactiveFormsModule,
-        MatChipsModule
+        MatChipsModule,
+        FlexLayoutModule,
+        MatToolbarModule,
+        MatSidenavModule,
+        MatListModule
     ],
     providers: [
         AppInitService,

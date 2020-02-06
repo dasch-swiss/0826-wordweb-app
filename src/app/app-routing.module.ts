@@ -19,10 +19,12 @@ import {StatusComponent} from "./categories/status/status.component";
 import {SubjectComponent} from "./categories/subject/subject.component";
 import {VenueComponent} from "./categories/venue/venue.component";
 import {FormalClassComponent} from "./categories/formal-class/formal-class.component";
+import {SearchComponent} from "./search/search.component";
 
 const routes: Routes = [
+  {path: "search", component: SearchComponent},
+  {path: "", redirectTo: "search", pathMatch: "full"},
   {path: "categories", component: CategoriesComponent},
-  {path: "", redirectTo: "categories", pathMatch: "full"},
   {path: "author", component: AuthorComponent},
   {path: "book", component: BookComponent},
   {path: "contributor", component: ContributorComponent},
