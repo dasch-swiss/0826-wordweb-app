@@ -61,6 +61,11 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
 import {SearchComponent} from "./search/search.component";
+import {MatTabsModule} from "@angular/material/tabs";
+import { SimpleSearchComponent } from './search/simple-search/simple-search.component';
+import { AdvancedSearchComponent } from './search/advanced-search/advanced-search.component';
+import { ExpertSearchComponent } from './search/expert-search/expert-search.component';
+import { BrowsingComponent } from './search/browsing/browsing.component';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
@@ -107,7 +112,11 @@ export function initializeApp(appInitService: AppInitService) {
         CategoryRefComponent,
         FormalClassComponent,
         CreateUpdateGenreComponent,
-        SearchComponent
+        SearchComponent,
+        SimpleSearchComponent,
+        AdvancedSearchComponent,
+        ExpertSearchComponent,
+        BrowsingComponent
     ],
     imports: [
         BrowserModule,
@@ -135,7 +144,8 @@ export function initializeApp(appInitService: AppInitService) {
         FlexLayoutModule,
         MatToolbarModule,
         MatSidenavModule,
-        MatListModule
+        MatListModule,
+        MatTabsModule
     ],
     providers: [
         AppInitService,

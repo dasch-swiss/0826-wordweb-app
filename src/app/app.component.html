@@ -22,7 +22,7 @@
                     <button mat-icon-button fxShow="true" fxHide.gt-xs (click)="sidenav.toggle()">
                         <mat-icon>menu</mat-icon>
                     </button>
-                    <a mat-button>SEARCH</a>
+                    <a mat-button [routerLink]="['/search']">SEARCH</a>
                     <div fxShow="true" fxHide.lt-sm>
                         <a href="http://wordweb-idem.ch/index.html" mat-button>HOME</a>
                         <a href="http://wordweb-idem.ch/about-us.html" mat-button>ABOUT</a>

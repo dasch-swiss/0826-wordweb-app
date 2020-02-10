@@ -1,0 +1,91 @@
+<form [formGroup]="form" (ngSubmit)="search()">
+
+    <mat-form-field>
+        <mat-select>
+            <mat-option>-</mat-option>
+            <mat-option>NOT</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Text</mat-label>
+        <input matInput formControlName="searchText">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-select>
+            <mat-option>AND</mat-option>
+            <mat-option>NOT</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Book title</mat-label>
+        <input matInput formControlName="bookTitle">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-select>
+            <mat-option>AND</mat-option>
+            <mat-option>NOT</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Author</mat-label>
+        <input matInput formControlName="author">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-select>
+            <mat-option>AND</mat-option>
+            <mat-option>NOT</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Genre</mat-label>
+        <input matInput formControlName="genre">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-select>
+            <mat-option>AND</mat-option>
+            <mat-option>NOT</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Lexia</mat-label>
+        <input matInput formControlName="lexia">
+    </mat-form-field>
+
+    <mat-checkbox formControlName="createdDateCheck" color="warn" (change)="onChange($event, 'createdDate')">Date period</mat-checkbox>
+    <mat-form-field>
+        <mat-select>
+            <mat-option>AND</mat-option>
+            <mat-option>NOT</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>{{dateStartPlaceholder}}</mat-label>
+        <input matInput formControlName="createdDateStart" placeholder="e.g. 1662" type="number">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>{{dateEndPlaceholder}}</mat-label>
+        <input matInput formControlName="createdDateEnd" placeholder="e.g. 1662" type="number">
+    </mat-form-field>
+
+    <mat-checkbox formControlName="performedDateCheck" color="warn" (change)="onChange($event, 'performedDate')">Date period</mat-checkbox>
+    <mat-form-field>
+        <mat-select>
+            <mat-option>AND</mat-option>
+            <mat-option>NOT</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>{{dateStartPlaceholder}}</mat-label>
+        <input matInput formControlName="performedDateStart" placeholder="e.g. 1662" type="number">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>{{dateEndPlaceholder}}</mat-label>
+        <input matInput formControlName="performedDateEnd" placeholder="e.g. 1662" type="number">
+    </mat-form-field>
+
+    <button [disabled]="form.invalid" type="submit" mat-flat-button color="primary">Search</button>
+</form>

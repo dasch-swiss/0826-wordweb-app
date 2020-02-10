@@ -1,0 +1,33 @@
+<form [formGroup]="form" (ngSubmit)="search()" fxLayout="column">
+    <mat-form-field>
+        <mat-label>Text</mat-label>
+        <input matInput formControlName="searchText">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Author</mat-label>
+        <input matInput formControlName="author">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Book Title</mat-label>
+        <input matInput formControlName="bookTitle">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Genre</mat-label>
+        <input matInput formControlName="genre">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Lexia</mat-label>
+        <input matInput formControlName="lexia" placeholder="Lexia">
+    </mat-form-field>
+    <mat-checkbox formControlName="dateCheck" color="warn" (change)="onChange($event)">Date period</mat-checkbox>
+    <mat-form-field>
+        <mat-label>{{dateStartPlaceholder}}</mat-label>
+        <input matInput formControlName="dateStart" placeholder="e.g. 1662" type="number">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>{{dateEndPlaceholder}}</mat-label>
+        <input matInput formControlName="dateEnd" placeholder="e.g. 1664" type="number">
+    </mat-form-field>
+    <mat-slide-toggle [color]="'warn'">Only Plays</mat-slide-toggle>
+    <button [disabled]="form.invalid" type="submit" mat-flat-button color="primary">Search</button>
+</form>
