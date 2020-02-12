@@ -1,6 +1,8 @@
 mat-toolbar {
   color: white;
   background: url("../assets/manuscript-2.jpg");background-size:cover ; background-position: center!important;
+  min-height: 4rem;
+  max-height: 4rem;
 
   a {
     font-family: 'Open Sans', sans-serif !important;
