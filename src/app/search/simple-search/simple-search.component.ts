@@ -1,5 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
+import {ApiService} from "../../services/api.service";
 
 @Component({
     selector: "app-simple-search",
@@ -8,8 +9,10 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class SimpleSearchComponent implements OnInit {
     form: FormGroup;
-    dateStartPlaceholder: string;
-    dateEndPlaceholder: string;
+    passages: any;
+
+    constructor(private apiService: ApiService) {
+    }
 
     ngOnInit() {
         this.form = new FormGroup({
@@ -18,34 +21,20 @@ export class SimpleSearchComponent implements OnInit {
             bookTitle: new FormControl("", []),
             genre: new FormControl("", []),
             lexia: new FormControl("", []),
-            dateCheck: new FormControl(false, []),
-            dateStart: new FormControl("", []),
-            dateEnd: new FormControl("", [])
+            dateStart: new FormControl("", [])
         });
-
-        this.form.get("dateEnd").disable();
-
-        this.setDatePlaceholder();
     }
 
     search() {
-        console.log("Searching");
-    }
-
-    onChange(event) {
-        if (event.checked) {
-            this.form.get("dateEnd").enable();
-            this.dateStartPlaceholder = "Date Start";
-            this.dateEndPlaceholder = "Date End";
-        } else {
-            this.form.get("dateEnd").disable();
-            this.setDatePlaceholder();
-        }
-    }
-
-    setDatePlaceholder() {
-        this.dateStartPlaceholder = "Exact Date";
-        this.dateEndPlaceholder = "";
+        this.apiService.getPassages(true).subscribe(data => {
+            for (const passage of data) {
+                this.apiService.getBook(passage.occursIn.id, true).subscribe(book => {
+                    passage.occursIn = book;
+                    this.passages = data;
+                    console.log(this.passages);
+                });
+            }
+        });
     }
 
 }
