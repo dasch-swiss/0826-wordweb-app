@@ -21,19 +21,36 @@ export class AdvancedSearchComponent implements OnInit {
 
     ngOnInit() {
         this.form = new FormGroup({
-            searchText: new FormControl("", []),
+            compText: new FormControl("-", []),
+            text: new FormControl("", []),
+            compAuthor: new FormControl("AND", []),
             author: new FormControl("", []),
+            compBookTitle: new FormControl("AND", []),
             bookTitle: new FormControl("", []),
+            compGenre: new FormControl("AND", []),
             genre: new FormControl("", []),
+            compLexia: new FormControl("AND", []),
             lexia: new FormControl("", []),
-            createdDateStart: new FormControl("", []),
-            performedDateStart: new FormControl("", []),
-            publicationDateStart: new FormControl("", []),
+            compSubject: new FormControl("AND", []),
+            subject: new FormControl("", []),
+            compLanguage: new FormControl("AND", []),
+            language: new FormControl("", []),
+            compFunction: new FormControl("AND", []),
+            function: new FormControl("", []),
+            compMarking: new FormControl("AND", []),
+            marking: new FormControl("", []),
+            compCreatedDate: new FormControl("AND", []),
+            createdDate: new FormControl("", []),
+            compPerformedDate: new FormControl("AND", []),
+            performedDate: new FormControl("", []),
+            compPublicationDate: new FormControl("AND", []),
+            publicationDate: new FormControl("", []),
         });
     }
 
     search() {
         console.log("Searching");
+        console.log(this.form.get("compText").value);
     }
 
 }
