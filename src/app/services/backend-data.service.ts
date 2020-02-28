@@ -3468,7 +3468,7 @@ export class BackendDataService {
     private pas2: Passage = {
         id: 2,
         occursIn: this.b1.id,
-        text: "My bounty is as boundless as the sea,\n" +
+        text: "My bounty is as boundless as the sea,<br>" +
             "My love as deep; the more I give to thee,\n" +
             "The more I have, for both are infinite.",
         textHist: "[or] My bounty is as boundless as the sea,\n" +
