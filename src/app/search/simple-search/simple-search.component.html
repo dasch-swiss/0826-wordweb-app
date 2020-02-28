@@ -58,7 +58,7 @@
                     <mat-card-title>{{passage.occursIn.title}}</mat-card-title>
                     <mat-card-subtitle
                             *ngFor="let author of passage.occursIn.authors">{{author.firstName}} {{author.lastName}}</mat-card-subtitle>
-                    <div>{{passage.text}}</div>
+                    <div [innerHTML]="passage.text"></div>
                 </div>
             </mat-card-content>
             <mat-card-actions>

@@ -66,12 +66,12 @@ export class CategoriesComponent implements OnInit {
 
         const config = new KnoraApiConfig("http", "0.0.0.0", 3333);
         this.knoraApiConnection = new KnoraApiConnection(config);
-        // console.log(this.knoraApiConnection);
+        console.log(this.knoraApiConnection);
 
         this.knoraApiConnection.v2.auth.login("email", "root@example.com", "test").subscribe(
             login => {
 
-                this.knoraApiConnection.v2.res.getResource("http://rdfh.ch/0826/x8CLJKwhR_qwxQHVCysQXw").subscribe(
+                this.knoraApiConnection.v2.res.getResource("http://rdfh.ch/0826/-9mv4JbRQwKjA1lyCM6B1g").subscribe(
                     (res: ReadResource) => {
                         console.log(res);
 
@@ -93,31 +93,40 @@ export class CategoriesComponent implements OnInit {
                 CONSTRUCT {
                     ?book knora-api:isMainResource true .
                     ?book teimww:bookInternalId ?internalID .
+                    ?book teimww:bookTitle ?bookTitle .
                     ?book teimww:edition ?edition .
-                    ?book teimww:createdDate ?createdDate .
-                    ?book teimww:publishDate ?publishDate .
+                    ?book teimww:editionHist ?editionHist .
                     ?book teimww:isWrittenBy ?writtenBy .
-                    ?book teimww:performedBy ?performedBy .
-                    ?book teimww:performedIn ?performedIn .
+                    #?book teimww:createdDate ?createdDate .
+                    ?book teimww:publishDate ?publishDate .
+                    #?book teimww:firstPerformanceDate ?firstPerformanceDate .
                     ?book teimww:hasLanguage ?hasLanguage .
                     ?book teimww:hasGenre ?hasGenre .
                     ?book teimww:hasSubject ?hasSubject .
+                    #?book teimww:performedBy ?performedBy .
+                    #?book teimww:performedIn ?performedIn .
+                    #?book teimww:lexiaAsBook ?lexiaAsBook .
                 } WHERE {
                     ?book a teimww:book .
-                    ?book teimww:bookInternalId ?internalID .
-                    ?book teimww:edition ?edition .
-                    ?book teimww:createdDate ?createdDate .
-                    ?book teimww:publishDate ?publishDate .
-                    ?book teimww:isWrittenBy ?writtenBy .
-                    ?book teimww:performedBy ?performedBy .
-                    ?book teimww:performedIn ?performedIn .
-                    ?book teimww:hasLanguage ?hasLanguage .
-                    ?book teimww:hasGenre ?hasGenre .
-                    ?book teimww:hasSubject ?hasSubject .
+                    OPTIONAL {
+                        ?book teimww:bookInternalId ?internalID .
+                        ?book teimww:bookTitle ?bookTitle .
+                        ?book teimww:edition ?edition .
+                        ?book teimww:editionHist ?editionHist .
+                        ?book teimww:isWrittenBy ?writtenBy .
+                        #?book teimww:createdDate ?createdDate .
+                        ?book teimww:publishDate ?publishDate .
+                        #?book teimww:firstPerformanceDate ?firstPerformanceDate .
+                        ?book teimww:hasLanguage ?hasLanguage .
+                        ?book teimww:hasGenre ?hasGenre .
+                        ?book teimww:hasSubject ?hasSubject .
+                        #?book teimww:performedBy ?performedBy .
+                        #?book teimww:performedIn ?performedIn .
+                        #?book teimww:lexiaAsBook ?lexiaAsBook .
+                    }
                 }
-                ORDER BY ?createdDate
 
-                OFFSET 1
+                OFFSET 0
 
                 `;
 

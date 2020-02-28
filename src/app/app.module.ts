@@ -62,10 +62,12 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
 import {SearchComponent} from "./search/search.component";
 import {MatTabsModule} from "@angular/material/tabs";
-import { SimpleSearchComponent } from './search/simple-search/simple-search.component';
-import { AdvancedSearchComponent } from './search/advanced-search/advanced-search.component';
-import { ExpertSearchComponent } from './search/expert-search/expert-search.component';
-import { BrowsingComponent } from './search/browsing/browsing.component';
+import {SimpleSearchComponent} from "./search/simple-search/simple-search.component";
+import {AdvancedSearchComponent} from "./search/advanced-search/advanced-search.component";
+import {ExpertSearchComponent} from "./search/expert-search/expert-search.component";
+import {BrowsingComponent} from "./search/browsing/browsing.component";
+import {AbcIndexComponent} from "./search/browsing/abc-index/abc-index.component";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
@@ -116,7 +118,8 @@ export function initializeApp(appInitService: AppInitService) {
         SimpleSearchComponent,
         AdvancedSearchComponent,
         ExpertSearchComponent,
-        BrowsingComponent
+        BrowsingComponent,
+        AbcIndexComponent
     ],
     imports: [
         BrowserModule,
@@ -145,7 +148,8 @@ export function initializeApp(appInitService: AppInitService) {
         MatToolbarModule,
         MatSidenavModule,
         MatListModule,
-        MatTabsModule
+        MatTabsModule,
+        MatButtonToggleModule
     ],
     providers: [
         AppInitService,
