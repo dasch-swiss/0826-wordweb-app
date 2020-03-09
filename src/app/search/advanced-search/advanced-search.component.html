@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutGap="30px" style="margin: 2rem;" fxLayout.lt-md="column">
+<div fxLayout="row" fxLayoutGap="30px" style="margin: 2rem 1rem;" fxLayout.lt-md="column">
     <mat-card fxFlex.gt-sm="350px">
         <mat-card-content>
             <mat-card-title>Search for</mat-card-title>
@@ -6,7 +6,7 @@
             <form [formGroup]="form" (ngSubmit)="search()" fxLayout="column">
 
                 <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">
-                    <mat-form-field fxFlex="100px">
+                    <mat-form-field fxFlex="60px">
                         <mat-select formControlName="compText">
                             <mat-option *ngFor="let operator of operators1"
                                         [value]="operator.value">{{operator.value}}</mat-option>
@@ -19,7 +19,7 @@
                 </div>
 
                 <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">
-                    <mat-form-field fxFlex="100px">
+                    <mat-form-field fxFlex="60px">
                         <mat-select formControlName="compAuthor">
                             <mat-option *ngFor="let operator of operators2"
                                         [value]="operator.value">{{operator.value}}</mat-option>
@@ -32,7 +32,7 @@
                 </div>
 
                 <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">
-                    <mat-form-field fxFlex="100px">
+                    <mat-form-field fxFlex="60px">
                         <mat-select formControlName="compBookTitle">
                             <mat-option *ngFor="let operator of operators2"
                                         [value]="operator.value">{{operator.value}}</mat-option>
@@ -45,7 +45,7 @@
                 </div>
 
                 <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">
-                    <mat-form-field fxFlex="100px">
+                    <mat-form-field fxFlex="60px">
                         <mat-select formControlName="compGenre">
                             <mat-option *ngFor="let operator of operators2"
                                         [value]="operator.value">{{operator.value}}</mat-option>
@@ -58,7 +58,7 @@
                 </div>
 
                 <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">
-                    <mat-form-field fxFlex="100px">
+                    <mat-form-field fxFlex="60px">
                         <mat-select formControlName="compLexia">
                             <mat-option *ngFor="let operator of operators2"
                                         [value]="operator.value">{{operator.value}}</mat-option>
@@ -71,7 +71,20 @@
                 </div>
 
                 <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">
-                    <mat-form-field fxFlex="100px">
+                    <mat-form-field fxFlex="60px">
+                        <mat-select formControlName="compMarking">
+                            <mat-option *ngFor="let operator of operators2"
+                                        [value]="operator.value">{{operator.value}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="1 1 100%">
+                        <mat-label>Marking</mat-label>
+                        <input matInput formControlName="marking">
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field fxFlex="60px">
                         <mat-select formControlName="compMarking">
                             <mat-option *ngFor="let operator of operators2"
                                         [value]="operator.value">{{operator.value}}</mat-option>
