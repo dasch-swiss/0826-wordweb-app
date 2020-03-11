@@ -1,4 +1,5 @@
-<div fxLayout="row" fxLayoutGap="30px" style="margin: 2rem 1rem;" fxLayout.lt-md="column">
+<div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="center start" fxLayoutGap="30px" style="margin: 2rem 1rem;">
+
     <mat-card fxFlex.gt-sm="350px">
         <mat-card-content>
             <mat-card-title>Search for</mat-card-title>
@@ -198,4 +199,40 @@
             </form>
         </mat-card-content>
     </mat-card>
+
+    <div fxFlex.gt-sm="550px">
+
+        <div *ngIf="passages" fxLayout="column" fxLayoutGap="10px">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div>{{passages.length}} Results</div>
+                <mat-form-field>
+                    <mat-label>Sort</mat-label>
+                    <mat-select>
+                        <mat-option [value]="'Author'">Author</mat-option>
+                        <mat-option [value]="'Book Title'">Book Title</mat-option>
+                        <mat-option [value]="'Date'">Date</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <mat-card *ngFor="let passage of passages; let i = index">
+                <mat-card-content fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start">
+                    <mat-card-subtitle>{{i + 1}}</mat-card-subtitle>
+                    <div>
+                        <mat-card-title>{{passage.occursIn.title}}</mat-card-title>
+                        <mat-card-subtitle
+                                *ngFor="let author of passage.occursIn.authors">{{author.firstName}} {{author.lastName}}</mat-card-subtitle>
+                        <div [innerHTML]="passage.text"></div>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-button>
+                        <mat-icon>chevron_right</mat-icon>
+                        Show Details
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+
+    </div>
 </div>

@@ -1,5 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
+import {Book} from "../../model/model";
+import {ApiService} from "../../services/api.service";
 
 @Component({
     selector: "app-advanced-search",
@@ -8,6 +10,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class AdvancedSearchComponent implements OnInit {
     form: FormGroup;
+    passages: any;
 
     operators1 = [
         {value: "-"},
@@ -18,6 +21,9 @@ export class AdvancedSearchComponent implements OnInit {
         {value: "AND"},
         {value: "NOT"}
     ];
+
+    constructor(private apiService: ApiService) {
+    }
 
     ngOnInit() {
         this.form = new FormGroup({
@@ -49,8 +55,15 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     search() {
-        console.log("Searching");
-        console.log(this.form.get("compText").value);
+        this.apiService.getPassages(true).subscribe(data => {
+            for (const passage of data) {
+                this.apiService.getBook((passage.occursIn as Book).id, true).subscribe(book => {
+                    passage.occursIn = book;
+                    this.passages = data;
+                    console.log(this.passages);
+                });
+            }
+        });
     }
 
 }
