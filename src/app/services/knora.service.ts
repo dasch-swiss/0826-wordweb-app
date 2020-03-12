@@ -47,10 +47,56 @@ export class KnoraService {
         } WHERE {
             ?passage a teimww:passage .
             ?passage teimww:hasText ?text .
+            ?passage teimww:hasPage ?page .
             ?passage teimww:occursIn ?book .
+            ?passage teimww:wasContributedBy ?contributor .
+            ?passage teimww:contains ?lexia .
+            ?passage teimww:isMentionedIn ?sPassage .
+            OPTIONAL {
+                ?passage teimww:hasTextHist ?textHist .
+            }
+            OPTIONAL {
+                ?passage teimww:hasPageHist ?pageHist .
+            }
+            OPTIONAL {
+                ?passage teimww:hasMarking ?marking .
+            }
+            OPTIONAL {
+                ?passage teimww:hasStatus ?status .
+            }
+            OPTIONAL {
+                ?passage teimww:hasFunctionVoice ?function .
+            }
+            OPTIONAL {
+                ?passage teimww:hasResearchField ?research .
+            }
+            OPTIONAL {
+                ?passage teimww:publicComment ?pubComment .
+            }
+
+            ?sPassage teimww:hasPage ?sPage .
+            ?sPassage teimww:occursIn ?sBook .
+            OPTIONAL {
+                ?sPassage teimww:hasText ?sText .
+            }
+
+            ?sBook teimww:bookTitle ?sBt .
+            ?sBook teimww:isWrittenBy ?sAuthor .
+
+            ?sAuthor teimww:firstName ?sFn .
+            ?sAuthor teimww:lastName ?sLn .
+
+            ?lexia teimww:lexiaTitle ?lt .
+
+            ?book teimww:bookTitle ?bt .
             ?book teimww:isWrittenBy ?author .
+
             ?author teimww:firstName ?fn .
             ?author teimww:lastName ?ln .
+
+            ?contributor teimww:firstName ?conFn .
+            ?contributor teimww:lastName ?conLn .
+
             ${filter}
         }
         OFFSET 0
