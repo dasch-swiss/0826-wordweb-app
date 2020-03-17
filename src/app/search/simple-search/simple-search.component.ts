@@ -22,8 +22,7 @@ export class SimpleSearchComponent implements OnInit {
             bookTitle: new FormControl("", []),
             genre: new FormControl("", []),
             lexia: new FormControl("", []),
-            dateStart: new FormControl("", []),
-            dateEnd: new FormControl("", [])
+            date: new FormControl("", [])
         });
     }
 
