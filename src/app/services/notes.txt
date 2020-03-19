@@ -1,0 +1,93 @@
+Searching
+
+1. Passages
+    - Text
+    - Author (Person)
+    - Book Title
+    - Book Genre (from List Node)
+    - Lexia Title
+    - Book Created Date (Exact Time / Period)
+    - Book Only Plays => Genre (from List Node)
+    - Author (Person) and Lexia Title
+    - Book (Book) and Lexia Title
+
+    - Book First Performed Date (Exact Time / Period)
+    - Book Published Date (Exact Time / Period)
+    - Company (Company)
+    - Venue (Venue)
+
+2. Authors
+    - Last name starts with "A..."
+
+3. Books
+    - Book Title starts with "A..."
+
+4. Lexia
+    - Lexia Title starts with "A..."
+
+5. List
+    - All possible Lists with IRIs
+    - All Nodes of a List (from IRI)
+
+------------------
+Passages
+    hasText                     1   (Sec: Minus as placeholder)
+    hasTextHist                 0-1
+    hasDisplayedTitle           1
+    hasPage                     0-1
+    hasPageHist                 0-1
+    hasResearchField            1   (Sec: Reading)
+    hasFunctionVoice            1-n (Sec: Undefined)
+    hasMarking                  1-n
+    hasStatus                   1   (Sec: Unedited)
+    occursIn (Book)             1-n
+    isMentionedIn (Passage)     0-n
+    wasContributedBy (Person)   1-n
+    contains (Lexia)            0-n
+    internalComment             0-1
+    publicComment               0-1
+
+Book
+    bookInternalId              1
+    bookTitle                   1
+    isWrittenBy (Person)        1-n
+    performedBy (Company)       0-n
+    performedIn (Venue)         0-n
+    lexiaAsBook (Lexia)         0-n
+    edition                     1
+    editionHist                 0-1
+    hasLanguage                 1
+    hasGenre                    1-n
+    hasSubject                  0-n
+    createdDate                 1   (3000 if there is none)
+    publishDate                 0-1
+    firstPerformanceDate        0-1
+
+Person
+    personInternalId            1
+    firstName                   0-1
+    lastName                    1   (Searching is happening here mainly, Mononame like "Aristotle")
+    description                 1
+    birthDate                   0-1
+    deathDate                   0-1
+    activeDate                  0-1
+    hasGender                   1
+    lexiaAsPerson (Lexia)       0-n
+    personPerformedIn (Book)    0-n
+
+Lexia
+    lexiaInternalId             1
+    lexiaTitle                  1
+    hasFormalClass              1-n
+    hasImage                    0-n
+
+Company
+    companyInternalId           1
+    companyTitle                1
+    lexiaAsCompany (Lexia)      0-n
+    hasMember (Person)          0-n
+
+Venue
+    venueInternalId             1
+    hasPlaceVenue               1
+    lexiaAsVenue (Lexia)        0-n
