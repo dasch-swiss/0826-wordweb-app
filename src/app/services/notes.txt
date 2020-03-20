@@ -40,54 +40,55 @@ Passages
     hasFunctionVoice            1-n (Sec: Undefined)
     hasMarking                  1-n
     hasStatus                   1   (Sec: Unedited)
+    hasInternalComment          0-1
+    hasPublicComment            0-1
     occursIn (Book)             1-n
     isMentionedIn (Passage)     0-n
     wasContributedBy (Person)   1-n
     contains (Lexia)            0-n
-    internalComment             0-1
-    publicComment               0-1
 
 Book
-    bookInternalId              1
-    bookTitle                   1
-    isWrittenBy (Person)        1-n
-    performedBy (Company)       0-n
-    performedIn (Venue)         0-n
-    lexiaAsBook (Lexia)         0-n
-    edition                     1
-    editionHist                 0-1
+    hasBookInternalId           1
+    hasBookTitle                1
+    hasEdition                  1
+    hasEditionHist              0-1
     hasLanguage                 1
     hasGenre                    1-n
     hasSubject                  0-n
-    createdDate                 1   (3000 if there is none)
-    publishDate                 0-1
-    firstPerformanceDate        0-1
+    hasCreationDate             1   (3000 if there is none)
+    hasPublicationDate          0-1
+    hasFirstPerformanceDate     0-1
+    isWrittenBy (Person)        1-n
+    performedBy (Company)       0-n
+    performedIn (Venue)         0-n
+    isLexiaBook (Lexia)         0-n
 
 Person
-    personInternalId            1
-    firstName                   0-1
-    lastName                    1   (Searching is happening here mainly, Mononame like "Aristotle")
-    description                 1
-    birthDate                   0-1
-    deathDate                   0-1
-    activeDate                  0-1
+    hasPersonInternalId         1
+    hasFirstName                0-1
+    hasLastName                 1   (Searching is happening here mainly, Mononame like "Aristotle")
+    hasDescription              1
+    hasBirthDate                0-1
+    hasDeathDate                0-1
+    hasActiveDate               0-1
     hasGender                   1
-    lexiaAsPerson (Lexia)       0-n
+    hasEmail                    0-1
+    isLexiaPerson (Lexia)       0-n
     personPerformedIn (Book)    0-n
 
 Lexia
-    lexiaInternalId             1
-    lexiaTitle                  1
+    hasLexiaInternalId          1
+    hasLexiaTitle               1
     hasFormalClass              1-n
     hasImage                    0-n
 
 Company
-    companyInternalId           1
-    companyTitle                1
-    lexiaAsCompany (Lexia)      0-n
+    hasCompanyInternalId        1
+    hasCompanyTitle             1
     hasMember (Person)          0-n
+    isLexiaCompany (Lexia)      0-n
 
 Venue
-    venueInternalId             1
+    hasVenueInternalId          1
     hasPlaceVenue               1
-    lexiaAsVenue (Lexia)        0-n
+    isLexiaVenue (Lexia)        0-n
