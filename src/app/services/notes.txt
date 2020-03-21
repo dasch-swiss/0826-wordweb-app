@@ -33,23 +33,24 @@ Searching
 Passages
     hasText                     1   (Sec: Minus as placeholder)
     hasTextHist                 0-1
-    hasDisplayedTitle           1
+    hasDisplayedTitle           1   (Sec: Column "Title" from God bless you)
     hasPage                     0-1
     hasPageHist                 0-1
     hasResearchField            1   (Sec: Reading)
     hasFunctionVoice            1-n (Sec: Undefined)
-    hasMarking                  1-n
-    hasStatus                   1   (Sec: Unedited)
+    hasMarking                  1-n (Sec: Unmarked)
+    hasStatus                   1   (Sec: Depends of primary passage status)
     hasInternalComment          0-1
     hasPublicComment            0-1
     occursIn (Book)             1-n
     isMentionedIn (Passage)     0-n
-    wasContributedBy (Person)   1-n
+    wasContributedBy (Person)   1-n (Sec: Regula Hohl)
     contains (Lexia)            0-n
 
 Book
     hasBookInternalId           1
     hasBookTitle                1
+    hasBookDescription          0-1
     hasEdition                  1
     hasEditionHist              0-1
     hasLanguage                 1
@@ -79,6 +80,7 @@ Person
 Lexia
     hasLexiaInternalId          1
     hasLexiaTitle               1
+    hasLexiaDescription         0-1
     hasFormalClass              1-n
     hasImage                    0-n
 
