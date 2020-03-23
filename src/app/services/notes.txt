@@ -30,22 +30,18 @@ Searching
     - All Nodes of a List (from IRI)
 
 ------------------
-Passages
-    hasText                     1   (Sec: Minus as placeholder)
-    hasTextHist                 0-1
-    hasDisplayedTitle           1   (Sec: Column "Title" from God bless you)
-    hasPage                     0-1
-    hasPageHist                 0-1
-    hasResearchField            1   (Sec: Reading)
-    hasFunctionVoice            1-n (Sec: Undefined)
-    hasMarking                  1-n (Sec: Unmarked)
-    hasStatus                   1   (Sec: Depends of primary passage status)
-    hasInternalComment          0-1
-    hasPublicComment            0-1
-    occursIn (Book)             1-n
-    isMentionedIn (Passage)     0-n
-    wasContributedBy (Person)   1-n (Sec: Regula Hohl)
-    contains (Lexia)            0-n
+Person
+    hasPersonInternalId         1
+    hasFirstName                0-1
+    hasLastName                 1   (Searching is happening here mainly, Mononame like "Aristotle")
+    hasDescription              0-1
+    hasBirthDate                0-1
+    hasDeathDate                0-1
+    hasActiveDate               0-1
+    hasGender                   0-1
+    hasEmail                    0-1
+    isLexiaPerson (Lexia)       0-n
+    personPerformedIn (Book)    0-n
 
 Book
     hasBookInternalId           1
@@ -64,18 +60,22 @@ Book
     performedIn (Venue)         0-n
     isLexiaBook (Lexia)         0-n
 
-Person
-    hasPersonInternalId         1
-    hasFirstName                0-1
-    hasLastName                 1   (Searching is happening here mainly, Mononame like "Aristotle")
-    hasDescription              1
-    hasBirthDate                0-1
-    hasDeathDate                0-1
-    hasActiveDate               0-1
-    hasGender                   1
-    hasEmail                    0-1
-    isLexiaPerson (Lexia)       0-n
-    personPerformedIn (Book)    0-n
+Passages
+    hasText                     1   (Sec: Minus as placeholder)
+    hasTextHist                 0-1
+    hasDisplayedTitle           1   (Sec: Column "Title" from God bless you)
+    hasPage                     0-1
+    hasPageHist                 0-1
+    hasResearchField            1   (Sec: Reading)
+    hasFunctionVoice            1-n (Sec: Not defined)
+    hasMarking                  1-n (Sec: Unmarked)
+    hasStatus                   1   (Sec: Depends of primary passage status)
+    hasInternalComment          0-1
+    hasPublicComment            0-1
+    occursIn (Book)             1-n
+    isMentionedIn (Passage)     0-n
+    wasContributedBy (Person)   1-n (Sec: Regula Hohl)
+    contains (Lexia)            0-n
 
 Lexia
     hasLexiaInternalId          1
