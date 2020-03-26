@@ -34,12 +34,11 @@ Person
     hasPersonInternalId         1
     hasFirstName                0-1
     hasLastName                 1   (Searching is happening here mainly, Mononame like "Aristotle")
-    hasDescription              0-1
+    hasDescription              1
     hasBirthDate                0-1
     hasDeathDate                0-1
     hasActiveDate               0-1
-    hasGender                   0-1
-    hasEmail                    0-1
+    hasGender                   1
     isLexiaPerson (Lexia)       0-n
     personPerformedIn (Book)    0-n
 
@@ -74,7 +73,7 @@ Passages
     hasPublicComment            0-1
     occursIn (Book)             1-n
     isMentionedIn (Passage)     0-n
-    wasContributedBy (Person)   1-n (Sec: Regula Hohl)
+    wasContributedBy (Person)   1   (Sec: Regula Hohl)
     contains (Lexia)            0-n
 
 Lexia
