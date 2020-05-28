@@ -71,6 +71,45 @@
                     </mat-form-field>
                 </div>
 
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field fxFlex="60px">
+                        <mat-select formControlName="compSubject">
+                            <mat-option *ngFor="let operator of operators2"
+                                        [value]="operator.value">{{operator.value}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="1 1 100%">
+                        <mat-label>Subject</mat-label>
+                        <input matInput formControlName="subject">
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field fxFlex="60px">
+                        <mat-select formControlName="compLanguage">
+                            <mat-option *ngFor="let operator of operators2"
+                                        [value]="operator.value">{{operator.value}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="1 1 100%">
+                        <mat-label>Language</mat-label>
+                        <input matInput formControlName="language">
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field fxFlex="60px">
+                        <mat-select formControlName="compFunction">
+                            <mat-option *ngFor="let operator of operators2"
+                                        [value]="operator.value">{{operator.value}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="1 1 100%">
+                        <mat-label>Function</mat-label>
+                        <input matInput formControlName="function">
+                    </mat-form-field>
+                </div>
+
                 <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">
                     <mat-form-field fxFlex="60px">
                         <mat-select formControlName="compMarking">
@@ -84,114 +123,53 @@
                     </mat-form-field>
                 </div>
 
-                <div fxLayout="row" fxLayoutGap="10px">
+                <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">
                     <mat-form-field fxFlex="60px">
-                        <mat-select formControlName="compMarking">
+                        <mat-select formControlName="compCreatedDate">
                             <mat-option *ngFor="let operator of operators2"
                                         [value]="operator.value">{{operator.value}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field fxFlex="1 1 100%">
-                        <mat-label>Marking</mat-label>
-                        <input matInput formControlName="marking">
+                        <mat-label>Created Date</mat-label>
+                        <input matInput formControlName="createdDate" placeholder="1662 or 1662-1664" type="number">
                     </mat-form-field>
                 </div>
 
-                <div>
-                    <div style="background-color: white; position: relative; display: inline-block; top: 0.5rem; left: 0.5rem; padding: 0 0.5rem; color: darkgray;">First Performed</div>
+                <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">
+                    <mat-form-field fxFlex="60px">
+                        <mat-select formControlName="compPerformedDate">
+                            <mat-option *ngFor="let operator of operators2"
+                                        [value]="operator.value">{{operator.value}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="1 1 100%">
+                        <mat-label>Performed Date</mat-label>
+                        <input matInput formControlName="performedDate" placeholder="1662 or 1662-1664" type="number">
+                    </mat-form-field>
                 </div>
-                <div style="border: 1px solid lightgray;">
-                    <div style="padding: 0.5rem;">
-                        <button mat-button>Test</button>
-                    </div>
 
+                <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">
+                    <mat-form-field fxFlex="60px">
+                        <mat-select formControlName="compPublicationDate">
+                            <mat-option *ngFor="let operator of operators2"
+                                        [value]="operator.value">{{operator.value}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="1 1 100%">
+                        <mat-label>Publication Date</mat-label>
+                        <input matInput formControlName="publicationDate" placeholder="1662 or 1662-1664" type="number">
+                    </mat-form-field>
                 </div>
 
+<!--                <div>-->
+<!--                    <div style="background-color: white; position: relative; display: inline-block; top: 0.5rem; left: 0.5rem; padding: 0 0.5rem; color: darkgray;">First Performed</div>-->
+<!--                </div>-->
 <!--                <div style="border: 1px solid lightgray;">-->
-<!--                    <div style="background-color: white; position: relative; top: -0.5rem;left: 0.5rem; display:inline-block; padding: 0 0.5rem; color: darkgray;">First Performed</div>-->
 <!--                    <div style="padding: 0.5rem;">-->
 <!--                        <button mat-button>Test</button>-->
 <!--                    </div>-->
-
 <!--                </div>-->
-
-                <!--            <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">-->
-                <!--                <mat-form-field fxFlex="100px">-->
-                <!--                    <mat-select formControlName="compSubject">-->
-                <!--                        <mat-option *ngFor="let operator of operators2"-->
-                <!--                                    [value]="operator.value">{{operator.value}}</mat-option>-->
-                <!--                    </mat-select>-->
-                <!--                </mat-form-field>-->
-                <!--                <mat-form-field fxFlex="1 1 100%">-->
-                <!--                    <mat-label>Subject</mat-label>-->
-                <!--                    <input matInput formControlName="subject">-->
-                <!--                </mat-form-field>-->
-                <!--            </div>-->
-
-                <!--            <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">-->
-                <!--                <mat-form-field fxFlex="100px">-->
-                <!--                    <mat-select formControlName="compLanguage">-->
-                <!--                        <mat-option *ngFor="let operator of operators2"-->
-                <!--                                    [value]="operator.value">{{operator.value}}</mat-option>-->
-                <!--                    </mat-select>-->
-                <!--                </mat-form-field>-->
-                <!--                <mat-form-field fxFlex="1 1 100%">-->
-                <!--                    <mat-label>Language</mat-label>-->
-                <!--                    <input matInput formControlName="language">-->
-                <!--                </mat-form-field>-->
-                <!--            </div>-->
-
-                <!--            <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">-->
-                <!--                <mat-form-field fxFlex="100px">-->
-                <!--                    <mat-select formControlName="compFunction">-->
-                <!--                        <mat-option *ngFor="let operator of operators2"-->
-                <!--                                    [value]="operator.value">{{operator.value}}</mat-option>-->
-                <!--                    </mat-select>-->
-                <!--                </mat-form-field>-->
-                <!--                <mat-form-field fxFlex="1 1 100%">-->
-                <!--                    <mat-label>Function</mat-label>-->
-                <!--                    <input matInput formControlName="function">-->
-                <!--                </mat-form-field>-->
-                <!--            </div>-->
-
-                <!--            <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">-->
-                <!--                <mat-form-field fxFlex="100px">-->
-                <!--                    <mat-select formControlName="compCreatedDate">-->
-                <!--                        <mat-option *ngFor="let operator of operators2"-->
-                <!--                                    [value]="operator.value">{{operator.value}}</mat-option>-->
-                <!--                    </mat-select>-->
-                <!--                </mat-form-field>-->
-                <!--                <mat-form-field fxFlex="1 1 100%">-->
-                <!--                    <mat-label>Created Date</mat-label>-->
-                <!--                    <input matInput formControlName="createdDate" placeholder="e.g. 1662" type="number">-->
-                <!--                </mat-form-field>-->
-                <!--            </div>-->
-
-                <!--            <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">-->
-                <!--                <mat-form-field fxFlex="100px">-->
-                <!--                    <mat-select formControlName="compPerformedDate">-->
-                <!--                        <mat-option *ngFor="let operator of operators2"-->
-                <!--                                    [value]="operator.value">{{operator.value}}</mat-option>-->
-                <!--                    </mat-select>-->
-                <!--                </mat-form-field>-->
-                <!--                <mat-form-field fxFlex="1 1 100%">-->
-                <!--                    <mat-label>First Performed Date</mat-label>-->
-                <!--                    <input matInput formControlName="performedDate" placeholder="e.g. 1662" type="number">-->
-                <!--                </mat-form-field>-->
-                <!--            </div>-->
-
-                <!--            <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px">-->
-                <!--                <mat-form-field fxFlex="100px">-->
-                <!--                    <mat-select formControlName="compPublicationDate">-->
-                <!--                        <mat-option *ngFor="let operator of operators2"-->
-                <!--                                    [value]="operator.value">{{operator.value}}</mat-option>-->
-                <!--                    </mat-select>-->
-                <!--                </mat-form-field>-->
-                <!--                <mat-form-field fxFlex="1 1 100%">-->
-                <!--                    <mat-label>Publication Date</mat-label>-->
-                <!--                    <input matInput formControlName="publicationDate" placeholder="e.g. 1662" type="number">-->
-                <!--                </mat-form-field>-->
-                <!--            </div>-->
 
                 <mat-slide-toggle [color]="'warn'">Only Plays</mat-slide-toggle>
 

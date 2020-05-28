@@ -109,7 +109,7 @@ export class GravesearchBuilderService {
             queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasGenre", "genre")
         },
         hasSubject: {
-            cardinality: "1",
+            cardinality: "0-1",
             type: "List",
             list: "subject",
             queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasSubject", "subject")
@@ -128,6 +128,11 @@ export class GravesearchBuilderService {
             cardinality: "0-1",
             type: "Date",
             queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasFirstPerformanceDate", "firstPerformanceDate")
+        },
+        hasBookComment: {
+            cardinality: "0-1",
+            type: "String",
+            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasBookComment", "bookComment")
         },
         isWrittenBy: {
             cardinality: "1-n",
@@ -211,10 +216,10 @@ export class GravesearchBuilderService {
             type: "String",
             queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "hasInternalComment", "internalComment")
         },
-        hasPublicComment: {
+        hasPassageComment: {
             cardinality: "0-1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "hasPublicComment", "publicComment")
+            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "hasPassageComment", "passageComment")
         },
         occursIn: {
             cardinality: "1-n",
@@ -493,7 +498,7 @@ export class GravesearchBuilderService {
         }
     }
 
-    getQuery(structure: IDisplayedClass, priority: number, amount: boolean, offset?: number): string {
+    getQuery(structure: IDisplayedClass, priority: number, offset?: number): string {
         return this.getMainQuery(structure, priority, offset);
     }
 }

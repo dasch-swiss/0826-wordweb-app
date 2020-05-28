@@ -1,16 +1,24 @@
-<div style="margin-top: 2rem;">
-    <mat-tab-group>
-        <mat-tab label="SEARCH">
-            <app-simple-search></app-simple-search>
-        </mat-tab>
-        <mat-tab label="ADVANCED SEARCH">
-            <app-advanced-search></app-advanced-search>
-        </mat-tab>
-        <mat-tab label="EXPERT SEARCH">
-            <app-expert-search></app-expert-search>
-        </mat-tab>
-        <mat-tab label="BROWSING">
-            <app-browsing></app-browsing>
-        </mat-tab>
-    </mat-tab-group>
+<div fxLayout="column" fxLayoutGap="30px" style="margin: 4rem 1rem;">
+    <div class="introduction">
+        <div>This is the WordWeb</div>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec quam eu ipsum placerat vestibulum. Vestibulum eleifend posuere elit, at eleifend est efficitur nec. Donec mollis lectus vitae erat vulputate, vel rhoncus urna rhoncus. Integer rutrum id lorem a vulputate. Aenean vel libero in elit luctus rutrum sed ac nulla.
+    </div>
+    <div class="search-boxes" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center" fxLayoutGap="10px">
+        <div class="row row-1" fxLayout="column" fxFlex fxLayoutGap="10px">
+            <div class="search-box" (click)="simple()">
+                Simple Search
+            </div>
+            <div class="search-box" (click)="advanced()">
+                Advanced Search
+            </div>
+        </div>
+        <div class="row row-2" fxLayout="column" fxFlex fxLayoutGap="10px">
+            <div class="search-box" (click)="expert()">
+                Expert Search
+            </div>
+            <div class="search-box" (click)="browse()">
+                Browse
+            </div>
+        </div>
+    </div>
 </div>

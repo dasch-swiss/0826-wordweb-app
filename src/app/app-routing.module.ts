@@ -20,10 +20,18 @@ import {SubjectComponent} from "./categories/subject/subject.component";
 import {VenueComponent} from "./categories/venue/venue.component";
 import {FormalClassComponent} from "./categories/formal-class/formal-class.component";
 import {SearchComponent} from "./search/search.component";
+import {SimpleSearchComponent} from "./search/simple-search/simple-search.component";
+import {AdvancedSearchComponent} from "./search/advanced-search/advanced-search.component";
+import {ExpertSearchComponent} from "./search/expert-search/expert-search.component";
+import {BrowsingComponent} from "./search/browsing/browsing.component";
 
 const routes: Routes = [
   {path: "search", component: SearchComponent},
   {path: "", redirectTo: "search", pathMatch: "full"},
+  {path: "simple-search", component: SimpleSearchComponent},
+  {path: "advanced-search", component: AdvancedSearchComponent},
+  {path: "expert-search", component: ExpertSearchComponent},
+  {path: "browsing", component: BrowsingComponent},
   {path: "categories", component: CategoriesComponent},
   {path: "author", component: AuthorComponent},
   {path: "book", component: BookComponent},

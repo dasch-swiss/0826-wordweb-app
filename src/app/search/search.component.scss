@@ -1,1 +1,16 @@
+.introduction {
+  text-align: justify;
+}
 
+.search-boxes {
+  //display: grid;
+  //grid-template-columns: repeat(2, minmax(300px, 2fr));
+
+  .search-box {
+    //border: 1px solid red;
+    padding: 2rem;
+    text-align: center;
+    background-color: rgb(115, 71, 42);
+    color: white;
+  }
+}

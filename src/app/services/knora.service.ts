@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {KnoraApiConfig, KnoraApiConnection} from "@knora/api";
 import {GravesearchBuilderService} from "./gravesearch-builder.service";
-import {Observable} from "rxjs";
 import {IDisplayedClass} from "../model/displayModel";
 
 @Injectable({
@@ -26,7 +25,9 @@ export class KnoraService {
     }
 
     search(structure: IDisplayedClass, priority: number, amount: boolean, offset: number) {
-        console.log(this.gBuilder.getQuery(structure, priority, amount, offset));
+        const graveSearch = this.gBuilder.getQuery(structure, priority, offset);
+        console.log(graveSearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(graveSearch);
     }
 
     getProjectOntology() {

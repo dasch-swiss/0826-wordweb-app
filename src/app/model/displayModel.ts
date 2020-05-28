@@ -6,6 +6,7 @@ export interface IDisplayedClass {
 export interface IDisplayedProperty {
     name: string;
     valVar?: string;
+    negation?: boolean;
     searchVal1?: string;
     searchVal2?: string;
     priority: number;

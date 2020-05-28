@@ -54,6 +54,7 @@ Book
     hasCreationDate             1   (3000 if there is none)
     hasPublicationDate          0-1
     hasFirstPerformanceDate     0-1
+    hasBookComment              0-1
     isWrittenBy (Person)        1-n
     performedBy (Company)       0-n
     performedIn (Venue)         0-n
@@ -70,7 +71,7 @@ Passages
     hasMarking                  1-n (Sec: Unmarked)
     hasStatus                   1   (Sec: Depends of primary passage status)
     hasInternalComment          0-1
-    hasPublicComment            0-1
+    hasPassageComment           0-1
     occursIn (Book)             1-n
     isMentionedIn (Passage)     0-n
     wasContributedBy (Person)   1   (Sec: Regula Hohl)

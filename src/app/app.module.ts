@@ -35,7 +35,6 @@ import {
 import {SatPopoverModule} from "@ncstate/sat-popover";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material";
-import {InlineEditComponent} from "./inline-edit/inline-edit.component";
 import {MatExpansionModule} from "@angular/material";
 import {CreateUpdateAuthorComponent} from "./categories/author/create-update-author/create-update-author.component";
 import {CreateUpdateBookComponent} from "./categories/book/create-update-book/create-update-book.component";
@@ -96,7 +95,6 @@ export function initializeApp(appInitService: AppInitService) {
         SubjectComponent,
         VenueComponent,
         PageNotFoundComponent,
-        InlineEditComponent,
         CreateUpdateAuthorComponent,
         CreateUpdateBookComponent,
         CreateUpdateContributorComponent,
