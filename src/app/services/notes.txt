@@ -45,7 +45,6 @@ Person
 Book
     hasBookInternalId           1
     hasBookTitle                1
-    hasBookDescription          0-1
     hasEdition                  1
     hasEditionHist              0-1
     hasLanguage                 1
@@ -80,7 +79,6 @@ Passages
 Lexia
     hasLexiaInternalId          1
     hasLexiaTitle               1
-    hasLexiaDescription         0-1
     hasFormalClass              1-n
     hasImage                    0-n
 
