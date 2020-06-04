@@ -1,16 +1,21 @@
-form {
-  //border: 1px solid red;
-  //margin: 2rem;
+.search-container {
+  margin: 2rem 1rem;
 
-  .mat-flat-button {
-    background-color: rgb(115, 71, 42);
-    //background-color: rgb(159,11,11);
+  form {
+    .toggle {
+      margin-bottom: 1rem;
+      text-align: right;
+    }
+
+    .mat-flat-button {
+      //background-color: rgb(115, 71, 42);
+      background-color: rgb(159,11,11);
+    }
   }
-
 }
 
+//Form fields are smaller
 //::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
-//
 //  padding: 0.5em;
 //}
 //

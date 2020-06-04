@@ -2,10 +2,10 @@
     <mat-button-toggle *ngFor="let c of char" value="{{c}}" (change)="charClicked($event)">{{c}}</mat-button-toggle>
 </mat-button-toggle-group>
 
-<mat-list>
-    <div *ngFor="let c of char; last as isFirst">
-        <mat-list-item  (click)="charClicked($event)">{{c}}</mat-list-item>
-        <mat-divider *ngIf="!isFirst"></mat-divider>
-    </div>
+<!--<mat-list>-->
+<!--    <div *ngFor="let c of char; last as isFirst">-->
+<!--        <mat-list-item  (click)="charClicked($event)">{{c}}</mat-list-item>-->
+<!--        <mat-divider *ngIf="!isFirst"></mat-divider>-->
+<!--    </div>-->
 
-</mat-list>
+<!--</mat-list>-->

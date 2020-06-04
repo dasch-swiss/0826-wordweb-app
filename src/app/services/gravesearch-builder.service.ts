@@ -81,11 +81,6 @@ export class GravesearchBuilderService {
             type: "String",
             queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasBookTitle", "bookTitle")
         },
-        hasBookDescription: {
-            cardinality: "0-1",
-            type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasBookDescription", "bookDescription")
-        },
         hasEdition: {
             cardinality: "1",
             type: "String",
@@ -144,13 +139,13 @@ export class GravesearchBuilderService {
             cardinality: "0-n",
             type: "Resource",
             res: "company",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "performedBy", "performedBy")
+            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "performedBy", "performedCompany")
         },
         performedIn: {
             cardinality: "0-n",
             type: "Resource",
             res: "venue",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "performedIn", "performedIn")
+            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "performedIn", "performedVenue")
         },
 
         isLexiaBook: {
@@ -258,10 +253,10 @@ export class GravesearchBuilderService {
             type: "String",
             queryStr: GravesearchBuilderService.getQueryStr(Classes.LEXIA, "hasLexiaTitle", "lexiaTitle")
         },
-        hasLexiaDescription: {
+        hasLexiaDisplayedTitle: {
             cardinality: "0-1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.LEXIA, "hasLexiaDescription", "lexiaDescription")
+            queryStr: GravesearchBuilderService.getQueryStr(Classes.LEXIA, "hasLexiaDisplayedTitle", "lexiaDisplayedTitle")
         },
         hasFormalClass: {
             cardinality: "1-n",

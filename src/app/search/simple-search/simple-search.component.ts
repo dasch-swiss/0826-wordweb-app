@@ -31,27 +31,27 @@ export class SimpleSearchComponent implements OnInit {
             },
             {
                 name: "hasPage",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
                 name: "hasPageHist",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
                 name: "hasResearchField",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
                 name: "hasFunctionVoice",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
                 name: "hasMarking",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
@@ -61,12 +61,12 @@ export class SimpleSearchComponent implements OnInit {
             },
             {
                 name: "hasInternalComment",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
                 name: "hasPassageComment",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
@@ -82,7 +82,12 @@ export class SimpleSearchComponent implements OnInit {
                         },
                         {
                             name: "hasEdition",
-                            priority: 0,
+                            priority: 1,
+                            res: null
+                        },
+                        {
+                            name: "hasEditionHist",
+                            priority: 1,
                             res: null
                         },
                         {
@@ -93,24 +98,24 @@ export class SimpleSearchComponent implements OnInit {
                         {
                             name: "hasCreationDate",
                             valVar: "creationDate",
-                            searchVal1: "1500",
-                            searchVal2: "1860",
+                            // searchVal1: "1500",
+                            // searchVal2: "1860",
                             priority: 0,
                             res: null
                         },
                         {
                             name: "hasPublicationDate",
-                            priority: 0,
+                            priority: 1,
                             res: null
                         },
                         {
                             name: "hasFirstPerformanceDate",
-                            priority: 0,
+                            priority: 1,
                             res: null
                         },
                         {
                             name: "hasBookComment",
-                            priority: 0,
+                            priority: 1,
                             res: null
                         },
                         {
@@ -127,6 +132,34 @@ export class SimpleSearchComponent implements OnInit {
                                     {
                                         name: "hasLastName",
                                         priority: 0,
+                                        res: null
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            name: "performedBy",
+                            priority: 1,
+                            res: {
+                                name: "company",
+                                props: [
+                                    {
+                                        name: "hasCompanyTitle",
+                                        priority: 1,
+                                        res: null
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            name: "performedIn",
+                            priority: 1,
+                            res: {
+                                name: "venue",
+                                props: [
+                                    {
+                                        name: "hasPlaceVenue",
+                                        priority: 1,
                                         res: null
                                     }
                                 ]
@@ -216,7 +249,7 @@ export class SimpleSearchComponent implements OnInit {
             },
             {
                 name: "wasContributedBy",
-                priority: 0,
+                priority: 1,
                 res: {
                     name: "person",
                     props: [
@@ -244,7 +277,17 @@ export class SimpleSearchComponent implements OnInit {
                     props: [
                         {
                             name: "hasLexiaTitle",
-                            priority: 1,
+                            priority: 0,
+                            res: null
+                        },
+                        {
+                            name: "hasLexiaDisplayedTitle",
+                            priority: 0,
+                            res: null
+                        },
+                        {
+                            name: "hasFormalClass",
+                            priority: 0,
                             res: null
                         }
                     ]
@@ -268,11 +311,11 @@ export class SimpleSearchComponent implements OnInit {
 
     ngOnInit() {
         this.textRef = this.myPassage.props[0];
-        this.authorLastNameRef = this.myPassage.props[11].res.props[7].res.props[1];
+        this.authorLastNameRef = this.myPassage.props[11].res.props[8].res.props[1];
         this.bookTitleRef = this.myPassage.props[11].res.props[0];
-        this.genreRef = this.myPassage.props[11].res.props[2];
+        this.genreRef = this.myPassage.props[11].res.props[3];
         this.lexiaRef = this.myPassage.props[14].res.props[0];
-        this.dateRef = this.myPassage.props[11].res.props[3];
+        this.dateRef = this.myPassage.props[11].res.props[4];
 
         this.form = new FormGroup({
             text: new FormControl("", []),
@@ -280,8 +323,13 @@ export class SimpleSearchComponent implements OnInit {
             bookTitle: new FormControl("", []),
             genre: new FormControl("", []),
             lexia: new FormControl("", []),
-            date: new FormControl("", [])
+            date: new FormControl("", []),
+            plays: new FormControl(false, [])
         });
+    }
+
+    onlyPlays(event) {
+        console.log(event);
     }
 
     search() {
@@ -327,7 +375,7 @@ export class SimpleSearchComponent implements OnInit {
             .subscribe(loginData => {
                 console.log(loginData);
 
-                this.knoraService.search(this.myPassage, 1, false, 0)
+                this.knoraService.search(this.myPassage, 0, false, 0)
                     .subscribe(data => {
                         console.log(data);
                     });

@@ -31,27 +31,27 @@ export class AdvancedSearchComponent implements OnInit {
             },
             {
                 name: "hasPage",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
                 name: "hasPageHist",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
                 name: "hasResearchField",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
                 name: "hasFunctionVoice",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
                 name: "hasMarking",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
@@ -61,12 +61,12 @@ export class AdvancedSearchComponent implements OnInit {
             },
             {
                 name: "hasInternalComment",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
                 name: "hasPassageComment",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
@@ -82,12 +82,17 @@ export class AdvancedSearchComponent implements OnInit {
                         },
                         {
                             name: "hasEdition",
-                            priority: 0,
+                            priority: 1,
+                            res: null
+                        },
+                        {
+                            name: "hasEditionHist",
+                            priority: 1,
                             res: null
                         },
                         {
                             name: "hasLanguage",
-                            priority: 0,
+                            priority: 1,
                             res: null
                         },
                         {
@@ -97,7 +102,7 @@ export class AdvancedSearchComponent implements OnInit {
                         },
                         {
                             name: "hasSubject",
-                            priority: 0,
+                            priority: 1,
                             res: null
                         },
                         {
@@ -109,17 +114,17 @@ export class AdvancedSearchComponent implements OnInit {
                         },
                         {
                             name: "hasPublicationDate",
-                            priority: 0,
+                            priority: 1,
                             res: null
                         },
                         {
                             name: "hasFirstPerformanceDate",
-                            priority: 0,
+                            priority: 1,
                             res: null
                         },
                         {
                             name: "hasBookComment",
-                            priority: 0,
+                            priority: 1,
                             res: null
                         },
                         {
@@ -136,6 +141,34 @@ export class AdvancedSearchComponent implements OnInit {
                                     {
                                         name: "hasLastName",
                                         priority: 0,
+                                        res: null
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            name: "performedBy",
+                            priority: 1,
+                            res: {
+                                name: "company",
+                                props: [
+                                    {
+                                        name: "hasCompanyTitle",
+                                        priority: 1,
+                                        res: null
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            name: "performedIn",
+                            priority: 1,
+                            res: {
+                                name: "venue",
+                                props: [
+                                    {
+                                        name: "hasPlaceVenue",
+                                        priority: 1,
                                         res: null
                                     }
                                 ]
@@ -225,7 +258,7 @@ export class AdvancedSearchComponent implements OnInit {
             },
             {
                 name: "wasContributedBy",
-                priority: 0,
+                priority: 1,
                 res: {
                     name: "person",
                     props: [
@@ -253,7 +286,17 @@ export class AdvancedSearchComponent implements OnInit {
                     props: [
                         {
                             name: "hasLexiaTitle",
-                            priority: 1,
+                            priority: 0,
+                            res: null
+                        },
+                        {
+                            name: "hasLexiaDisplayedTitle",
+                            priority: 0,
+                            res: null
+                        },
+                        {
+                            name: "hasFormalClass",
+                            priority: 0,
                             res: null
                         }
                     ]
@@ -268,13 +311,12 @@ export class AdvancedSearchComponent implements OnInit {
     bookTitleRef: IDisplayedProperty;
     genreRef: IDisplayedProperty;
     lexiaRef: IDisplayedProperty;
-    subjectRef: IDisplayedProperty;
     languageRef: IDisplayedProperty;
     functionRef: IDisplayedProperty;
     markingRef: IDisplayedProperty;
     createdDateRef: IDisplayedProperty;
     performedDateRef: IDisplayedProperty;
-    publicationDateRef: IDisplayedProperty;
+    performedCompanyRef: IDisplayedProperty;
 
     passages: any;
 
@@ -293,17 +335,16 @@ export class AdvancedSearchComponent implements OnInit {
 
     ngOnInit() {
         this.textRef = this.myPassage.props[0];
-        this.authorLastNameRef = this.myPassage.props[11].res.props[9].res.props[1];
+        this.authorLastNameRef = this.myPassage.props[11].res.props[10].res.props[1];
         this.bookTitleRef = this.myPassage.props[11].res.props[0];
-        this.genreRef = this.myPassage.props[11].res.props[3];
+        this.genreRef = this.myPassage.props[11].res.props[4];
         this.lexiaRef = this.myPassage.props[14].res.props[0];
-        this.subjectRef = this.myPassage.props[11].res.props[4];
-        this.languageRef = this.myPassage.props[11].res.props[2];
+        this.languageRef = this.myPassage.props[11].res.props[3];
         this.functionRef = this.myPassage.props[6];
         this.markingRef = this.myPassage.props[7];
-        this.createdDateRef = this.myPassage.props[11].res.props[5];
-        this.performedDateRef = this.myPassage.props[11].res.props[6];
-        this.publicationDateRef = this.myPassage.props[11].res.props[7];
+        this.createdDateRef = this.myPassage.props[11].res.props[6];
+        this.performedDateRef = this.myPassage.props[11].res.props[7];
+        this.performedCompanyRef = this.myPassage.props[11].res.props[11];
 
         this.form = new FormGroup({
             compText: new FormControl("-", []),
@@ -316,8 +357,6 @@ export class AdvancedSearchComponent implements OnInit {
             genre: new FormControl("", []),
             compLexia: new FormControl("AND", []),
             lexia: new FormControl("", []),
-            compSubject: new FormControl("AND", []),
-            subject: new FormControl("", []),
             compLanguage: new FormControl("AND", []),
             language: new FormControl("", []),
             compFunction: new FormControl("AND", []),
@@ -328,8 +367,11 @@ export class AdvancedSearchComponent implements OnInit {
             createdDate: new FormControl("", []),
             compPerformedDate: new FormControl("AND", []),
             performedDate: new FormControl("", []),
-            compPublicationDate: new FormControl("AND", []),
-            publicationDate: new FormControl("", []),
+            compPerformedCompany: new FormControl("AND", []),
+            performedCompany: new FormControl("", []),
+            compPerformedActor: new FormControl("AND", []),
+            performedActor: new FormControl("", []),
+            plays: new FormControl(false, [])
         });
     }
 
@@ -356,7 +398,6 @@ export class AdvancedSearchComponent implements OnInit {
                 this.apiService.getBook((passage.occursIn as Book).id, true).subscribe(book => {
                     passage.occursIn = book;
                     this.passages = data;
-                    console.log(this.passages);
                 });
             }
         });
@@ -415,18 +456,6 @@ export class AdvancedSearchComponent implements OnInit {
         } else {
             delete this.lexiaRef.searchVal1;
             delete this.lexiaRef.negation;
-        }
-
-        if (this.form.get("subject").value) {
-            if (this.form.get("compSubject").value === "NOT") {
-                this.subjectRef.negation = true;
-            } else {
-                delete this.subjectRef.negation;
-            }
-            this.subjectRef.searchVal1 = this.form.get("subject").value;
-        } else {
-            delete this.subjectRef.searchVal1;
-            delete this.subjectRef.negation;
         }
 
         if (this.form.get("language").value) {
@@ -493,18 +522,16 @@ export class AdvancedSearchComponent implements OnInit {
             delete this.performedDateRef.negation;
         }
 
-        if (this.form.get("publicationDate").valid) {
-            if (this.form.get("compPublicationDate").value === "NOT") {
-                this.publicationDateRef.negation = true;
+        if (this.form.get("performedCompany").valid) {
+            if (this.form.get("compPerformedCompany").value === "NOT") {
+                this.performedCompanyRef.negation = true;
             } else {
-                delete this.publicationDateRef.negation;
+                delete this.performedCompanyRef.negation;
             }
-            this.publicationDateRef.searchVal1 = this.form.get("publicationDate").value;
-            this.publicationDateRef.searchVal2 = this.form.get("publicationDate").value;
+            this.performedCompanyRef.searchVal1 = this.form.get("performedCompany").value;
         } else {
-            delete this.publicationDateRef.searchVal1;
-            delete this.publicationDateRef.searchVal2;
-            delete this.publicationDateRef.negation;
+            delete this.performedCompanyRef.searchVal1;
+            delete this.performedCompanyRef.negation;
         }
     }
 

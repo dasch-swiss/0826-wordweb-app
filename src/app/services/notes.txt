@@ -79,6 +79,7 @@ Passages
 Lexia
     hasLexiaInternalId          1
     hasLexiaTitle               1
+    hasLexiaDisplayedTitle      0-1
     hasFormalClass              1-n
     hasImage                    0-n
 

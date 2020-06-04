@@ -1,24 +1,25 @@
-<div fxLayout="column" fxLayoutGap="30px" style="margin: 4rem 1rem;">
-    <div class="introduction">
-        <div>This is the WordWeb</div>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec quam eu ipsum placerat vestibulum. Vestibulum eleifend posuere elit, at eleifend est efficitur nec. Donec mollis lectus vitae erat vulputate, vel rhoncus urna rhoncus. Integer rutrum id lorem a vulputate. Aenean vel libero in elit luctus rutrum sed ac nulla.
-    </div>
-    <div class="search-boxes" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center" fxLayoutGap="10px">
-        <div class="row row-1" fxLayout="column" fxFlex fxLayoutGap="10px">
-            <div class="search-box" (click)="simple()">
-                Simple Search
-            </div>
-            <div class="search-box" (click)="advanced()">
-                Advanced Search
-            </div>
-        </div>
-        <div class="row row-2" fxLayout="column" fxFlex fxLayoutGap="10px">
-            <div class="search-box" (click)="expert()">
-                Expert Search
-            </div>
-            <div class="search-box" (click)="browse()">
-                Browse
-            </div>
-        </div>
-    </div>
+<div>
+    <nav fxLayoutAlign="center" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px" fxHide.lt-sm>
+        <button class="simple-btn" mat-flat-button (click)="simple()">Simple Search</button>
+        <button mat-stroked-button (click)="advanced()">Advanced Search</button>
+        <button mat-stroked-button (click)="expert()">Expert Search</button>
+        <button mat-stroked-button (click)="browse()">Browse</button>
+    </nav>
+    <nav fxHide fxShow.lt-sm>
+        <mat-form-field appearance="outline" color="accent">
+            <mat-select [(value)]="selectedSearch">
+                <mat-option value="simple-search">Simple Search</mat-option>
+                <mat-option value="advanced-search">Advanced Search</mat-option>
+                <mat-option value="expert-search">Expert Search</mat-option>
+                <mat-option value="browsing">Browse</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </nav>
 </div>
+
+<ng-container [ngSwitch]="selectedSearch">
+    <app-simple-search *ngIf="selectedSearch ==='simple-search'"></app-simple-search>
+    <app-advanced-search *ngIf="selectedSearch === 'advanced-search'"></app-advanced-search>
+    <app-expert-search *ngIf="selectedSearch === 'expert-search'"></app-expert-search>
+    <app-browsing *ngIf="selectedSearch === 'browsing'"></app-browsing>
+</ng-container>

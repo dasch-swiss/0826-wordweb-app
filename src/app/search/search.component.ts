@@ -7,27 +7,29 @@ import {Router} from "@angular/router";
     styleUrls: ["./search.component.scss"]
 })
 export class SearchComponent implements OnInit {
+    selectedSearch: string;
 
     constructor(private router: Router) {
     }
 
     ngOnInit() {
+        this.selectedSearch = "simple-search";
     }
 
     simple() {
-        this.router.navigate(["simple-search"]);
+        this.selectedSearch = "simple-search";
     }
 
     advanced() {
-        this.router.navigate(["advanced-search"]);
+        this.selectedSearch = "advanced-search";
     }
 
     expert() {
-        this.router.navigate(["expert-search"]);
+        this.selectedSearch = "expert-search";
     }
 
     browse() {
-        this.router.navigate(["browsing"]);
+        this.selectedSearch = "browsing";
     }
 
 }
