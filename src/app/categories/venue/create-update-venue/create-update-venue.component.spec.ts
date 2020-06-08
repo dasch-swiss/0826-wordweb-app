@@ -1,25 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from "@angular/core/testing";
 
-import { CreateUpdateVenueComponent } from './create-update-venue.component';
+import {CreateUpdateVenueComponent} from "./create-update-venue.component";
 
-describe('CreateUpdateVenueComponent', () => {
-  let component: CreateUpdateVenueComponent;
-  let fixture: ComponentFixture<CreateUpdateVenueComponent>;
+describe("CreateUpdateVenueComponent", () => {
+    let component: CreateUpdateVenueComponent;
+    let fixture: ComponentFixture<CreateUpdateVenueComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CreateUpdateVenueComponent ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [CreateUpdateVenueComponent]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CreateUpdateVenueComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(CreateUpdateVenueComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });
