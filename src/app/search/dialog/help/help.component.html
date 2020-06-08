@@ -1,0 +1,8 @@
+<mat-dialog-content>
+    <h3>Help for "{{name}}"</h3>
+    <div [innerHTML]="text"></div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button type="button" mat-button (click)="close()">Close</button>
+</mat-dialog-actions>

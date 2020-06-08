@@ -2,13 +2,35 @@
   margin: 2rem 1rem;
 
   form {
-    .toggle {
+
+    table {
       margin-bottom: 1rem;
+
+      .width-100 {
+        width: 100%;
+      }
+
+      .width-60px {
+        width: 60px;
+      }
+
+      .min {
+        width: 1%;
+
+        mat-icon {
+          //margin-left: 0.5rem;
+          color: rgb(150, 150, 150);
+        }
+
+        mat-icon:hover {
+          cursor: pointer;
+        }
+      }
     }
 
     .mat-flat-button {
       //background-color: rgb(115, 71, 42);
-      background-color: rgb(159,11,11);
+      background-color: rgb(159, 11, 11);
     }
   }
 }

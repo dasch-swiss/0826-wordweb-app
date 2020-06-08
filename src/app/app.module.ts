@@ -67,6 +67,7 @@ import {ExpertSearchComponent} from "./search/expert-search/expert-search.compon
 import {BrowsingComponent} from "./search/browsing/browsing.component";
 import {AbcIndexComponent} from "./search/browsing/abc-index/abc-index.component";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import { HelpComponent } from './search/dialog/help/help.component';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
@@ -117,7 +118,8 @@ export function initializeApp(appInitService: AppInitService) {
         AdvancedSearchComponent,
         ExpertSearchComponent,
         BrowsingComponent,
-        AbcIndexComponent
+        AbcIndexComponent,
+        HelpComponent
     ],
     imports: [
         BrowserModule,
@@ -147,7 +149,8 @@ export function initializeApp(appInitService: AppInitService) {
         MatSidenavModule,
         MatListModule,
         MatTabsModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        MatDialogModule
     ],
     providers: [
         AppInitService,
@@ -181,7 +184,8 @@ export function initializeApp(appInitService: AppInitService) {
         AuthorRefComponent,
         BookRefComponent,
         TreeRefComponent,
-        CategoryRefComponent
+        CategoryRefComponent,
+        HelpComponent
     ]
 })
 export class AppModule {

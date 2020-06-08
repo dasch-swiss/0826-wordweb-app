@@ -60,8 +60,8 @@ export class AuthorComponent implements OnInit {
         dialogConfig.autoFocus = true;
         dialogConfig.width = "650px";
         dialogConfig.data = {
-            resource: resource,
-            editMod: editMod,
+            resource,
+            editMod,
         };
         const dialogRef = this.createAuthorDialog.open(CreateUpdateAuthorComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {

@@ -4,6 +4,9 @@ import {Book} from "../../model/model";
 import {ApiService} from "../../services/api.service";
 import {IDisplayedClass, IDisplayedProperty} from "../../model/displayModel";
 import {KnoraService} from "../../services/knora.service";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {HelpComponent} from "../dialog/help/help.component";
+import {StringService} from "../../services/string.service";
 
 @Component({
     selector: "app-advanced-search",
@@ -315,7 +318,6 @@ export class AdvancedSearchComponent implements OnInit {
     functionRef: IDisplayedProperty;
     markingRef: IDisplayedProperty;
     createdDateRef: IDisplayedProperty;
-    performedDateRef: IDisplayedProperty;
     performedCompanyRef: IDisplayedProperty;
 
     passages: any;
@@ -330,7 +332,11 @@ export class AdvancedSearchComponent implements OnInit {
         {value: "NOT"}
     ];
 
-    constructor(private apiService: ApiService, private knoraService: KnoraService) {
+    constructor(
+        private apiService: ApiService,
+        private stringService: StringService,
+        private knoraService: KnoraService,
+        private helpDialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -343,7 +349,6 @@ export class AdvancedSearchComponent implements OnInit {
         this.functionRef = this.myPassage.props[6];
         this.markingRef = this.myPassage.props[7];
         this.createdDateRef = this.myPassage.props[11].res.props[6];
-        this.performedDateRef = this.myPassage.props[11].res.props[7];
         this.performedCompanyRef = this.myPassage.props[11].res.props[11];
 
         this.form = new FormGroup({
@@ -365,8 +370,6 @@ export class AdvancedSearchComponent implements OnInit {
             marking: new FormControl("", []),
             compCreatedDate: new FormControl("AND", []),
             createdDate: new FormControl("", []),
-            compPerformedDate: new FormControl("AND", []),
-            performedDate: new FormControl("", []),
             compPerformedCompany: new FormControl("AND", []),
             performedCompany: new FormControl("", []),
             compPerformedActor: new FormControl("AND", []),
@@ -508,20 +511,6 @@ export class AdvancedSearchComponent implements OnInit {
             delete this.createdDateRef.negation;
         }
 
-        if (this.form.get("performedDate").valid) {
-            if (this.form.get("compPerformedDate").value === "NOT") {
-                this.performedDateRef.negation = true;
-            } else {
-                delete this.performedDateRef.negation;
-            }
-            this.performedDateRef.searchVal1 = this.form.get("performedDate").value;
-            this.performedDateRef.searchVal2 = this.form.get("performedDate").value;
-        } else {
-            delete this.performedDateRef.searchVal1;
-            delete this.performedDateRef.searchVal2;
-            delete this.performedDateRef.negation;
-        }
-
         if (this.form.get("performedCompany").valid) {
             if (this.form.get("compPerformedCompany").value === "NOT") {
                 this.performedCompanyRef.negation = true;
@@ -533,6 +522,72 @@ export class AdvancedSearchComponent implements OnInit {
             delete this.performedCompanyRef.searchVal1;
             delete this.performedCompanyRef.negation;
         }
+    }
+
+    getHelpText(formControlName: string) {
+        switch (formControlName) {
+            case ("text"): {
+                this.openDialog(this.stringService.getString("text_help"), "Text");
+                break;
+            }
+            case ("author"): {
+                this.openDialog(this.stringService.getString("author_help"), "Author");
+                break;
+            }
+            case ("bookTitle"): {
+                this.openDialog(this.stringService.getString("title_help"), "Title");
+                break;
+            }
+            case ("lexia"): {
+                this.openDialog(this.stringService.getString("lexia_help"), "Lexia");
+                break;
+            }
+            case ("createdDate"): {
+                this.openDialog(this.stringService.getString("date_help"), "Date");
+                break;
+            }
+            case ("marking"): {
+                this.openDialog(this.stringService.getString("marking_help"), "Marking");
+                break;
+            }
+            case ("function"): {
+                this.openDialog(this.stringService.getString("function_help"), "Function");
+                break;
+            }
+            case ("performedCompany"): {
+                this.openDialog(this.stringService.getString("per_company_help"), "First performance: company");
+                break;
+            }
+            case ("performedActor"): {
+                this.openDialog(this.stringService.getString("per_actor_help"), "First performance: actor");
+                break;
+            }
+            case ("language"): {
+                this.openDialog(this.stringService.getString("language_help"), "Language");
+                break;
+            }
+            case ("genre"): {
+                this.openDialog(this.stringService.getString("genre_help"), "Genre");
+                break;
+            }
+            case ("plays"): {
+                this.openDialog(this.stringService.getString("plays_help"), "Only Plays");
+                break;
+            }
+        }
+    }
+
+    openDialog(text: string, name: string) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.data = {
+            text,
+            name
+        };
+        this.helpDialog.open(HelpComponent, dialogConfig);
+    }
+
+    setOrder($event) {
+        console.log($event);
     }
 
 }

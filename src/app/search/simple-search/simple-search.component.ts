@@ -4,6 +4,9 @@ import {ApiService} from "../../services/api.service";
 import {Book} from "../../model/model";
 import {IDisplayedClass, IDisplayedProperty} from "../../model/displayModel";
 import {KnoraService} from "../../services/knora.service";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {HelpComponent} from "../dialog/help/help.component";
+import {StringService} from "../../services/string.service";
 
 @Component({
     selector: "app-simple-search",
@@ -306,7 +309,11 @@ export class SimpleSearchComponent implements OnInit {
 
     passages: any;
 
-    constructor(private apiService: ApiService, private knoraService: KnoraService) {
+    constructor(
+        private apiService: ApiService,
+        private stringService: StringService,
+        private knoraService: KnoraService,
+        private helpDialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -321,15 +328,10 @@ export class SimpleSearchComponent implements OnInit {
             text: new FormControl("", []),
             author: new FormControl("", []),
             bookTitle: new FormControl("", []),
-            genre: new FormControl("", []),
             lexia: new FormControl("", []),
             date: new FormControl("", []),
             plays: new FormControl(false, [])
         });
-    }
-
-    onlyPlays(event) {
-        console.log(event);
     }
 
     search() {
@@ -351,8 +353,9 @@ export class SimpleSearchComponent implements OnInit {
             delete this.bookTitleRef.searchVal1;
         }
 
-        if (this.form.get("genre").value) {
-            this.genreRef.searchVal1 = this.form.get("genre").value;
+        if (this.form.get("plays").value) {
+            // Insert the genre Theatre iri
+            this.genreRef.searchVal1 = "";
         } else {
             delete this.genreRef.searchVal1;
         }
@@ -393,5 +396,47 @@ export class SimpleSearchComponent implements OnInit {
                 });
             }
         });
+    }
+
+    getHelpText(property: string) {
+        switch (property) {
+            case ("text"): {
+                this.openDialog(this.stringService.getString("text_help"), "Text");
+                break;
+            }
+            case ("author"): {
+                this.openDialog(this.stringService.getString("author_help"), "Author");
+                break;
+            }
+            case ("title"): {
+                this.openDialog(this.stringService.getString("title_help"), "Title");
+                break;
+            }
+            case ("lexia"): {
+                this.openDialog(this.stringService.getString("lexia_help"), "Lexia");
+                break;
+            }
+            case ("date"): {
+                this.openDialog(this.stringService.getString("date_help"), "Date");
+                break;
+            }
+            case ("plays"): {
+                this.openDialog(this.stringService.getString("plays_help"), "Only Plays");
+                break;
+            }
+        }
+    }
+
+    openDialog(text: string, name: string) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.data = {
+            text,
+            name
+        };
+        this.helpDialog.open(HelpComponent, dialogConfig);
+    }
+
+    setOrder($event) {
+        console.log($event);
     }
 }
