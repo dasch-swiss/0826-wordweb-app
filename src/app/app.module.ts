@@ -65,9 +65,8 @@ import {SimpleSearchComponent} from "./search/simple-search/simple-search.compon
 import {AdvancedSearchComponent} from "./search/advanced-search/advanced-search.component";
 import {ExpertSearchComponent} from "./search/expert-search/expert-search.component";
 import {BrowsingComponent} from "./search/browsing/browsing.component";
-import {AbcIndexComponent} from "./search/browsing/abc-index/abc-index.component";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
-import { HelpComponent } from './search/dialog/help/help.component';
+import {HelpComponent} from "./search/dialog/help/help.component";
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
@@ -118,7 +117,6 @@ export function initializeApp(appInitService: AppInitService) {
         AdvancedSearchComponent,
         ExpertSearchComponent,
         BrowsingComponent,
-        AbcIndexComponent,
         HelpComponent
     ],
     imports: [

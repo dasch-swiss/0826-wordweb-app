@@ -69,6 +69,26 @@
                     <tr>
                         <td class="width-60px">
                             <mat-form-field class="width-60px">
+                                <mat-select formControlName="compGender">
+                                    <mat-option *ngFor="let operator of operators2"
+                                                [value]="operator.value">{{operator.value}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="width-100">
+                                <mat-label>Gender</mat-label>
+                                <input matInput formControlName="gender">
+                            </mat-form-field>
+                        </td>
+                        <td class="min">
+                            <mat-icon matSuffix (click)="getHelpText('gender')">help</mat-icon>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="width-60px">
+                            <mat-form-field class="width-60px">
                                 <mat-select formControlName="compLexia">
                                     <mat-option *ngFor="let operator of operators2"
                                                 [value]="operator.value">{{operator.value}}</mat-option>
@@ -362,6 +382,7 @@
 <!--                    <mat-form-field fxFlex="60px">-->
 <!--                        <mat-select formControlName="compPerformedActor">-->
 <!--                            <mat-option *ngFor="let operator of operators2"-->
+<!--                                        [value]="operator.value">{{operator.value}}</mat-option>-->
 <!--                                        [value]="operator.value">{{operator.value}}</mat-option>-->
 <!--                        </mat-select>-->
 <!--                    </mat-form-field>-->

@@ -1,3 +1,18 @@
-<div class="browse-container">
-    <app-abc-index></app-abc-index>
+<div class="browse-container" fxShow.gt-sm fxHide>
+    <mat-button-toggle-group [(ngModel)]="charSelected">
+        <mat-button-toggle *ngFor="let char of chars" value="{{char}}">{{char}}</mat-button-toggle>
+    </mat-button-toggle-group>
+</div>
+
+<div class="browse-container" fxHide.gt-sm>
+    <mat-form-field>
+        <mat-select [(ngModel)]="charSelected">
+            <mat-option *ngFor="let char of chars" [value]="char">{{char}}</mat-option>
+        </mat-select>
+        <mat-label>Letter</mat-label>
+    </mat-form-field>
+</div>
+
+<div class="browse-container" *ngIf="charSelected">
+    Resultate
 </div>

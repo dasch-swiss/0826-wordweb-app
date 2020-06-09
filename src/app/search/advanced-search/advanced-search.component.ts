@@ -276,6 +276,11 @@ export class AdvancedSearchComponent implements OnInit {
                             valVar: "cLastName",
                             priority: 1,
                             res: null
+                        },
+                        {
+                            name: "hasGender",
+                            priority: 1,
+                            res: null
                         }
                     ]
                 }
@@ -311,6 +316,7 @@ export class AdvancedSearchComponent implements OnInit {
 
     textRef: IDisplayedProperty;
     authorLastNameRef: IDisplayedProperty;
+    genderRef: IDisplayedProperty;
     bookTitleRef: IDisplayedProperty;
     genreRef: IDisplayedProperty;
     lexiaRef: IDisplayedProperty;
@@ -342,6 +348,7 @@ export class AdvancedSearchComponent implements OnInit {
     ngOnInit() {
         this.textRef = this.myPassage.props[0];
         this.authorLastNameRef = this.myPassage.props[11].res.props[10].res.props[1];
+        this.genderRef = this.myPassage.props[11].res.props[10].res.props[2];
         this.bookTitleRef = this.myPassage.props[11].res.props[0];
         this.genreRef = this.myPassage.props[11].res.props[4];
         this.lexiaRef = this.myPassage.props[14].res.props[0];
@@ -356,6 +363,8 @@ export class AdvancedSearchComponent implements OnInit {
             text: new FormControl("", []),
             compAuthor: new FormControl("AND", []),
             author: new FormControl("", []),
+            compGender: new FormControl("AND", []),
+            gender: new FormControl("", []),
             compBookTitle: new FormControl("AND", []),
             bookTitle: new FormControl("", []),
             compGenre: new FormControl("AND", []),
@@ -423,6 +432,18 @@ export class AdvancedSearchComponent implements OnInit {
         } else {
             delete this.authorLastNameRef.searchVal1;
             delete this.authorLastNameRef.negation;
+        }
+
+        if (this.form.get("gender").value) {
+            if (this.form.get("compGender").value === "NOT") {
+                this.genderRef.negation = true;
+            } else {
+                delete this.genderRef.negation;
+            }
+            this.genderRef.searchVal1 = this.form.get("gender").value;
+        } else {
+            delete this.genderRef.searchVal1;
+            delete this.genderRef.negation;
         }
 
         if (this.form.get("bookTitle").value) {
