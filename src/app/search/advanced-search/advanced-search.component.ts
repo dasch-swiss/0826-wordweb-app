@@ -7,6 +7,7 @@ import {KnoraService} from "../../services/knora.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {HelpComponent} from "../dialog/help/help.component";
 import {StringService} from "../../services/string.service";
+import {ListService} from "../../services/list.service";
 
 @Component({
     selector: "app-advanced-search",
@@ -395,7 +396,12 @@ export class AdvancedSearchComponent implements OnInit {
             .subscribe(loginData => {
                 console.log(loginData);
 
-                this.knoraService.search(this.myPassage, 1, false, 0)
+                this.knoraService.graveSearchQueryCount(this.myPassage, 1)
+                    .subscribe(data => {
+                        console.log(data);
+                    });
+
+                this.knoraService.graveSeachQuery(this.myPassage, 1)
                     .subscribe(data => {
                         console.log(data);
                     });
@@ -600,6 +606,7 @@ export class AdvancedSearchComponent implements OnInit {
 
     openDialog(text: string, name: string) {
         const dialogConfig = new MatDialogConfig();
+        dialogConfig.width = "650px";
         dialogConfig.data = {
             text,
             name

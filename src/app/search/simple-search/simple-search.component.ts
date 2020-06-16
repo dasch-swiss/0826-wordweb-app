@@ -7,6 +7,9 @@ import {KnoraService} from "../../services/knora.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {HelpComponent} from "../dialog/help/help.component";
 import {StringService} from "../../services/string.service";
+import {ReadResource} from "@knora/api";
+import {ListService} from "../../services/list.service";
+import {Observable} from "rxjs";
 
 @Component({
     selector: "app-simple-search",
@@ -307,10 +310,15 @@ export class SimpleSearchComponent implements OnInit {
     lexiaRef: IDisplayedProperty;
     dateRef: IDisplayedProperty;
 
-    passages: any;
+    nPassages: Observable<number>;
+    passages: Array<any>;
+
+    searchStarted = false;
+    errorObject = null;
 
     constructor(
         private apiService: ApiService,
+        private listService: ListService,
         private stringService: StringService,
         private knoraService: KnoraService,
         private helpDialog: MatDialog) {
@@ -374,15 +382,26 @@ export class SimpleSearchComponent implements OnInit {
             delete this.dateRef.searchVal2;
         }
 
-        this.knoraService.login("root@example.com", "test")
-            .subscribe(loginData => {
-                console.log(loginData);
+        this.passages = null;
+        this.errorObject = null;
+        this.searchStarted = true;
 
-                this.knoraService.search(this.myPassage, 0, false, 0)
-                    .subscribe(data => {
-                        console.log(data);
-                    });
+        this.nPassages = this.knoraService.graveSearchQueryCount(this.myPassage, 0);
+
+        this.knoraService.graveSeachQuery(this.myPassage, 0)
+            .subscribe(data => {
+                console.log(data);
+                this.passages = data;
+                this.searchStarted = false;
+            }, error => {
+                this.errorObject = error;
+                this.searchStarted = false;
             });
+
+        // this.knoraService.getResource("http://rdfh.ch/0826/-CXBmQ_-QvyqroyGJG_oHw")
+        //     .subscribe((data: ReadResource) => {
+        //         console.log(data);
+        //     });
 
         this.getTestData();
     }
@@ -392,7 +411,7 @@ export class SimpleSearchComponent implements OnInit {
             for (const passage of data) {
                 this.apiService.getBook((passage.occursIn as Book).id, true).subscribe(book => {
                     passage.occursIn = book;
-                    this.passages = data;
+                    console.log(data);
                 });
             }
         });
@@ -429,6 +448,7 @@ export class SimpleSearchComponent implements OnInit {
 
     openDialog(text: string, name: string) {
         const dialogConfig = new MatDialogConfig();
+        dialogConfig.width = "650px";
         dialogConfig.data = {
             text,
             name

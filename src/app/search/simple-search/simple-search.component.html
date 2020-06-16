@@ -82,7 +82,7 @@
 
         <div *ngIf="passages" fxLayout="column" fxLayoutGap="10px">
             <div fxLayout="row" fxLayoutAlign="space-between center">
-                <div>{{passages.length}} Results</div>
+                <div>{{passages.length}} <span *ngIf="nPassages | async as total"> of {{total}} Results</span></div>
                 <mat-form-field>
                     <mat-label>Sort</mat-label>
                     <mat-select (selectionChange)="setOrder($event)">
@@ -95,23 +95,32 @@
 
             <mat-card *ngFor="let passage of passages; let i = index;">
                 <mat-card-content fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-                    <div>
-                        <span *ngFor="let author of passage.occursIn.authors; let last = last;">
-                            {{author.firstName}} {{author.lastName}}<span *ngIf="!last">, </span>
+                    <div *ngFor="let book of passage.occursIn">
+                        <span *ngFor="let author of book.isWrittenBy">
+                            <span *ngFor="let fn of author.hasFirstName">{{fn.value}} </span>
+                            <span *ngFor="let ln of author.hasLastName">{{ln.value}} </span>
+                            <span *ngFor="let bn of book.hasBookTitle">{{bn.value}}</span>
                         </span>
-                        <span>: {{passage.occursIn.title}} ({{passage.occursIn.createdStartDate}})</span>
-                        <div [innerHTML]="passage.text"></div>
+                        <div [innerHTML]="passage.hasText[0].value"></div>
                     </div>
+<!--                        <span *ngFor="let author of passage.occursIn.authors; let last = last;">-->
+<!--                                                            {{author.firstName}} {{author.lastName}}<span *ngIf="!last">, </span>-->
+<!--                                                                                            </span>-->
+<!--                        <span>: {{passage.occursIn.title}} ({{passage.occursIn.createdStartDate}})</span>-->
                     <mat-card-subtitle>[{{i + 1}}]</mat-card-subtitle>
                 </mat-card-content>
                 <mat-card-actions>
                     <button mat-button>
-                        <mat-icon>chevron_right</mat-icon>
                         Expand
                     </button>
                 </mat-card-actions>
             </mat-card>
         </div>
+
+        <ng-container *ngIf="searchStarted">
+            <mat-spinner></mat-spinner>
+        </ng-container>
+
 
     </div>
 

@@ -1,3 +1,11 @@
+<div class="browse-container" [@.disabled]="true">
+    <mat-tab-group >
+        <mat-tab label="Authors"></mat-tab>
+        <mat-tab label="Books"></mat-tab>
+        <mat-tab label="Lexias"></mat-tab>
+    </mat-tab-group>
+</div>
+
 <div class="browse-container" fxShow.gt-sm fxHide>
     <mat-button-toggle-group [(ngModel)]="charSelected">
         <mat-button-toggle *ngFor="let char of chars" value="{{char}}">{{char}}</mat-button-toggle>

@@ -67,6 +67,7 @@ import {ExpertSearchComponent} from "./search/expert-search/expert-search.compon
 import {BrowsingComponent} from "./search/browsing/browsing.component";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {HelpComponent} from "./search/dialog/help/help.component";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
@@ -148,7 +149,8 @@ export function initializeApp(appInitService: AppInitService) {
         MatListModule,
         MatTabsModule,
         MatButtonToggleModule,
-        MatDialogModule
+        MatDialogModule,
+        MatProgressSpinnerModule
     ],
     providers: [
         AppInitService,
