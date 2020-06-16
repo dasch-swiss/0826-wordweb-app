@@ -1,5 +1,4 @@
 import {Component, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
 
 @Component({
     selector: "app-search",
@@ -9,8 +8,7 @@ import {Router} from "@angular/router";
 export class SearchComponent implements OnInit {
     selectedSearch: string;
 
-    constructor(private router: Router) {
-    }
+    constructor() {}
 
     ngOnInit() {
         this.selectedSearch = "simple-search";
