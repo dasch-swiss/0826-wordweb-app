@@ -5,9 +5,10 @@ import {Injectable} from "@angular/core";
 })
 export class StringService {
     readonly strings = {
-        text_help: "All texts are given in normalized spelling, taken from modern-spelling editions or normalized by hand from " +
-            "scholarly or historical editions. The button \"Show historical spelling\" in your search results indicates that a passage " +
-            "is also available in original spelling. Shakespeare's works are quoted from shakespeare.folger.edu",
+        text_help: "All texts are given in normalized spelling, taken from modern-spelling editions or normalized by hand from scholarly " +
+            "or historical editions. The button \"Show historical spelling\" in your search results indicates that a passage is also " +
+            "available in original spelling. Shakespeare's works are quoted from shakespeare.folger.edu in British spelling. Past tense " +
+            "forms such as \"whipp'd\" are silently normalized in all texts.",
         author_help: "As in <i>Martin Wiggins' British Drama 1533-1642: A Catalogue</i> (where applicable). We include \"assigned\" " +
             "authors and, in a few cases, authors which Wiggins does not recognize.",
         title_help: "As in <i>Martin Wiggins' British Drama 1533-1642: A Catalogue</i>, except for Shakespeare's plays. " +
