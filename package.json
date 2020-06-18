@@ -27,6 +27,7 @@
     "@ncstate/sat-popover": "^4.0.0",
     "json2typescript": "^1.2.3",
     "jsonld": "^1.8.0",
+    "ngx-spinner": "^8.1.0",
     "rxjs": "~6.4.0",
     "semver": "^6.3.0",
     "tslib": "^1.10.0",

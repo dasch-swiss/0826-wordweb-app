@@ -1,15 +1,14 @@
 import {Component, OnInit} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ApiService} from "../../services/api.service";
-import {Book} from "../../model/model";
 import {IDisplayedClass, IDisplayedProperty} from "../../model/displayModel";
 import {KnoraService} from "../../services/knora.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {HelpComponent} from "../dialog/help/help.component";
 import {StringService} from "../../services/string.service";
-import {ReadResource} from "@knora/api";
 import {ListService} from "../../services/list.service";
 import {Observable} from "rxjs";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
     selector: "app-simple-search",
@@ -315,12 +314,14 @@ export class SimpleSearchComponent implements OnInit {
 
     searchStarted = false;
     errorObject = null;
+    priority = 0;
 
     constructor(
         private apiService: ApiService,
         private listService: ListService,
         private stringService: StringService,
         private knoraService: KnoraService,
+        private spinner: NgxSpinnerService,
         private helpDialog: MatDialog) {
     }
 
@@ -343,6 +344,14 @@ export class SimpleSearchComponent implements OnInit {
     }
 
     search() {
+        this.spinner.show("spinner-big", {
+            fullScreen: false,
+            bdColor: "rgba(255, 255, 255, 0)",
+            color: "rgb(159, 11, 11)",
+            type: "ball-spin-clockwise",
+            size: "medium"
+        });
+
         if (this.form.get("text").value) {
             this.textRef.searchVal1 = this.form.get("text").value;
         } else {
@@ -386,35 +395,50 @@ export class SimpleSearchComponent implements OnInit {
         this.errorObject = null;
         this.searchStarted = true;
 
-        this.nPassages = this.knoraService.graveSearchQueryCount(this.myPassage, 0);
+        this.nPassages = this.knoraService.graveSearchQueryCount(this.myPassage, this.priority);
 
-        this.knoraService.graveSeachQuery(this.myPassage, 0)
+        this.knoraService.graveSeachQuery(this.myPassage, this.priority)
             .subscribe(data => {
                 console.log(data);
                 this.passages = data;
                 this.searchStarted = false;
+                this.spinner.hide("spinner-big");
             }, error => {
                 this.errorObject = error;
                 this.searchStarted = false;
+                this.spinner.hide("spinner-big");
             });
 
         // this.knoraService.getResource("http://rdfh.ch/0826/-CXBmQ_-QvyqroyGJG_oHw")
         //     .subscribe((data: ReadResource) => {
         //         console.log(data);
         //     });
-
-        this.getTestData();
     }
 
-    getTestData() {
-        this.apiService.getPassages(true).subscribe(data => {
-            for (const passage of data) {
-                this.apiService.getBook((passage.occursIn as Book).id, true).subscribe(book => {
-                    passage.occursIn = book;
-                    console.log(data);
-                });
-            }
-        });
+    loadMoreResults() {
+        this.spinner.show("spinner-small", {
+                fullScreen: false,
+                bdColor: "rgba(255, 255, 255, 0)",
+                color: "rgb(159, 11, 11)",
+                type: "ball-spin-clockwise",
+                size: "small"
+            });
+        this.errorObject = null;
+        this.searchStarted = true;
+
+        const offset = Math.floor(this.passages.length / 25);
+
+        this.knoraService.graveSeachQuery(this.myPassage, this.priority, offset)
+            .subscribe(data => {
+                console.log(data);
+                this.passages.push(...data);
+                this.spinner.hide("spinner-small");
+                this.searchStarted = false;
+            }, error => {
+                this.errorObject = error;
+                this.spinner.hide("spinner-small");
+                this.searchStarted = false;
+            });
     }
 
     getHelpText(property: string) {
@@ -444,6 +468,10 @@ export class SimpleSearchComponent implements OnInit {
                 break;
             }
         }
+    }
+
+    clear(formControlName: string) {
+        this.form.get(formControlName).reset("");
     }
 
     openDialog(text: string, name: string) {

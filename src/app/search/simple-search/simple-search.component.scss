@@ -14,7 +14,7 @@
         width: 1%;
 
         mat-icon {
-          //margin-left: 0.5rem;
+          margin-left: 0.5rem;
           color: rgb(150, 150, 150);
         }
 
@@ -27,6 +27,71 @@
     .mat-flat-button {
       //background-color: rgb(115, 71, 42);
       background-color: rgb(159, 11, 11);
+      color: white;
+    }
+  }
+
+  .result-container {
+
+    .no-results {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .load-more {
+      height: 4rem;
+      // loading button is vertically aligned
+      display: flex;
+      align-items: center;
+
+      button {
+        width: 100%;
+      }
+    }
+
+    .spinner-small {
+      height: 4rem;
+      // Necessary to display the spinner within the div container (-> ngx spinner)
+      position: relative;
+    }
+
+    .error {
+      padding: 1rem;
+      // Sets the image- and text-container to the center
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .img-container {
+        width: 150px;
+        height: 150px;
+        // background-color: rgb(170, 180, 190);
+        background-color: rgba(200, 175, 150, 0.4);
+        border-radius: 50%;
+        // Sets the image in the center of the circle
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .text {
+        margin-top: 2rem;
+        text-align: center;
+
+        .title {
+          margin-bottom: 1rem;
+          font-weight: bold;
+          font-size: x-large;
+        }
+      }
+    }
+
+    .spinner-big {
+      height: 8rem;
+      // Necessary to display the spinner within the div container (-> ngx spinner)
+      position: relative
     }
   }
 }

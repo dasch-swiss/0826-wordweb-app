@@ -9,8 +9,11 @@
                         <td>
                             <mat-form-field>
                                 <mat-label>Text</mat-label>
-                                <input matInput formControlName="text">
-
+                                <input matInput formControlName="text" (keydown.escape)="clear('text')">
+                                <button *ngIf="form.get('text').value" type="button" mat-button matSuffix
+                                        mat-icon-button aria-label="Clear" (click)="clear('text')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -21,7 +24,11 @@
                         <td>
                             <mat-form-field>
                                 <mat-label>Title</mat-label>
-                                <input matInput formControlName="bookTitle">
+                                <input matInput formControlName="bookTitle" (keydown.escape)="clear('bookTitle')">
+                                <button *ngIf="form.get('bookTitle').value" type="button" mat-button matSuffix
+                                        mat-icon-button aria-label="Clear" (click)="clear('bookTitle')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -32,7 +39,11 @@
                         <td>
                             <mat-form-field>
                                 <mat-label>Author</mat-label>
-                                <input matInput formControlName="author">
+                                <input matInput formControlName="author" (keydown.escape)="clear('author')">
+                                <button *ngIf="form.get('author').value" type="button" mat-button matSuffix
+                                        mat-icon-button aria-label="Clear" (click)="clear('author')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -43,18 +54,23 @@
                         <td>
                             <mat-form-field>
                                 <mat-label>Lexia</mat-label>
-                                <input matInput formControlName="lexia" placeholder="Lexia">
+                                <input matInput formControlName="lexia" (keydown.escape)="clear('lexia')">
+                                <button *ngIf="form.get('lexia').value" type="button" mat-button matSuffix
+                                        mat-icon-button aria-label="Clear" (click)="clear('lexia')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
                             </mat-form-field>
                         </td>
                         <td class="min">
-                            <mat-icon matSuffix (click)="getHelpText('title')">help</mat-icon>
+                            <mat-icon matSuffix (click)="getHelpText('lexia')">help</mat-icon>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <mat-form-field>
                                 <mat-label>Date</mat-label>
-                                <input matInput formControlName="date" placeholder="1662 or 1662-1664" type="number">
+                                <input matInput formControlName="date" placeholder="1662 or 1662-1664" type="number"
+                                       (keydown.escape)="clear('date')">
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -73,12 +89,12 @@
                     </tr>
                 </table>
 
-                <button [disabled]="form.invalid" type="submit" mat-flat-button color="primary">SEARCH</button>
+                <button [disabled]="form.invalid" type="submit" mat-flat-button>SEARCH</button>
             </form>
         </mat-card-content>
     </mat-card>
 
-    <div fxFlex.gt-sm="550px">
+    <div class="result-container" fxFlex.gt-sm="550px">
 
         <div *ngIf="passages" fxLayout="column" fxLayoutGap="10px">
             <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -99,14 +115,14 @@
                         <span *ngFor="let author of book.isWrittenBy">
                             <span *ngFor="let fn of author.hasFirstName">{{fn.value}} </span>
                             <span *ngFor="let ln of author.hasLastName">{{ln.value}} </span>
-                            <span *ngFor="let bn of book.hasBookTitle">{{bn.value}}</span>
                         </span>
+                        <span *ngFor="let bn of book.hasBookTitle">{{bn.value}}</span>
                         <div [innerHTML]="passage.hasText[0].value"></div>
                     </div>
-<!--                        <span *ngFor="let author of passage.occursIn.authors; let last = last;">-->
-<!--                                                            {{author.firstName}} {{author.lastName}}<span *ngIf="!last">, </span>-->
-<!--                                                                                            </span>-->
-<!--                        <span>: {{passage.occursIn.title}} ({{passage.occursIn.createdStartDate}})</span>-->
+                    <!--                        <span *ngFor="let author of passage.occursIn.authors; let last = last;">-->
+                    <!--                                                            {{author.firstName}} {{author.lastName}}<span *ngIf="!last">, </span>-->
+                    <!--                                                                                            </span>-->
+                    <!--                        <span>: {{passage.occursIn.title}} ({{passage.occursIn.createdStartDate}})</span>-->
                     <mat-card-subtitle>[{{i + 1}}]</mat-card-subtitle>
                 </mat-card-content>
                 <mat-card-actions>
@@ -115,12 +131,36 @@
                     </button>
                 </mat-card-actions>
             </mat-card>
+
+            <div class="no-results" *ngIf="passages.length === 0">
+                No results were found
+            </div>
+
+            <div class="load-more" *ngIf="!searchStarted && passages.length !== 0">
+                <button mat-button *ngIf="passages.length !== (nPassages | async)" (click)="loadMoreResults()">
+                    Load more
+                </button>
+            </div>
+
+            <div class="spinner-small" *ngIf="searchStarted && passages.length !== 0">
+                <ngx-spinner name="spinner-small"></ngx-spinner>
+            </div>
+
         </div>
 
-        <ng-container *ngIf="searchStarted">
-            <mat-spinner></mat-spinner>
-        </ng-container>
+        <div class="error" *ngIf="errorObject && !searchStarted">
+            <div class="img-container">
+                <img src="assets/error.png" alt="Shakespeare is confused" height="128"/>
+            </div>
+            <div class="text">
+                <div class="title">Oh no!</div>
+                <div>Even Shakespeare had to deal with errors in his plays.<br>So he tried it again later.</div>
+            </div>
+        </div>
 
+        <div class="spinner-big" *ngIf="!passages">
+            <ngx-spinner name="spinner-big"></ngx-spinner>
+        </div>
 
     </div>
 

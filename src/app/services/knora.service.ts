@@ -12,7 +12,6 @@ import {GravesearchBuilderService} from "./gravesearch-builder.service";
 import {IDisplayedClass} from "../model/displayModel";
 import {map} from "rxjs/operators";
 import {Observable} from "rxjs";
-import {ListService} from "./list.service";
 
 @Injectable({
     providedIn: "root"
@@ -26,9 +25,7 @@ export class KnoraService {
 
     knoraApiConnection: KnoraApiConnection;
 
-    constructor(
-        private gBuilder: GravesearchBuilderService,
-        private listService: ListService) {
+    constructor(private gBuilder: GravesearchBuilderService) {
         const config = new KnoraApiConfig(this.protocol, this.host, this.port);
         this.knoraApiConnection = new KnoraApiConnection(config);
     }
@@ -41,14 +38,14 @@ export class KnoraService {
         const graveSearch = this.gBuilder.getQuery(structure, priority, offset);
         console.log(graveSearch);
         return this.knoraApiConnection.v2.search.doExtendedSearch(graveSearch)
-            .pipe(map((resources: ReadResource[]) => {
-                return resources.map((resource: ReadResource) => {
-                    return this.createStructure(resource);
-                });
-            }));
+            .pipe(
+                map((resources: ReadResource[]) => {
+                    return resources.map(resource => this.processRes(resource));
+                })
+            );
     }
 
-    createStructure(resource: ReadResource) {
+    processRes(resource: ReadResource) {
         const newResource = {
             id: resource.id,
             arkUrl: resource.arkUrl
@@ -74,7 +71,7 @@ export class KnoraService {
                         };
                     }
                     case (propValue instanceof ReadLinkValue): {
-                        return propValue.linkedResource ? this.createStructure(propValue.linkedResource) : {};
+                        return propValue.linkedResource ? this.processRes(propValue.linkedResource) : {};
                     }
                 }
 
@@ -87,7 +84,9 @@ export class KnoraService {
     graveSearchQueryCount(structure: IDisplayedClass, priority: number): Observable<number> {
         const graveSearch = this.gBuilder.getQuery(structure, priority);
         return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(graveSearch)
-            .pipe(map((data: CountQueryResponse) => data.numberOfResults));
+            .pipe(
+                map((data: CountQueryResponse) => data.numberOfResults)
+            );
     }
 
     getProjectOntology() {
@@ -96,12 +95,16 @@ export class KnoraService {
 
     getAllLists() {
         return this.knoraApiConnection.admin.listsEndpoint.getLists()
-            .pipe(map((data: ApiResponseData<ListsResponse>) => data.body.lists));
+            .pipe(
+                map((data: ApiResponseData<ListsResponse>) => data.body.lists)
+            );
     }
 
     getList(iri: string) {
         return this.knoraApiConnection.admin.listsEndpoint.getList(iri)
-            .pipe(map((data: ApiResponseData<ListResponse>) => data.body.list));
+            .pipe(
+                map((data: ApiResponseData<ListResponse>) => data.body.list)
+            );
     }
 
     getNodeOfList(iri: string) {
