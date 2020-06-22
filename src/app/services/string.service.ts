@@ -15,7 +15,8 @@ export class StringService {
             "Multi-part plays are listed as <i>Tamburlaine Part 1</i> rather than <i>The First Part of Tamburlaine</i>.",
         lexia_help: "Type in any word or name to find passages that reference each other or use the same phrase.",
         date_help: "As in <i>Martin Wiggins' British Drama 1533-1642: A Catalogue</i> (where applicable). Wiggins' " +
-            "\"Best guess\" is used where there is no certain information.",
+            "\"Best guess\" is used where there is no certain information. For technical reasons, all Classical Latin entries are " +
+            "currently coded for the year 1000 rather than for the correct date.",
         plays_help: "We focus on plays but include some passages from nondramatic works that were written or referenced by Renaissance " +
             "dramatists. Use this switch to include or exclude poems, treatises, letters, the Bible etc. from your searches.",
         marking_help: "How did Renaissance authors signal that they used somebody else's words? Marking for quotation can include " +
