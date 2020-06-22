@@ -1,8 +1,6 @@
 import {Injectable} from "@angular/core";
 import {IDisplayedClass} from "../model/displayModel";
 
-enum Classes { PERSON = "person", BOOK = "book", PASSAGE = "passage", LEXIA = "lexia", COMPANY = "company", VENUE = "venue"}
-
 @Injectable({
     providedIn: "root"
 })
@@ -19,54 +17,54 @@ export class GravesearchBuilderService {
         hasPersonInternalId: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PERSON, "hasPersonInternalId", "personInternalId")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PERSON_VAR, "hasPersonInternalId", "personInternalId")
         },
         hasFirstName: {
             cardinality: "0-1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PERSON, "hasFirstName", "firstName")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PERSON_VAR, "hasFirstName", "firstName")
         },
         hasLastName: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PERSON, "hasLastName", "lastName")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PERSON_VAR, "hasLastName", "lastName")
         },
         hasDescription: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PERSON, "hasDescription", "description")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PERSON_VAR, "hasDescription", "description")
         },
         hasBirthDate: {
             cardinality: "0-1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PERSON, "hasBirthDate", "birthDate")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PERSON_VAR, "hasBirthDate", "birthDate")
         },
         hasDeathDate: {
             cardinality: "0-1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PERSON, "hasDeathDate", "deathDate")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PERSON_VAR, "hasDeathDate", "deathDate")
         },
         hasActiveDate: {
             cardinality: "0-1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PERSON, "hasActiveDate", "activeDate")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PERSON_VAR, "hasActiveDate", "activeDate")
         },
         hasGender: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PERSON, "hasGender", "gender")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PERSON_VAR, "hasGender", "gender")
         },
         isLexiaPerson: {
             cardinality: "0-1",
             type: "Resource",
             res: "lexia",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PERSON, "isLexiaPerson", "lexiaPerson")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PERSON_VAR, "isLexiaPerson", "lexiaPerson")
         },
         personPerformedIn: {
             cardinality: "0-1",
             type: "Resource",
             res: "book",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PERSON, "personPerformedIn", "personPerformedIn")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PERSON_VAR, "personPerformedIn", "personPerformedIn")
         }
     };
 
@@ -74,85 +72,85 @@ export class GravesearchBuilderService {
         hasBookInternalId: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasBookInternalId", "bookInternalId")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "hasBookInternalId", "bookInternalId")
         },
         hasBookTitle: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasBookTitle", "bookTitle")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "hasBookTitle", "bookTitle")
         },
         hasEdition: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasEdition", "edition")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "hasEdition", "edition")
         },
         hasEditionHist: {
             cardinality: "0-1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasEditionHist", "editionHist")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "hasEditionHist", "editionHist")
         },
         hasLanguage: {
             cardinality: "1",
             type: "List",
             list: "language",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasLanguage", "language")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "hasLanguage", "language")
         },
         hasGenre: {
             cardinality: "1-n",
             type: "List",
             list: "genre",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasGenre", "genre")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "hasGenre", "genre")
         },
         hasSubject: {
             cardinality: "0-1",
             type: "List",
             list: "subject",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasSubject", "subject")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "hasSubject", "subject")
         },
         hasCreationDate: {
             cardinality: "1",
             type: "Date",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasCreationDate", "creationDate")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "hasCreationDate", "creationDate")
         },
         hasPublicationDate: {
             cardinality: "0-1",
             type: "Date",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasPublicationDate", "publicationDate")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "hasPublicationDate", "publicationDate")
         },
         hasFirstPerformanceDate: {
             cardinality: "0-1",
             type: "Date",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasFirstPerformanceDate", "firstPerformanceDate")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "hasFirstPerformanceDate", "firstPerformanceDate")
         },
         hasBookComment: {
             cardinality: "0-1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "hasBookComment", "bookComment")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "hasBookComment", "bookComment")
         },
         isWrittenBy: {
             cardinality: "1-n",
             type: "Resource",
             res: "person",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "isWrittenBy", "author")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "isWrittenBy", "author")
         },
         performedBy: {
             cardinality: "0-n",
             type: "Resource",
             res: "company",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "performedBy", "performedCompany")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "performedBy", "performedCompany")
         },
         performedIn: {
             cardinality: "0-n",
             type: "Resource",
             res: "venue",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "performedIn", "performedVenue")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "performedIn", "performedVenue")
         },
 
         isLexiaBook: {
             cardinality: "0-n",
             type: "Resource",
             res: "lexia",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.BOOK, "isLexiaBook", "lexiaBook")
+            queryStr: this.getQueryStr(GravesearchBuilderService.BOOK_VAR, "isLexiaBook", "lexiaBook")
         }
     };
 
@@ -160,85 +158,85 @@ export class GravesearchBuilderService {
         hasText: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "hasText", "text")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "hasText", "text")
         },
         hasTextHist: {
             cardinality: "0-1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "hasTextHist", "textHist")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "hasTextHist", "textHist")
         },
         hasDisplayedTitle: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "hasDisplayedTitle", "displayedTitle")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "hasDisplayedTitle", "displayedTitle")
         },
         hasPage: {
             cardinality: "0-1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "hasPage", "page")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "hasPage", "page")
         },
         hasPageHist: {
             cardinality: "0-1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "hasPageHist", "pageHist")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "hasPageHist", "pageHist")
         },
         hasResearchField: {
             cardinality: "1",
             type: "List",
             list: "researchField",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "hasResearchField", "research")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "hasResearchField", "research")
         },
         hasFunctionVoice: {
             cardinality: "1-n",
             type: "List",
             list: "functionVoice",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "hasFunctionVoice", "function")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "hasFunctionVoice", "function")
         },
         hasMarking: {
             cardinality: "1-n",
             type: "List",
             list: "marking",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "hasMarking", "marking")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "hasMarking", "marking")
         },
         hasStatus: {
             cardinality: "1",
             type: "List",
             list: "status",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "hasStatus", "status")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "hasStatus", "status")
         },
         hasInternalComment: {
             cardinality: "0-1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "hasInternalComment", "internalComment")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "hasInternalComment", "internalComment")
         },
         hasPassageComment: {
             cardinality: "0-1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "hasPassageComment", "passageComment")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "hasPassageComment", "passageComment")
         },
         occursIn: {
             cardinality: "1-n",
             type: "Resource",
             res: "book",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "occursIn", "book")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "occursIn", "book")
         },
         isMentionedIn: {
             cardinality: "0-n",
             type: "Resource",
             res: "passage",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "isMentionedIn", "sPassage")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "isMentionedIn", "sPassage")
         },
         wasContributedBy: {
             cardinality: "1",
             type: "Resource",
             res: "person",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "wasContributedBy", "contributor")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "wasContributedBy", "contributor")
         },
         contains: {
             cardinality: "0-n",
             type: "Resource",
             res: "lexia",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.PASSAGE, "contains", "lexia")
+            queryStr: this.getQueryStr(GravesearchBuilderService.PASSAGE_VAR, "contains", "lexia")
         }
     };
 
@@ -246,29 +244,29 @@ export class GravesearchBuilderService {
         hasLexiaInternalId: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.LEXIA, "hasLexiaInternalId", "lexiaInternalId")
+            queryStr: this.getQueryStr(GravesearchBuilderService.LEXIA_VAR, "hasLexiaInternalId", "lexiaInternalId")
         },
         hasLexiaTitle: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.LEXIA, "hasLexiaTitle", "lexiaTitle")
+            queryStr: this.getQueryStr(GravesearchBuilderService.LEXIA_VAR, "hasLexiaTitle", "lexiaTitle")
         },
         hasLexiaDisplayedTitle: {
             cardinality: "0-1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.LEXIA, "hasLexiaDisplayedTitle", "lexiaDisplayedTitle")
+            queryStr: this.getQueryStr(GravesearchBuilderService.LEXIA_VAR, "hasLexiaDisplayedTitle", "lexiaDisplayedTitle")
         },
         hasFormalClass: {
             cardinality: "1-n",
             type: "List",
             list: "formalClass",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.LEXIA, "hasFormalClass", "formalClass")
+            queryStr: this.getQueryStr(GravesearchBuilderService.LEXIA_VAR, "hasFormalClass", "formalClass")
         },
         hasImage: {
             cardinality: "0-n",
             type: "List",
             list: "image",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.LEXIA, "hasImage", "image")
+            queryStr: this.getQueryStr(GravesearchBuilderService.LEXIA_VAR, "hasImage", "image")
         },
     };
 
@@ -276,24 +274,24 @@ export class GravesearchBuilderService {
         hasCompanyInternalId: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.COMPANY, "hasCompanyInternalId", "companyInternalId")
+            queryStr: this.getQueryStr(GravesearchBuilderService.COMPANY_VAR, "hasCompanyInternalId", "companyInternalId")
         },
         hasCompanyTitle: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.COMPANY, "hasCompanyTitle", "companyTitle")
+            queryStr: this.getQueryStr(GravesearchBuilderService.COMPANY_VAR, "hasCompanyTitle", "companyTitle")
         },
         hasMember: {
             cardinality: "0-n",
             type: "Resource",
             res: "person",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.COMPANY, "hasMember", "member")
+            queryStr: this.getQueryStr(GravesearchBuilderService.COMPANY_VAR, "hasMember", "member")
         },
         isLexiaCompany: {
             cardinality: "0-n",
             type: "Resource",
             res: "Lexia",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.COMPANY, "isLexiaCompany", "lexiaCompany")
+            queryStr: this.getQueryStr(GravesearchBuilderService.COMPANY_VAR, "isLexiaCompany", "lexiaCompany")
         },
     };
 
@@ -301,82 +299,58 @@ export class GravesearchBuilderService {
         hasVenueInternalId: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.VENUE, "hasVenueInternalId", "venueInternalId")
+            queryStr: this.getQueryStr(GravesearchBuilderService.VENUE_VAR, "hasVenueInternalId", "venueInternalId")
         },
         hasPlaceVenue: {
             cardinality: "1",
             type: "String",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.VENUE, "hasPlaceVenue", "placeVenue")
+            queryStr: this.getQueryStr(GravesearchBuilderService.VENUE_VAR, "hasPlaceVenue", "placeVenue")
         },
         isLexiaVenue: {
             cardinality: "1",
             type: "Resource",
             res: "lexia",
-            queryStr: GravesearchBuilderService.getQueryStr(Classes.VENUE, "isLexiaVenue", "lexiaVenue")
+            queryStr: this.getQueryStr(GravesearchBuilderService.VENUE_VAR, "isLexiaVenue", "lexiaVenue")
         },
     };
 
     getClass = {
-        person: this.person,
-        book: this.book,
-        passage: this.passage,
-        lexia: this.lexia,
-        company: this.company,
-        venue: this.venue
+        person: {
+            ref: this.person,
+            variable: GravesearchBuilderService.PERSON_VAR
+        },
+        book: {
+            ref: this.book,
+            variable: GravesearchBuilderService.BOOK_VAR
+        },
+        passage: {
+            ref: this.passage,
+            variable: GravesearchBuilderService.PASSAGE_VAR
+        },
+        lexia: {
+            ref: this.lexia,
+            variable: GravesearchBuilderService.LEXIA_VAR
+        },
+        company: {
+            ref: this.company,
+            variable: GravesearchBuilderService.COMPANY_VAR
+        },
+        venue: {
+            ref: this.venue,
+            variable: GravesearchBuilderService.VENUE_VAR
+        }
     };
 
-    static getQueryStr(c: Classes, propName: string, valueVar: string): string[] {
-        switch (c) {
-            case Classes.PERSON:
-                return ["?", `${this.PERSON_VAR}`, ` ${this.ONTO_NAME}:${propName} ?`, valueVar, " ."];
-            case Classes.BOOK:
-                return ["?", `${this.BOOK_VAR}`, ` ${this.ONTO_NAME}:${propName} ?`, valueVar, " ."];
-            case Classes.PASSAGE:
-                return ["?", `${this.PASSAGE_VAR}`, ` ${this.ONTO_NAME}:${propName} ?`, valueVar, " ."];
-            case Classes.LEXIA:
-                return ["?", `${this.LEXIA_VAR}`, ` ${this.ONTO_NAME}:${propName} ?`, valueVar, " ."];
-            case Classes.COMPANY:
-                return ["?", `${this.COMPANY_VAR}`, ` ${this.ONTO_NAME}:${propName} ?`, valueVar, " ."];
-            case Classes.VENUE:
-                return ["?", `${this.VENUE_VAR}`, ` ${this.ONTO_NAME}:${propName} ?`, valueVar, " ."];
-        }
+    getQueryStr(classVariable: string, propName: string, valueVar: string): string[] {
+        return ["?", `${classVariable}`, ` ${GravesearchBuilderService.ONTO_NAME}:${propName} ?`, valueVar, " ."];
     }
 
-    static getFirstWhereLine(c: Classes): string[] {
-        switch (c) {
-            case Classes.PERSON:
-                return ["?", `${this.PERSON_VAR}`, ` a ${this.ONTO_NAME}:${Classes.PERSON} .`];
-            case Classes.BOOK:
-                return ["?", `${this.BOOK_VAR}`, ` a ${this.ONTO_NAME}:${Classes.BOOK} .`];
-            case Classes.PASSAGE:
-                return ["?", `${this.PASSAGE_VAR}`, ` a ${this.ONTO_NAME}:${Classes.PASSAGE} .`];
-            case Classes.LEXIA:
-                return ["?", `${this.LEXIA_VAR}`, ` a ${this.ONTO_NAME}:${Classes.LEXIA} .`];
-            case Classes.COMPANY:
-                return ["?", `${this.COMPANY_VAR}`, ` a ${this.ONTO_NAME}:${Classes.COMPANY} .`];
-            case Classes.VENUE:
-                return ["?", `${this.VENUE_VAR}`, ` a ${this.ONTO_NAME}:${Classes.VENUE} .`];
-        }
+    getFirstWhereLine(className: string): string[] {
+        return ["?", `${this.getClass[className].variable}`, ` a ${GravesearchBuilderService.ONTO_NAME}:${className} .`];
     }
 
-    static getFirstConstructLine(c: Classes): string[] {
-        switch (c) {
-            case Classes.PERSON:
-                return ["?", `${this.PERSON_VAR}`, ` knora-api:isMainResource true .`];
-            case Classes.BOOK:
-                return ["?", `${this.BOOK_VAR}`, ` knora-api:isMainResource true .`];
-            case Classes.PASSAGE:
-                return ["?", `${this.PASSAGE_VAR}`, ` knora-api:isMainResource true .`];
-            case Classes.LEXIA:
-                return ["?", `${this.LEXIA_VAR}`, ` knora-api:isMainResource true .`];
-            case Classes.COMPANY:
-                return ["?", `${this.COMPANY_VAR}`, ` knora-api:isMainResource true .`];
-            case Classes.VENUE:
-                return ["?", `${this.VENUE_VAR}`, ` knora-api:isMainResource true .`];
-        }
-    }
-
-    constructor() {
+    getFirstConstructLine(className: string): string[] {
+        return ["?", `${this.getClass[className].variable}`, ` knora-api:isMainResource true .`];
     }
 
     getMainQuery(node: IDisplayedClass, priority: number, offset?: number) {
@@ -400,15 +374,20 @@ export class GravesearchBuilderService {
             "PREFIX teimww: <http://0.0.0.0:3333/ontology/0826/teimww/v2#>",
             "",
             "CONSTRUCT {",
-            `${GravesearchBuilderService.getFirstConstructLine(node.name as Classes).join("")}`,
+            `${this.getFirstConstructLine(node.name).join("")}`,
             "} WHERE {",
             "",
-            `${GravesearchBuilderService.getFirstWhereLine(node.name as Classes).join("")}`,
+            `${this.getFirstWhereLine(node.name).join("")}`,
             "",
             "}",
             "",
             `OFFSET ${offset ? offset : 0}`
         ];
+
+        // Add the resource restriction with IRI
+        if (node.iri) {
+            query[7] = query[7] + `BIND (<${node.iri}> AS ?${this.getClass[node.name].variable})` + "\n";
+        }
 
         // recursion function to fill in the query line
         this.rec(node, priority, query);
@@ -423,7 +402,7 @@ export class GravesearchBuilderService {
             // Checks if property has the priority to be shown
             if (prop.priority <= priority) {
                 // Original property
-                const oProp = this.getClass[name][prop.name];
+                const oProp = this.getClass[name].ref[prop.name];
                 // Clones query string array
                 const qStrCopy = JSON.parse(JSON.stringify(oProp.queryStr));
                 // Replaces default class variable name if given

@@ -1,6 +1,7 @@
 export interface IDisplayedClass {
     name: string;
     props: IDisplayedProperty[];
+    iri?: string;
 }
 
 export interface IDisplayedProperty {

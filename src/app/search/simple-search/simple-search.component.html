@@ -132,7 +132,7 @@
                     </div>
                     <div *ngIf="detailPassages[passage.id]">
                         <div style="margin-top: 1rem;">
-                            <div>{{detailPassages[passage.id].text}}</div>
+                            <div>{{detailPassages[passage.id].hasText[0].value}}</div>
                             <button *ngIf="passage.hasTextHist" style="margin-top: 1rem;" (click)="originalOrNormalized(passage)">{{spellingBtnText(passage)}}</button>
                         </div>
                     </div>

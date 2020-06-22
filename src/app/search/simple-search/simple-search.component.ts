@@ -495,6 +495,9 @@ export class SimpleSearchComponent implements OnInit {
             size: "small"
         });
 
+        const detailStructure = JSON.parse(JSON.stringify(this.myPassage));
+        detailStructure.iri = passage.id;
+
         // this.knoraService.getResource("http://rdfh.ch/0826/-CXBmQ_-QvyqroyGJG_oHw")
         //     .subscribe(data => {
         //         this.spinner.hide(`spinner-${i}`);
@@ -505,10 +508,10 @@ export class SimpleSearchComponent implements OnInit {
         //     });
 
         if (!this.detailPassages[passage.id]) {
-            this.knoraService.graveSeachQuery(this.myPassage, this.priority)
+            this.knoraService.graveSeachQuery(detailStructure, 1)
                 .subscribe(data => {
-                    this.detailPassages[passage.id] = { text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren" };
-                    console.log(this.detailPassages);
+                    this.detailPassages[passage.id] = data[0];
+                    console.log("DEtail", data);
                     this.detailStarted = false;
                     this.spinner.hide(`spinner-${passage.id}`);
                 }, error => {
