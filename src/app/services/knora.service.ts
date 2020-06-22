@@ -78,7 +78,7 @@ export class KnoraService {
                             {
                                 id: propValue.id,
                                 start: propValue.date.start.year,
-                                end: propValue.datae.end.year
+                                end: propValue.date.end.year
                             } :
                             {
                                 id: propValue.id,
