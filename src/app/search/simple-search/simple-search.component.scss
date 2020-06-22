@@ -33,6 +33,40 @@
 
   .result-container {
 
+    .result {
+      //margin: 0.5rem;
+      border: 1px solid lightgrey;
+      //background-color: white;
+
+      .result-text {
+        padding: 1rem 2rem 1rem 2rem;
+        background-color: rgb( 220, 220, 220);
+      }
+
+      .details {
+        max-height: 0;
+        overflow-y: hidden;
+        transition: ease-in-out 0ms max-height;
+
+        .spinner-container {
+          height: 3rem;
+          // Necessary to display the spinner within the div container (-> ngx spinner)
+          position: relative;
+        }
+      }
+
+      .details.opened {
+        padding: 1rem 2rem 2rem 2rem;
+        max-height: 450px;
+        transition: ease-in-out 500ms max-height;
+      }
+    }
+
+    // Every second box has different result-text background color
+    .result:nth-child(even) > .result-text {
+      background-color: rgb( 190, 190, 190);
+    }
+
     .no-results {
       margin-top: 2rem;
       text-align: center;

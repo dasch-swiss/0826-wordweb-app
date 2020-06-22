@@ -78,9 +78,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td style="text-align: right;">
                             <mat-slide-toggle formControlName="plays" [color]="'warn'">
-                                Only Plays
+                                Show only plays
                             </mat-slide-toggle>
                         </td>
                         <td class="min">
@@ -109,28 +109,54 @@
                 </mat-form-field>
             </div>
 
-            <mat-card *ngFor="let passage of passages; let i = index;">
-                <mat-card-content fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-                    <div *ngFor="let book of passage.occursIn">
-                        <span *ngFor="let author of book.isWrittenBy">
-                            <span *ngFor="let fn of author.hasFirstName">{{fn.value}} </span>
-                            <span *ngFor="let ln of author.hasLastName">{{ln.value}} </span>
-                        </span>
-                        <span *ngFor="let bn of book.hasBookTitle">{{bn.value}}</span>
-                        <div [innerHTML]="passage.hasText[0].value"></div>
+            <div class="result" *ngFor="let passage of passages; let pIndex = index;">
+                <div class="result-text">
+                    <div style="text-align: right; font-size: smaller;">[{{pIndex + 1}}]</div>
+                    <span style="font-weight: bold;" *ngFor="let book of passage.occursIn; let bIndex = index">
+                        <span *ngFor="let author of book.isWrittenBy; let aFirst = first">
+                            <span><span *ngIf="!aFirst">, </span>{{author.hasFirstName[0]?.value}} {{author.hasLastName[0].value}}</span>
+                        </span>: <span style="font-style: italic">{{book.hasBookTitle[0].value}}</span>
+                    </span>
+                    <div [innerHTML]="passage.original ? passage.hasTextHist[0].value : passage.hasText[0].value"></div>
+                    <div style="margin-top: 1rem;">
+                        <div style="font-style: italic;text-align: right;" *ngFor="let lexia of passage.contains; let lIndex = index">
+                            <span>{{lexia.hasLexiaDisplayedTitle[0].value}}</span>
+                        </div>
+                        <button style="margin-top: 1rem;" [disabled]="false" (click)="expandOrClose(passage)">{{expandBtnText(passage)}}</button>
                     </div>
-                    <!--                        <span *ngFor="let author of passage.occursIn.authors; let last = last;">-->
-                    <!--                                                            {{author.firstName}} {{author.lastName}}<span *ngIf="!last">, </span>-->
-                    <!--                                                                                            </span>-->
-                    <!--                        <span>: {{passage.occursIn.title}} ({{passage.occursIn.createdStartDate}})</span>-->
-                    <mat-card-subtitle>[{{i + 1}}]</mat-card-subtitle>
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button>
-                        Expand
-                    </button>
-                </mat-card-actions>
-            </mat-card>
+                </div>
+
+                <div class="details" [class.opened]="passage.expanded">
+                    <div *ngIf="!detailPassages[passage.id]" class="spinner-container">
+                        <ngx-spinner name="spinner-{{passage.id}}"></ngx-spinner>
+                    </div>
+                    <div *ngIf="detailPassages[passage.id]">
+                        <div style="margin-top: 1rem;">
+                            <div>{{detailPassages[passage.id].text}}</div>
+                            <button *ngIf="passage.hasTextHist" style="margin-top: 1rem;" (click)="originalOrNormalized(passage)">{{spellingBtnText(passage)}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--            <mat-card *ngFor="let passage of passages; let i = index;">-->
+            <!--                <mat-card-content fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">-->
+            <!--                    <div *ngFor="let book of passage.occursIn">-->
+            <!--                        <span *ngFor="let author of book.isWrittenBy">-->
+            <!--                            <span *ngFor="let fn of author.hasFirstName">{{fn.value}} </span>-->
+            <!--                            <span *ngFor="let ln of author.hasLastName">{{ln.value}} </span>-->
+            <!--                        </span>-->
+            <!--                        <span *ngFor="let bn of book.hasBookTitle">{{bn.value}}</span>-->
+            <!--                        <div [innerHTML]="passage.hasText[0].value"></div>-->
+            <!--                    </div>-->
+            <!--                    <mat-card-subtitle>[{{i + 1}}]</mat-card-subtitle>-->
+            <!--                </mat-card-content>-->
+            <!--                <mat-card-actions>-->
+            <!--                    <button mat-button>-->
+            <!--                        Expand-->
+            <!--                    </button>-->
+            <!--                </mat-card-actions>-->
+            <!--            </mat-card>-->
 
             <div class="no-results" *ngIf="passages.length === 0">
                 No results were found
@@ -154,7 +180,7 @@
             </div>
             <div class="text">
                 <div class="title">Oh no!</div>
-                <div>Even Shakespeare had to deal with errors in his plays.<br>So he tried it again later.</div>
+                <div>Even Shakespeare had to deal with errors in his plays.<br>So he tried later.</div>
             </div>
         </div>
 

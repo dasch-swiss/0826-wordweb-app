@@ -311,8 +311,10 @@ export class SimpleSearchComponent implements OnInit {
 
     nPassages: Observable<number>;
     passages: Array<any>;
+    detailPassages = {};
 
     searchStarted = false;
+    detailStarted = false;
     errorObject = null;
     priority = 0;
 
@@ -399,8 +401,12 @@ export class SimpleSearchComponent implements OnInit {
 
         this.knoraService.graveSeachQuery(this.myPassage, this.priority)
             .subscribe(data => {
-                console.log(data);
-                this.passages = data;
+                this.passages = data.map(passage => {
+                    passage.expanded = false;
+                    passage.original = false;
+                    return passage;
+                });
+                console.log(this.passages);
                 this.searchStarted = false;
                 this.spinner.hide("spinner-big");
             }, error => {
@@ -408,21 +414,16 @@ export class SimpleSearchComponent implements OnInit {
                 this.searchStarted = false;
                 this.spinner.hide("spinner-big");
             });
-
-        // this.knoraService.getResource("http://rdfh.ch/0826/-CXBmQ_-QvyqroyGJG_oHw")
-        //     .subscribe((data: ReadResource) => {
-        //         console.log(data);
-        //     });
     }
 
     loadMoreResults() {
         this.spinner.show("spinner-small", {
-                fullScreen: false,
-                bdColor: "rgba(255, 255, 255, 0)",
-                color: "rgb(159, 11, 11)",
-                type: "ball-spin-clockwise",
-                size: "small"
-            });
+            fullScreen: false,
+            bdColor: "rgba(255, 255, 255, 0)",
+            color: "rgb(159, 11, 11)",
+            type: "ball-spin-clockwise",
+            size: "small"
+        });
         this.errorObject = null;
         this.searchStarted = true;
 
@@ -470,6 +471,64 @@ export class SimpleSearchComponent implements OnInit {
         }
     }
 
+    expandOrClose(passage: any) {
+        if (passage.expanded) {
+            this.close(passage);
+        } else {
+            this.expand(passage);
+        }
+    }
+
+    close(passage: any) {
+        passage.expanded = !passage.expanded;
+    }
+
+    expand(passage: any) {
+        this.detailStarted = true;
+        passage.expanded = !passage.expanded;
+        this.spinner.show(`spinner-${passage.id}`, {
+            fullScreen: false,
+            bdColor: "rgba(255, 255, 255, 0)",
+            color: "rgb(159, 11, 11)",
+            type: "ball-spin-clockwise",
+            size: "small"
+        });
+
+        // this.knoraService.getResource("http://rdfh.ch/0826/-CXBmQ_-QvyqroyGJG_oHw")
+        //     .subscribe(data => {
+        //         this.spinner.hide(`spinner-${i}`);
+        //         console.log(data);
+        //     }, error => {
+        //         // TODO Different error concept reporting
+        //         this.spinner.hide(`spinner-${i}`);
+        //     });
+
+        if (!this.detailPassages[passage.id]) {
+            this.knoraService.graveSeachQuery(this.myPassage, this.priority)
+                .subscribe(data => {
+                    this.detailPassages[passage.id] = { text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren" };
+                    console.log(this.detailPassages);
+                    this.detailStarted = false;
+                    this.spinner.hide(`spinner-${passage.id}`);
+                }, error => {
+                    this.detailStarted = false;
+                    this.spinner.hide(`spinner-${passage.id}`);
+                });
+        }
+    }
+
+    expandBtnText(passage: any): string {
+        return passage.expanded ? "Hide" : "Expand";
+    }
+
+    originalOrNormalized(passage: any) {
+        passage.original = !passage.original;
+    }
+
+    spellingBtnText(passage: any): string {
+        return passage.original ? "Normalized spelling" : "Origial spelling";
+    }
+
     clear(formControlName: string) {
         this.form.get(formControlName).reset("");
     }
@@ -485,6 +544,10 @@ export class SimpleSearchComponent implements OnInit {
     }
 
     setOrder($event) {
-        console.log($event);
+        if ($event.value === "Title") {
+            this.passages.sort((a, b) => {
+                return a.occursIn[0].hasBookTitle[0].value < b.occursIn[0].hasBookTitle[0].value ? -1 : 1;
+            });
+        }
     }
 }
