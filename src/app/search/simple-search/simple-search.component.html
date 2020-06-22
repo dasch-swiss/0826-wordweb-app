@@ -115,7 +115,7 @@
                     <span style="font-weight: bold;" *ngFor="let book of passage.occursIn; let bIndex = index">
                         <span *ngFor="let author of book.isWrittenBy; let aFirst = first">
                             <span><span *ngIf="!aFirst">, </span>{{author.hasFirstName[0]?.value}} {{author.hasLastName[0].value}}</span>
-                        </span>: <span style="font-style: italic">{{book.hasBookTitle[0].value}}</span>
+                        </span>: <span style="font-style: italic">{{book.hasBookTitle[0].value}}</span> (<span>{{book.hasCreationDate[0].start}}</span><span *ngIf="book.hasCreationDate[0].start !== book.hasCreationDate[0].end">-{{book.hasCreationDate[0].end}}</span>)
                     </span>
                     <div [innerHTML]="passage.original ? passage.hasTextHist[0].value : passage.hasText[0].value"></div>
                     <div style="margin-top: 1rem;">

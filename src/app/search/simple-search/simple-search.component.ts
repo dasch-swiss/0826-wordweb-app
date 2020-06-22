@@ -401,6 +401,7 @@ export class SimpleSearchComponent implements OnInit {
 
         this.knoraService.graveSeachQuery(this.myPassage, this.priority)
             .subscribe(data => {
+                console.log(data);
                 this.passages = data.map(passage => {
                     passage.expanded = false;
                     passage.original = false;

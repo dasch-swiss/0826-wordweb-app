@@ -3,9 +3,9 @@ import {
     ApiResponseData,
     CountQueryResponse,
     KnoraApiConfig,
-    KnoraApiConnection,
+    KnoraApiConnection, KnoraPeriod,
     ListResponse,
-    ListsResponse, ReadLinkValue, ReadListValue,
+    ListsResponse, ReadDateValue, ReadLinkValue, ReadListValue,
     ReadResource, ReadTextValueAsString
 } from "@knora/api";
 import {GravesearchBuilderService} from "./gravesearch-builder.service";
@@ -72,6 +72,19 @@ export class KnoraService {
                     }
                     case (propValue instanceof ReadLinkValue): {
                         return propValue.linkedResource ? this.processRes(propValue.linkedResource) : {};
+                    }
+                    case (propValue instanceof ReadDateValue): {
+                        return (propValue.date instanceof KnoraPeriod) ?
+                            {
+                                id: propValue.id,
+                                start: propValue.date.start.year,
+                                end: propValue.datae.end.year
+                            } :
+                            {
+                                id: propValue.id,
+                                start: propValue.date.year,
+                                end: propValue.date.year
+                            };
                     }
                 }
 
