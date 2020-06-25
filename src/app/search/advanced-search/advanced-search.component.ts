@@ -1,13 +1,11 @@
 import {Component, OnInit} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
-import {Book} from "../../model/model";
 import {ApiService} from "../../services/api.service";
-import {IDisplayedClass, IDisplayedProperty} from "../../model/displayModel";
+import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {KnoraService} from "../../services/knora.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {HelpComponent} from "../dialog/help/help.component";
 import {StringService} from "../../services/string.service";
-import {ListService} from "../../services/list.service";
 
 @Component({
     selector: "app-advanced-search",
@@ -15,8 +13,9 @@ import {ListService} from "../../services/list.service";
     styleUrls: ["./advanced-search.component.scss"]
 })
 export class AdvancedSearchComponent implements OnInit {
-    myPassage: IDisplayedClass = {
+    myPassage: IMainClass = {
         name: "passage",
+        mainClass: { name: "passage", variable: "passage" },
         props: [
             {
                 name: "hasText",
@@ -327,8 +326,6 @@ export class AdvancedSearchComponent implements OnInit {
     createdDateRef: IDisplayedProperty;
     performedCompanyRef: IDisplayedProperty;
 
-    passages: any;
-
     operators1 = [
         {value: "-"},
         {value: "NOT"}
@@ -406,19 +403,6 @@ export class AdvancedSearchComponent implements OnInit {
                         console.log(data);
                     });
             });
-
-        this.getTestData();
-    }
-
-    getTestData() {
-        this.apiService.getPassages(true).subscribe(data => {
-            for (const passage of data) {
-                this.apiService.getBook((passage.occursIn as Book).id, true).subscribe(book => {
-                    passage.occursIn = book;
-                    this.passages = data;
-                });
-            }
-        });
     }
 
     prepareNode() {
@@ -613,9 +597,4 @@ export class AdvancedSearchComponent implements OnInit {
         };
         this.helpDialog.open(HelpComponent, dialogConfig);
     }
-
-    setOrder($event) {
-        console.log($event);
-    }
-
 }

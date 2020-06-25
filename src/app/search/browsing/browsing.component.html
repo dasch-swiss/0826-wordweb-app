@@ -1,26 +1,35 @@
-<div class="browse-container" [@.disabled]="true">
-    <mat-tab-group >
-        <mat-tab label="Authors"></mat-tab>
-        <mat-tab label="Books"></mat-tab>
-        <mat-tab label="Lexias"></mat-tab>
-    </mat-tab-group>
-</div>
+<button mat-button (click)="selectResType('book')">Books</button>
+<button mat-button (click)="selectResType('lexia')">Lexias</button>
+<button mat-button (click)="selectResType('author')">Authors</button>
 
 <div class="browse-container" fxShow.gt-sm fxHide>
-    <mat-button-toggle-group [(ngModel)]="charSelected">
+    <mat-button-toggle-group [(ngModel)]="charSelected" (ngModelChange)="selectChar($event)">
         <mat-button-toggle *ngFor="let char of chars" value="{{char}}">{{char}}</mat-button-toggle>
     </mat-button-toggle-group>
 </div>
 
 <div class="browse-container" fxHide.gt-sm>
     <mat-form-field>
-        <mat-select [(ngModel)]="charSelected">
+        <mat-select [(ngModel)]="charSelected" (ngModelChange)="selectChar($event)">
             <mat-option *ngFor="let char of chars" [value]="char">{{char}}</mat-option>
         </mat-select>
         <mat-label>Letter</mat-label>
     </mat-form-field>
 </div>
 
-<div class="browse-container" *ngIf="charSelected">
-    Resultate
+<div class="search-container" fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="center start"
+     fxLayoutGap="30px">
+
+    <mat-card fxFlex.gt-sm="350px">
+        <mat-card-content>
+            <div *ngFor="let alphaRes of alphabeticResources; let first = first;">
+                <mat-divider *ngIf="!first"></mat-divider>
+                <div (click)="detailSelected(alphaRes)">{{getItem(alphaRes)}}</div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <app-results #results></app-results>
+
 </div>
+

@@ -4,6 +4,15 @@ export interface IDisplayedClass {
     iri?: string;
 }
 
+export interface IMainClass extends IDisplayedClass {
+    mainClass: IMainClassObject;
+}
+
+export interface IMainClassObject {
+    name: string;
+    variable: string;
+}
+
 export interface IDisplayedProperty {
     name: string;
     valVar?: string;

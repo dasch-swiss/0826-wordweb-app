@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {IDisplayedClass} from "../model/displayModel";
+import {IDisplayedClass, IMainClass, IMainClassObject} from "../model/displayModel";
 
 @Injectable({
     providedIn: "root"
@@ -345,15 +345,15 @@ export class GravesearchBuilderService {
         return ["?", `${classVariable}`, ` ${GravesearchBuilderService.ONTO_NAME}:${propName} ?`, valueVar, " ."];
     }
 
-    getFirstWhereLine(className: string): string[] {
-        return ["?", `${this.getClass[className].variable}`, ` a ${GravesearchBuilderService.ONTO_NAME}:${className} .`];
+    getFirstWhereLine(mainClass: IMainClassObject): string[] {
+        return ["?", `${mainClass.variable}`, ` a ${GravesearchBuilderService.ONTO_NAME}:${mainClass.name} .`];
     }
 
-    getFirstConstructLine(className: string): string[] {
-        return ["?", `${this.getClass[className].variable}`, ` knora-api:isMainResource true .`];
+    getFirstConstructLine(mainClass: IMainClassObject): string[] {
+        return ["?", `${mainClass.variable}`, ` knora-api:isMainResource true .`];
     }
 
-    getMainQuery(node: IDisplayedClass, priority: number, offset?: number) {
+    getMainQuery(node: IMainClass, priority: number, offset?: number) {
         // Query split into an array
         // query[0] => prefix of the query
         // query[1] => prefix of the query
@@ -374,10 +374,10 @@ export class GravesearchBuilderService {
             "PREFIX teimww: <http://0.0.0.0:3333/ontology/0826/teimww/v2#>",
             "",
             "CONSTRUCT {",
-            `${this.getFirstConstructLine(node.name).join("")}`,
+            `${this.getFirstConstructLine(node.mainClass).join("")}`,
             "} WHERE {",
             "",
-            `${this.getFirstWhereLine(node.name).join("")}`,
+            `${this.getFirstWhereLine(node.mainClass).join("")}`,
             "",
             "}",
             "",
@@ -472,7 +472,7 @@ export class GravesearchBuilderService {
         }
     }
 
-    getQuery(structure: IDisplayedClass, priority: number, offset?: number): string {
+    getQuery(structure: IMainClass, priority: number, offset?: number): string {
         return this.getMainQuery(structure, priority, offset);
     }
 }

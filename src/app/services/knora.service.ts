@@ -9,7 +9,7 @@ import {
     ReadResource, ReadTextValueAsString
 } from "@knora/api";
 import {GravesearchBuilderService} from "./gravesearch-builder.service";
-import {IDisplayedClass} from "../model/displayModel";
+import {IMainClass} from "../model/displayModel";
 import {map} from "rxjs/operators";
 import {Observable} from "rxjs";
 
@@ -34,7 +34,7 @@ export class KnoraService {
         return this.knoraApiConnection.v2.auth.login("email", email, password);
     }
 
-    graveSeachQuery(structure: IDisplayedClass, priority: number, offset?: number): Observable<any> {
+    graveSeachQuery(structure: IMainClass, priority: number, offset?: number): Observable<any> {
         const graveSearch = this.gBuilder.getQuery(structure, priority, offset);
         console.log(graveSearch);
         return this.knoraApiConnection.v2.search.doExtendedSearch(graveSearch)
@@ -94,7 +94,7 @@ export class KnoraService {
         return newResource;
     }
 
-    graveSearchQueryCount(structure: IDisplayedClass, priority: number): Observable<number> {
+    graveSearchQueryCount(structure: IMainClass, priority: number): Observable<number> {
         const graveSearch = this.gBuilder.getQuery(structure, priority);
         return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(graveSearch)
             .pipe(
@@ -125,10 +125,74 @@ export class KnoraService {
         const url = `http://0.0.0.0:3333/v2/node/`;
     }
 
-    getResource(iri: string) {
-        const iriEncoded = encodeURIComponent(iri);
-        const url = `http://0.0.0.0:3333/v2/resources/`;
+    getPassageRes(iri: string) {
+        return this.knoraApiConnection.v2.res.getResource(iri)
+            .pipe(
+                map((resource: ReadResource) => {
+                        console.log("Before", resource);
 
-        return this.knoraApiConnection.v2.res.getResource("http://rdfh.ch/0826/-CXBmQ_-QvyqroyGJG_oHw");
+                        const structure = [
+                            {
+                                name: "occursIn",
+                                props: [
+                                    {
+                                        name: "isWrittenBy"
+                                    }
+                                ]
+                            },
+                            {
+                                name: "isMentionedIn",
+                                props: [
+                                    {
+                                        name: "occursIn",
+                                        props: [
+                                            {
+                                                name: "isWrittenBy"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                name: "wasContributedBy"
+                            },
+                            {
+                                name: "contains"
+                            }
+                        ];
+
+                        const test1 = this.processRes(resource);
+
+                        const newPassage = this.buildLinkResource(structure, test1);
+                        // console.log("End", newPassage);
+
+                        return test1;
+                    }
+                )
+            );
     }
+
+    buildLinkResource(structure: any[], resource: any) {
+        for (const propStructure of structure) {
+            if (resource[propStructure.name]) {
+                for (const prop of resource[propStructure.name]) {
+                    this.knoraApiConnection.v2.res.getResource(prop.id)
+                        .pipe(
+                            map((data: ReadResource) => {
+                                return this.processRes(data);
+                            })
+                        );
+
+                    //                     prop.linkedResource = data;
+                    //                     console.log(data);
+                    //                     if (propStructure.props) {
+                    //                        this.buildLinkResource(propStructure.props, prop.linkedResource);
+                    //                     }
+                    //                     console.log(1, newPassage);
+                    //                     return newPassage;
+                }
+            }
+        }
+    }
+
 }

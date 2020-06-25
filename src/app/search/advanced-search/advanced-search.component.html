@@ -423,40 +423,6 @@
         </mat-card-content>
     </mat-card>
 
-    <div fxFlex.gt-sm="500px">
-
-        <div *ngIf="passages" fxLayout="column" fxLayoutGap="10px">
-            <div fxLayout="row" fxLayoutAlign="space-between center">
-                <div>{{passages.length}} Results</div>
-                <mat-form-field>
-                    <mat-label>Sort</mat-label>
-                    <mat-select (selectionChange)="setOrder($event)">
-                        <mat-option [value]="'Author'">Author</mat-option>
-                        <mat-option [value]="'Title'">Title</mat-option>
-                        <mat-option [value]="'Date'">Date</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
-            <mat-card *ngFor="let passage of passages; let i = index">
-                <mat-card-content fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start">
-                    <div>
-                        <span *ngFor="let author of passage.occursIn.authors; let last = last;">
-                            {{author.firstName}} {{author.lastName}}<span *ngIf="!last">, </span>
-                        </span>
-                        <span>: {{passage.occursIn.title}} ({{passage.occursIn.createdStartDate}})</span>
-                        <div [innerHTML]="passage.text"></div>
-                    </div>
-                    <mat-card-subtitle>[{{i + 1}}]</mat-card-subtitle>
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button>
-                        Expand
-                    </button>
-                </mat-card-actions>
-            </mat-card>
-        </div>
-
-    </div>
+    <app-results #results></app-results>
 </div>
 

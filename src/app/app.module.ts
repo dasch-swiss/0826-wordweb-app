@@ -68,6 +68,7 @@ import {BrowsingComponent} from "./search/browsing/browsing.component";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {HelpComponent} from "./search/dialog/help/help.component";
 import {NgxSpinnerModule} from "ngx-spinner";
+import { ResultsComponent } from './search/results/results.component';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
@@ -118,7 +119,8 @@ export function initializeApp(appInitService: AppInitService) {
         AdvancedSearchComponent,
         ExpertSearchComponent,
         BrowsingComponent,
-        HelpComponent
+        HelpComponent,
+        ResultsComponent
     ],
     imports: [
         BrowserModule,

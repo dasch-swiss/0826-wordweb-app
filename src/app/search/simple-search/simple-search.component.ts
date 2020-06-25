@@ -1,14 +1,14 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ApiService} from "../../services/api.service";
-import {IDisplayedClass, IDisplayedProperty} from "../../model/displayModel";
+import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {KnoraService} from "../../services/knora.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {HelpComponent} from "../dialog/help/help.component";
 import {StringService} from "../../services/string.service";
 import {ListService} from "../../services/list.service";
-import {Observable} from "rxjs";
 import {NgxSpinnerService} from "ngx-spinner";
+import {ResultsComponent} from "../results/results.component";
 
 @Component({
     selector: "app-simple-search",
@@ -16,8 +16,11 @@ import {NgxSpinnerService} from "ngx-spinner";
     styleUrls: ["./simple-search.component.scss"]
 })
 export class SimpleSearchComponent implements OnInit {
-    myPassage: IDisplayedClass = {
+    @ViewChild("results", {static: false}) resultBox: ResultsComponent;
+
+    myPassage: IMainClass = {
         name: "passage",
+        mainClass: {name: "passage", variable: "passage"},
         props: [
             {
                 name: "hasText",
@@ -300,6 +303,7 @@ export class SimpleSearchComponent implements OnInit {
             }
         ]
     };
+
     form: FormGroup;
 
     textRef: IDisplayedProperty;
@@ -308,15 +312,6 @@ export class SimpleSearchComponent implements OnInit {
     genreRef: IDisplayedProperty;
     lexiaRef: IDisplayedProperty;
     dateRef: IDisplayedProperty;
-
-    nPassages: Observable<number>;
-    passages: Array<any>;
-    detailPassages = {};
-
-    searchStarted = false;
-    detailStarted = false;
-    errorObject = null;
-    priority = 0;
 
     constructor(
         private apiService: ApiService,
@@ -346,14 +341,6 @@ export class SimpleSearchComponent implements OnInit {
     }
 
     search() {
-        this.spinner.show("spinner-big", {
-            fullScreen: false,
-            bdColor: "rgba(255, 255, 255, 0)",
-            color: "rgb(159, 11, 11)",
-            type: "ball-spin-clockwise",
-            size: "medium"
-        });
-
         if (this.form.get("text").value) {
             this.textRef.searchVal1 = this.form.get("text").value;
         } else {
@@ -393,54 +380,7 @@ export class SimpleSearchComponent implements OnInit {
             delete this.dateRef.searchVal2;
         }
 
-        this.passages = null;
-        this.errorObject = null;
-        this.searchStarted = true;
-
-        this.nPassages = this.knoraService.graveSearchQueryCount(this.myPassage, this.priority);
-
-        this.knoraService.graveSeachQuery(this.myPassage, this.priority)
-            .subscribe(data => {
-                console.log(data);
-                this.passages = data.map(passage => {
-                    passage.expanded = false;
-                    passage.original = false;
-                    return passage;
-                });
-                console.log(this.passages);
-                this.searchStarted = false;
-                this.spinner.hide("spinner-big");
-            }, error => {
-                this.errorObject = error;
-                this.searchStarted = false;
-                this.spinner.hide("spinner-big");
-            });
-    }
-
-    loadMoreResults() {
-        this.spinner.show("spinner-small", {
-            fullScreen: false,
-            bdColor: "rgba(255, 255, 255, 0)",
-            color: "rgb(159, 11, 11)",
-            type: "ball-spin-clockwise",
-            size: "small"
-        });
-        this.errorObject = null;
-        this.searchStarted = true;
-
-        const offset = Math.floor(this.passages.length / 25);
-
-        this.knoraService.graveSeachQuery(this.myPassage, this.priority, offset)
-            .subscribe(data => {
-                console.log(data);
-                this.passages.push(...data);
-                this.spinner.hide("spinner-small");
-                this.searchStarted = false;
-            }, error => {
-                this.errorObject = error;
-                this.spinner.hide("spinner-small");
-                this.searchStarted = false;
-            });
+        this.resultBox.search(this.myPassage);
     }
 
     getHelpText(property: string) {
@@ -472,67 +412,6 @@ export class SimpleSearchComponent implements OnInit {
         }
     }
 
-    expandOrClose(passage: any) {
-        if (passage.expanded) {
-            this.close(passage);
-        } else {
-            this.expand(passage);
-        }
-    }
-
-    close(passage: any) {
-        passage.expanded = !passage.expanded;
-    }
-
-    expand(passage: any) {
-        this.detailStarted = true;
-        passage.expanded = !passage.expanded;
-        this.spinner.show(`spinner-${passage.id}`, {
-            fullScreen: false,
-            bdColor: "rgba(255, 255, 255, 0)",
-            color: "rgb(159, 11, 11)",
-            type: "ball-spin-clockwise",
-            size: "small"
-        });
-
-        const detailStructure = JSON.parse(JSON.stringify(this.myPassage));
-        detailStructure.iri = passage.id;
-
-        // this.knoraService.getResource("http://rdfh.ch/0826/-CXBmQ_-QvyqroyGJG_oHw")
-        //     .subscribe(data => {
-        //         this.spinner.hide(`spinner-${i}`);
-        //         console.log(data);
-        //     }, error => {
-        //         // TODO Different error concept reporting
-        //         this.spinner.hide(`spinner-${i}`);
-        //     });
-
-        if (!this.detailPassages[passage.id]) {
-            this.knoraService.graveSeachQuery(detailStructure, 1)
-                .subscribe(data => {
-                    this.detailPassages[passage.id] = data[0];
-                    console.log("DEtail", data);
-                    this.detailStarted = false;
-                    this.spinner.hide(`spinner-${passage.id}`);
-                }, error => {
-                    this.detailStarted = false;
-                    this.spinner.hide(`spinner-${passage.id}`);
-                });
-        }
-    }
-
-    expandBtnText(passage: any): string {
-        return passage.expanded ? "Hide" : "Expand";
-    }
-
-    originalOrNormalized(passage: any) {
-        passage.original = !passage.original;
-    }
-
-    spellingBtnText(passage: any): string {
-        return passage.original ? "Normalized spelling" : "Origial spelling";
-    }
-
     clear(formControlName: string) {
         this.form.get(formControlName).reset("");
     }
@@ -545,13 +424,5 @@ export class SimpleSearchComponent implements OnInit {
             name
         };
         this.helpDialog.open(HelpComponent, dialogConfig);
-    }
-
-    setOrder($event) {
-        if ($event.value === "Title") {
-            this.passages.sort((a, b) => {
-                return a.occursIn[0].hasBookTitle[0].value < b.occursIn[0].hasBookTitle[0].value ? -1 : 1;
-            });
-        }
     }
 }
