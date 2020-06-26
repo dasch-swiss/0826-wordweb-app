@@ -4,26 +4,26 @@ export interface ListStructure {
     id: string;
     name: string;
     root: boolean;
-    rootName: string;
-    nodes: any[];
+    rootNode: string;
+    nodes: ListStructure[];
 }
 
 @Injectable({
     providedIn: "root"
 })
 export class ListService {
-    lists = {
-        gender: {},
-        language: {},
-        image: {},
-        researchField: {},
-        marking: {},
-        functionVoice: {},
-        formalClass: {},
-        genre: {},
-        subject: {},
-        status: {},
-        placeVenue: {},
+    lists: { [key: string]: ListStructure } = {
+        gender: null,
+        language: null,
+        image: null,
+        researchField: null,
+        marking: null,
+        functionVoice: null,
+        formalClass: null,
+        genre: null,
+        subject: null,
+        status: null,
+        placeVenue: null,
     };
 
     static getNodes(nodes) {
@@ -44,29 +44,31 @@ export class ListService {
         });
     }
 
-    // static searchIRI(nodeIRI: string, list: any) {
-    //     for (const node of Object.values(list.nodes)) {
-    //
-    //         if (node.id === nodeIRI) {
-    //             return node.rootNode;
-    //         } else {
-    //             if (node.nodes.length > 0) {
-    //                 const bla = this.searchIRI(nodeIRI, node);
-    //                 if (bla !== "-1") {
-    //                     return bla;
-    //                 }
-    //             }
-    //         }
-    //     }
-    //
-    //     return "-1";
-    // }
+    searchNode(nodeName: string) {
+        return this.searchIri(Object.values(this.lists), nodeName);
+    }
+
+    private searchIri(nodes: ListStructure[], nodeName: string) {
+        for (const node of nodes) {
+            if (node) {
+                if (node.name === nodeName) {
+                    return node.id;
+                } else if (node.nodes.length !== 0) {
+                    const iri = this.searchIri(node.nodes, nodeName);
+                    if (iri !== "-1") {
+                        return iri;
+                    }
+                }
+            }
+        }
+        return "-1";
+    }
 
     constructor() {
     }
 
     setAllLists(data) {
-        if (this.lists[data.listinfo.name]) {
+        if (this.lists.hasOwnProperty(data.listinfo.name)) {
 
             this.lists[data.listinfo.name] = {
                 id: data.listinfo.id,
@@ -79,22 +81,8 @@ export class ListService {
     }
 
     getListId(name: string): string {
-        return this.lists[name] ? this.lists[name].id : new Error("List name does not exist");
+        return this.lists.hasOwnProperty(name) ? this.lists[name].id : "-1";
     }
-
-    // getRootNode(nodeIRI: string) {
-    //     const lists = Object.values((this.lists));
-    //
-    //     for (const list of lists) {
-    //         const rootIRI = ListService.searchIRI(nodeIRI, list);
-    //         if (rootIRI !== "-1") {
-    //             return rootIRI;
-    //         }
-    //     }
-    //
-    //     return "-1";
-    //     // return throwError("Node IRI is wrong");
-    // }
 
     print() {
         console.log(this.lists);
