@@ -879,7 +879,7 @@ blockquote {
 }
 
 /* Margin and padding resets */
-.mb-0 {margin-bottom: 0px!important;}
+.mb-0 {margin-bottom: 0!important;}
 .mb-10 {margin-bottom: 10px;}
 .mb-30 {margin-bottom: 30px!important;}
 .mb-50 {margin-bottom: 50px!important;}
@@ -888,6 +888,13 @@ blockquote {
 .pb-80 {padding-bottom: 80px!important;}
 .pb-40 {padding-bottom: 40px!important;}
 .pl-100 {padding-left: 100px;}
+
+/* indent */
+.indent {text-indent: -8rem; padding-left: 8rem;}
+
+.sub-title {font-weight: bold;}
+
+.back-link { margin-top: 20px!important; padding-left: 2rem;}
 
 /* HEADER
 ================================================== */
