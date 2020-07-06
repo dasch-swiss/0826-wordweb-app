@@ -1,4 +1,4 @@
-<div class="result-container" fxFlex.gt-sm="550px">
+<div class="result-container" fxFlex.gt-sm="550px" fxFill>
 
     <div *ngIf="passages" fxLayout="column" fxLayoutGap="10px">
         <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    <div class="spinner-big" *ngIf="!passages">
+    <div class="spinner-big" *ngIf="!passages && searchStarted">
         <ngx-spinner name="spinner-big"></ngx-spinner>
     </div>
 
