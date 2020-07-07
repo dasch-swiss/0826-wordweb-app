@@ -27,6 +27,11 @@
                 <div (click)="detailSelected(alphaRes)">{{getItem(alphaRes)}}</div>
             </div>
         </mat-card-content>
+        <ng-container *ngIf="alphabeticResAmount | async as num">
+            <mat-card-actions *ngIf="!alphabeticSearchStarted">
+                <button mat-button *ngIf="alphabeticResources.length < num" (click)="showList(num)">Show All</button>
+            </mat-card-actions>
+        </ng-container>
     </mat-card>
 
     <app-results #results></app-results>

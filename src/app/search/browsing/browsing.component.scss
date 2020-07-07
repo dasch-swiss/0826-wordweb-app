@@ -9,4 +9,8 @@
 
 .search-container {
   margin: 2rem 1rem;
+
+  mat-card-actions {
+    text-align: center;
+  }
 }

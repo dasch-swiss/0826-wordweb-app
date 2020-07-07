@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {KnoraService} from "../../services/knora.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {ResultsComponent} from "../results/results.component";
+import {forkJoin, Observable} from "rxjs";
 
 @Component({
     selector: "app-browsing",
@@ -476,8 +477,9 @@ export class BrowsingComponent implements OnInit {
     bookRef: IDisplayedProperty;
 
     alphabeticResources: Array<any>;
+    alphabeticResAmount: Observable<number>;
 
-    searchStarted = false;
+    alphabeticSearchStarted = false;
     detailStarted = false;
     errorObject = null;
     priority = 0;
@@ -516,6 +518,8 @@ export class BrowsingComponent implements OnInit {
     }
 
     requestResources() {
+        this.alphabeticSearchStarted = true;
+
         if (this.resTypeSelected === "author") {
             this.authorLastNameRef.searchVal1 = `^${this.charSelected}`;
 
@@ -527,20 +531,13 @@ export class BrowsingComponent implements OnInit {
                 delete this.lexiaTitleRef.searchVal1;
             }
 
-            this.knoraService.graveSearchQueryCount(this.myAuthor, this.priority)
-                .subscribe(num => {
-                    console.log(num);
-                });
+            this.alphabeticResAmount = this.knoraService.graveSearchQueryCount(this.myAuthor, this.priority);
 
             this.knoraService.graveSeachQuery(this.myAuthor, this.priority)
                 .subscribe(data => {
                     console.log(data);
-                    this.alphabeticResources = data.sort((author1, author2) => {
-                        const authorName1 = author1.hasLastName[0].value.toUpperCase();
-                        const authorName2 = author2.hasLastName[0].value.toUpperCase();
-
-                        return authorName1 <= authorName2 ? (authorName1 === authorName2 ? 0 : -1) : 1;
-                    });
+                    this.alphabeticSearchStarted = false;
+                    this.alphabeticResources = data.sort((author1, author2) => this.sortAuthor(author1, author2));
                 });
         } else if (this.resTypeSelected === "book") {
             this.bookTitleRef.searchVal1 = `^${this.charSelected}`;
@@ -553,20 +550,13 @@ export class BrowsingComponent implements OnInit {
                 delete this.lexiaTitleRef.searchVal1;
             }
 
-            this.knoraService.graveSearchQueryCount(this.myBook, this.priority)
-                .subscribe(num => {
-                    console.log(num);
-                });
+            this.alphabeticResAmount = this.knoraService.graveSearchQueryCount(this.myBook, this.priority);
 
             this.knoraService.graveSeachQuery(this.myBook, this.priority)
                 .subscribe(data => {
                     console.log(data);
-                    this.alphabeticResources = data.sort((book1, book2) => {
-                        const bookTitle1 = book1.hasBookTitle[0].value.toUpperCase();
-                        const bookTitle2 = book2.hasBookTitle[0].value.toUpperCase();
-
-                        return bookTitle1 <= bookTitle2 ? (bookTitle1 === bookTitle2 ? 0 : -1) : 1;
-                    });
+                    this.alphabeticSearchStarted = false;
+                    this.alphabeticResources = data.sort((book1, book2) => this.sortBook(book1, book2));
                 });
         } else if (this.resTypeSelected === "lexia") {
             this.lexiaTitleRef.searchVal1 = `^${this.charSelected}`;
@@ -579,22 +569,64 @@ export class BrowsingComponent implements OnInit {
                 delete this.authorLastNameRef.searchVal1;
             }
 
-            this.knoraService.graveSearchQueryCount(this.myLexia, this.priority)
-                .subscribe(num => {
-                    console.log(num);
-                });
+            this.alphabeticResAmount = this.knoraService.graveSearchQueryCount(this.myLexia, this.priority);
 
             this.knoraService.graveSeachQuery(this.myLexia, this.priority)
                 .subscribe((data: any[]) => {
                     console.log(data);
-                    this.alphabeticResources = data.sort((lexia1, lexia2) => {
-                        const lexTitle1 = lexia1.hasLexiaTitle[0].value.toUpperCase();
-                        const lexTitle2 = lexia2.hasLexiaTitle[0].value.toUpperCase();
-
-                        return lexTitle1 <= lexTitle2 ? (lexia1 === lexia2 ? 0 : -1) : 1;
-                    });
+                    this.alphabeticSearchStarted = false;
+                    this.alphabeticResources = data.sort((lexia1, lexia2) => this.sortLexia(lexia1, lexia2));
                 });
         }
+    }
+
+    showList(amountRes) {
+        const maxOffset = Math.ceil(amountRes / 25);
+        const requests = [];
+        let structure: IMainClass;
+        let sort: (a, b) => number;
+
+        if (this.resTypeSelected === "author") {
+            structure = this.myAuthor;
+            sort = this.sortAuthor;
+        } else if (this.resTypeSelected === "book") {
+            structure = this.myBook;
+            sort = this.sortBook;
+        } else if (this.resTypeSelected === "lexia") {
+            structure = this.myLexia;
+            sort = this.sortLexia;
+        }
+
+        for (let offset = 1; offset < maxOffset; offset++) {
+            requests.push(this.knoraService.graveSeachQuery(structure, this.priority, offset));
+        }
+
+        forkJoin<any>(...requests)
+            .subscribe((res: Array<any>) => {
+                this.alphabeticResources = this.alphabeticResources.concat(...res);
+                this.alphabeticResources.sort((res1, res2) => sort(res1, res2));
+            });
+    }
+
+    sortBook(book1, book2) {
+        const bookTitle1 = book1.hasBookTitle[0].value.toUpperCase();
+        const bookTitle2 = book2.hasBookTitle[0].value.toUpperCase();
+
+        return bookTitle1 <= bookTitle2 ? (bookTitle1 === bookTitle2 ? 0 : -1) : 1;
+    }
+
+    sortAuthor(author1, author2) {
+        const authorName1 = author1.hasLastName[0].value.toUpperCase();
+        const authorName2 = author2.hasLastName[0].value.toUpperCase();
+
+        return authorName1 <= authorName2 ? (authorName1 === authorName2 ? 0 : -1) : 1;
+    }
+
+    sortLexia(lexia1, lexia2) {
+        const lexTitle1 = lexia1.hasLexiaTitle[0].value.toUpperCase();
+        const lexTitle2 = lexia2.hasLexiaTitle[0].value.toUpperCase();
+
+        return lexTitle1 <= lexTitle2 ? (lexia1 === lexia2 ? 0 : -1) : 1;
     }
 
     selectResType(name: string) {
