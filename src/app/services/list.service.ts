@@ -44,11 +44,11 @@ export class ListService {
         });
     }
 
-    searchNode(nodeName: string) {
+    searchNode(nodeName: string): string {
         return this.searchIri(Object.values(this.lists), nodeName);
     }
 
-    private searchIri(nodes: ListStructure[], nodeName: string) {
+    private searchIri(nodes: ListStructure[], nodeName: string): string {
         for (const node of nodes) {
             if (node) {
                 if (node.name === nodeName) {
