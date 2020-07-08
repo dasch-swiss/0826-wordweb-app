@@ -40,6 +40,12 @@ export class KnoraService {
         return this.knoraApiConnection.v2.search.doExtendedSearch(graveSearch)
             .pipe(
                 map((resources: ReadResource[]) => {
+                    // Error found in person res without last names
+                    // resources.map(resource => {
+                    //     if (!Object.keys(resource.properties).includes("http://0.0.0.0:3333/ontology/0826/teimww/v2#hasLastName")) {
+                    //         console.log("knora", resource);
+                    //     }
+                    // });
                     return resources.map(resource => this.processRes(resource));
                 })
             );
