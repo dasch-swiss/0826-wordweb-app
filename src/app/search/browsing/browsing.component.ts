@@ -665,9 +665,6 @@ export class BrowsingComponent implements OnInit {
     getListName(alphaRes: any): string {
         switch (this.resTypeSelected) {
             case "author": {
-                // if (alphaRes.hasLastName === undefined) {
-                //     console.log("w", alphaRes);
-                // }
                 return alphaRes.hasFirstName ? `${alphaRes.hasLastName[0].value}, ${alphaRes.hasFirstName[0].value}` : alphaRes.hasLastName[0].value;
             }
             case "book": {
