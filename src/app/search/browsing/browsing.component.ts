@@ -3,6 +3,7 @@ import {KnoraService} from "../../services/knora.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {ResultsComponent} from "../results/results.component";
 import {forkJoin, Observable} from "rxjs";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
     selector: "app-browsing",
@@ -504,7 +505,7 @@ export class BrowsingComponent implements OnInit {
         return arr;
     }
 
-    constructor(private knoraService: KnoraService) {
+    constructor(private knoraService: KnoraService, private spinner: NgxSpinnerService) {
     }
 
     ngOnInit() {
@@ -529,6 +530,13 @@ export class BrowsingComponent implements OnInit {
 
     requestResources() {
         this.alphabeticSearchStarted = true;
+        this.spinner.show(`spinner-${this.selectChar}`, {
+            fullScreen: false,
+            bdColor: "rgba(255, 255, 255, 0)",
+            color: "rgb(159, 11, 11)",
+            type: "ball-spin-clockwise",
+            size: "small"
+        });
 
         if (this.resTypeSelected === "author") {
             this.authorLastNameRef.searchVal1 = `^${this.charSelected}`;
@@ -552,11 +560,13 @@ export class BrowsingComponent implements OnInit {
                 this.knoraService.graveSeachQuery(this.myAuthor, this.priority)
                     .subscribe(data => {
                         console.log(data);
+                        this.spinner.hide(`spinner-${this.selectChar}`);
                         this.alphabeticSearchStarted = false;
                         this.alphabeticResources = data.sort((author1, author2) => this.sortAuthor(author1, author2));
                         this.authors[this.charSelected].data = this.alphabeticResources;
                     });
             } else {
+                this.spinner.hide(`spinner-${this.selectChar}`);
                 this.alphabeticSearchStarted = false;
                 this.alphabeticResources = this.authors[this.charSelected].data;
                 this.alphabeticResAmount = this.knoraService.graveSearchQueryCount(this.myAuthor, this.priority);
@@ -583,11 +593,13 @@ export class BrowsingComponent implements OnInit {
                 this.knoraService.graveSeachQuery(this.myBook, this.priority)
                     .subscribe(data => {
                         console.log(data);
+                        this.spinner.hide(`spinner-${this.selectChar}`);
                         this.alphabeticSearchStarted = false;
                         this.alphabeticResources = data.sort((book1, book2) => this.sortBook(book1, book2));
                         this.books[this.charSelected].data = this.alphabeticResources;
                     });
             } else {
+                this.spinner.hide(`spinner-${this.selectChar}`);
                 this.alphabeticSearchStarted = false;
                 this.alphabeticResources = this.books[this.charSelected].data;
                 this.alphabeticResAmount = this.knoraService.graveSearchQueryCount(this.myBook, this.priority);
@@ -615,11 +627,13 @@ export class BrowsingComponent implements OnInit {
                 this.knoraService.graveSeachQuery(this.myLexia, this.priority)
                     .subscribe((data: any[]) => {
                         console.log(data);
+                        this.spinner.hide(`spinner-${this.selectChar}`);
                         this.alphabeticSearchStarted = false;
                         this.alphabeticResources = data.sort((lexia1, lexia2) => this.sortLexia(lexia1, lexia2));
                         this.lexias[this.charSelected].data = this.alphabeticResources;
                     });
             } else {
+                this.spinner.hide(`spinner-${this.selectChar}`);
                 this.alphabeticSearchStarted = false;
                 this.alphabeticResources = this.lexias[this.charSelected].data;
                 this.alphabeticResAmount = this.knoraService.graveSearchQueryCount(this.myLexia, this.priority);
@@ -628,6 +642,15 @@ export class BrowsingComponent implements OnInit {
     }
 
     showList(amountRes) {
+        this.alphabeticSearchStarted = true;
+        this.spinner.show(`spinner-${this.selectChar}`, {
+            fullScreen: false,
+            bdColor: "rgba(255, 255, 255, 0)",
+            color: "rgb(159, 11, 11)",
+            type: "ball-spin-clockwise",
+            size: "small"
+        });
+
         const maxOffset = Math.ceil(amountRes / 25);
         const requests = [];
         let structure: IMainClass;
@@ -650,6 +673,7 @@ export class BrowsingComponent implements OnInit {
 
         forkJoin<any>(...requests)
             .subscribe((res: Array<any>) => {
+                this.alphabeticSearchStarted = false;
                 this.alphabeticResources = this.alphabeticResources.concat(...res);
                 this.alphabeticResources.sort((res1, res2) => sort(res1, res2));
 

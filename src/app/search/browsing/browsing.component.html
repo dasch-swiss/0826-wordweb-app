@@ -21,16 +21,26 @@
      fxLayoutGap="30px">
 
     <mat-card fxFlex.gt-sm="350px">
-        <mat-card-content>
-            <div *ngFor="let alphaRes of alphabeticResources; let first = first;">
-                <mat-divider *ngIf="!first"></mat-divider>
-                <div (click)="detailSelected(alphaRes)">{{getListName(alphaRes)}}</div>
-            </div>
-        </mat-card-content>
-        <ng-container *ngIf="alphabeticResAmount | async as num">
-            <mat-card-actions *ngIf="!alphabeticSearchStarted">
-                <button mat-button *ngIf="alphabeticResources.length < num" (click)="showList(num)">Show All</button>
-            </mat-card-actions>
+        <ng-container *ngIf="!alphabeticSearchStarted">
+            <mat-card-content *ngIf="!alphabeticSearchStarted">
+                <div *ngFor="let alphaRes of alphabeticResources; let first = first;">
+                    <mat-divider *ngIf="!first"></mat-divider>
+                    <div (click)="detailSelected(alphaRes)">{{getListName(alphaRes)}}</div>
+                </div>
+            </mat-card-content>
+            <ng-container *ngIf="alphabeticResAmount | async as num">
+                <mat-card-actions *ngIf="!alphabeticSearchStarted">
+                    <button mat-button *ngIf="alphabeticResources.length < num" (click)="showList(num)">Show All
+                    </button>
+                </mat-card-actions>
+            </ng-container>
+        </ng-container>
+        <ng-container>
+            <mat-card-content *ngIf="alphabeticSearchStarted">
+                <div class="spinner-list">
+                    <ngx-spinner name="spinner-{{selectChar}}"></ngx-spinner>
+                </div>
+            </mat-card-content>
         </ng-container>
     </mat-card>
 

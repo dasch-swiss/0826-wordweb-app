@@ -13,4 +13,10 @@
   mat-card-actions {
     text-align: center;
   }
+
+  .spinner-list {
+    height: 4rem;
+    // Necessary to display the spinner within the div container (-> ngx spinner)
+    position: relative
+  }
 }
