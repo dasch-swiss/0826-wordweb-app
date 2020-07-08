@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {IMainClass} from "../../model/displayModel";
 import {NgxSpinnerService} from "ngx-spinner";
 import {Observable} from "rxjs";
@@ -15,6 +15,7 @@ export class ResultsComponent implements OnInit {
     nPassages: Observable<number>;
     passages: Array<any>;
     detailPassages = {};
+    sortOrder: string;
 
     searchStarted = false;
     detailStarted = false;
@@ -27,6 +28,7 @@ export class ResultsComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.sortOrder = "Title";
     }
 
     search(structure) {
@@ -55,6 +57,7 @@ export class ResultsComponent implements OnInit {
                     passage.original = false;
                     return passage;
                 });
+                this.sortResults();
                 console.log(this.passages);
                 this.searchStarted = false;
                 this.spinner.hide("spinner-big");
@@ -82,6 +85,7 @@ export class ResultsComponent implements OnInit {
             .subscribe(data => {
                 console.log(data);
                 this.passages.push(...data);
+                this.sortResults();
                 this.spinner.hide("spinner-small");
                 this.searchStarted = false;
             }, error => {
@@ -155,15 +159,40 @@ export class ResultsComponent implements OnInit {
     }
 
     spellingBtnText(passage: any): string {
-        return passage.original ? "Normalized spelling" : "Origial spelling";
+        return passage.original ? "Normalized spelling" : "Original spelling";
     }
 
-    setOrder($event) {
-        if ($event.value === "Title") {
-            this.passages.sort((a, b) => {
-                return a.occursIn[0].hasBookTitle[0].value < b.occursIn[0].hasBookTitle[0].value ? -1 : 1;
-            });
+    sortResults() {
+        if (this.sortOrder === "Title") {
+            this.passages
+                .sort((p1, p2) => this.sortTitle(p1, p2));
+        } else if (this.sortOrder === "Author") {
+            this.passages
+                .sort((p1, p2) => this.sortAuthor(p1, p2));
+        } else if (this.sortOrder === "Date") {
+            this.passages
+                .sort((p1, p2) => this.sortDate(p1, p2));
         }
     }
 
+    sortTitle(passage1, passage2): number {
+        const bookTitle1 = passage1.occursIn[0].hasBookTitle[0].value.toUpperCase();
+        const bookTitle2 = passage2.occursIn[0].hasBookTitle[0].value.toUpperCase();
+
+        return bookTitle1 <= bookTitle2 ? (bookTitle1 === bookTitle2 ? 0 : -1) : 1;
+    }
+
+    sortAuthor(passage1, passage2): number {
+        const authorName1 = passage1.occursIn[0].isWrittenBy[0].hasLastName[0].value.toUpperCase();
+        const authorName2 = passage2.occursIn[0].isWrittenBy[0].hasLastName[0].value.toUpperCase();
+
+        return authorName1 <= authorName2 ? (authorName1 === authorName2 ? 0 : -1) : 1;
+    }
+
+    sortDate(passage1, passage2): number {
+        const date1 = passage1.occursIn[0].hasCreationDate[0].start;
+        const date2 = passage2.occursIn[0].hasCreationDate[0].start;
+
+        return date1 <= date2 ? (date1 === date2 ? 0 : -1) : 1;
+    }
 }

@@ -5,7 +5,7 @@
             <div>{{passages.length}} <span *ngIf="nPassages | async as total"> of {{total}} Results</span></div>
             <mat-form-field>
                 <mat-label>Sort</mat-label>
-                <mat-select (selectionChange)="setOrder($event)">
+                <mat-select [(ngModel)]="sortOrder" (ngModelChange)="sortResults()">
                     <mat-option [value]="'Author'">Author</mat-option>
                     <mat-option [value]="'Title'">Title</mat-option>
                     <mat-option [value]="'Date'">Date</mat-option>
