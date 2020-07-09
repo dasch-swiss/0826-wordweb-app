@@ -360,8 +360,8 @@ export class SimpleSearchComponent implements OnInit {
         }
 
         if (this.form.get("plays").value) {
-            // Insert the genre Theatre iri
-            this.genreRef.searchVal1 = "";
+            // Only plays means if genre is "Drama (Theatre)"
+            this.genreRef.searchVal1 = this.listService.searchNode("Drama (Theatre)");
         } else {
             delete this.genreRef.searchVal1;
         }

@@ -1,4 +1,7 @@
 import {Injectable} from "@angular/core";
+import {KnoraService} from "./knora.service";
+import {mergeMap} from "rxjs/operators";
+import {forkJoin} from "rxjs";
 
 export interface ListStructure {
     id: string;
@@ -8,10 +11,12 @@ export interface ListStructure {
     nodes: ListStructure[];
 }
 
-@Injectable({
-    providedIn: "root"
-})
+@Injectable()
+
 export class ListService {
+    readonly EMAIL = "root@example.com";
+    readonly PW = "test";
+
     lists: { [key: string]: ListStructure } = {
         gender: null,
         language: null,
@@ -64,10 +69,26 @@ export class ListService {
         return "-1";
     }
 
-    constructor() {
+    constructor(private knoraService: KnoraService) {
     }
 
-    setAllLists(data) {
+    initList() {
+        return new Promise((resolve, reject) => {
+            this.knoraService.login(this.EMAIL, this.PW)
+                .pipe(
+                    mergeMap(() => this.knoraService.getAllLists()),
+                    mergeMap((lists: Array<any>) => forkJoin<any>(lists.map(list => this.knoraService.getList(list.id))))
+                )
+                .subscribe((data: Array<any>) => {
+                    console.log(data);
+                    data.map(list => this.setAllLists(list));
+                    this.print();
+                    resolve();
+                });
+        });
+    }
+
+    private setAllLists(data) {
         if (this.lists.hasOwnProperty(data.listinfo.name)) {
 
             this.lists[data.listinfo.name] = {

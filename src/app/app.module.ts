@@ -68,12 +68,18 @@ import {BrowsingComponent} from "./search/browsing/browsing.component";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {HelpComponent} from "./search/dialog/help/help.component";
 import {NgxSpinnerModule} from "ngx-spinner";
-import { ResultsComponent } from './search/results/results.component';
+import {ResultsComponent} from "./search/results/results.component";
+import {ListService} from "./services/list.service";
+import {KnoraService} from "./services/knora.service";
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
         return appInitService.Init();
     };
+}
+
+export function initialiseList(listService: ListService) {
+    return () => listService.initList();
 }
 
 @NgModule({
@@ -156,6 +162,7 @@ export function initializeApp(appInitService: AppInitService) {
     ],
     providers: [
         AppInitService,
+        ListService,
         {
             provide: APP_INITIALIZER,
             useFactory: initializeApp,
@@ -168,6 +175,12 @@ export function initializeApp(appInitService: AppInitService) {
         },
         {
             provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2000}
+        },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initialiseList,
+            deps: [ListService, KnoraService],
+            multi: true
         }
     ],
     bootstrap: [AppComponent],
