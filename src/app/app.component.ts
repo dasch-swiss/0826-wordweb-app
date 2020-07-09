@@ -1,6 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {KnoraService} from "./services/knora.service";
 import {ListService} from "./services/list.service";
+import {mergeMap} from "rxjs/operators";
+import {forkJoin} from "rxjs";
 
 @Component({
     selector: "app-root",
@@ -18,22 +20,12 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.knoraService.login(this.EMAIL, this.PW)
-            .subscribe(loginData => {
-                console.log(loginData);
-                this.prepareLists();
-            });
-    }
-
-    prepareLists() {
-        this.knoraService.getAllLists()
-            .subscribe(lists => {
-                lists.map(list => {
-                    this.knoraService.getList(list.id)
-                        .subscribe(data => {
-                            this.listService.setAllLists(data);
-                            // this.listService.print();
-                        });
-                });
+            .pipe(
+                mergeMap(() => this.knoraService.getAllLists()),
+                mergeMap((lists: Array<any>) => forkJoin<any>(lists.map(list => this.knoraService.getList(list.id)))),
+            )
+            .subscribe((data: Array<any>) => {
+                data.map(list => this.listService.setAllLists(list));
             });
     }
 }
