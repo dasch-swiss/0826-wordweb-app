@@ -1,6 +1,8 @@
-<button mat-button (click)="selectResType('book')">Books</button>
-<button mat-button (click)="selectResType('lexia')">Lexias</button>
-<button mat-button (click)="selectResType('author')">Authors</button>
+<div class="res-type-menu">
+    <div class="res-type-item" [class.active]="resTypeSelected === 'book'" (click)="selectResType('book')">Books</div>
+    <div class="res-type-item" [class.active]="resTypeSelected === 'lexia'" (click)="selectResType('lexia')">Lexias</div>
+    <div class="res-type-item" [class.active]="resTypeSelected === 'author'" (click)="selectResType('author')">Authors</div>
+</div>
 
 <div class="browse-container" fxShow.gt-sm fxHide>
     <mat-button-toggle-group [(ngModel)]="charSelected" (ngModelChange)="selectChar($event)">

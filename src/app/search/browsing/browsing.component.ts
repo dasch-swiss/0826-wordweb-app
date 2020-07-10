@@ -652,6 +652,9 @@ export class BrowsingComponent implements OnInit {
     }
 
     selectResType(name: string) {
+        if (this.alphabeticSearchStarted) {
+            return;
+        }
         this.resTypeSelected = name;
         this.alphabeticResources = null;
         this.requestResources();
