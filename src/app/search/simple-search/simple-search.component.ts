@@ -373,7 +373,7 @@ export class SimpleSearchComponent implements OnInit {
             delete this.lexiaRef.searchVal1;
         }
 
-        if (this.form.get("date").valid) {
+        if (this.form.get("date").valid && this.form.get("date").value.length > 0) {
             const REGEX = /^(\d{1,4})(-(\d{1,4}))?$/;
             const arr = this.form.get("date").value.match(REGEX);
 
