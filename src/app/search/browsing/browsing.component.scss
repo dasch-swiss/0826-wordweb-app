@@ -10,8 +10,13 @@
 .search-container {
   margin: 2rem 1rem;
 
-  mat-card-actions {
-    text-align: center;
+  .divider {
+    border-bottom: 1px solid lightgray;
+  }
+
+  .list-item {
+    cursor: pointer;
+    margin: 0.1rem 0;
   }
 
   .spinner-list {
