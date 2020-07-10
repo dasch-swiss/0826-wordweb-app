@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ApiService} from "../../services/api.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {KnoraService} from "../../services/knora.service";
@@ -9,6 +9,7 @@ import {StringService} from "../../services/string.service";
 import {ListService} from "../../services/list.service";
 import {NgxSpinnerService} from "ngx-spinner";
 import {ResultsComponent} from "../results/results.component";
+import {CustomValidators} from "../../customValidators";
 
 @Component({
     selector: "app-simple-search",
@@ -335,7 +336,7 @@ export class SimpleSearchComponent implements OnInit {
             author: new FormControl("", []),
             bookTitle: new FormControl("", []),
             lexia: new FormControl("", []),
-            date: new FormControl("", []),
+            date: new FormControl("", [CustomValidators.correctDate]),
             plays: new FormControl(false, [])
         });
     }
@@ -373,8 +374,16 @@ export class SimpleSearchComponent implements OnInit {
         }
 
         if (this.form.get("date").valid) {
-            this.dateRef.searchVal1 = this.form.get("date").value;
-            this.dateRef.searchVal2 = this.form.get("date").value;
+            const REGEX = /^(\d{1,4})(-(\d{1,4}))?$/;
+            const arr = this.form.get("date").value.match(REGEX);
+
+            if (arr[1]) {
+                this.dateRef.searchVal1 = arr[1];
+            }
+
+            if (arr[3]) {
+                this.dateRef.searchVal2 = arr[3];
+            }
         } else {
             delete this.dateRef.searchVal1;
             delete this.dateRef.searchVal2;
