@@ -179,20 +179,53 @@ export class ResultsComponent implements OnInit {
         const bookTitle1 = passage1.occursIn[0].hasBookTitle[0].value.toUpperCase();
         const bookTitle2 = passage2.occursIn[0].hasBookTitle[0].value.toUpperCase();
 
-        return bookTitle1 <= bookTitle2 ? (bookTitle1 === bookTitle2 ? 0 : -1) : 1;
+        if (bookTitle1 === bookTitle2) {
+            // TODO Specify here
+            return 0;
+        }
+
+        return bookTitle1 < bookTitle2 ? -1 : 1;
     }
 
     sortAuthor(passage1, passage2): number {
         const authorName1 = passage1.occursIn[0].isWrittenBy[0].hasLastName[0].value.toUpperCase();
         const authorName2 = passage2.occursIn[0].isWrittenBy[0].hasLastName[0].value.toUpperCase();
 
-        return authorName1 <= authorName2 ? (authorName1 === authorName2 ? 0 : -1) : 1;
+        if (authorName1 === authorName2) {
+            const date1 = passage1.occursIn[0].hasCreationDate[0].start;
+            const date2 = passage2.occursIn[0].hasCreationDate[0].start;
+
+            if (date1 === date2) {
+                const bookTitle1 = passage1.occursIn[0].hasBookTitle[0].value.toUpperCase();
+                const bookTitle2 = passage2.occursIn[0].hasBookTitle[0].value.toUpperCase();
+
+                return bookTitle1 < bookTitle2 ? -1 : (bookTitle1 > bookTitle2 ? 1 : 0);
+            }
+
+            return date1 < date2 ? -1 : 1;
+        }
+
+        return authorName1 < authorName2 ? -1 : 1;
     }
 
     sortDate(passage1, passage2): number {
         const date1 = passage1.occursIn[0].hasCreationDate[0].start;
         const date2 = passage2.occursIn[0].hasCreationDate[0].start;
 
-        return date1 <= date2 ? (date1 === date2 ? 0 : -1) : 1;
+        if (date1 === date2) {
+            const authorName1 = passage1.occursIn[0].isWrittenBy[0].hasLastName[0].value.toUpperCase();
+            const authorName2 = passage2.occursIn[0].isWrittenBy[0].hasLastName[0].value.toUpperCase();
+
+            if (authorName1 === authorName2) {
+                const bookTitle1 = passage1.occursIn[0].hasBookTitle[0].value.toUpperCase();
+                const bookTitle2 = passage2.occursIn[0].hasBookTitle[0].value.toUpperCase();
+
+                return bookTitle1 < bookTitle2 ? -1 : (bookTitle1 > bookTitle2 ? 1 : 0);
+            }
+
+            return authorName1 < authorName2 ? -1 : 1;
+        }
+
+        return date1 < date2 ? -1 : 1;
     }
 }
