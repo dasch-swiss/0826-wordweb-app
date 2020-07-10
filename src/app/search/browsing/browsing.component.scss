@@ -16,7 +16,11 @@
 
   .list-item {
     cursor: pointer;
-    margin: 0.1rem 0;
+    padding: 0.1rem 0;
+  }
+
+  .list-item:hover {
+    background-color: rgb(220, 220, 220);
   }
 
   .spinner-list {
