@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {IMainClass} from "../../model/displayModel";
 import {NgxSpinnerService} from "ngx-spinner";
-import {Observable} from "rxjs";
+import {forkJoin, Observable} from "rxjs";
 import {KnoraService} from "../../services/knora.service";
 
 @Component({
@@ -123,31 +123,84 @@ export class ResultsComponent implements OnInit {
 
         if (!this.detailPassages[passage.id]) {
             this.knoraService.getPassageRes(passage.id)
-                .subscribe(data => {
-                    // this.detailPassages[passage.id] = data[0];
+                .subscribe((data: any) => {
                     console.log("After", data);
-                    this.detailStarted = false;
-                    this.spinner.hide(`spinner-${passage.id}`);
+                    const a = forkJoin<any>(data.occursIn.map(item => this.knoraService.getPassageRes(item.id)));
+                    const b = forkJoin<any>(data.isMentionedIn.map(item => this.knoraService.getPassageRes(item.id)));
+                    const c = forkJoin<any>(data.wasContributedBy.map(item => this.knoraService.getPassageRes(item.id)));
+                    const d = forkJoin<any>(data.contains.map(item => this.knoraService.getPassageRes(item.id)));
+
+                    forkJoin<any>(a, b, c, d)
+                        .subscribe(([resA, resB, resC, resD]) => {
+                            resA.map(book => {
+                                forkJoin<any>(book.isWrittenBy.map(item => this.knoraService.getPassageRes(item.id)))
+                                    .subscribe(authors => {
+                                        book.isWrittenBy = authors;
+                                        data.occursIn = resA;
+
+                                        resB.map(sPassage => {
+                                            forkJoin<any>(sPassage.occursIn.map(item => this.knoraService.getPassageRes(item.id)))
+                                                .subscribe(sBooks => {
+                                                    sBooks.map(sBook => {
+                                                        forkJoin<any>(sBook.isWrittenBy.map(item => this.knoraService.getPassageRes(item.id)))
+                                                            .subscribe(sAuthors => {
+                                                                sBook.isWrittenBy = sAuthors;
+                                                                sPassage.occursIn = sBooks;
+                                                                data.isMentionedIn = resB;
+
+                                                                data.wasContributedBy = resC;
+                                                                data.contains = resD;
+                                                                console.log(data);
+
+                                                                this.detailPassages[passage.id] = data;
+                                                                this.detailStarted = false;
+                                                                this.spinner.hide(`spinner-${passage.id}`);
+                                                            });
+                                                    });
+                                                });
+                                        });
+                                    });
+                            });
+                        });
+
+                    // forkJoin<any>(a, b, c, d)
+                    //     .subscribe(([resA, resB, resC, resD]) => {
+                    //
+                    //         resA.map(book => {
+                    //             forkJoin<any>(book.isWrittenBy.map(item => this.knoraService.getPassageRes(item.id)))
+                    //                 .subscribe(authors => {
+                    //                     book.isWrittenBy = authors;
+                    //                     data.occursIn = resA;
+                    //                     console.log("After 2", data);
+                    //                 });
+                    //         });
+                    //
+                    //         resB.map(sPassage => {
+                    //             forkJoin<any>(sPassage.occursIn.map(item => this.knoraService.getPassageRes(item.id)))
+                    //                 .subscribe(sBooks => {
+                    //                     sBooks.map(sBook => {
+                    //                         forkJoin<any>(sBook.isWrittenBy.map(item => this.knoraService.getPassageRes(item.id)))
+                    //                             .subscribe(sAuthors => {
+                    //                                 sBook.isWrittenBy = sAuthors;
+                    //                                 sPassage.occursIn = sBooks;
+                    //                                 data.isMentionedIn = resB;
+                    //                                 console.log("After 3", data);
+                    //                             });
+                    //                     });
+                    //                 });
+                    //         });
+                    //
+                    //         data.wasContributedBy = resC;
+                    //         data.contains = resD;
+                    //         console.log("End", data);
+                    //
+                    //     });
                 }, error => {
                     // TODO Different error concept reporting
                     this.detailStarted = false;
                     this.spinner.hide(`spinner-${passage.id}`);
                 });
         }
-
-        // if (!this.detailPassages[passage.id]) {
-        //     this.knoraService.graveSeachQuery(detailStructure, 1)
-        //         .subscribe(data => {
-        //             this.detailPassages[passage.id] = data[0];
-        //             console.log("DEtail", data);
-        //             this.detailStarted = false;
-        //             this.spinner.hide(`spinner-${passage.id}`);
-        //         }, error => {
-        //             // TODO Different error concept reporting
-        //             this.detailStarted = false;
-        //             this.spinner.hide(`spinner-${passage.id}`);
-        //         });
-        // }
     }
 
     expandBtnText(passage: any): string {
