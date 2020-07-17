@@ -5,9 +5,28 @@
     border: 1px solid lightgrey;
     //background-color: white;
 
-    .result-text {
+    .overview {
       padding: 1rem 2rem 1rem 2rem;
       background-color: rgb(220, 220, 220);
+
+      .numbering {
+        text-align: right;
+        font-size: smaller;
+      }
+
+      .title {
+        font-weight: bold;
+      }
+
+      .lexias {
+        margin-top: 1rem;
+        font-style: italic;
+        text-align: right;
+      }
+
+      .expand-btn {
+        //margin-top: 1rem;
+      }
     }
 
     .details {
@@ -20,10 +39,30 @@
         // Necessary to display the spinner within the div container (-> ngx spinner)
         position: relative;
       }
+
+      .comments {
+        //margin-bottom: 1rem;
+      }
+
+      .citation {
+        margin-top: 1rem;
+
+        .title{
+          font-weight: bold;
+        }
+      }
+
+      .source {
+        margin-top: 1rem;
+      }
+
+      .original-btn {
+        margin-top: 1rem;
+      }
     }
 
     .details.opened {
-      padding: 1rem 2rem 2rem 2rem;
+      padding: 1rem 2rem 1rem 2rem;
       max-height: 450px;
       transition: ease-in-out 500ms max-height;
     }
