@@ -49,17 +49,37 @@ export class ListService {
         });
     }
 
-    searchNode(nodeName: string): string {
-        return this.searchIri(Object.values(this.lists), nodeName);
+    searchNodeById(id: string): string {
+        return this.searchId(Object.values(this.lists), id);
     }
 
-    private searchIri(nodes: ListStructure[], nodeName: string): string {
+    private searchId(nodes: ListStructure[], nodeId: string): string {
+        for (const node of nodes) {
+            if (node) {
+                if (node.id === nodeId) {
+                    return node.name;
+                } else if (node.nodes.length !== 0) {
+                    const name = this.searchId(node.nodes, nodeId);
+                    if (name !== "-1") {
+                        return name;
+                    }
+                }
+            }
+        }
+        return "-1";
+    }
+
+    searchNodeByName(nodeName: string): string {
+        return this.searchName(Object.values(this.lists), nodeName);
+    }
+
+    private searchName(nodes: ListStructure[], nodeName: string): string {
         for (const node of nodes) {
             if (node) {
                 if (node.name === nodeName) {
                     return node.id;
                 } else if (node.nodes.length !== 0) {
-                    const iri = this.searchIri(node.nodes, nodeName);
+                    const iri = this.searchName(node.nodes, nodeName);
                     if (iri !== "-1") {
                         return iri;
                     }

@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {ApiService} from "../../services/api.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {KnoraService} from "../../services/knora.service";
@@ -362,7 +362,7 @@ export class SimpleSearchComponent implements OnInit {
 
         if (this.form.get("plays").value) {
             // Only plays means if genre is "Drama (Theatre)"
-            this.genreRef.searchVal1 = this.listService.searchNode("Drama (Theatre)");
+            this.genreRef.searchVal1 = this.listService.searchNodeByName("Drama (Theatre)");
         } else {
             delete this.genreRef.searchVal1;
         }
