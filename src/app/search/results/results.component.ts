@@ -336,7 +336,7 @@ export class ResultsComponent implements OnInit {
     }
 
     spellingBtnText(passage: any): string {
-        return passage.original ? "Normalized spelling" : "Original spelling";
+        return passage.original ? "Show Normalized spelling" : "Show Original spelling";
     }
 
     sortResults() {
@@ -353,8 +353,8 @@ export class ResultsComponent implements OnInit {
     }
 
     sortTitle(passage1, passage2): number {
-        const bookTitle1 = passage1.occursIn[0].hasBookTitle[0].value.toUpperCase();
-        const bookTitle2 = passage2.occursIn[0].hasBookTitle[0].value.toUpperCase();
+        const bookTitle1 = passage1.hasDisplayedTitle[0].value.toUpperCase();
+        const bookTitle2 = passage2.hasDisplayedTitle[0].value.toUpperCase();
 
         if (bookTitle1 === bookTitle2) {
             // TODO Specify here
@@ -373,8 +373,8 @@ export class ResultsComponent implements OnInit {
             const date2 = passage2.occursIn[0].hasCreationDate[0].start;
 
             if (date1 === date2) {
-                const bookTitle1 = passage1.occursIn[0].hasBookTitle[0].value.toUpperCase();
-                const bookTitle2 = passage2.occursIn[0].hasBookTitle[0].value.toUpperCase();
+                const bookTitle1 = passage1.hasDisplayedTitle[0].value.toUpperCase();
+                const bookTitle2 = passage2.hasDisplayedTitle[0].value.toUpperCase();
 
                 return bookTitle1 < bookTitle2 ? -1 : (bookTitle1 > bookTitle2 ? 1 : 0);
             }
@@ -394,8 +394,8 @@ export class ResultsComponent implements OnInit {
             const authorName2 = passage2.occursIn[0].isWrittenBy[0].hasLastName[0].value.toUpperCase();
 
             if (authorName1 === authorName2) {
-                const bookTitle1 = passage1.occursIn[0].hasBookTitle[0].value.toUpperCase();
-                const bookTitle2 = passage2.occursIn[0].hasBookTitle[0].value.toUpperCase();
+                const bookTitle1 = passage1.hasDisplayedTitle[0].value.toUpperCase();
+                const bookTitle2 = passage2.hasDisplayedTitle[0].value.toUpperCase();
 
                 return bookTitle1 < bookTitle2 ? -1 : (bookTitle1 > bookTitle2 ? 1 : 0);
             }
