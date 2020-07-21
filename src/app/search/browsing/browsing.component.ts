@@ -14,58 +14,18 @@ export class BrowsingComponent implements OnInit {
     @ViewChild("results", {static: false}) resultBox: ResultsComponent;
 
     myAuthor: IMainClass = {
-        name: "passage",
-        mainClass: {name: "person", variable: "author"},
+        name: "person",
+        mainClass: {name: "person", variable: "person"},
         props: [
             {
-                name: "occursIn",
+                name: "hasFirstName",
                 priority: 0,
-                res: {
-                    name: "book",
-                    props: [
-                        {
-                            name: "isWrittenBy",
-                            priority: 0,
-                            res: {
-                                name: "person",
-                                props: [
-                                    {
-                                        name: "hasFirstName",
-                                        priority: 0,
-                                        res: null
-                                    },
-                                    {
-                                        name: "hasLastName",
-                                        priority: 0,
-                                        res: null
-                                    }
-                                ]
-                            }
-                        },
-                    ]
-                }
+                res: null
             },
             {
-                name: "isMentionedIn",
-                priority: 1,
-                mandatory: true,
-                res: {
-                    name: "passage",
-                    props: [
-                        {
-                            name: "hasText",
-                            valVar: "sText",
-                            priority: 1,
-                            res: null
-                        },
-                        {
-                            name: "hasDisplayedTitle",
-                            valVar: "sDisplayedTitle",
-                            priority: 1,
-                            res: null
-                        }
-                    ]
-                }
+                name: "hasLastName",
+                priority: 0,
+                res: null
             }
         ]
     };
@@ -517,7 +477,7 @@ export class BrowsingComponent implements OnInit {
             this.chars.push(letter);
         }
         // Preparation for search values
-        this.authorLastNameRef = this.myAuthor.props[0].res.props[0].res.props[1];
+        this.authorLastNameRef = this.myAuthor.props[1];
         this.bookTitleRef = this.myBook.props[0].res.props[0];
         this.lexiaTitleRef = this.myLexia.props[1];
         this.authorRef = this.myPassage.props[11].res.props[8];
