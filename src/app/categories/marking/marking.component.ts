@@ -17,18 +17,20 @@ export class MarkingComponent implements OnInit {
     value: string;
 
     constructor(private apiService: ApiService,
-                private treeService: TreeTableService) {
+                private treeTableService: TreeTableService) {
         this.value = "";
     }
 
     ngOnInit() {
-        this.apiService.getMarking(0, true)
-            .subscribe((genre) => {
-                this.markings = genre.nodes as Marking[];
-                this.treeTable = this.treeService.toTreeTable(this.markings);
-                const newTree = this.treeTable.reduce((acc, element) => this.treeService.flattenTree(acc, element), []);
+        this.resetTable();
+    }
 
-                this.dataSource = new MatTableDataSource(newTree);
+    resetTable() {
+        this.apiService.getMarking(0, true)
+            .subscribe((marking) => {
+                this.markings = marking.nodes as Marking[];
+                this.treeTable = this.markings.map((m) => this.treeTableService.toTreeTable(m));
+                this.dataSource = this.flattenTree();
             });
     }
 
@@ -52,4 +54,13 @@ export class MarkingComponent implements OnInit {
         return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
+    flattenTree(): MatTableDataSource<any> {
+        const flattenTree = this.treeTable.reduce((acc, bla) => this.treeTableService.flattenTree(acc, bla), []);
+        return new MatTableDataSource(flattenTree.filter(x => x.isVisible));
+    }
+
+    nodeClick(element: any) {
+        element.isExpanded ? this.treeTableService.close(element) : this.treeTableService.expand(element);
+        this.dataSource = this.flattenTree();
+    }
 }
