@@ -347,32 +347,25 @@ export class SimpleSearchComponent implements OnInit {
         if (this.form.get("text").value) {
             this.textRef.searchVal1 = this.form.get("text").value;
         } else {
-            delete this.textRef.searchVal1;
+            this.textRef.searchVal1 = null;
         }
 
         if (this.form.get("author").value) {
             this.authorLastNameRef.searchVal1 = this.form.get("author").value;
         } else {
-            delete this.authorLastNameRef.searchVal1;
+            this.authorLastNameRef.searchVal1 = null;
         }
 
         if (this.form.get("bookTitle").value) {
             this.bookTitleRef.searchVal1 = this.form.get("bookTitle").value;
         } else {
-            delete this.bookTitleRef.searchVal1;
-        }
-
-        if (this.form.get("plays").value) {
-            // Only plays means if genre is "Drama (Theatre)"
-            this.genreRef.searchVal1 = this.listService.searchNodeByName("Drama (Theatre)");
-        } else {
-            delete this.genreRef.searchVal1;
+            this.bookTitleRef.searchVal1 = null;
         }
 
         if (this.form.get("lexia").value) {
             this.lexiaRef.searchVal1 = this.form.get("lexia").value;
         } else {
-            delete this.lexiaRef.searchVal1;
+            this.lexiaRef.searchVal1 = null;
         }
 
         if (this.form.get("date").valid && this.form.get("date").value.length > 0) {
@@ -387,8 +380,15 @@ export class SimpleSearchComponent implements OnInit {
                 this.dateRef.searchVal2 = arr[3];
             }
         } else {
-            delete this.dateRef.searchVal1;
-            delete this.dateRef.searchVal2;
+            this.dateRef.searchVal1 = null;
+            this.dateRef.searchVal2 = null;
+        }
+
+        if (this.form.get("plays").value) {
+            // Only plays means if genre is "Drama (Theatre)"
+            this.genreRef.searchVal1 = this.listService.searchNodeByName("Drama (Theatre)");
+        } else {
+            this.genreRef.searchVal1 = null;
         }
 
         this.resultBox.search(this.myPassage, this.priority);
