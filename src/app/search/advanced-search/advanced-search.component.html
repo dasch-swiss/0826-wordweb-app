@@ -69,6 +69,29 @@
                     <tr>
                         <td class="width-60px">
                             <mat-form-field class="width-60px">
+                                <mat-select formControlName="compGender">
+                                    <mat-option *ngFor="let operator of operators2"
+                                                [value]="operator.value">{{operator.value}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="width-100">
+                                <mat-label>Author's gender</mat-label>
+                                <mat-select formControlName="gender">
+                                    <mat-option *ngFor="let gender of genders" [value]="gender.id">
+                                        {{gender.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td class="min">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="width-60px">
+                            <mat-form-field class="width-60px">
                                 <mat-select formControlName="compLexia">
                                     <mat-option *ngFor="let operator of operators2"
                                                 [value]="operator.value">{{operator.value}}</mat-option>
@@ -216,29 +239,6 @@
                         </td>
                         <td class="min">
                             <mat-icon matSuffix (click)="getHelpText('performedActor')">help</mat-icon>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="width-60px">
-                            <mat-form-field class="width-60px">
-                                <mat-select formControlName="compGender">
-                                    <mat-option *ngFor="let operator of operators2"
-                                                [value]="operator.value">{{operator.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="width-100">
-                                <mat-label>Author's gender</mat-label>
-                                <mat-select formControlName="gender">
-                                    <mat-option *ngFor="let gender of genders" [value]="gender.id">
-                                        {{gender.name}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td class="min">
                         </td>
                     </tr>
 
