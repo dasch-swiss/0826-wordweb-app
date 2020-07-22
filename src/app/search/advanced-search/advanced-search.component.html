@@ -10,7 +10,7 @@
                         <td class="width-60px">
                             <mat-form-field class="width-60px">
                                 <mat-select formControlName="compText">
-                                    <mat-option *ngFor="let operator of operators1"
+                                    <mat-option *ngFor="let operator of operators1" [disabled]="operator.disabled"
                                                 [value]="operator.value">{{operator.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -30,7 +30,7 @@
                         <td class="width-60px">
                             <mat-form-field class="width-60px">
                                 <mat-select formControlName="compBookTitle">
-                                    <mat-option *ngFor="let operator of operators2"
+                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
                                                 [value]="operator.value">{{operator.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -50,7 +50,7 @@
                         <td class="width-60px">
                             <mat-form-field class="width-60px">
                                 <mat-select formControlName="compAuthor">
-                                    <mat-option *ngFor="let operator of operators2"
+                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
                                                 [value]="operator.value">{{operator.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -70,7 +70,7 @@
                         <td class="width-60px">
                             <mat-form-field class="width-60px">
                                 <mat-select formControlName="compGender">
-                                    <mat-option *ngFor="let operator of operators2"
+                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
                                                 [value]="operator.value">{{operator.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -94,7 +94,7 @@
                         <td class="width-60px">
                             <mat-form-field class="width-60px">
                                 <mat-select formControlName="compLexia">
-                                    <mat-option *ngFor="let operator of operators2"
+                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
                                                 [value]="operator.value">{{operator.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -114,7 +114,7 @@
                         <td class="width-60px">
                             <mat-form-field class="width-60px">
                                 <mat-select formControlName="compCreatedDate">
-                                    <mat-option *ngFor="let operator of operators2"
+                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
                                                 [value]="operator.value">{{operator.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -135,7 +135,7 @@
                         <td class="width-60px">
                             <mat-form-field class="width-60px">
                                 <mat-select formControlName="compMarking">
-                                    <mat-option *ngFor="let operator of operators2"
+                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
                                                 [value]="operator.value">{{operator.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -160,7 +160,7 @@
                         <td class="width-60px">
                             <mat-form-field class="width-60px">
                                 <mat-select formControlName="compFunction">
-                                    <mat-option *ngFor="let operator of operators2"
+                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
                                                 [value]="operator.value">{{operator.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -185,7 +185,7 @@
                         <td class="width-60px">
                             <mat-form-field class="width-60px">
                                 <mat-select formControlName="compLanguage">
-                                    <mat-option *ngFor="let operator of operators2"
+                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
                                                 [value]="operator.value">{{operator.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -210,7 +210,7 @@
                         <td class="width-60px">
                             <mat-form-field class="width-60px">
                                 <mat-select formControlName="compPerformedCompany">
-                                    <mat-option *ngFor="let operator of operators2"
+                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
                                                 [value]="operator.value">{{operator.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -230,7 +230,7 @@
                         <td class="width-60px">
                             <mat-form-field class="width-60px">
                                 <mat-select formControlName="compPerformedActor">
-                                    <mat-option *ngFor="let operator of operators2"
+                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
                                                 [value]="operator.value">{{operator.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -250,7 +250,7 @@
                         <td class="width-60px">
                             <mat-form-field class="width-60px">
                                 <mat-select formControlName="compGenre">
-                                    <mat-option *ngFor="let operator of operators2"
+                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
                                                 [value]="operator.value">{{operator.value}}</mat-option>
                                 </mat-select>
                             </mat-form-field>

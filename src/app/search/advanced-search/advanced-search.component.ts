@@ -346,12 +346,12 @@ export class AdvancedSearchComponent implements OnInit {
 
     operators1 = [
         {value: "-"},
-        {value: "NOT"}
+        {value: "NOT", disabled: true}
     ];
 
     operators2 = [
-        {value: "AND"},
-        {value: "NOT"}
+        {value: "AND", disabled: false},
+        {value: "NOT", disabled: true}
     ];
 
     constructor(
