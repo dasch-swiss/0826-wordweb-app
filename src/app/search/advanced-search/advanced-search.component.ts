@@ -456,14 +456,6 @@ export class AdvancedSearchComponent implements OnInit {
             this.bookTitleRef.searchVal1 = null;
         }
 
-        if (this.form.get("genre").value) {
-            this.genreRef.negation = this.form.get("compGenre").value === "NOT";
-            this.genreRef.searchVal1 = this.form.get("genre").value;
-        } else {
-            this.genreRef.negation = false;
-            this.genreRef.searchVal1 = null;
-        }
-
         if (this.form.get("lexia").value) {
             this.lexiaRef.negation = this.form.get("compLexia").value === "NOT";
             this.lexiaRef.searchVal1 = this.form.get("lexia").value;
@@ -521,6 +513,20 @@ export class AdvancedSearchComponent implements OnInit {
         //     this.performedCompanyRef.negation = false;
         //     this.performedCompanyRef.searchVal1 = null;
         // }
+
+        if (this.form.get("plays").value) {
+            // Only plays means if genre is "Drama (Theatre)"
+            this.genreRef.searchVal1 = this.listService.searchNodeByName("Drama (Theatre)");
+        } else {
+            if (this.form.get("genre").value) {
+                this.genreRef.negation = this.form.get("compGenre").value === "NOT";
+                this.genreRef.searchVal1 = this.form.get("genre").value;
+            } else {
+                this.genreRef.negation = false;
+                this.genreRef.searchVal1 = null;
+            }
+            this.genreRef.searchVal1 = null;
+        }
     }
 
     getHelpText(formControlName: string) {
@@ -578,6 +584,10 @@ export class AdvancedSearchComponent implements OnInit {
 
     clear(formControlName: string) {
         this.form.get(formControlName).reset("");
+    }
+
+    onChange(toggled) {
+        toggled ? this.form.get("genre").disable() : this.form.get("genre").enable();
     }
 
     openDialog(text: string, name: string) {

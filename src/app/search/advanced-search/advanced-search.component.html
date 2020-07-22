@@ -274,8 +274,8 @@
                     <tr>
                         <td></td>
                         <td class="width-100">
-                            <mat-slide-toggle formControlName="plays" [color]="'warn'">
-                                Only Plays
+                            <mat-slide-toggle formControlName="plays" [color]="'warn'" (ngModelChange)="onChange($event)">
+                                Show only plays
                             </mat-slide-toggle>
                         </td>
                         <td class="min">
