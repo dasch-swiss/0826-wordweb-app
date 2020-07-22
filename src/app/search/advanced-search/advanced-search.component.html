@@ -98,7 +98,8 @@
                         <td>
                             <mat-form-field class="width-100">
                                 <mat-label>Date</mat-label>
-                                <input matInput formControlName="createdDate" placeholder="1662 or 1662-1664" type="number">
+                                <input matInput formControlName="createdDate" placeholder="1662 or 1662-1664"
+                                       (keydown.escape)="clear('createdDate')">
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -118,7 +119,11 @@
                         <td>
                             <mat-form-field class="width-100">
                                 <mat-label>Marking</mat-label>
-                                <input matInput formControlName="marking">
+                                <mat-select formControlName="marking">
+                                    <mat-option *ngFor="let marking of markings" [value]="marking.id">
+                                        {{marking.name}}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -138,7 +143,11 @@
                         <td>
                             <mat-form-field class="width-100">
                                 <mat-label>Function</mat-label>
-                                <input matInput formControlName="function">
+                                <mat-select formControlName="function">
+                                    <mat-option *ngFor="let functionVoice of functionVoices" [value]="functionVoice.id">
+                                        {{functionVoice.name}}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -158,7 +167,11 @@
                         <td>
                             <mat-form-field class="width-100">
                                 <mat-label>Language</mat-label>
-                                <input matInput formControlName="language">
+                                <mat-select formControlName="language">
+                                    <mat-option *ngFor="let language of languages" [value]="language.id">
+                                        {{language.name}}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -218,7 +231,11 @@
                         <td>
                             <mat-form-field class="width-100">
                                 <mat-label>Author's gender</mat-label>
-                                <input matInput formControlName="gender">
+                                <mat-select formControlName="gender">
+                                    <mat-option *ngFor="let gender of genders" [value]="gender.id">
+                                        {{gender.name}}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -237,7 +254,11 @@
                         <td>
                             <mat-form-field class="width-100">
                                 <mat-label>Genre</mat-label>
-                                <input matInput formControlName="genre">
+                                <mat-select formControlName="genre">
+                                    <mat-option *ngFor="let genre of genres" [value]="genre.id">
+                                        {{genre.name}}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </td>
                         <td class="min">

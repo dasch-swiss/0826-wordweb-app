@@ -51,7 +51,8 @@ export class GravesearchBuilderService {
         },
         hasGender: {
             cardinality: "1",
-            type: "String",
+            type: "List",
+            list: "gender",
             queryStr: this.getQueryStr(GravesearchBuilderService.PERSON_VAR, "hasGender", "gender")
         },
         isLexiaPerson: {

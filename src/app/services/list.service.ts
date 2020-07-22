@@ -125,6 +125,10 @@ export class ListService {
         return this.lists.hasOwnProperty(name) ? this.lists[name].id : "-1";
     }
 
+    getList(name: string): ListStructure {
+        return this.lists.hasOwnProperty(name) ? this.lists[name] : null;
+    }
+
     print() {
         console.log(this.lists);
     }

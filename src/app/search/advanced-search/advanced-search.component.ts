@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ApiService} from "../../services/api.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
@@ -6,6 +6,10 @@ import {KnoraService} from "../../services/knora.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {HelpComponent} from "../dialog/help/help.component";
 import {StringService} from "../../services/string.service";
+import {CustomValidators} from "../../customValidators";
+import {ResultsComponent} from "../results/results.component";
+import {ListService} from "../../services/list.service";
+import {TreeTableService} from "../../services/tree-table.service";
 
 @Component({
     selector: "app-advanced-search",
@@ -13,12 +17,17 @@ import {StringService} from "../../services/string.service";
     styleUrls: ["./advanced-search.component.scss"]
 })
 export class AdvancedSearchComponent implements OnInit {
+    @ViewChild("results", {static: false}) resultBox: ResultsComponent;
+
     myPassage: IMainClass = {
         name: "passage",
-        mainClass: { name: "passage", variable: "passage" },
+        mainClass: {name: "passage", variable: "passage"},
         props: [
             {
                 name: "hasText",
+                // searchVal1: null,
+                // searchVal2: null,
+                // negation: false,
                 priority: 0,
                 res: null
             },
@@ -49,12 +58,12 @@ export class AdvancedSearchComponent implements OnInit {
             },
             {
                 name: "hasFunctionVoice",
-                priority: 1,
+                priority: 0,
                 res: null
             },
             {
                 name: "hasMarking",
-                priority: 1,
+                priority: 0,
                 res: null
             },
             {
@@ -95,7 +104,7 @@ export class AdvancedSearchComponent implements OnInit {
                         },
                         {
                             name: "hasLanguage",
-                            priority: 1,
+                            priority: 0,
                             res: null
                         },
                         {
@@ -110,6 +119,7 @@ export class AdvancedSearchComponent implements OnInit {
                         },
                         {
                             name: "hasCreationDate",
+                            valVar: "creationDate",
                             // searchVal1: "1500",
                             // searchVal2: "1860",
                             priority: 0,
@@ -143,6 +153,11 @@ export class AdvancedSearchComponent implements OnInit {
                                     },
                                     {
                                         name: "hasLastName",
+                                        priority: 0,
+                                        res: null
+                                    },
+                                    {
+                                        name: "hasGender",
                                         priority: 0,
                                         res: null
                                     }
@@ -276,11 +291,6 @@ export class AdvancedSearchComponent implements OnInit {
                             valVar: "cLastName",
                             priority: 1,
                             res: null
-                        },
-                        {
-                            name: "hasGender",
-                            priority: 1,
-                            res: null
                         }
                     ]
                 }
@@ -326,6 +336,14 @@ export class AdvancedSearchComponent implements OnInit {
     createdDateRef: IDisplayedProperty;
     performedCompanyRef: IDisplayedProperty;
 
+    genders: any[];
+    genres: any[];
+    languages: any[];
+    functionVoices: any[];
+    markings: any[];
+
+    priority = 0;
+
     operators1 = [
         {value: "-"},
         {value: "NOT"}
@@ -340,10 +358,27 @@ export class AdvancedSearchComponent implements OnInit {
         private apiService: ApiService,
         private stringService: StringService,
         private knoraService: KnoraService,
+        private listService: ListService,
+        private treeTableService: TreeTableService,
         private helpDialog: MatDialog) {
     }
 
     ngOnInit() {
+        const genresNode = this.listService.getList("genre").nodes;
+        this.genres = genresNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
+
+        const genderNode = this.listService.getList("gender").nodes;
+        this.genders = genderNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
+
+        const languageNode = this.listService.getList("language").nodes;
+        this.languages = languageNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
+
+        const functionVoiceNode = this.listService.getList("functionVoice").nodes;
+        this.functionVoices = functionVoiceNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
+
+        const markingNode = this.listService.getList("marking").nodes;
+        this.markings = markingNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
+
         this.textRef = this.myPassage.props[0];
         this.authorLastNameRef = this.myPassage.props[11].res.props[10].res.props[1];
         this.genderRef = this.myPassage.props[11].res.props[10].res.props[2];
@@ -376,7 +411,7 @@ export class AdvancedSearchComponent implements OnInit {
             compMarking: new FormControl("AND", []),
             marking: new FormControl("", []),
             compCreatedDate: new FormControl("AND", []),
-            createdDate: new FormControl("", []),
+            createdDate: new FormControl("", [CustomValidators.correctDate]),
             compPerformedCompany: new FormControl("AND", []),
             performedCompany: new FormControl("", []),
             compPerformedActor: new FormControl("AND", []),
@@ -386,153 +421,106 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     search() {
-        this.prepareNode();
-        console.log(this.myPassage);
-
-        this.knoraService.login("root@example.com", "test")
-            .subscribe(loginData => {
-                console.log(loginData);
-
-                this.knoraService.graveSearchQueryCount(this.myPassage, 1)
-                    .subscribe(data => {
-                        console.log(data);
-                    });
-
-                this.knoraService.graveSeachQuery(this.myPassage, 1)
-                    .subscribe(data => {
-                        console.log(data);
-                    });
-            });
+        this.prepareStructure();
+        this.resultBox.search(this.myPassage, this.priority);
     }
 
-    prepareNode() {
+    prepareStructure() {
         if (this.form.get("text").value) {
             this.textRef.searchVal1 = this.form.get("text").value;
         } else {
-            delete this.textRef.searchVal1;
+            this.textRef.searchVal1 = null;
         }
 
         if (this.form.get("author").value) {
-            if (this.form.get("compAuthor").value === "NOT") {
-                this.authorLastNameRef.negation = true;
-            } else {
-                delete this.authorLastNameRef.negation;
-            }
+            this.authorLastNameRef.negation = this.form.get("compAuthor").value === "NOT";
             this.authorLastNameRef.searchVal1 = this.form.get("author").value;
         } else {
-            delete this.authorLastNameRef.searchVal1;
-            delete this.authorLastNameRef.negation;
+            this.authorLastNameRef.negation = false;
+            this.authorLastNameRef.searchVal1 = null;
         }
 
         if (this.form.get("gender").value) {
-            if (this.form.get("compGender").value === "NOT") {
-                this.genderRef.negation = true;
-            } else {
-                delete this.genderRef.negation;
-            }
+            this.genderRef.negation = this.form.get("compGender").value === "NOT";
             this.genderRef.searchVal1 = this.form.get("gender").value;
         } else {
-            delete this.genderRef.searchVal1;
-            delete this.genderRef.negation;
+            this.genderRef.negation = false;
+            this.genderRef.searchVal1 = null;
         }
 
         if (this.form.get("bookTitle").value) {
-            if (this.form.get("compBookTitle").value === "NOT") {
-                this.bookTitleRef.negation = true;
-            } else {
-                delete this.bookTitleRef.negation;
-            }
+            this.bookTitleRef.negation = this.form.get("compBookTitle").value === "NOT";
             this.bookTitleRef.searchVal1 = this.form.get("bookTitle").value;
         } else {
-            delete this.bookTitleRef.searchVal1;
-            delete this.bookTitleRef.negation;
+            this.bookTitleRef.negation = false;
+            this.bookTitleRef.searchVal1 = null;
         }
 
         if (this.form.get("genre").value) {
-            if (this.form.get("compGenre").value === "NOT") {
-                this.genreRef.negation = true;
-            } else {
-                delete this.genreRef.negation;
-            }
+            this.genreRef.negation = this.form.get("compGenre").value === "NOT";
             this.genreRef.searchVal1 = this.form.get("genre").value;
         } else {
-            delete this.genreRef.searchVal1;
-            delete this.genreRef.negation;
+            this.genreRef.negation = false;
+            this.genreRef.searchVal1 = null;
         }
 
         if (this.form.get("lexia").value) {
-            if (this.form.get("compLexia").value === "NOT") {
-                this.lexiaRef.negation = true;
-            } else {
-                delete this.lexiaRef.negation;
-            }
+            this.lexiaRef.negation = this.form.get("compLexia").value === "NOT";
             this.lexiaRef.searchVal1 = this.form.get("lexia").value;
         } else {
-            delete this.lexiaRef.searchVal1;
-            delete this.lexiaRef.negation;
+            this.lexiaRef.negation = false;
+            this.lexiaRef.searchVal1 = null;
         }
 
         if (this.form.get("language").value) {
-            if (this.form.get("compLanguage").value === "NOT") {
-                this.languageRef.negation = true;
-            } else {
-                delete this.languageRef.negation;
-            }
+            this.languageRef.negation = this.form.get("compLanguage").value === "NOT";
             this.languageRef.searchVal1 = this.form.get("language").value;
         } else {
-            delete this.languageRef.searchVal1;
-            delete this.languageRef.negation;
+            this.languageRef.negation = false;
+            this.languageRef.searchVal1 = null;
         }
 
         if (this.form.get("function").value) {
-            if (this.form.get("compFunction").value === "NOT") {
-                this.functionRef.negation = true;
-            } else {
-                delete this.functionRef.negation;
-            }
+            this.functionRef.negation = this.form.get("compFunction").value === "NOT";
             this.functionRef.searchVal1 = this.form.get("function").value;
         } else {
-            delete this.functionRef.searchVal1;
-            delete this.functionRef.negation;
+            this.functionRef.negation = false;
+            this.functionRef.searchVal1 = null;
         }
 
         if (this.form.get("marking").value) {
-            if (this.form.get("compMarking").value === "NOT") {
-                this.markingRef.negation = true;
-            } else {
-                delete this.markingRef.negation;
-            }
+            this.markingRef.negation = this.form.get("compMarking").value === "NOT";
             this.markingRef.searchVal1 = this.form.get("marking").value;
         } else {
-            delete this.markingRef.searchVal1;
-            delete this.markingRef.negation;
+            this.markingRef.negation = false;
+            this.markingRef.searchVal1 = null;
         }
 
-        if (this.form.get("createdDate").valid) {
-            if (this.form.get("compCreatedDate").value === "NOT") {
-                this.createdDateRef.negation = true;
-            } else {
-                delete this.createdDateRef.negation;
+        if (this.form.get("createdDate").valid && this.form.get("createdDate").value.length > 0) {
+            const REGEX = /^(\d{1,4})(-(\d{1,4}))?$/;
+            const arr = this.form.get("date").value.match(REGEX);
+
+            if (arr[1]) {
+                this.createdDateRef.searchVal1 = arr[1];
             }
-            this.createdDateRef.searchVal1 = this.form.get("createdDate").value;
-            this.createdDateRef.searchVal2 = this.form.get("createdDate").value;
+
+            if (arr[3]) {
+                this.createdDateRef.searchVal2 = arr[3];
+            }
+            this.createdDateRef.negation = this.form.get("compCreatedDate").value === "NOT";
         } else {
-            delete this.createdDateRef.searchVal1;
-            delete this.createdDateRef.searchVal2;
-            delete this.createdDateRef.negation;
+            this.createdDateRef.negation = false;
+            this.createdDateRef.searchVal1 = null;
+            this.createdDateRef.searchVal2 = null;
         }
 
-        if (this.form.get("performedCompany").valid) {
-            if (this.form.get("compPerformedCompany").value === "NOT") {
-                this.performedCompanyRef.negation = true;
-            } else {
-                delete this.performedCompanyRef.negation;
-            }
-            this.performedCompanyRef.searchVal1 = this.form.get("performedCompany").value;
-        } else {
-            delete this.performedCompanyRef.searchVal1;
-            delete this.performedCompanyRef.negation;
-        }
+        // if (this.form.get("performedCompany").valid) {
+        //     this.performedCompanyRef.negation = this.form.get("compPerformedCompany").value === "NOT";
+        //     this.performedCompanyRef.searchVal1 = this.form.get("performedCompany").value;
+        // } else {
+        //     this.performedCompanyRef.negation = false;
+        //     this.performedCompanyRef.searchVal1 = null;
+        // }
     }
 
     getHelpText(formControlName: string) {
@@ -586,6 +574,10 @@ export class AdvancedSearchComponent implements OnInit {
                 break;
             }
         }
+    }
+
+    clear(formControlName: string) {
+        this.form.get(formControlName).reset("");
     }
 
     openDialog(text: string, name: string) {

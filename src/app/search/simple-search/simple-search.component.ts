@@ -314,6 +314,8 @@ export class SimpleSearchComponent implements OnInit {
     lexiaRef: IDisplayedProperty;
     dateRef: IDisplayedProperty;
 
+    priority = 0;
+
     constructor(
         private apiService: ApiService,
         private listService: ListService,
@@ -389,7 +391,7 @@ export class SimpleSearchComponent implements OnInit {
             delete this.dateRef.searchVal2;
         }
 
-        this.resultBox.search(this.myPassage);
+        this.resultBox.search(this.myPassage, this.priority);
     }
 
     getHelpText(property: string) {

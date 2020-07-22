@@ -33,7 +33,7 @@ export class ResultsComponent implements OnInit {
         this.sortOrder = "Title";
     }
 
-    public search(structure) {
+    public search(structure, priority = this.priority) {
         console.log(structure);
         this.structure = structure;
 
@@ -49,9 +49,9 @@ export class ResultsComponent implements OnInit {
         this.errorObject = null;
         this.searchStarted = true;
 
-        this.nPassages = this.knoraService.graveSearchQueryCount(this.structure, this.priority);
+        this.nPassages = this.knoraService.graveSearchQueryCount(this.structure, priority);
 
-        this.knoraService.graveSeachQuery(this.structure, this.priority)
+        this.knoraService.graveSeachQuery(this.structure, priority)
             .subscribe(data => {
                 console.log(data);
                 this.passages = data.map(passage => {
