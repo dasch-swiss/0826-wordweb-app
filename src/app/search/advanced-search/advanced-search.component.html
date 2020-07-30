@@ -18,7 +18,11 @@
                         <td>
                             <mat-form-field class="width-100">
                                 <mat-label>Text</mat-label>
-                                <input matInput formControlName="text">
+                                <input matInput formControlName="text" (keydown.escape)="clear('text')">
+                                <button *ngIf="form.get('text').value" type="button" mat-button matSuffix
+                                        mat-icon-button aria-label="Clear" (click)="clear('text')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -38,7 +42,11 @@
                         <td>
                             <mat-form-field class="width-100">
                                 <mat-label>Title</mat-label>
-                                <input matInput formControlName="bookTitle">
+                                <input matInput formControlName="bookTitle" (keydown.escape)="clear('bookTitle')">
+                                <button *ngIf="form.get('bookTitle').value" type="button" mat-button matSuffix
+                                        mat-icon-button aria-label="Clear" (click)="clear('bookTitle')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -58,7 +66,11 @@
                         <td>
                             <mat-form-field class="width-100">
                                 <mat-label>Author</mat-label>
-                                <input matInput formControlName="author">
+                                <input matInput formControlName="author" (keydown.escape)="clear('author')">
+                                <button *ngIf="form.get('author').value" type="button" mat-button matSuffix
+                                        mat-icon-button aria-label="Clear" (click)="clear('author')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -102,7 +114,11 @@
                         <td>
                             <mat-form-field class="width-100">
                                 <mat-label>Lexia</mat-label>
-                                <input matInput formControlName="lexia">
+                                <input matInput formControlName="lexia" (keydown.escape)="clear('lexia')">
+                                <button *ngIf="form.get('lexia').value" type="button" mat-button matSuffix
+                                        mat-icon-button aria-label="Clear" (click)="clear('lexia')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -124,6 +140,10 @@
                                 <mat-label>Date</mat-label>
                                 <input matInput formControlName="createdDate" placeholder="1662 or 1662-1664"
                                        (keydown.escape)="clear('createdDate')">
+                                <button *ngIf="form.get('createdDate').value" type="button" mat-button matSuffix
+                                        mat-icon-button aria-label="Clear" (click)="clear('createdDate')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -218,7 +238,11 @@
                         <td>
                             <mat-form-field class="width-100">
                                 <mat-label>First performance: Company</mat-label>
-                                <input matInput formControlName="performedCompany">
+                                <input matInput formControlName="performedCompany" (keydown.escape)="clear('performedCompany')">
+                                <button *ngIf="form.get('performedCompany').value" type="button" mat-button matSuffix
+                                        mat-icon-button aria-label="Clear" (click)="clear('performedCompany')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
                             </mat-form-field>
                         </td>
                         <td class="min">
@@ -238,7 +262,11 @@
                         <td>
                             <mat-form-field class="width-100">
                                 <mat-label>First performance: Actor</mat-label>
-                                <input matInput formControlName="performedActor">
+                                <input matInput formControlName="performedActor" (keydown.escape)="clear('performedActor')">
+                                <button *ngIf="form.get('performedActor').value" type="button" mat-button matSuffix
+                                        mat-icon-button aria-label="Clear" (click)="clear('performedActor')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
                             </mat-form-field>
                         </td>
                         <td class="min">
