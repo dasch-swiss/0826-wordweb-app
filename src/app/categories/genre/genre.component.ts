@@ -80,6 +80,10 @@ export class GenreComponent implements OnInit {
         return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
+    delete(id: number) {
+        console.log(`Genre ID: ${id}`);
+    }
+
     flattenTree(): MatTableDataSource<any> {
         const flattenTree = this.treeTable.reduce((acc, bla) => this.treeTableService.flattenTree(acc, bla), []);
         return new MatTableDataSource(flattenTree.filter(x => x.isVisible));

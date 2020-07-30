@@ -54,6 +54,14 @@ export class MarkingComponent implements OnInit {
         return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
+    create() {
+        // ToDo
+    }
+
+    delete(id: number) {
+        console.log(`Marking ID: ${id}`);
+    }
+
     flattenTree(): MatTableDataSource<any> {
         const flattenTree = this.treeTable.reduce((acc, bla) => this.treeTableService.flattenTree(acc, bla), []);
         return new MatTableDataSource(flattenTree.filter(x => x.isVisible));

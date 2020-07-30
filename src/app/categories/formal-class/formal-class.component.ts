@@ -52,4 +52,12 @@ export class FormalClassComponent implements OnInit {
         return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
+    create() {
+        // ToDo
+    }
+
+    delete(id: number) {
+        console.log(`Formal Class ID: ${id}`);
+    }
+
 }

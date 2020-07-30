@@ -52,4 +52,12 @@ export class FunctionVoiceComponent implements OnInit {
         return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
+    create() {
+        // ToDo
+    }
+
+    delete(id: number) {
+        console.log(`Function Voice ID: ${id}`);
+    }
+
 }
