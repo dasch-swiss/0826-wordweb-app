@@ -11,7 +11,7 @@ import {TreeTableService} from "../../services/tree-table.service";
     styleUrls: ["../category-ref.scss"]
 })
 export class TreeRefComponent implements OnInit {
-    private refInfo: IRefInfo;
+    refInfo: IRefInfo;
     tree: TreeCategory[];
     treeTable: any[];
     flattenTreeTable: any[];

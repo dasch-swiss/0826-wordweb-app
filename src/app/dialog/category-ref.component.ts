@@ -9,7 +9,7 @@ import {Author, Category, IRefInfo, Property} from "../model/model";
     styleUrls: ["./category-ref.scss"]
 })
 export class CategoryRefComponent implements OnInit {
-    private refInfo: IRefInfo;
+    refInfo: IRefInfo;
     fullList: Category[];
     filteredList: Category[];
     filterWord: string;
