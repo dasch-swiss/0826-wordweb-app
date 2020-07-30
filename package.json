@@ -23,7 +23,7 @@
     "@angular/platform-browser": "~8.2.8",
     "@angular/platform-browser-dynamic": "~8.2.8",
     "@angular/router": "~8.2.8",
-    "@knora/api": "file:.yalc/@knora/api",
+    "@knora/api": "^1.0.0-rc.0",
     "@knora/core": "^9.4.0",
     "@ncstate/sat-popover": "^4.0.0",
     "json2typescript": "^1.2.3",
