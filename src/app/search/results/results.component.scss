@@ -69,7 +69,7 @@
   }
 
   // Every second box has different result-text background color
-  .result:nth-child(even) > .result-text {
+  .result:nth-child(even) > .overview {
     background-color: rgb(190, 190, 190);
   }
 
