@@ -525,7 +525,6 @@ export class AdvancedSearchComponent implements OnInit {
                 this.genreRef.negation = false;
                 this.genreRef.searchVal1 = null;
             }
-            this.genreRef.searchVal1 = null;
         }
     }
 
