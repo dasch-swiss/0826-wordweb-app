@@ -48,8 +48,8 @@
             No results were found
         </div>
 
-        <div class="load-more" *ngIf="!searchStarted && passages.length !== 0">
-            <button mat-button *ngIf="passages.length !== (nPassages | async)" (click)="loadMoreResults()">
+        <div class="load-more" *ngIf="nPassages | async as amount">
+            <button mat-button *ngIf="passages.length !== amount" (click)="loadMoreResults()">
                 Load more
             </button>
         </div>
