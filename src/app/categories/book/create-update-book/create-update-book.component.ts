@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Author, Genre, Lexia, Organisation, Subject, Venue} from "../../../model/model";
 import {ApiService} from "../../../services/api.service";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {CustomValidators} from "../../../customValidators";
 import {CategoryRefComponent} from "../../../dialog/category-ref.component";
 import {TreeRefComponent} from "../../../dialog/tree-ref/tree-ref.component";

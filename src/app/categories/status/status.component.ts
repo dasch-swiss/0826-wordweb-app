@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
-import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {MatSort} from "@angular/material/sort";
+import {MatTableDataSource} from "@angular/material/table";
 import {Language} from "../../model/model";
 import {ApiService} from "../../services/api.service";
-import {CreateUpdateLanguageComponent} from "../language/create-update-language/create-update-language.component";
 import {CreateUpdateStatusComponent} from "./create-update-status/create-update-status.component";
 
 @Component({

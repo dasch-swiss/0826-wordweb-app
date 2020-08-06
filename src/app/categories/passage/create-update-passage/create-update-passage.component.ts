@@ -1,8 +1,8 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {ApiService} from "../../../services/api.service";
-import {Author, Book, Contributor, FunctionVoice, Lexia, Marking, Passage, ResearchField} from "../../../model/model";
+import {Book, Contributor, FunctionVoice, Lexia, Marking, Passage, ResearchField} from "../../../model/model";
 import {CategoryRefComponent} from "../../../dialog/category-ref.component";
 
 @Component({

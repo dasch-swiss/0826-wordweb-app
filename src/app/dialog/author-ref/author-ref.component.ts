@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {ApiService} from "../../services/api.service";
 import {Author} from "../../model/model";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: "app-author-ref",

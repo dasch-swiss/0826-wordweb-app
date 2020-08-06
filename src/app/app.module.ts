@@ -23,18 +23,32 @@ import {SubjectComponent} from "./categories/subject/subject.component";
 import {VenueComponent} from "./categories/venue/venue.component";
 import {FormalClassComponent} from "./categories/formal-class/formal-class.component";
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
-import {
-    MAT_SNACK_BAR_DEFAULT_OPTIONS,
-    MatButtonModule,
-    MatCardModule, MatCheckboxModule,
-    MatChipsModule,
-    MatDialogModule, MatDividerModule,
-    MatIconModule, MatInputModule, MatSelectModule, MatSlideToggleModule, MatSnackBarModule, MatSortModule,
-    MatTableModule
-} from "@angular/material";
+
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MatFormFieldModule} from "@angular/material";
-import {MatExpansionModule} from "@angular/material";
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material/snack-bar";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatListModule} from "@angular/material/list";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatButtonModule} from "@angular/material/button";
+import {MatCardModule} from "@angular/material/card";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatChipsModule} from "@angular/material/chips";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatIconModule} from "@angular/material/icon";
+import {MatInputModule} from "@angular/material/input";
+import {MatSelectModule} from "@angular/material/select";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatSortModule} from "@angular/material/sort";
+import {MatTableModule} from "@angular/material/table";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+
+import {NgxSpinnerModule} from "ngx-spinner";
+
 import {CreateUpdateAuthorComponent} from "./categories/author/create-update-author/create-update-author.component";
 import {CreateUpdateBookComponent} from "./categories/book/create-update-book/create-update-book.component";
 import {CreateUpdateContributorComponent} from "./categories/contributor/create-update-contributor/create-update-contributor.component";
@@ -46,37 +60,36 @@ import {CreateUpdatePassageComponent} from "./categories/passage/create-update-p
 import {CreateUpdateGenderComponent} from "./categories/gender/create-update-gender/create-update-gender.component";
 import {CreateUpdateStatusComponent} from "./categories/status/create-update-status/create-update-status.component";
 import {CreateUpdateGenreComponent} from "./categories/genre/create-update-genre/create-update-genre.component";
+
 import {AuthorRefComponent} from "./dialog/author-ref/author-ref.component";
 import {BookRefComponent} from "./dialog/book-ref/book-ref.component";
 import {PassageRefComponent} from "./dialog/passage-ref/passage-ref.component";
 import {TreeRefComponent} from "./dialog/tree-ref/tree-ref.component";
 import {CategoryRefComponent} from "./dialog/category-ref.component";
-import {AppInitService} from "./app-init.service";
+
 import {HttpClientModule} from "@angular/common/http";
 import {FlexLayoutModule} from "@angular/flex-layout";
-import {MatToolbarModule} from "@angular/material/toolbar";
-import {MatSidenavModule} from "@angular/material/sidenav";
-import {MatListModule} from "@angular/material/list";
+
 import {SearchComponent} from "./search/search.component";
-import {MatTabsModule} from "@angular/material/tabs";
 import {SimpleSearchComponent} from "./search/simple-search/simple-search.component";
 import {AdvancedSearchComponent} from "./search/advanced-search/advanced-search.component";
 import {ExpertSearchComponent} from "./search/expert-search/expert-search.component";
 import {BrowsingComponent} from "./search/browsing/browsing.component";
-import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {HelpComponent} from "./search/dialog/help/help.component";
-import {NgxSpinnerModule} from "ngx-spinner";
 import {ResultsComponent} from "./search/results/results.component";
-import {ListService} from "./services/list.service";
+
 import {NumberingPipe} from "./search/results/pipe/numbering.pipe";
 import {TitlePipe} from "./search/results/pipe/title.pipe";
 import {TextPipe} from "./search/results/pipe/text.pipe";
 import {CommentsPipe} from "./search/results/pipe/comments.pipe";
 import {BibliographyPipe} from "./search/results/pipe/bibliography.pipe";
 import {SourcePipe} from "./search/results/pipe/source.pipe";
-import {GravesearchBuilderService} from "./services/gravesearch-builder.service";
-import {KnoraService} from "./services/knora.service";
 import {LexiasPipe} from "./search/results/pipe/lexias.pipe";
+
+import {AppInitService} from "./app-init.service";
+import {KnoraService} from "./services/knora.service";
+import {ListService} from "./services/list.service";
+import {GravesearchBuilderService} from "./services/gravesearch-builder.service";
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();

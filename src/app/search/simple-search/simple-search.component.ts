@@ -17,7 +17,7 @@ import {CustomValidators} from "../../customValidators";
     styleUrls: ["./simple-search.component.scss"]
 })
 export class SimpleSearchComponent implements OnInit {
-    @ViewChild("results", {static: false}) resultBox: ResultsComponent;
+    @ViewChild("results") resultBox: ResultsComponent;
 
     myPassage: IMainClass = {
         name: "passage",

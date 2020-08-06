@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {ApiService} from "../../services/api.service";
 import {Genre, Language} from "../../model/model";
-import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {MatSort} from "@angular/material/sort";
+import {MatTableDataSource} from "@angular/material/table";
 import {TreeTableService} from "../../services/tree-table.service";
-import {CreateUpdateLanguageComponent} from "../language/create-update-language/create-update-language.component";
 import {CreateUpdateGenreComponent} from "./create-update-genre/create-update-genre.component";
 
 @Component({

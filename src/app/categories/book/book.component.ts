@@ -1,6 +1,8 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from "@angular/material";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {MatSort} from "@angular/material/sort";
+import {MatTableDataSource} from "@angular/material/table";
 import {Book} from "../../model/model";
 import {ApiService} from "../../services/api.service";
 import {CreateUpdateBookComponent} from "./create-update-book/create-update-book.component";

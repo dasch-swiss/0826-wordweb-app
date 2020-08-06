@@ -17,7 +17,7 @@ import {TreeTableService} from "../../services/tree-table.service";
     styleUrls: ["./advanced-search.component.scss"]
 })
 export class AdvancedSearchComponent implements OnInit {
-    @ViewChild("results", {static: false}) resultBox: ResultsComponent;
+    @ViewChild("results") resultBox: ResultsComponent;
 
     myPassage: IMainClass = {
         name: "passage",

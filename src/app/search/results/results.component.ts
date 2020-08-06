@@ -142,7 +142,7 @@ export class ResultsComponent implements OnInit {
                                         resB.map(sPassage => {
                                             forkJoin<any>(sPassage.occursIn.map(item => this.knoraService.getPassageRes(item.id)))
                                                 .subscribe(sBooks => {
-                                                    sBooks.map(sBook => {
+                                                    sBooks.map((sBook: any) => {
                                                         forkJoin<any>(sBook.isWrittenBy.map(item => this.knoraService.getPassageRes(item.id)))
                                                             .subscribe(sAuthors => {
                                                                 sBook.isWrittenBy = sAuthors;

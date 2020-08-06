@@ -11,7 +11,7 @@ import {NgxSpinnerService} from "ngx-spinner";
     styleUrls: ["./browsing.component.scss"]
 })
 export class BrowsingComponent implements OnInit {
-    @ViewChild("results", {static: false}) resultBox: ResultsComponent;
+    @ViewChild("results") resultBox: ResultsComponent;
 
     myAuthor: IMainClass = {
         name: "person",
