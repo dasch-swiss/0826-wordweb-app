@@ -25,7 +25,6 @@
     "@angular/router": "~8.2.8",
     "@knora/api": "^1.0.0-rc.0",
     "@knora/core": "^9.4.0",
-    "@ncstate/sat-popover": "^4.0.0",
     "json2typescript": "^1.2.3",
     "jsonld": "^1.8.0",
     "ngx-spinner": "^8.1.0",

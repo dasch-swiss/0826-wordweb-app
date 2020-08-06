@@ -32,7 +32,6 @@ import {
     MatIconModule, MatInputModule, MatSelectModule, MatSlideToggleModule, MatSnackBarModule, MatSortModule,
     MatTableModule
 } from "@angular/material";
-import {SatPopoverModule} from "@ncstate/sat-popover";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material";
 import {MatExpansionModule} from "@angular/material";
@@ -155,7 +154,6 @@ export function initializeApp(appInitService: AppInitService) {
         MatCheckboxModule,
         MatSnackBarModule,
         MatSlideToggleModule,
-        SatPopoverModule,
         FormsModule,
         ReactiveFormsModule,
         MatChipsModule,
