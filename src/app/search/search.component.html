@@ -1,16 +1,16 @@
 <div>
-    <nav fxLayoutAlign="center" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px" fxHide.lt-sm>
-        <button class="simple-btn" mat-stroked-button (click)="simple()">Simple Search</button>
-        <button mat-stroked-button (click)="advanced()">Advanced Search</button>
-        <button mat-stroked-button (click)="expert()">Expert Search</button>
-        <button mat-stroked-button (click)="browse()">Browse</button>
+    <nav class="search-menu" fxLayoutAlign="center" fxLayout="column" fxLayout.gt-xs="row" fxHide.lt-sm>
+        <div class="search-item" [class.active]="selectedSearch === 'simple'" (click)="selectSearch('simple')">Simple Search</div>
+        <div class="search-item" [class.active]="selectedSearch === 'advanced'" (click)="selectSearch('advanced')">Advanced Search</div>
+        <div class="search-item" [class.active]="selectedSearch === 'expert'" (click)="selectSearch('expert')">Expert Search</div>
+        <div class="search-item" [class.active]="selectedSearch === 'browsing'" (click)="selectSearch('browsing')">Browse</div>
     </nav>
-    <nav fxHide fxShow.lt-sm>
+    <nav class="mobile-search-menu" fxHide fxShow.lt-sm>
         <mat-form-field appearance="outline" color="accent">
             <mat-select [(value)]="selectedSearch">
-                <mat-option value="simple-search">Simple Search</mat-option>
-                <mat-option value="advanced-search">Advanced Search</mat-option>
-                <mat-option value="expert-search">Expert Search</mat-option>
+                <mat-option value="simple">Simple Search</mat-option>
+                <mat-option value="advanced">Advanced Search</mat-option>
+                <mat-option value="expert">Expert Search</mat-option>
                 <mat-option value="browsing">Browse</mat-option>
             </mat-select>
         </mat-form-field>
@@ -18,8 +18,8 @@
 </div>
 
 <ng-container [ngSwitch]="selectedSearch">
-    <app-simple-search *ngIf="selectedSearch ==='simple-search'"></app-simple-search>
-    <app-advanced-search *ngIf="selectedSearch === 'advanced-search'"></app-advanced-search>
-    <app-expert-search *ngIf="selectedSearch === 'expert-search'"></app-expert-search>
+    <app-simple-search *ngIf="selectedSearch ==='simple'"></app-simple-search>
+    <app-advanced-search *ngIf="selectedSearch === 'advanced'"></app-advanced-search>
+    <app-expert-search *ngIf="selectedSearch === 'expert'"></app-expert-search>
     <app-browsing *ngIf="selectedSearch === 'browsing'"></app-browsing>
 </ng-container>

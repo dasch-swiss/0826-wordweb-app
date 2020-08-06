@@ -10,24 +10,12 @@ export class SearchComponent implements OnInit {
 
     constructor() {}
 
+    selectSearch(search: string) {
+        this.selectedSearch = search;
+    }
+
     ngOnInit() {
-        this.selectedSearch = "simple-search";
-    }
-
-    simple() {
-        this.selectedSearch = "simple-search";
-    }
-
-    advanced() {
-        this.selectedSearch = "advanced-search";
-    }
-
-    expert() {
-        this.selectedSearch = "expert-search";
-    }
-
-    browse() {
-        this.selectedSearch = "browsing";
+        this.selectedSearch = "simple";
     }
 
 }
