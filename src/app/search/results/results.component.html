@@ -15,12 +15,10 @@
 
         <div class="result" *ngFor="let passage of passages; let pIndex = index;">
             <div class="overview">
-                <div class="numbering">{{getNumbering(pIndex)}}</div>
-                <div class="title" [innerHTML]="getTitle(passage)"></div>
-                <div class="text" [innerHTML]="getText(passage)"></div>
-                <div class="lexias">
-                    <div *ngFor="let lexia of getLexias(passage)">{{lexia}}</div>
-                </div>
+                <div class="numbering">{{pIndex | numbering}}</div>
+                <div class="title" [innerHTML]="passage | title"></div>
+                <div class="text" [innerHTML]="passage | text"></div>
+                <div class="lexias" [innerHTML]="passage | lexias"></div>
                 <div class="expand-btn">
                     <button [disabled]="false" (click)="expandOrClose(passage)">{{expandBtnText(passage)}}</button>
                 </div>
@@ -30,13 +28,13 @@
                 <div *ngIf="!detailPassages[passage.id]" class="spinner-container">
                     <ngx-spinner name="spinner-{{passage.id}}"></ngx-spinner>
                 </div>
-                <div *ngIf="detailPassages[passage.id]">
-                    <div class="comments" [innerHTML]="getComments(passage)"></div>
+                <div *ngIf="detailPassages[passage.id]; let detailPas">
+                    <div class="comments" [innerHTML]="detailPas | comments"></div>
                     <div class="citation">
                         <div class="title">CITATION</div>
-                        <div [innerHTML]=getBibliography(passage)></div>
+                        <div [innerHTML]="detailPas | bibliography" ></div>
                     </div>
-                    <div class="source" [innerHTML]="getSource(passage)"></div>
+                    <div class="source" [innerHTML]="detailPas | source: listService"></div>
                     <div class="original-btn">
                         <button *ngIf="passage.hasTextHist" (click)="originalOrNormalized(passage)">{{spellingBtnText(passage)}}</button>
                     </div>
