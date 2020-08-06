@@ -53,7 +53,6 @@ import {PassageRefComponent} from "./dialog/passage-ref/passage-ref.component";
 import {TreeRefComponent} from "./dialog/tree-ref/tree-ref.component";
 import {CategoryRefComponent} from "./dialog/category-ref.component";
 import {AppInitService} from "./app-init.service";
-import {KuiCoreConfigToken} from "@knora/core";
 import {HttpClientModule} from "@angular/common/http";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -70,16 +69,18 @@ import {HelpComponent} from "./search/dialog/help/help.component";
 import {NgxSpinnerModule} from "ngx-spinner";
 import {ResultsComponent} from "./search/results/results.component";
 import {ListService} from "./services/list.service";
+import {NumberingPipe} from "./search/results/pipe/numbering.pipe";
+import {TitlePipe} from "./search/results/pipe/title.pipe";
+import {TextPipe} from "./search/results/pipe/text.pipe";
+import {CommentsPipe} from "./search/results/pipe/comments.pipe";
+import {BibliographyPipe} from "./search/results/pipe/bibliography.pipe";
+import {SourcePipe} from "./search/results/pipe/source.pipe";
+import {GravesearchBuilderService} from "./services/gravesearch-builder.service";
 import {KnoraService} from "./services/knora.service";
+import {LexiasPipe} from "./search/results/pipe/lexias.pipe";
 
 export function initializeApp(appInitService: AppInitService) {
-    return (): Promise<any> => {
-        return appInitService.Init();
-    };
-}
-
-export function initialiseList(listService: ListService) {
-    return () => listService.initList();
+    return (): Promise<any> => appInitService.Init();
 }
 
 @NgModule({
@@ -126,7 +127,14 @@ export function initialiseList(listService: ListService) {
         ExpertSearchComponent,
         BrowsingComponent,
         HelpComponent,
-        ResultsComponent
+        ResultsComponent,
+        NumberingPipe,
+        TitlePipe,
+        TextPipe,
+        CommentsPipe,
+        BibliographyPipe,
+        SourcePipe,
+        LexiasPipe
     ],
     imports: [
         BrowserModule,
@@ -163,24 +171,16 @@ export function initialiseList(listService: ListService) {
     providers: [
         AppInitService,
         ListService,
+        GravesearchBuilderService,
         {
             provide: APP_INITIALIZER,
             useFactory: initializeApp,
-            deps: [AppInitService],
+            deps: [AppInitService, GravesearchBuilderService, KnoraService],
             multi: true
         },
         {
-            provide: KuiCoreConfigToken,
-            useFactory: () => AppInitService.coreConfig
-        },
-        {
-            provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2000}
-        },
-        {
-            provide: APP_INITIALIZER,
-            useFactory: initialiseList,
-            deps: [ListService, KnoraService],
-            multi: true
+            provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+            useValue: {duration: 2000}
         }
     ],
     bootstrap: [AppComponent],

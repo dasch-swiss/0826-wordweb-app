@@ -10,24 +10,27 @@ import {
 } from "@knora/api";
 import {GravesearchBuilderService} from "./gravesearch-builder.service";
 import {IMainClass} from "../model/displayModel";
-import {map} from "rxjs/operators";
-import {Observable} from "rxjs";
+import {map, tap} from "rxjs/operators";
+import {Observable, throwError} from "rxjs";
 import {ReadResourceSequence} from "@knora/api/index";
 
 @Injectable({
     providedIn: "root"
 })
 export class KnoraService {
-    readonly url = "http://rdfh.ch/projects/0826";
-    readonly urlOntology = "http://www.knora.org/ontology/0826/teimww";
-    readonly protocol = "http";
-    readonly host = "0.0.0.0";
-    readonly port = 3333;
+    private knoraApiConnection: KnoraApiConnection;
 
-    knoraApiConnection: KnoraApiConnection;
+    constructor(private gsBuilder: GravesearchBuilderService) {
+    }
 
-    constructor(private gBuilder: GravesearchBuilderService) {
-        const config = new KnoraApiConfig(this.protocol, this.host, this.port);
+    set knoraConnection(url: string) {
+        const settings = url.split("://");
+        if (settings[0] !== "http" && settings[0] !== "https") {
+            throwError("Expected 'http' or 'https' in the url");
+        }
+        const host = `${settings[1]}`;
+        // @ts-ignore
+        const config = new KnoraApiConfig(settings[0], host);
         this.knoraApiConnection = new KnoraApiConnection(config);
     }
 
@@ -36,10 +39,11 @@ export class KnoraService {
     }
 
     graveSeachQuery(structure: IMainClass, priority: number, offset?: number): Observable<any> {
-        const graveSearch = this.gBuilder.getQuery(structure, priority, offset);
+        const graveSearch = this.gsBuilder.getQuery(structure, priority, offset);
         console.log(graveSearch);
         return this.knoraApiConnection.v2.search.doExtendedSearch(graveSearch)
             .pipe(
+                tap(data => console.log(data)),
                 map((sequence: ReadResourceSequence) => {
                     // Error found in person res without last names
                     // resources.map(resource => {
@@ -102,15 +106,11 @@ export class KnoraService {
     }
 
     graveSearchQueryCount(structure: IMainClass, priority: number): Observable<number> {
-        const graveSearch = this.gBuilder.getQuery(structure, priority);
+        const graveSearch = this.gsBuilder.getQuery(structure, priority);
         return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(graveSearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
             );
-    }
-
-    getProjectOntology() {
-        const url = `http://0.0.0.0:3333/ontology/0826/teimww/simple/v2`;
     }
 
     getAllLists() {
@@ -127,16 +127,16 @@ export class KnoraService {
             );
     }
 
-    getNodeOfList(iri: string) {
-        const iriEncoded = encodeURIComponent(iri);
-        const url = `http://0.0.0.0:3333/v2/node/`;
-    }
-
     getPassageRes(iri: string) {
         return this.knoraApiConnection.v2.res.getResource(iri)
             .pipe(map((res: ReadResource) => this.processRes(res)));
     }
 
+    // Empty methods for future
+    // getProjectOntology() {}
+    // getNodeOfList(iri: string) {}
+
+    // Unused code
     // buildLinkResource(linkedStructure: any, iri: any) {
     // const linkedStructure = {
     //     occursIn: {

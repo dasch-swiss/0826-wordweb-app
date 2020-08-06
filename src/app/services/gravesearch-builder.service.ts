@@ -13,6 +13,8 @@ export class GravesearchBuilderService {
     static readonly COMPANY_VAR = "company";
     static readonly VENUE_VAR = "venue";
 
+    private host: string;
+
     person = {
         hasPersonInternalId: {
             cardinality: "1",
@@ -342,6 +344,11 @@ export class GravesearchBuilderService {
         }
     };
 
+    set apiURL(host: string) {
+        this.host = host.replace("https", "http");
+        console.log("host", this.host);
+    }
+
     getQueryStr(classVariable: string, propName: string, valueVar: string): string[] {
         return ["?", `${classVariable}`, ` ${GravesearchBuilderService.ONTO_NAME}:${propName} ?`, valueVar, " ."];
     }
@@ -372,7 +379,7 @@ export class GravesearchBuilderService {
         const query = [
             "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
             "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
-            "PREFIX teimww: <http://0.0.0.0:3333/ontology/0826/teimww/v2#>",
+            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node.mainClass).join("")}`,

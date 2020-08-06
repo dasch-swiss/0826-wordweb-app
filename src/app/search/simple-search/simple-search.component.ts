@@ -75,7 +75,7 @@ export class SimpleSearchComponent implements OnInit {
             },
             {
                 name: "hasPassageComment",
-                priority: 1,
+                priority: 0,
                 res: null
             },
             {
@@ -91,7 +91,7 @@ export class SimpleSearchComponent implements OnInit {
                         },
                         {
                             name: "hasEdition",
-                            priority: 1,
+                            priority: 0,
                             res: null
                         },
                         {
@@ -124,7 +124,7 @@ export class SimpleSearchComponent implements OnInit {
                         },
                         {
                             name: "hasBookComment",
-                            priority: 1,
+                            priority: 0,
                             res: null
                         },
                         {
