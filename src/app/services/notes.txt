@@ -41,6 +41,7 @@ Person
     hasGender                   1
     isLexiaPerson (Lexia)       0-n
     personPerformedIn (Book)    0-n
+    hasPersonExtraInfo          0-1
 
 Book
     hasBookInternalId           1
@@ -58,6 +59,7 @@ Book
     performedBy (Company)       0-n
     performedIn (Venue)         0-n
     isLexiaBook (Lexia)         0-n
+    hasBookExtraInfo            0-1
 
 Passages
     hasText                     1   (Sec: Minus as placeholder)
@@ -75,6 +77,7 @@ Passages
     isMentionedIn (Passage)     0-n
     wasContributedBy (Person)   1   (Sec: Regula Hohl)
     contains (Lexia)            0-n
+    hasPassageExtraInfo         0-1
 
 Lexia
     hasLexiaInternalId          1
@@ -82,14 +85,17 @@ Lexia
     hasLexiaDisplayedTitle      0-1
     hasFormalClass              1-n
     hasImage                    0-n
+    hasLexiaExtraInfo           0-1
 
 Company
     hasCompanyInternalId        1
     hasCompanyTitle             1
     hasMember (Person)          0-n
     isLexiaCompany (Lexia)      0-n
+    hasCompanyExtraInfo         0-1
 
 Venue
     hasVenueInternalId          1
     hasPlaceVenue               1
     isLexiaVenue (Lexia)        0-n
+    hasVenueExtraInfo           0-1
