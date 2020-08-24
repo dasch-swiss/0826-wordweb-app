@@ -1,18 +1,25 @@
 import {Injectable} from "@angular/core";
 import {
-    ApiResponseData,
-    CountQueryResponse,
     KnoraApiConfig,
-    KnoraApiConnection, KnoraPeriod,
+    KnoraApiConnection,
+    ApiResponseData,
+    ApiResponseError,
+    LoginResponse,
+    ReadResource,
+    ReadTextValueAsString,
+    ReadListValue,
+    ReadLinkValue,
+    ReadDateValue,
+    CountQueryResponse,
     ListResponse,
-    ListsResponse, ReadDateValue, ReadLinkValue, ReadListValue,
-    ReadResource, ReadTextValueAsString
-} from "@knora/api";
+    ListsResponse,
+    KnoraPeriod
+} from "@dasch-swiss/dsp-js/index";
 import {GravesearchBuilderService} from "./gravesearch-builder.service";
 import {IMainClass} from "../model/displayModel";
 import {map, tap} from "rxjs/operators";
 import {Observable, throwError} from "rxjs";
-import {ReadResourceSequence} from "@knora/api/index";
+import {ReadResourceSequence} from "@dasch-swiss/dsp-js/index";
 
 @Injectable({
     providedIn: "root"

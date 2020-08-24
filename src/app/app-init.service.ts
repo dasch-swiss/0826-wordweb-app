@@ -1,5 +1,4 @@
 import {Injectable} from "@angular/core";
-import {KuiCoreConfig} from "@knora/core";
 import {KnoraService} from "./services/knora.service";
 import {mergeMap} from "rxjs/operators";
 import {forkJoin} from "rxjs";
@@ -28,7 +27,6 @@ export interface IAppConfig {
 export class AppInitService {
 
   static settings: IAppConfig;
-  static coreConfig: KuiCoreConfig;
 
   constructor(
       private knoraService: KnoraService,
@@ -43,13 +41,6 @@ export class AppInitService {
       // do your initialisation stuff here
 
       AppInitService.settings = window["tempConfigStorage"] as IAppConfig;
-
-      AppInitService.coreConfig = {
-        name: AppInitService.settings.appName,
-        api: AppInitService.settings.apiURL,
-        media: AppInitService.settings.iiifURL,
-        app: AppInitService.settings.appURL
-      } as KuiCoreConfig;
 
       this.gsBuilder.apiURL = AppInitService.settings.apiURL;
 
@@ -66,7 +57,7 @@ export class AppInitService {
 
             console.log("AppInitService: finished");
             resolve();
-          });
+          }, (error) => console.error("Failed to connect", error));
     });
   }
 }
