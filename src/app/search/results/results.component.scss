@@ -134,3 +134,7 @@
     position: relative
   }
 }
+
+:host::ng-deep .quote {
+  color: rgba(220, 0, 0);
+}
