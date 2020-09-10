@@ -30,7 +30,7 @@ export class SimpleSearchComponent implements OnInit {
             },
             {
                 name: "hasTextHist",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
@@ -65,7 +65,7 @@ export class SimpleSearchComponent implements OnInit {
             },
             {
                 name: "hasStatus",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
@@ -75,7 +75,7 @@ export class SimpleSearchComponent implements OnInit {
             },
             {
                 name: "hasPassageComment",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
@@ -91,7 +91,7 @@ export class SimpleSearchComponent implements OnInit {
                         },
                         {
                             name: "hasEdition",
-                            priority: 0,
+                            priority: 1,
                             res: null
                         },
                         {
@@ -124,7 +124,7 @@ export class SimpleSearchComponent implements OnInit {
                         },
                         {
                             name: "hasBookComment",
-                            priority: 0,
+                            priority: 1,
                             res: null
                         },
                         {
@@ -180,7 +180,7 @@ export class SimpleSearchComponent implements OnInit {
             {
                 name: "isMentionedIn",
                 // searchVal1: "http://rdfh.ch/0826/V36CJpAuSTuhDATfiflaTA",
-                priority: 0,
+                priority: 1,
                 mandatory: true,
                 res: {
                     name: "passage",
@@ -296,7 +296,7 @@ export class SimpleSearchComponent implements OnInit {
                         },
                         {
                             name: "hasFormalClass",
-                            priority: 0,
+                            priority: 1,
                             res: null
                         }
                     ]
