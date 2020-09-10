@@ -14,12 +14,12 @@ import {
     ListResponse,
     ListsResponse,
     KnoraPeriod
-} from "@dasch-swiss/dsp-js/index";
+} from "@dasch-swiss/dsp-js";
 import {GravesearchBuilderService} from "./gravesearch-builder.service";
 import {IMainClass} from "../model/displayModel";
 import {map, tap} from "rxjs/operators";
 import {Observable, throwError} from "rxjs";
-import {ReadResourceSequence} from "@dasch-swiss/dsp-js/index";
+import {ReadResourceSequence} from "@dasch-swiss/dsp-js";
 
 @Injectable({
     providedIn: "root"
