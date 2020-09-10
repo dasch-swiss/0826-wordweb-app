@@ -368,7 +368,7 @@ export class GravesearchBuilderService {
         // query[2] => prefix of the query
         // query[3] => empty line
         // query[4] => CONSTRUCT tag
-        // query[5] => first construct line
+        // query[5] => all properties of the resource added in the construct clause
         // query[6] => WHERE tag
         // query[7] => possible BIND lines
         // query[8] => all properties of the resource
@@ -423,6 +423,8 @@ export class GravesearchBuilderService {
                 }
                 // Creates string
                 let line = qStrCopy.join("");
+                // Adds to the construct clause
+                query[5] = query[5] + "\n" + line;
                 // Puts optional brackets if property is not mandatory, has no search value and cardinality can be zero
                 if (!prop.mandatory && !prop.searchVal1 && (oProp.cardinality === "0-1" || oProp.cardinality === "0-n")) {
                     line = `OPTIONAL { ${line} }`;
