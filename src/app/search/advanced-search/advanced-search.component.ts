@@ -33,7 +33,7 @@ export class AdvancedSearchComponent implements OnInit {
             },
             {
                 name: "hasTextHist",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
@@ -68,7 +68,7 @@ export class AdvancedSearchComponent implements OnInit {
             },
             {
                 name: "hasStatus",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
@@ -198,7 +198,7 @@ export class AdvancedSearchComponent implements OnInit {
             {
                 name: "isMentionedIn",
                 // searchVal1: "http://rdfh.ch/0826/V36CJpAuSTuhDATfiflaTA",
-                priority: 0,
+                priority: 1,
                 mandatory: true,
                 res: {
                     name: "passage",
@@ -314,7 +314,7 @@ export class AdvancedSearchComponent implements OnInit {
                         },
                         {
                             name: "hasFormalClass",
-                            priority: 0,
+                            priority: 1,
                             res: null
                         }
                     ]
@@ -443,9 +443,11 @@ export class AdvancedSearchComponent implements OnInit {
         if (this.form.get("gender").value) {
             this.genderRef.negation = this.form.get("compGender").value === "NOT";
             this.genderRef.searchVal1 = this.form.get("gender").value;
+            this.genderRef.priority = 0;
         } else {
             this.genderRef.negation = false;
             this.genderRef.searchVal1 = null;
+            this.genderRef.priority = 1;
         }
 
         if (this.form.get("bookTitle").value) {
@@ -467,25 +469,31 @@ export class AdvancedSearchComponent implements OnInit {
         if (this.form.get("language").value) {
             this.languageRef.negation = this.form.get("compLanguage").value === "NOT";
             this.languageRef.searchVal1 = this.form.get("language").value;
+            this.languageRef.priority = 0;
         } else {
             this.languageRef.negation = false;
             this.languageRef.searchVal1 = null;
+            this.languageRef.priority = 1;
         }
 
         if (this.form.get("function").value) {
             this.functionRef.negation = this.form.get("compFunction").value === "NOT";
             this.functionRef.searchVal1 = this.form.get("function").value;
+            this.functionRef.priority = 0;
         } else {
             this.functionRef.negation = false;
             this.functionRef.searchVal1 = null;
+            this.functionRef.priority = 1;
         }
 
         if (this.form.get("marking").value) {
             this.markingRef.negation = this.form.get("compMarking").value === "NOT";
             this.markingRef.searchVal1 = this.form.get("marking").value;
+            this.markingRef.priority = 0;
         } else {
             this.markingRef.negation = false;
             this.markingRef.searchVal1 = null;
+            this.markingRef.priority = 1;
         }
 
         if (this.form.get("createdDate").valid && this.form.get("createdDate").value.length > 0) {
@@ -521,9 +529,11 @@ export class AdvancedSearchComponent implements OnInit {
             if (this.form.get("genre").value) {
                 this.genreRef.negation = this.form.get("compGenre").value === "NOT";
                 this.genreRef.searchVal1 = this.form.get("genre").value;
+                this.genreRef.priority = 0;
             } else {
                 this.genreRef.negation = false;
                 this.genreRef.searchVal1 = null;
+                this.genreRef.priority = 1;
             }
         }
     }
