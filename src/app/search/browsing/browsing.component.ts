@@ -46,13 +46,13 @@ export class BrowsingComponent implements OnInit {
                         },
                         {
                             name: "hasGenre",
-                            priority: 0,
+                            priority: 1,
                             res: null
                         },
                         {
                             name: "hasCreationDate",
                             valVar: "creationDate",
-                            priority: 0,
+                            priority: 1,
                             res: null
                         },
                         {
@@ -72,7 +72,7 @@ export class BrowsingComponent implements OnInit {
                         },
                         {
                             name: "isWrittenBy",
-                            priority: 0,
+                            priority: 1,
                             res: {
                                 name: "person",
                                 props: [
@@ -122,7 +122,7 @@ export class BrowsingComponent implements OnInit {
         props: [
             {
                 name: "hasLexiaInternalId",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
@@ -132,7 +132,7 @@ export class BrowsingComponent implements OnInit {
             },
             {
                 name: "hasLexiaDisplayedTitle",
-                priority: 0,
+                priority: 1,
                 res: null
             },
             {
