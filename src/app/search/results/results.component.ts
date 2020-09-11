@@ -70,6 +70,15 @@ export class ResultsComponent implements OnInit {
             });
     }
 
+    public reset() {
+        this.passages = null;
+        this.structure = null;
+        this.errorObject = null;
+        this.nPassages = null;
+        this.searchStarted = false;
+        this.sortOrder = "Title";
+    }
+
     loadMoreResults() {
         this.spinner.show("spinner-small", {
             fullScreen: false,

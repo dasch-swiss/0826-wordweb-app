@@ -615,12 +615,17 @@ export class BrowsingComponent implements OnInit {
         if (this.alphabeticSearchStarted) {
             return;
         }
+        // Clears the results from previous search
+        if (this.resTypeSelected !== name) {
+            this.resultBox.reset();
+        }
         this.resTypeSelected = name;
         this.alphabeticResources = null;
         this.requestResources();
     }
 
     selectChar(event) {
+        this.resultBox.reset();
         this.alphabeticResources = null;
         this.requestResources();
     }
