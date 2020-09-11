@@ -17,7 +17,7 @@
             <div class="overview">
                 <div class="numbering">{{pIndex | numbering}}</div>
                 <div class="title" [innerHTML]="passage | title"></div>
-                <div class="text" [innerHTML]="passage | text"></div>
+                <div class="text" [innerHTML]="passage.original ? passage.hasTextHist[0].value : passage.hasText[0].value"></div>
                 <div class="lexias" [innerHTML]="passage | lexias"></div>
                 <div class="expand-btn">
                     <button [disabled]="false" (click)="expandOrClose(passage)">{{expandBtnText(passage)}}</button>

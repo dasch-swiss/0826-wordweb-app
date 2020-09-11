@@ -30,7 +30,7 @@ export class SimpleSearchComponent implements OnInit {
             },
             {
                 name: "hasTextHist",
-                priority: 1,
+                priority: 0,
                 res: null
             },
             {

@@ -33,7 +33,7 @@ export class AdvancedSearchComponent implements OnInit {
             },
             {
                 name: "hasTextHist",
-                priority: 1,
+                priority: 0,
                 res: null
             },
             {
