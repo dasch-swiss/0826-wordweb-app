@@ -453,7 +453,7 @@ export class GravesearchBuilderService {
 
                     if (prop.searchVal1) {
                         // Query line where value list node
-                        query[9] = query[9] + "\n" + `?${qStrCopy[3]} knora-api:listValueAsListNode <${prop.searchVal1}> .`;
+                        query[8] = query[8] + "\n" + `?${qStrCopy[3]} knora-api:listValueAsListNode <${prop.searchVal1}> .`;
                     }
 
                 // Checks if property is a date
@@ -462,18 +462,18 @@ export class GravesearchBuilderService {
                     if (prop.searchVal1) {
 
                         if (prop.searchVal2) {
-                            query[9] = query[9] + "\n" + `FILTER (knora-api:toSimpleDate(?${qStrCopy[3]}) >= "GREGORIAN:${prop.searchVal1}"^^knora-api-simple:Date)`;
-                            query[9] = query[9] + "\n" + `FILTER (knora-api:toSimpleDate(?${qStrCopy[3]}) <= "GREGORIAN:${prop.searchVal2}"^^knora-api-simple:Date)`;
+                            query[8] = query[8] + "\n" + `FILTER (knora-api:toSimpleDate(?${qStrCopy[3]}) >= "GREGORIAN:${prop.searchVal1}"^^knora-api-simple:Date)`;
+                            query[8] = query[8] + "\n" + `FILTER (knora-api:toSimpleDate(?${qStrCopy[3]}) <= "GREGORIAN:${prop.searchVal2}"^^knora-api-simple:Date)`;
                         } else {
-                            query[9] = query[9] + "\n" + `FILTER (knora-api:toSimpleDate(?${qStrCopy[3]}) = "GREGORIAN:${prop.searchVal1}"^^knora-api-simple:Date)`;
+                            query[8] = query[8] + "\n" + `FILTER (knora-api:toSimpleDate(?${qStrCopy[3]}) = "GREGORIAN:${prop.searchVal1}"^^knora-api-simple:Date)`;
                         }
                     }
                 // Checks if property is a string
                 } else if (oProp.type === "String") {
 
                     if (prop.searchVal1) {
-                        query[9] = query[9] + "\n" + `?${qStrCopy[3]} knora-api:valueAsString ?${qStrCopy[3]}String .`;
-                        query[9] = query[9] + "\n" + `FILTER regex(?${qStrCopy[3]}String, "${prop.searchVal1}", "i")`;
+                        query[8] = query[8] + "\n" + `?${qStrCopy[3]} knora-api:valueAsString ?${qStrCopy[3]}String .`;
+                        query[8] = query[8] + "\n" + `FILTER regex(?${qStrCopy[3]}String, "${prop.searchVal1}", "i")`;
                     }
                 } else {
                     console.error("FAIL PROPERTY TYPE");
