@@ -3,7 +3,7 @@
     "name": "prod"
   },
   "apiURL": "https://api.idem.test.dasch.swiss",
-  "iiifURL": "https://iiif.idem.dasch.swiss",
+  "iiifURL": "https://iiif.idem.test.dasch.swiss",
   "appURL": "https://idem.test.dasch.swiss",
   "appName": "wordweb"
 }
