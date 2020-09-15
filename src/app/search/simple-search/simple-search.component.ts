@@ -136,6 +136,7 @@ export class SimpleSearchComponent implements OnInit {
                                     {
                                         name: "hasFirstName",
                                         priority: 0,
+                                        mandatory: true,
                                         res: null
                                     },
                                     {

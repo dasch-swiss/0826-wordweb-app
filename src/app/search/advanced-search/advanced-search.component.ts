@@ -149,6 +149,7 @@ export class AdvancedSearchComponent implements OnInit {
                                     {
                                         name: "hasFirstName",
                                         priority: 0,
+                                        mandatory: true,
                                         res: null
                                     },
                                     {
