@@ -70,7 +70,7 @@
 
   // Every second box has different result-text background color
   .result:nth-child(even) > .overview {
-    background-color: rgb(190, 190, 190);
+    background-color: rgb(200, 200, 200);
   }
 
   .no-results {
@@ -136,5 +136,5 @@
 }
 
 :host::ng-deep .quote {
-  color: rgba(220, 0, 0);
+  color: rgba(190, 0, 0);
 }
