@@ -2,7 +2,7 @@
 
     <div *ngIf="passages" fxLayout="column" fxLayoutGap="10px">
         <div fxLayout="row" fxLayoutAlign="space-between center">
-            <div>{{passages.length}} <span *ngIf="nPassages | async as total"> of {{total}} Results</span></div>
+            <div>{{passages.length}} <span *ngIf="nPassages | async as total"> of {{total}} results</span></div>
             <mat-form-field>
                 <mat-label>Sort</mat-label>
                 <mat-select [(ngModel)]="sortOrder" (ngModelChange)="sortResults()">
@@ -64,7 +64,7 @@
         </div>
         <div class="text">
             <div class="title">Oh no!</div>
-            <div>Even Shakespeare had to deal with errors in his plays.<br>So he tried later.</div>
+            <div>Even Shakespeare had to deal with errors in his plays.<br>He just tried again later.</div>
         </div>
     </div>
 
