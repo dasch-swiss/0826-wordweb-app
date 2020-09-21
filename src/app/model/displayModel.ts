@@ -19,6 +19,7 @@ export interface IDisplayedProperty {
     negation?: boolean;
     searchVal1?: string;
     searchVal2?: string;
+    orderPriority?: number;
     priority: number;
     mandatory?: boolean;
     res: IDisplayedClass;
