@@ -397,10 +397,42 @@ export class GravesearchBuilderService {
             query[7] = query[7] + `BIND (<${node.iri}> AS ?${this.getClass[node.name].variable})` + "\n";
         }
 
+        const optimisedNode = this.setOrderPriority(node).node;
+
         // recursion function to fill in the query line
-        this.rec(node, priority, query);
+        this.rec(optimisedNode, priority, query);
 
         return query.join("\n");
+    }
+
+    private setOrderPriority(node: IDisplayedClass) {
+        const name = node.name;
+        let resCounter = 0;
+
+        node.props = node.props
+            .map(prop => {
+                if (prop.searchVal1) {
+                    prop.orderPriority = 1;
+                    resCounter = resCounter + 1;
+                } else {
+                    prop.orderPriority = 0;
+                }
+
+                const oProp = this.getClass[name].ref[prop.name];
+
+                if (oProp.type === "Resource") {
+                    const result = this.setOrderPriority(prop.res);
+                    prop.res = result.node;
+                    prop.orderPriority = prop.orderPriority + result.resCounter;
+                }
+
+                return prop;
+            })
+            .sort((prop1, prop2) => {
+                return prop1.orderPriority > prop2.orderPriority ? -1 : (prop1.orderPriority < prop2.orderPriority ? 1 : 0);
+            });
+
+        return {node, resCounter};
     }
 
     private rec(node: IDisplayedClass, priority: number, query: string[], classVar?: string) {
