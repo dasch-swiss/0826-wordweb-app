@@ -139,6 +139,69 @@ export class KnoraService {
             .pipe(map((res: ReadResource) => this.processRes(res)));
     }
 
+    getPrimaryAuthorsCount(char: string, offset?: number) {
+        const graveSearch = this.gsBuilder.getPrimaryAuthorsQuery(char, offset);
+        console.log(graveSearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(graveSearch)
+            .pipe(
+                map((data: CountQueryResponse) => data.numberOfResults)
+            );
+    }
+
+    getPrimaryAuthors(char: string, offset?: number) {
+        const graveSearch = this.gsBuilder.getPrimaryAuthorsQuery(char, offset);
+        console.log(graveSearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(graveSearch)
+            .pipe(
+                tap(data => console.log(data)),
+                map((sequence: ReadResourceSequence) => {
+                    return sequence.resources.map(resource => this.processRes(resource));
+                })
+            );
+    }
+
+    getPrimaryBooksCount(char: string, offset?: number) {
+        const graveSearch = this.gsBuilder.getPrimaryBooksQuery(char, offset);
+        console.log(graveSearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(graveSearch)
+            .pipe(
+                map((data: CountQueryResponse) => data.numberOfResults)
+            );
+    }
+
+    getPrimaryBooks(char: string, offset?: number) {
+        const graveSearch = this.gsBuilder.getPrimaryBooksQuery(char, offset);
+        console.log(graveSearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(graveSearch)
+            .pipe(
+                tap(data => console.log(data)),
+                map((sequence: ReadResourceSequence) => {
+                    return sequence.resources.map(resource => this.processRes(resource));
+                })
+            );
+    }
+
+    getLexiasCount(char: string, offset?: number) {
+        const graveSearch = this.gsBuilder.getLexiasQuery(char, offset);
+        console.log(graveSearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(graveSearch)
+            .pipe(
+                map((data: CountQueryResponse) => data.numberOfResults)
+            );
+    }
+
+    getLexias(char: string, offset?: number) {
+        const graveSearch = this.gsBuilder.getLexiasQuery(char, offset);
+        console.log(graveSearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(graveSearch)
+            .pipe(
+                tap(data => console.log(data)),
+                map((sequence: ReadResourceSequence) => {
+                    return sequence.resources.map(resource => this.processRes(resource));
+                })
+            );
+    }
+
     // Empty methods for future
     // getProjectOntology() {}
     // getNodeOfList(iri: string) {}

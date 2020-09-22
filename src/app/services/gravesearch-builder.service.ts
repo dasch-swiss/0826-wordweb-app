@@ -517,4 +517,85 @@ export class GravesearchBuilderService {
     getQuery(structure: IMainClass, priority: number, offset?: number): string {
         return this.getMainQuery(structure, priority, offset);
     }
+
+    getPrimaryAuthorsQuery(char: string, offset?: number): string {
+        const node: IMainClassObject = {name: "person", variable: "person"};
+        const query = [
+            "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
+            "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
+            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            "",
+            "CONSTRUCT {",
+            `${this.getFirstConstructLine(node).join("")}`,
+            "?book teimww:isWrittenBy ?person .",
+            "?passage teimww:occursIn ?book .",
+            "?passage teimww:isMentionedIn ?sPassage .",
+            "?person teimww:hasFirstName ?firstName .",
+            "?person teimww:hasLastName ?lastName .",
+            "} WHERE {",
+            `${this.getFirstWhereLine(node).join("")}`,
+            "?person teimww:hasLastName ?lastName .",
+            "?lastName knora-api:valueAsString ?lastNameString .",
+            `FILTER regex(?lastNameString, \"^${char}\", \"i\")`,
+            "OPTIONAL { ?person teimww:hasFirstName ?firstName . }",
+            "?book teimww:isWrittenBy ?person .",
+            "?passage teimww:occursIn ?book .",
+            "?passage teimww:isMentionedIn ?sPassage .",
+            "",
+            "}",
+            "",
+            `OFFSET ${offset ? offset : 0}`
+        ];
+        return query.join("\n");
+    }
+
+    getPrimaryBooksQuery(char: string, offset?: number): string {
+        const node: IMainClassObject = {name: "book", variable: "book"};
+        const query = [
+            "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
+            "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
+            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            "",
+            "CONSTRUCT {",
+            `${this.getFirstConstructLine(node).join("")}`,
+            "?book teimww:hasBookTitle ?bookTitle .",
+            "?passage teimww:occursIn ?book .",
+            "?passage teimww:isMentionedIn ?sPassage .",
+            "} WHERE {",
+            `${this.getFirstWhereLine(node).join("")}`,
+            "?book teimww:hasBookTitle ?bookTitle .",
+            "?bookTitle knora-api:valueAsString ?bookTitleString .",
+            `FILTER regex(?bookTitleString, \"^${char}\", \"i\")`,
+            "?passage teimww:occursIn ?book .",
+            "?passage teimww:isMentionedIn ?sPassage .",
+            "",
+            "}",
+            "",
+            `OFFSET ${offset ? offset : 0}`
+        ];
+        return query.join("\n");
+    }
+
+    getLexiasQuery(char: string, offset?: number): string {
+        const node: IMainClassObject = {name: "lexia", variable: "lexia"};
+        const query = [
+            "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
+            "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
+            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            "",
+            "CONSTRUCT {",
+            `${this.getFirstConstructLine(node).join("")}`,
+            "?lexia teimww:hasLexiaTitle ?lexiaTitle .",
+            "} WHERE {",
+            `${this.getFirstWhereLine(node).join("")}`,
+            "?lexia teimww:hasLexiaTitle ?lexiaTitle .",
+            "?lexiaTitle knora-api:valueAsString ?lexiaTitleString .",
+            `FILTER regex(?lexiaTitleString, \"^${char}\", \"i\")`,
+            "",
+            "}",
+            "",
+            `OFFSET ${offset ? offset : 0}`
+        ];
+        return query.join("\n");
+    }
 }

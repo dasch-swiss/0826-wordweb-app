@@ -13,140 +13,6 @@ import {NgxSpinnerService} from "ngx-spinner";
 export class BrowsingComponent implements OnInit {
     @ViewChild("results") resultBox: ResultsComponent;
 
-    myAuthor: IMainClass = {
-        name: "person",
-        mainClass: {name: "person", variable: "person"},
-        props: [
-            {
-                name: "hasFirstName",
-                priority: 0,
-                res: null
-            },
-            {
-                name: "hasLastName",
-                priority: 0,
-                res: null
-            }
-        ]
-    };
-    myBook: IMainClass = {
-        name: "passage",
-        mainClass: {name: "book", variable: "book"},
-        props: [
-            {
-                name: "occursIn",
-                priority: 0,
-                res: {
-                    name: "book",
-                    props: [
-                        {
-                            name: "hasBookTitle",
-                            priority: 0,
-                            res: null
-                        },
-                        {
-                            name: "hasGenre",
-                            priority: 1,
-                            res: null
-                        },
-                        {
-                            name: "hasCreationDate",
-                            valVar: "creationDate",
-                            priority: 1,
-                            res: null
-                        },
-                        {
-                            name: "hasPublicationDate",
-                            priority: 1,
-                            res: null
-                        },
-                        {
-                            name: "hasFirstPerformanceDate",
-                            priority: 1,
-                            res: null
-                        },
-                        {
-                            name: "hasBookComment",
-                            priority: 1,
-                            res: null
-                        },
-                        {
-                            name: "isWrittenBy",
-                            priority: 1,
-                            res: {
-                                name: "person",
-                                props: [
-                                    {
-                                        name: "hasFirstName",
-                                        priority: 0,
-                                        res: null
-                                    },
-                                    {
-                                        name: "hasLastName",
-                                        priority: 0,
-                                        res: null
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                }
-            },
-            {
-                name: "isMentionedIn",
-                priority: 0,
-                mandatory: true,
-                res: {
-                    name: "passage",
-                    props: [
-                        {
-                            name: "hasText",
-                            valVar: "sText",
-                            priority: 1,
-                            res: null
-                        },
-                        {
-                            name: "hasDisplayedTitle",
-                            valVar: "sDisplayedTitle",
-                            priority: 1,
-                            res: null
-                        }
-                    ]
-                }
-            },
-        ]
-    };
-    myLexia: IMainClass = {
-        name: "lexia",
-        mainClass: {name: "lexia", variable: "lexia"},
-        props: [
-            {
-                name: "hasLexiaInternalId",
-                priority: 1,
-                res: null
-            },
-            {
-                name: "hasLexiaTitle",
-                priority: 0,
-                res: null
-            },
-            {
-                name: "hasLexiaDisplayedTitle",
-                priority: 1,
-                res: null
-            },
-            {
-                name: "hasFormalClass",
-                priority: 1,
-                res: null
-            },
-            {
-                name: "hasImage",
-                priority: 1,
-                res: null
-            }
-        ]
-    };
     myPassage: IMainClass = {
         name: "passage",
         mainClass: {name: "passage", variable: "passage"},
@@ -434,9 +300,6 @@ export class BrowsingComponent implements OnInit {
     authors = {};
     lexias = {};
 
-    authorLastNameRef: IDisplayedProperty;
-    lexiaTitleRef: IDisplayedProperty;
-    bookTitleRef: IDisplayedProperty;
     authorRef: IDisplayedProperty;
     lexiaRef: IDisplayedProperty;
     bookRef: IDisplayedProperty;
@@ -476,10 +339,7 @@ export class BrowsingComponent implements OnInit {
             this.lexias[letter] = null;
             this.chars.push(letter);
         }
-        // Preparation for search values
-        this.authorLastNameRef = this.myAuthor.props[1];
-        this.bookTitleRef = this.myBook.props[0].res.props[0];
-        this.lexiaTitleRef = this.myLexia.props[1];
+
         this.authorRef = this.myPassage.props[11].res.props[8];
         this.bookRef = this.myPassage.props[11];
         this.lexiaRef = this.myPassage.props[14];
@@ -500,62 +360,27 @@ export class BrowsingComponent implements OnInit {
             size: "small"
         });
 
-        let cacheStructure: {};
-        let structure: IMainClass;
-        let sort: (a, b) => number;
-
         if (this.resTypeSelected === "author") {
-            this.authorLastNameRef.searchVal1 = `^${this.charSelected}`;
 
-            if (this.bookTitleRef.searchVal1) {
-                delete this.bookTitleRef.searchVal1;
-            }
-
-            if (this.lexiaTitleRef.searchVal1) {
-                delete this.lexiaTitleRef.searchVal1;
-            }
-
-            cacheStructure = this.authors;
-            structure = this.myAuthor;
-            sort = this.sortAuthor;
+            this.requestAuthors();
 
         } else if (this.resTypeSelected === "book") {
-            this.bookTitleRef.searchVal1 = `^${this.charSelected}`;
 
-            if (this.authorLastNameRef.searchVal1) {
-                delete this.authorLastNameRef.searchVal1;
-            }
-
-            if (this.lexiaTitleRef.searchVal1) {
-                delete this.lexiaTitleRef.searchVal1;
-            }
-
-            cacheStructure = this.books;
-            structure = this.myBook;
-            sort = this.sortBook;
+            this.requestBooks();
 
         } else if (this.resTypeSelected === "lexia") {
-            this.lexiaTitleRef.searchVal1 = `^${this.charSelected}`;
 
-            if (this.bookTitleRef.searchVal1) {
-                delete this.bookTitleRef.searchVal1;
-            }
-
-            if (this.authorLastNameRef.searchVal1) {
-                delete this.authorLastNameRef.searchVal1;
-            }
-
-            cacheStructure = this.lexias;
-            structure = this.myLexia;
-            sort = this.sortLexia;
+            this.requestLexias();
         }
+    }
 
-        if (!cacheStructure[this.charSelected]) {
-
-            this.knoraService.graveSearchQueryCount(structure, this.priority)
+    requestBooks() {
+        if (!this.books[this.charSelected]) {
+            this.knoraService.getPrimaryBooksCount(this.charSelected)
                 .subscribe(amount => {
+                    console.log(amount);
                     this.alphabeticResAmount = amount;
-                    cacheStructure[this.charSelected] = {amount};
+                    this.books[this.charSelected] = {amount};
 
                     if (amount === 0) {
                         this.spinner.hide(`spinner-${this.selectChar}`);
@@ -567,7 +392,7 @@ export class BrowsingComponent implements OnInit {
                     const requests = [];
 
                     for (let offset = 0; offset < maxOffset; offset++) {
-                        requests.push(this.knoraService.graveSeachQuery(structure, this.priority, offset));
+                        requests.push(this.knoraService.getPrimaryBooks(this.charSelected, offset));
                     }
 
                     forkJoin<any>(...requests)
@@ -576,17 +401,111 @@ export class BrowsingComponent implements OnInit {
                             this.alphabeticSearchStarted = false;
                             this.alphabeticResources = []
                                 .concat(...res)
-                                .sort((res1, res2) => sort(res1, res2));
+                                .sort((res1, res2) => this.sortBook(res1, res2));
                             // Saves data in cache
-                            cacheStructure[this.charSelected].data = this.alphabeticResources;
+                            this.books[this.charSelected].data = this.alphabeticResources;
+                        }, error => {
+                            this.spinner.hide(`spinner-${this.selectChar}`);
                         });
+                }, error => {
+                    this.spinner.hide(`spinner-${this.selectChar}`);
                 });
         } else {
             this.spinner.hide(`spinner-${this.selectChar}`);
             this.alphabeticSearchStarted = false;
             // Gets data from cache
-            this.alphabeticResources = cacheStructure[this.charSelected].data;
-            this.alphabeticResAmount = cacheStructure[this.charSelected].amount;
+            this.alphabeticResources = this.books[this.charSelected].data;
+            this.alphabeticResAmount = this.books[this.charSelected].amount;
+        }
+    }
+
+    requestAuthors() {
+        if (!this.authors[this.charSelected]) {
+            this.knoraService.getPrimaryAuthorsCount(this.charSelected)
+                .subscribe(amount => {
+                    console.log(amount);
+                    this.alphabeticResAmount = amount;
+                    this.authors[this.charSelected] = {amount};
+
+                    if (amount === 0) {
+                        this.spinner.hide(`spinner-${this.selectChar}`);
+                        this.alphabeticSearchStarted = false;
+                        return;
+                    }
+
+                    const maxOffset = Math.ceil(this.alphabeticResAmount / 25);
+                    const requests = [];
+
+                    for (let offset = 0; offset < maxOffset; offset++) {
+                        requests.push(this.knoraService.getPrimaryAuthors(this.charSelected, offset));
+                    }
+
+                    forkJoin<any>(...requests)
+                        .subscribe((res: Array<Array<any>>) => {
+                            this.spinner.hide(`spinner-${this.selectChar}`);
+                            this.alphabeticSearchStarted = false;
+                            this.alphabeticResources = []
+                                .concat(...res)
+                                .sort((res1, res2) => this.sortAuthor(res1, res2));
+                            // Saves data in cache
+                            this.authors[this.charSelected].data = this.alphabeticResources;
+                        }, error => {
+                            this.spinner.hide(`spinner-${this.selectChar}`);
+                        });
+                }, error => {
+                    this.spinner.hide(`spinner-${this.selectChar}`);
+                });
+        } else {
+            this.spinner.hide(`spinner-${this.selectChar}`);
+            this.alphabeticSearchStarted = false;
+            // Gets data from cache
+            this.alphabeticResources = this.authors[this.charSelected].data;
+            this.alphabeticResAmount = this.authors[this.charSelected].amount;
+        }
+    }
+
+    requestLexias() {
+        if (!this.lexias[this.charSelected]) {
+            this.knoraService.getLexiasCount(this.charSelected)
+                .subscribe(amount => {
+                    console.log(amount);
+                    this.alphabeticResAmount = amount;
+                    this.lexias[this.charSelected] = {amount};
+
+                    if (amount === 0) {
+                        this.spinner.hide(`spinner-${this.selectChar}`);
+                        this.alphabeticSearchStarted = false;
+                        return;
+                    }
+
+                    const maxOffset = Math.ceil(this.alphabeticResAmount / 25);
+                    const requests = [];
+
+                    for (let offset = 0; offset < maxOffset; offset++) {
+                        requests.push(this.knoraService.getLexias(this.charSelected, offset));
+                    }
+
+                    forkJoin<any>(...requests)
+                        .subscribe((res: Array<Array<any>>) => {
+                            this.spinner.hide(`spinner-${this.selectChar}`);
+                            this.alphabeticSearchStarted = false;
+                            this.alphabeticResources = []
+                                .concat(...res)
+                                .sort((res1, res2) => this.sortLexia(res1, res2));
+                            // Saves data in cache
+                            this.lexias[this.charSelected].data = this.alphabeticResources;
+                        }, error => {
+                            this.spinner.hide(`spinner-${this.selectChar}`);
+                        });
+                }, error => {
+                    this.spinner.hide(`spinner-${this.selectChar}`);
+                });
+        } else {
+            this.spinner.hide(`spinner-${this.selectChar}`);
+            this.alphabeticSearchStarted = false;
+            // Gets data from cache
+            this.alphabeticResources = this.lexias[this.charSelected].data;
+            this.alphabeticResAmount = this.lexias[this.charSelected].amount;
         }
     }
 
@@ -646,46 +565,24 @@ export class BrowsingComponent implements OnInit {
     }
 
     detailSelected(res: any) {
-        console.log("detail", res);
         if (this.resTypeSelected === "author") {
             this.authorRef.searchVal1 = res.id;
-
-            if (this.bookRef.searchVal1) {
-                delete this.bookRef.searchVal1;
-            }
-
-            if (this.lexiaRef.searchVal1) {
-                delete this.lexiaRef.searchVal1;
-            }
-
-            this.resultBox.search(this.myPassage);
+            this.bookRef.searchVal1 = null;
+            this.lexiaRef.searchVal1 = null;
 
         } else if (this.resTypeSelected === "book") {
             this.bookRef.searchVal1 = res.id;
-
-            if (this.authorRef.searchVal1) {
-                delete this.authorRef.searchVal1;
-            }
-
-            if (this.lexiaRef.searchVal1) {
-                delete this.lexiaRef.searchVal1;
-            }
-
-            this.resultBox.search(this.myPassage);
+            this.authorRef.searchVal1 = null;
+            this.lexiaRef.searchVal1 = null;
 
         } else if (this.resTypeSelected === "lexia") {
             this.lexiaRef.searchVal1 = res.id;
+            this.bookRef.searchVal1 = null;
+            this.authorRef.searchVal1 = null;
 
-            if (this.bookRef.searchVal1) {
-                delete this.bookRef.searchVal1;
-            }
-
-            if (this.authorRef.searchVal1) {
-                delete this.authorRef.searchVal1;
-            }
-
-            this.resultBox.search(this.myPassage);
         }
+
+        this.resultBox.search(this.myPassage);
     }
 
 }
