@@ -1,22 +1,14 @@
 <div class="search-container" fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="center start" fxLayoutGap="30px">
 
-    <mat-card fxFlex.gt-sm="400px">
+    <mat-card fxFlex.gt-sm="350px">
         <mat-card-content>
 
             <form [formGroup]="form" (ngSubmit)="search()" fxLayout="column">
 
                 <table>
                     <tr>
-                        <td class="width-60px">
-                            <mat-form-field class="width-60px">
-                                <mat-select formControlName="compText">
-                                    <mat-option *ngFor="let operator of operators1" [disabled]="operator.disabled"
-                                                [value]="operator.value">{{operator.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
                         <td>
-                            <mat-form-field class="width-100">
+                            <mat-form-field>
                                 <mat-label>Text</mat-label>
                                 <input matInput formControlName="text" (keydown.escape)="clear('text')">
                                 <button *ngIf="form.get('text').value" type="button" mat-button matSuffix
@@ -31,16 +23,8 @@
                     </tr>
 
                     <tr>
-                        <td class="width-60px">
-                            <mat-form-field class="width-60px">
-                                <mat-select formControlName="compBookTitle">
-                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
-                                                [value]="operator.value">{{operator.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
                         <td>
-                            <mat-form-field class="width-100">
+                            <mat-form-field>
                                 <mat-label>Title</mat-label>
                                 <input matInput formControlName="bookTitle" (keydown.escape)="clear('bookTitle')">
                                 <button *ngIf="form.get('bookTitle').value" type="button" mat-button matSuffix
@@ -55,16 +39,8 @@
                     </tr>
 
                     <tr>
-                        <td class="width-60px">
-                            <mat-form-field class="width-60px">
-                                <mat-select formControlName="compAuthor">
-                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
-                                                [value]="operator.value">{{operator.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
                         <td>
-                            <mat-form-field class="width-100">
+                            <mat-form-field>
                                 <mat-label>Author</mat-label>
                                 <input matInput formControlName="author" (keydown.escape)="clear('author')">
                                 <button *ngIf="form.get('author').value" type="button" mat-button matSuffix
@@ -79,16 +55,8 @@
                     </tr>
 
                     <tr>
-                        <td class="width-60px">
-                            <mat-form-field class="width-60px">
-                                <mat-select formControlName="compGender">
-                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
-                                                [value]="operator.value">{{operator.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
                         <td>
-                            <mat-form-field class="width-100">
+                            <mat-form-field>
                                 <mat-label>Author's gender</mat-label>
                                 <mat-select formControlName="gender">
                                     <mat-option value="">-</mat-option>
@@ -103,16 +71,8 @@
                     </tr>
 
                     <tr>
-                        <td class="width-60px">
-                            <mat-form-field class="width-60px">
-                                <mat-select formControlName="compLexia">
-                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
-                                                [value]="operator.value">{{operator.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
                         <td>
-                            <mat-form-field class="width-100">
+                            <mat-form-field>
                                 <mat-label>Lexia</mat-label>
                                 <input matInput formControlName="lexia" (keydown.escape)="clear('lexia')">
                                 <button *ngIf="form.get('lexia').value" type="button" mat-button matSuffix
@@ -127,16 +87,8 @@
                     </tr>
 
                     <tr>
-                        <td class="width-60px">
-                            <mat-form-field class="width-60px">
-                                <mat-select formControlName="compCreatedDate">
-                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
-                                                [value]="operator.value">{{operator.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
                         <td>
-                            <mat-form-field class="width-100">
+                            <mat-form-field>
                                 <mat-label>Date</mat-label>
                                 <input matInput formControlName="createdDate" placeholder="1662 or 1662-1664"
                                        (keydown.escape)="clear('createdDate')">
@@ -152,16 +104,8 @@
                     </tr>
 
                     <tr>
-                        <td class="width-60px">
-                            <mat-form-field class="width-60px">
-                                <mat-select formControlName="compMarking">
-                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
-                                                [value]="operator.value">{{operator.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
                         <td>
-                            <mat-form-field class="width-100">
+                            <mat-form-field>
                                 <mat-label>Marking</mat-label>
                                 <mat-select formControlName="marking">
                                     <mat-option value="">-</mat-option>
@@ -177,16 +121,8 @@
                     </tr>
 
                     <tr>
-                        <td class="width-60px">
-                            <mat-form-field class="width-60px">
-                                <mat-select formControlName="compFunction">
-                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
-                                                [value]="operator.value">{{operator.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
                         <td>
-                            <mat-form-field class="width-100">
+                            <mat-form-field>
                                 <mat-label>Function</mat-label>
                                 <mat-select formControlName="function">
                                     <mat-option value="">-</mat-option>
@@ -202,16 +138,8 @@
                     </tr>
 
                     <tr>
-                        <td class="width-60px">
-                            <mat-form-field class="width-60px">
-                                <mat-select formControlName="compLanguage">
-                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
-                                                [value]="operator.value">{{operator.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
                         <td>
-                            <mat-form-field class="width-100">
+                            <mat-form-field>
                                 <mat-label>Language</mat-label>
                                 <mat-select formControlName="language">
                                     <mat-option value="">-</mat-option>
@@ -227,16 +155,8 @@
                     </tr>
 
                     <tr>
-                        <td class="width-60px">
-                            <mat-form-field class="width-60px">
-                                <mat-select formControlName="compPerformedCompany">
-                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
-                                                [value]="operator.value">{{operator.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
                         <td>
-                            <mat-form-field class="width-100">
+                            <mat-form-field>
                                 <mat-label>First performance: Company</mat-label>
                                 <input matInput formControlName="performedCompany" (keydown.escape)="clear('performedCompany')">
                                 <button *ngIf="form.get('performedCompany').value" type="button" mat-button matSuffix
@@ -251,16 +171,8 @@
                     </tr>
 
                     <tr>
-                        <td class="width-60px">
-                            <mat-form-field class="width-60px">
-                                <mat-select formControlName="compPerformedActor">
-                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
-                                                [value]="operator.value">{{operator.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
                         <td>
-                            <mat-form-field class="width-100">
+                            <mat-form-field>
                                 <mat-label>First performance: Actor</mat-label>
                                 <input matInput formControlName="performedActor" (keydown.escape)="clear('performedActor')">
                                 <button *ngIf="form.get('performedActor').value" type="button" mat-button matSuffix
@@ -275,16 +187,8 @@
                     </tr>
 
                     <tr>
-                        <td class="width-60px">
-                            <mat-form-field class="width-60px">
-                                <mat-select formControlName="compGenre">
-                                    <mat-option *ngFor="let operator of operators2" [disabled]="operator.disabled"
-                                                [value]="operator.value">{{operator.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
                         <td>
-                            <mat-form-field class="width-100">
+                            <mat-form-field>
                                 <mat-label>Genre</mat-label>
                                 <mat-select formControlName="genre">
                                     <mat-option value="">-</mat-option>
@@ -300,8 +204,7 @@
                     </tr>
 
                     <tr>
-                        <td></td>
-                        <td class="width-100">
+                        <td class="play-toggle">
                             <mat-slide-toggle formControlName="plays" [color]="'warn'" (ngModelChange)="onChange($event)">
                                 Show only plays
                             </mat-slide-toggle>
@@ -324,10 +227,13 @@
                 <!--                </div>-->
 
                 <button [disabled]="form.invalid" type="submit" mat-flat-button color="primary">SEARCH</button>
+
             </form>
+
         </mat-card-content>
     </mat-card>
 
     <app-results #results></app-results>
+
 </div>
 

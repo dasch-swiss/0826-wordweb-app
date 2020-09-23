@@ -345,16 +345,6 @@ export class AdvancedSearchComponent implements OnInit {
 
     priority = 0;
 
-    operators1 = [
-        {value: "-"},
-        {value: "NOT", disabled: true}
-    ];
-
-    operators2 = [
-        {value: "AND", disabled: false},
-        {value: "NOT", disabled: true}
-    ];
-
     constructor(
         private apiService: ApiService,
         private stringService: StringService,
@@ -393,29 +383,17 @@ export class AdvancedSearchComponent implements OnInit {
         this.performedCompanyRef = this.myPassage.props[11].res.props[11];
 
         this.form = new FormGroup({
-            compText: new FormControl("-", []),
             text: new FormControl("", []),
-            compAuthor: new FormControl("AND", []),
             author: new FormControl("", []),
-            compGender: new FormControl("AND", []),
             gender: new FormControl("", []),
-            compBookTitle: new FormControl("AND", []),
             bookTitle: new FormControl("", []),
-            compGenre: new FormControl("AND", []),
             genre: new FormControl("", []),
-            compLexia: new FormControl("AND", []),
             lexia: new FormControl("", []),
-            compLanguage: new FormControl("AND", []),
             language: new FormControl("", []),
-            compFunction: new FormControl("AND", []),
             function: new FormControl("", []),
-            compMarking: new FormControl("AND", []),
             marking: new FormControl("", []),
-            compCreatedDate: new FormControl("AND", []),
             createdDate: new FormControl("", [CustomValidators.correctDate]),
-            compPerformedCompany: new FormControl("AND", []),
             performedCompany: new FormControl("", []),
-            compPerformedActor: new FormControl("AND", []),
             performedActor: new FormControl("", []),
             plays: new FormControl(false, [])
         });
@@ -434,72 +412,58 @@ export class AdvancedSearchComponent implements OnInit {
         }
 
         if (this.form.get("author").value) {
-            this.authorLastNameRef.negation = this.form.get("compAuthor").value === "NOT";
             this.authorLastNameRef.searchVal1 = this.form.get("author").value;
         } else {
-            this.authorLastNameRef.negation = false;
             this.authorLastNameRef.searchVal1 = null;
         }
 
         if (this.form.get("gender").value) {
-            this.genderRef.negation = this.form.get("compGender").value === "NOT";
             this.genderRef.searchVal1 = this.form.get("gender").value;
             this.genderRef.priority = 0;
         } else {
-            this.genderRef.negation = false;
             this.genderRef.searchVal1 = null;
             this.genderRef.priority = 1;
         }
 
         if (this.form.get("bookTitle").value) {
-            this.bookTitleRef.negation = this.form.get("compBookTitle").value === "NOT";
             this.bookTitleRef.searchVal1 = this.form.get("bookTitle").value;
         } else {
-            this.bookTitleRef.negation = false;
             this.bookTitleRef.searchVal1 = null;
         }
 
         if (this.form.get("lexia").value) {
-            this.lexiaRef.negation = this.form.get("compLexia").value === "NOT";
             this.lexiaRef.searchVal1 = this.form.get("lexia").value;
         } else {
-            this.lexiaRef.negation = false;
             this.lexiaRef.searchVal1 = null;
         }
 
         if (this.form.get("language").value) {
-            this.languageRef.negation = this.form.get("compLanguage").value === "NOT";
             this.languageRef.searchVal1 = this.form.get("language").value;
             this.languageRef.priority = 0;
         } else {
-            this.languageRef.negation = false;
             this.languageRef.searchVal1 = null;
             this.languageRef.priority = 1;
         }
 
         if (this.form.get("function").value) {
-            this.functionRef.negation = this.form.get("compFunction").value === "NOT";
             this.functionRef.searchVal1 = this.form.get("function").value;
             this.functionRef.priority = 0;
         } else {
-            this.functionRef.negation = false;
             this.functionRef.searchVal1 = null;
             this.functionRef.priority = 1;
         }
 
         if (this.form.get("marking").value) {
-            this.markingRef.negation = this.form.get("compMarking").value === "NOT";
             this.markingRef.searchVal1 = this.form.get("marking").value;
             this.markingRef.priority = 0;
         } else {
-            this.markingRef.negation = false;
             this.markingRef.searchVal1 = null;
             this.markingRef.priority = 1;
         }
 
         if (this.form.get("createdDate").valid && this.form.get("createdDate").value.length > 0) {
             const REGEX = /^(\d{1,4})(-(\d{1,4}))?$/;
-            const arr = this.form.get("date").value.match(REGEX);
+            const arr = this.form.get("createdDate").value.match(REGEX);
 
             if (arr[1]) {
                 this.createdDateRef.searchVal1 = arr[1];
@@ -508,18 +472,14 @@ export class AdvancedSearchComponent implements OnInit {
             if (arr[3]) {
                 this.createdDateRef.searchVal2 = arr[3];
             }
-            this.createdDateRef.negation = this.form.get("compCreatedDate").value === "NOT";
         } else {
-            this.createdDateRef.negation = false;
             this.createdDateRef.searchVal1 = null;
             this.createdDateRef.searchVal2 = null;
         }
 
         // if (this.form.get("performedCompany").valid) {
-        //     this.performedCompanyRef.negation = this.form.get("compPerformedCompany").value === "NOT";
         //     this.performedCompanyRef.searchVal1 = this.form.get("performedCompany").value;
         // } else {
-        //     this.performedCompanyRef.negation = false;
         //     this.performedCompanyRef.searchVal1 = null;
         // }
 
@@ -528,11 +488,9 @@ export class AdvancedSearchComponent implements OnInit {
             this.genreRef.searchVal1 = this.listService.searchNodeByName("Drama (Theatre)");
         } else {
             if (this.form.get("genre").value) {
-                this.genreRef.negation = this.form.get("compGenre").value === "NOT";
                 this.genreRef.searchVal1 = this.form.get("genre").value;
                 this.genreRef.priority = 0;
             } else {
-                this.genreRef.negation = false;
                 this.genreRef.searchVal1 = null;
                 this.genreRef.priority = 1;
             }
