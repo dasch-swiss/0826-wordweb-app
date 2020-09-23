@@ -9,7 +9,7 @@ export class BibliographyPipe implements PipeTransform {
         const book = detailPas.occursIn[0];
 
         const authors = book.isWrittenBy
-            .map(author => author.hasFirstName ? {firstName: author.hasFirstName[0].value, lastName: author.hasLastName[0].value} :
+            .map(author => (author.hasFirstName && author.hasFirstName[0].value !== "_") ? {firstName: author.hasFirstName[0].value, lastName: author.hasLastName[0].value} :
                 {lastName: author.hasLastName[0].value}
             )
             .sort((author1, author2) => author1.lastName < author2.lastName ? -1 : (author1.lastName > author2.lastName ? 1 : 0)
