@@ -3,7 +3,7 @@ import {KnoraService} from "./services/knora.service";
 import {mergeMap} from "rxjs/operators";
 import {forkJoin} from "rxjs";
 import {ListService} from "./services/list.service";
-import {GravesearchBuilderService} from "./services/gravesearch-builder.service";
+import {GravsearchBuilderService} from "./services/gravsearch-builder.service";
 
 export interface IAppConfig {
 
@@ -31,7 +31,7 @@ export class AppInitService {
   constructor(
       private knoraService: KnoraService,
       private listService: ListService,
-      private gsBuilder: GravesearchBuilderService) {
+      private gsBuilder: GravsearchBuilderService) {
   }
 
   Init() {

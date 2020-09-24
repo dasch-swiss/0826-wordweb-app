@@ -89,7 +89,7 @@ import {LexiasPipe} from "./search/results/pipe/lexias.pipe";
 import {AppInitService} from "./app-init.service";
 import {KnoraService} from "./services/knora.service";
 import {ListService} from "./services/list.service";
-import {GravesearchBuilderService} from "./services/gravesearch-builder.service";
+import {GravsearchBuilderService} from "./services/gravsearch-builder.service";
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -182,11 +182,11 @@ export function initializeApp(appInitService: AppInitService) {
     providers: [
         AppInitService,
         ListService,
-        GravesearchBuilderService,
+        GravsearchBuilderService,
         {
             provide: APP_INITIALIZER,
             useFactory: initializeApp,
-            deps: [AppInitService, GravesearchBuilderService, KnoraService],
+            deps: [AppInitService, GravsearchBuilderService, KnoraService],
             multi: true
         },
         {

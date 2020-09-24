@@ -15,7 +15,7 @@ import {
     ListsResponse,
     KnoraPeriod
 } from "@dasch-swiss/dsp-js";
-import {GravesearchBuilderService} from "./gravesearch-builder.service";
+import {GravsearchBuilderService} from "./gravsearch-builder.service";
 import {IMainClass} from "../model/displayModel";
 import {map, tap} from "rxjs/operators";
 import {Observable, throwError} from "rxjs";
@@ -27,7 +27,7 @@ import {ReadResourceSequence} from "@dasch-swiss/dsp-js";
 export class KnoraService {
     private knoraApiConnection: KnoraApiConnection;
 
-    constructor(private gsBuilder: GravesearchBuilderService) {
+    constructor(private gsBuilder: GravsearchBuilderService) {
     }
 
     set knoraConnection(url: string) {
@@ -45,10 +45,10 @@ export class KnoraService {
         return this.knoraApiConnection.v2.auth.login("email", email, password);
     }
 
-    graveSeachQuery(structure: IMainClass, priority: number, offset?: number): Observable<any> {
-        const graveSearch = this.gsBuilder.getQuery(structure, priority, offset);
-        console.log(graveSearch);
-        return this.knoraApiConnection.v2.search.doExtendedSearch(graveSearch)
+    gravseachQuery(structure: IMainClass, priority: number, offset?: number): Observable<any> {
+        const gravsearch = this.gsBuilder.getQuery(structure, priority, offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 tap(data => console.log(data)),
                 map((sequence: ReadResourceSequence) => {
@@ -112,9 +112,9 @@ export class KnoraService {
         return newResource;
     }
 
-    graveSearchQueryCount(structure: IMainClass, priority: number): Observable<number> {
-        const graveSearch = this.gsBuilder.getQuery(structure, priority);
-        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(graveSearch)
+    gravsearchQueryCount(structure: IMainClass, priority: number): Observable<number> {
+        const gravsearch = this.gsBuilder.getQuery(structure, priority);
+        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
             );
@@ -140,18 +140,18 @@ export class KnoraService {
     }
 
     getPrimaryAuthorsCount(char: string, offset?: number) {
-        const graveSearch = this.gsBuilder.getPrimaryAuthorsQuery(char, offset);
-        console.log(graveSearch);
-        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(graveSearch)
+        const gravsearch = this.gsBuilder.getPrimaryAuthorsQuery(char, offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
             );
     }
 
     getPrimaryAuthors(char: string, offset?: number) {
-        const graveSearch = this.gsBuilder.getPrimaryAuthorsQuery(char, offset);
-        console.log(graveSearch);
-        return this.knoraApiConnection.v2.search.doExtendedSearch(graveSearch)
+        const gravsearch = this.gsBuilder.getPrimaryAuthorsQuery(char, offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 tap(data => console.log(data)),
                 map((sequence: ReadResourceSequence) => {
@@ -161,18 +161,18 @@ export class KnoraService {
     }
 
     getPrimaryBooksCount(char: string, offset?: number) {
-        const graveSearch = this.gsBuilder.getPrimaryBooksQuery(char, offset);
-        console.log(graveSearch);
-        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(graveSearch)
+        const gravsearch = this.gsBuilder.getPrimaryBooksQuery(char, offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
             );
     }
 
     getPrimaryBooks(char: string, offset?: number) {
-        const graveSearch = this.gsBuilder.getPrimaryBooksQuery(char, offset);
-        console.log(graveSearch);
-        return this.knoraApiConnection.v2.search.doExtendedSearch(graveSearch)
+        const gravsearch = this.gsBuilder.getPrimaryBooksQuery(char, offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 tap(data => console.log(data)),
                 map((sequence: ReadResourceSequence) => {
@@ -182,18 +182,18 @@ export class KnoraService {
     }
 
     getLexiasCount(char: string, offset?: number) {
-        const graveSearch = this.gsBuilder.getLexiasQuery(char, offset);
-        console.log(graveSearch);
-        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(graveSearch)
+        const gravsearch = this.gsBuilder.getLexiasQuery(char, offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
             );
     }
 
     getLexias(char: string, offset?: number) {
-        const graveSearch = this.gsBuilder.getLexiasQuery(char, offset);
-        console.log(graveSearch);
-        return this.knoraApiConnection.v2.search.doExtendedSearch(graveSearch)
+        const gravsearch = this.gsBuilder.getLexiasQuery(char, offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 tap(data => console.log(data)),
                 map((sequence: ReadResourceSequence) => {
@@ -203,18 +203,18 @@ export class KnoraService {
     }
 
     getCompaniesCount(offset?: number) {
-        const graveSearch = this.gsBuilder.getCompaniesQuery(offset);
-        console.log(graveSearch);
-        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(graveSearch)
+        const gravsearch = this.gsBuilder.getCompaniesQuery(offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
             );
     }
 
     getCompanies(offset?: number) {
-        const graveSearch = this.gsBuilder.getCompaniesQuery(offset);
-        console.log(graveSearch);
-        return this.knoraApiConnection.v2.search.doExtendedSearch(graveSearch)
+        const gravsearch = this.gsBuilder.getCompaniesQuery(offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 tap(data => console.log(data)),
                 map((sequence: ReadResourceSequence) => {

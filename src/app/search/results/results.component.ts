@@ -49,9 +49,9 @@ export class ResultsComponent implements OnInit {
         this.errorObject = null;
         this.searchStarted = true;
 
-        this.nPassages = this.knoraService.graveSearchQueryCount(this.structure, priority);
+        this.nPassages = this.knoraService.gravsearchQueryCount(this.structure, priority);
 
-        this.knoraService.graveSeachQuery(this.structure, priority)
+        this.knoraService.gravseachQuery(this.structure, priority)
             .subscribe(data => {
                 console.log(data);
                 this.passages = data.map(passage => {
@@ -92,7 +92,7 @@ export class ResultsComponent implements OnInit {
 
         const offset = Math.floor(this.passages.length / 25);
 
-        this.knoraService.graveSeachQuery(this.structure, this.priority, offset)
+        this.knoraService.gravseachQuery(this.structure, this.priority, offset)
             .subscribe(data => {
                 console.log(data);
                 this.passages.push(...data);
