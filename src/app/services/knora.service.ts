@@ -202,6 +202,27 @@ export class KnoraService {
             );
     }
 
+    getCompaniesCount(offset?: number) {
+        const graveSearch = this.gsBuilder.getCompaniesQuery(offset);
+        console.log(graveSearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(graveSearch)
+            .pipe(
+                map((data: CountQueryResponse) => data.numberOfResults)
+            );
+    }
+
+    getCompanies(offset?: number) {
+        const graveSearch = this.gsBuilder.getCompaniesQuery(offset);
+        console.log(graveSearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(graveSearch)
+            .pipe(
+                tap(data => console.log(data)),
+                map((sequence: ReadResourceSequence) => {
+                    return sequence.resources.map(resource => this.processRes(resource));
+                })
+            );
+    }
+
     // Empty methods for future
     // getProjectOntology() {}
     // getNodeOfList(iri: string) {}

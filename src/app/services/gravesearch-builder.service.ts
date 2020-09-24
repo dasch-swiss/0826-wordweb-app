@@ -598,4 +598,28 @@ export class GravesearchBuilderService {
         ];
         return query.join("\n");
     }
+
+    getCompaniesQuery(offset?: number): string {
+        const node: IMainClassObject = {name: "company", variable: "company"};
+        const query = [
+            "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
+            "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
+            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            "",
+            "CONSTRUCT {",
+            `${this.getFirstConstructLine(node).join("")}`,
+            "?company teimww:hasCompanyTitle ?companyTitle .",
+            "?company teimww:hasCompanyInternalId ?companyInternalId .",
+            "?book teimww:performedBy ?company .",
+            "} WHERE {",
+            `${this.getFirstWhereLine(node).join("")}`,
+            "?company teimww:hasCompanyTitle ?companyTitle .",
+            "?company teimww:hasCompanyInternalId ?companyInternalId .",
+            "?book teimww:performedBy ?company .",
+            "}",
+            "",
+            `OFFSET ${offset ? offset : 0}`
+        ];
+        return query.join("\n");
+    }
 }
