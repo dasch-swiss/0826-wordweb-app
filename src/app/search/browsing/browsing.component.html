@@ -22,7 +22,7 @@
 <div class="search-container" fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="center start"
      fxLayoutGap="30px">
 
-    <mat-card fxFlex.gt-sm="350px">
+    <mat-card fxFlex.gt-sm="350px" *ngIf="charSelected">
 
         <mat-card-content *ngIf="!alphabeticSearchStarted">
             <div *ngFor="let alphaRes of alphabeticResources; let first = first;">

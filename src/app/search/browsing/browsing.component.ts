@@ -344,7 +344,7 @@ export class BrowsingComponent implements OnInit {
         this.bookRef = this.myPassage.props[11];
         this.lexiaRef = this.myPassage.props[14];
         // Default char and resource type
-        this.charSelected = "A";
+        // this.charSelected = "A";
         this.resTypeSelected = "book";
 
         this.requestResources();
