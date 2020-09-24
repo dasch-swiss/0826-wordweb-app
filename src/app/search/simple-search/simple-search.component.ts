@@ -398,27 +398,27 @@ export class SimpleSearchComponent implements OnInit {
     getHelpText(property: string) {
         switch (property) {
             case ("text"): {
-                this.openDialog(this.stringService.getString("text_help"), "Text");
+                this.openHelpDialog(this.stringService.getString("text_help"), "Text");
                 break;
             }
             case ("author"): {
-                this.openDialog(this.stringService.getString("author_help"), "Author");
+                this.openHelpDialog(this.stringService.getString("author_help"), "Author");
                 break;
             }
             case ("title"): {
-                this.openDialog(this.stringService.getString("title_help"), "Title");
+                this.openHelpDialog(this.stringService.getString("title_help"), "Title");
                 break;
             }
             case ("lexia"): {
-                this.openDialog(this.stringService.getString("lexia_help"), "Lexia");
+                this.openHelpDialog(this.stringService.getString("lexia_help"), "Lexia");
                 break;
             }
             case ("date"): {
-                this.openDialog(this.stringService.getString("date_help"), "Date");
+                this.openHelpDialog(this.stringService.getString("date_help"), "Date");
                 break;
             }
             case ("plays"): {
-                this.openDialog(this.stringService.getString("plays_help"), "Only Plays");
+                this.openHelpDialog(this.stringService.getString("plays_help"), "Only Plays");
                 break;
             }
         }
@@ -428,7 +428,7 @@ export class SimpleSearchComponent implements OnInit {
         this.form.get(formControlName).reset("");
     }
 
-    openDialog(text: string, name: string) {
+    openHelpDialog(text: string, name: string) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.width = "650px";
         dialogConfig.data = {
