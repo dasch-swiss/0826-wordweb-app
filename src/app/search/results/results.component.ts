@@ -222,7 +222,7 @@ export class ResultsComponent implements OnInit {
     }
 
     spellingBtnText(passage: any): string {
-        return passage.original ? "Show Normalized spelling" : "Show Original spelling";
+        return passage.original ? "Show normalized spelling" : "Show original spelling";
     }
 
     sortResults() {
