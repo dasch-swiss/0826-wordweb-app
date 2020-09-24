@@ -500,51 +500,51 @@ export class AdvancedSearchComponent implements OnInit {
     getHelpText(formControlName: string) {
         switch (formControlName) {
             case ("text"): {
-                this.openDialog(this.stringService.getString("text_help"), "Text");
+                this.openHelpDialog(this.stringService.getString("text_help"), "Text");
                 break;
             }
             case ("author"): {
-                this.openDialog(this.stringService.getString("author_help"), "Author");
+                this.openHelpDialog(this.stringService.getString("author_help"), "Author");
                 break;
             }
             case ("bookTitle"): {
-                this.openDialog(this.stringService.getString("title_help"), "Title");
+                this.openHelpDialog(this.stringService.getString("title_help"), "Title");
                 break;
             }
             case ("lexia"): {
-                this.openDialog(this.stringService.getString("lexia_help"), "Lexia");
+                this.openHelpDialog(this.stringService.getString("lexia_help"), "Lexia");
                 break;
             }
             case ("createdDate"): {
-                this.openDialog(this.stringService.getString("date_help"), "Date");
+                this.openHelpDialog(this.stringService.getString("date_help"), "Date");
                 break;
             }
             case ("marking"): {
-                this.openDialog(this.stringService.getString("marking_help"), "Marking");
+                this.openHelpDialog(this.stringService.getString("marking_help"), "Marking");
                 break;
             }
             case ("function"): {
-                this.openDialog(this.stringService.getString("function_help"), "Function");
+                this.openHelpDialog(this.stringService.getString("function_help"), "Function");
                 break;
             }
             case ("performedCompany"): {
-                this.openDialog(this.stringService.getString("per_company_help"), "First performance: company");
+                this.openHelpDialog(this.stringService.getString("per_company_help"), "First performance: company");
                 break;
             }
             case ("performedActor"): {
-                this.openDialog(this.stringService.getString("per_actor_help"), "First performance: actor");
+                this.openHelpDialog(this.stringService.getString("per_actor_help"), "First performance: actor");
                 break;
             }
             case ("language"): {
-                this.openDialog(this.stringService.getString("language_help"), "Language");
+                this.openHelpDialog(this.stringService.getString("language_help"), "Language");
                 break;
             }
             case ("genre"): {
-                this.openDialog(this.stringService.getString("genre_help"), "Genre");
+                this.openHelpDialog(this.stringService.getString("genre_help"), "Genre");
                 break;
             }
             case ("plays"): {
-                this.openDialog(this.stringService.getString("plays_help"), "Only Plays");
+                this.openHelpDialog(this.stringService.getString("plays_help"), "Only Plays");
                 break;
             }
         }
@@ -558,7 +558,7 @@ export class AdvancedSearchComponent implements OnInit {
         toggled ? this.form.get("genre").disable() : this.form.get("genre").enable();
     }
 
-    openDialog(text: string, name: string) {
+    openHelpDialog(text: string, name: string) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.width = "650px";
         dialogConfig.data = {
