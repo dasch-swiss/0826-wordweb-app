@@ -2,21 +2,22 @@ import {Component, Inject, OnInit} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
-    selector: "app-help",
-    templateUrl: "./help.component.html",
-    styleUrls: ["./help.component.scss"]
+    selector: "app-fill-in",
+    templateUrl: "./fill-in.component.html",
+    styleUrls: ["./fill-in.component.scss"]
 })
-export class HelpComponent implements OnInit {
+export class FillInComponent implements OnInit {
     title: string;
     text: string;
 
-    constructor(private dialogRef: MatDialogRef<HelpComponent>,
+    constructor(private dialogRef: MatDialogRef<FillInComponent>,
                 @Inject(MAT_DIALOG_DATA) data) {
+        console.log(data);
         this.title = data.title;
         this.text = data.text;
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
     }
 
     close() {

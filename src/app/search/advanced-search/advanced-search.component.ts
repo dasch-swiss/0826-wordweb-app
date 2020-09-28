@@ -10,6 +10,7 @@ import {CustomValidators} from "../../customValidators";
 import {ResultsComponent} from "../results/results.component";
 import {ListService} from "../../services/list.service";
 import {TreeTableService} from "../../services/tree-table.service";
+import {FillInComponent} from "../dialog/fill-in/fill-in.component";
 
 @Component({
     selector: "app-advanced-search",
@@ -355,6 +356,7 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this.listService.getList("genre"));
         const genresNode = this.listService.getList("genre").nodes;
         this.genres = genresNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
 
@@ -400,6 +402,26 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     search() {
+        if ((!this.form.get("text").value
+            && !this.form.get("author").value
+            && !this.form.get("gender").value
+            && !this.form.get("bookTitle").value
+            && !this.form.get("lexia").value
+            && !this.form.get("language").value
+            && !this.form.get("function").value
+            && !this.form.get("marking").value
+            && !this.form.get("createdDate").value)
+            && (!this.form.get("plays").value && !this.form.get("genre").value)) {
+            console.log("empty");
+            const dialogConfig = new MatDialogConfig();
+            dialogConfig.width = "650px";
+            dialogConfig.data = {
+                title: "Please note",
+                text: this.stringService.getString("text_not_filled")
+            };
+            this.helpDialog.open(FillInComponent, dialogConfig);
+            return;
+        }
         this.prepareStructure();
         this.resultBox.search(this.myPassage, this.priority);
     }
@@ -485,7 +507,7 @@ export class AdvancedSearchComponent implements OnInit {
 
         if (this.form.get("plays").value) {
             // Only plays means if genre is "Drama (Theatre)"
-            this.genreRef.searchVal1 = this.listService.searchNodeByName("Drama (Theatre)");
+            this.genreRef.searchVal1 = this.listService.searchNodeByName("ALL DRAMA");
         } else {
             if (this.form.get("genre").value) {
                 this.genreRef.searchVal1 = this.form.get("genre").value;
@@ -500,51 +522,51 @@ export class AdvancedSearchComponent implements OnInit {
     getHelpText(formControlName: string) {
         switch (formControlName) {
             case ("text"): {
-                this.openHelpDialog(this.stringService.getString("text_help"), "Text");
+                this.openHelpDialog(this.stringService.getString("text_help"), this.stringService.getString("default_title"));
                 break;
             }
             case ("author"): {
-                this.openHelpDialog(this.stringService.getString("author_help"), "Author");
+                this.openHelpDialog(this.stringService.getString("author_help"), this.stringService.getString("default_title"));
                 break;
             }
             case ("bookTitle"): {
-                this.openHelpDialog(this.stringService.getString("title_help"), "Title");
+                this.openHelpDialog(this.stringService.getString("title_help"), this.stringService.getString("default_title"));
                 break;
             }
             case ("lexia"): {
-                this.openHelpDialog(this.stringService.getString("lexia_help"), "Lexia");
+                this.openHelpDialog(this.stringService.getString("lexia_help"), "What is quoted?");
                 break;
             }
             case ("createdDate"): {
-                this.openHelpDialog(this.stringService.getString("date_help"), "Date");
+                this.openHelpDialog(this.stringService.getString("date_help"), this.stringService.getString("default_title"));
                 break;
             }
             case ("marking"): {
-                this.openHelpDialog(this.stringService.getString("marking_help"), "Marking");
+                this.openHelpDialog(this.stringService.getString("marking_help"), "\"Marking\"");
                 break;
             }
             case ("function"): {
-                this.openHelpDialog(this.stringService.getString("function_help"), "Function");
+                this.openHelpDialog(this.stringService.getString("function_help"), this.stringService.getString("default_title"));
                 break;
             }
             case ("performedCompany"): {
-                this.openHelpDialog(this.stringService.getString("per_company_help"), "First performance: company");
+                this.openHelpDialog(this.stringService.getString("per_company_help"), this.stringService.getString("default_title"));
                 break;
             }
             case ("performedActor"): {
-                this.openHelpDialog(this.stringService.getString("per_actor_help"), "First performance: actor");
+                this.openHelpDialog(this.stringService.getString("per_actor_help"), this.stringService.getString("default_title"));
                 break;
             }
             case ("language"): {
-                this.openHelpDialog(this.stringService.getString("language_help"), "Language");
+                this.openHelpDialog(this.stringService.getString("language_help"), this.stringService.getString("default_title"));
                 break;
             }
             case ("genre"): {
-                this.openHelpDialog(this.stringService.getString("genre_help"), "Genre");
+                this.openHelpDialog(this.stringService.getString("genre_help"), this.stringService.getString("default_title"));
                 break;
             }
             case ("plays"): {
-                this.openHelpDialog(this.stringService.getString("plays_help"), "Only Plays");
+                this.openHelpDialog(this.stringService.getString("plays_help"), this.stringService.getString("default_title"));
                 break;
             }
         }
@@ -558,13 +580,17 @@ export class AdvancedSearchComponent implements OnInit {
         toggled ? this.form.get("genre").disable() : this.form.get("genre").enable();
     }
 
-    openHelpDialog(text: string, name: string) {
+    openHelpDialog(text: string, title: string) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.width = "650px";
         dialogConfig.data = {
             text,
-            name
+            title
         };
         this.helpDialog.open(HelpComponent, dialogConfig);
+    }
+
+    selectCompany() {
+        console.log("select company");
     }
 }

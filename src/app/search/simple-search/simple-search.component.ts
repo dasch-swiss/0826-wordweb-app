@@ -10,6 +10,7 @@ import {ListService} from "../../services/list.service";
 import {NgxSpinnerService} from "ngx-spinner";
 import {ResultsComponent} from "../results/results.component";
 import {CustomValidators} from "../../customValidators";
+import {FillInComponent} from "../dialog/fill-in/fill-in.component";
 
 @Component({
     selector: "app-simple-search",
@@ -323,7 +324,8 @@ export class SimpleSearchComponent implements OnInit {
         private stringService: StringService,
         private knoraService: KnoraService,
         private spinner: NgxSpinnerService,
-        private helpDialog: MatDialog) {
+        private helpDialog: MatDialog,
+        private fillInDialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -345,6 +347,23 @@ export class SimpleSearchComponent implements OnInit {
     }
 
     search() {
+        if ((!this.form.get("text").value
+            && !this.form.get("author").value
+            && !this.form.get("bookTitle").value
+            && !this.form.get("lexia").value
+            && !this.form.get("date").value)
+            && !this.form.get("plays").value) {
+            console.log("empty");
+            const dialogConfig = new MatDialogConfig();
+            dialogConfig.width = "650px";
+            dialogConfig.data = {
+                title: "Please note",
+                text: this.stringService.getString("text_not_filled")
+            };
+            this.helpDialog.open(FillInComponent, dialogConfig);
+            return;
+        }
+
         if (this.form.get("text").value) {
             this.textRef.searchVal1 = this.form.get("text").value;
         } else {
@@ -387,7 +406,7 @@ export class SimpleSearchComponent implements OnInit {
 
         if (this.form.get("plays").value) {
             // Only plays means if genre is "Drama (Theatre)"
-            this.genreRef.searchVal1 = this.listService.searchNodeByName("Drama (Theatre)");
+            this.genreRef.searchVal1 = this.listService.searchNodeByName("ALL DRAMA");
         } else {
             this.genreRef.searchVal1 = null;
         }
@@ -398,27 +417,27 @@ export class SimpleSearchComponent implements OnInit {
     getHelpText(property: string) {
         switch (property) {
             case ("text"): {
-                this.openHelpDialog(this.stringService.getString("text_help"), "Text");
+                this.openHelpDialog(this.stringService.getString("text_help"), this.stringService.getString("default_title"));
                 break;
             }
             case ("author"): {
-                this.openHelpDialog(this.stringService.getString("author_help"), "Author");
+                this.openHelpDialog(this.stringService.getString("author_help"), this.stringService.getString("default_title"));
                 break;
             }
             case ("title"): {
-                this.openHelpDialog(this.stringService.getString("title_help"), "Title");
+                this.openHelpDialog(this.stringService.getString("title_help"), this.stringService.getString("default_title"));
                 break;
             }
             case ("lexia"): {
-                this.openHelpDialog(this.stringService.getString("lexia_help"), "Lexia");
+                this.openHelpDialog(this.stringService.getString("lexia_help"), "What is quoted?");
                 break;
             }
             case ("date"): {
-                this.openHelpDialog(this.stringService.getString("date_help"), "Date");
+                this.openHelpDialog(this.stringService.getString("date_help"), this.stringService.getString("default_title"));
                 break;
             }
             case ("plays"): {
-                this.openHelpDialog(this.stringService.getString("plays_help"), "Only Plays");
+                this.openHelpDialog(this.stringService.getString("plays_help"), this.stringService.getString("default_title"));
                 break;
             }
         }
@@ -428,12 +447,12 @@ export class SimpleSearchComponent implements OnInit {
         this.form.get(formControlName).reset("");
     }
 
-    openHelpDialog(text: string, name: string) {
+    openHelpDialog(text: string, title: string) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.width = "650px";
         dialogConfig.data = {
-            text,
-            name
+            title,
+            text
         };
         this.helpDialog.open(HelpComponent, dialogConfig);
     }

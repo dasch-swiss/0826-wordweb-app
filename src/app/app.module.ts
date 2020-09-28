@@ -90,6 +90,7 @@ import {AppInitService} from "./app-init.service";
 import {KnoraService} from "./services/knora.service";
 import {ListService} from "./services/list.service";
 import {GravsearchBuilderService} from "./services/gravsearch-builder.service";
+import {FillInComponent} from "./search/dialog/fill-in/fill-in.component";
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -146,7 +147,8 @@ export function initializeApp(appInitService: AppInitService) {
         CommentsPipe,
         BibliographyPipe,
         SourcePipe,
-        LexiasPipe
+        LexiasPipe,
+        FillInComponent
     ],
     imports: [
         BrowserModule,
