@@ -4,21 +4,8 @@ mat-toolbar {
   min-height: 4rem;
   max-height: 4rem;
 
-  a {
-    font-family: 'Open Sans', sans-serif !important;
-    font-weight: bold;
-  }
-
-  a:hover {
-    color: rgb(159,11,11);
-  }
-
-  button:hover {
-    color: rgb(159,11,11);
-  }
-
-  div {
-    //background: rgba(0,0,0, 0.15);
+  .mat-toolbar-row {
+    justify-content: space-between;
 
     a {
       font-family: 'Open Sans', sans-serif !important;
@@ -27,7 +14,24 @@ mat-toolbar {
 
     a:hover {
       color: rgb(159,11,11);
-      //background: rgba(255,255,255, 0.7);
+    }
+
+    button:hover {
+      color: rgb(159,11,11);
+    }
+
+    div {
+      //background: rgba(0,0,0, 0.15);
+
+      a {
+        font-family: 'Open Sans', sans-serif !important;
+        font-weight: bold;
+      }
+
+      a:hover {
+        color: rgb(159,11,11);
+        //background: rgba(255,255,255, 0.7);
+      }
     }
   }
 }
