@@ -165,13 +165,25 @@ export class ResultsComponent implements OnInit {
                                                                 this.detailPassages[passage.id] = data;
                                                                 this.detailStarted = false;
                                                                 this.spinner.hide(`spinner-${passage.id}`);
+                                                            }, error => {
+                                                                // TODO Different error concept reporting
+                                                                this.detailStarted = false;
+                                                                this.spinner.hide(`spinner-${passage.id}`);
                                                             });
                                                     });
+                                                }, error => {
+                                                    // TODO Different error concept reporting
+                                                    this.detailStarted = false;
+                                                    this.spinner.hide(`spinner-${passage.id}`);
                                                 });
                                         });
                                     });
                             });
-                        });
+                        }, error => {
+                        // TODO Different error concept reporting
+                        this.detailStarted = false;
+                        this.spinner.hide(`spinner-${passage.id}`);
+                    });
 
                     // forkJoin<any>(a, b, c, d)
                     //     .subscribe(([resA, resB, resC, resD]) => {
