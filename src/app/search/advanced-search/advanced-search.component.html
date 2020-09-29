@@ -158,11 +158,17 @@
                         <td>
                             <mat-form-field>
                                 <mat-label>First performance: Company</mat-label>
-                                <input matInput formControlName="performedCompany" (keydown.escape)="clear('performedCompany')">
-                                <button *ngIf="form.get('performedCompany').value" type="button" mat-button matSuffix
-                                        mat-icon-button aria-label="Clear" (click)="clear('performedCompany')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
+                                <mat-select formControlName="performedCompany">
+                                    <mat-option value="">-</mat-option>
+                                    <mat-option *ngFor="let company of companies" [value]="company.id">
+                                        {{company.hasCompanyTitle}}
+                                    </mat-option>
+                                </mat-select>
+<!--                                <input matInput formControlName="performedCompany" (keydown.escape)="clear('performedCompany')">-->
+<!--                                <button *ngIf="form.get('performedCompany').value" type="button" mat-button matSuffix-->
+<!--                                        mat-icon-button aria-label="Clear" (click)="clear('performedCompany')">-->
+<!--                                    <mat-icon>close</mat-icon>-->
+<!--                                </button>-->
                             </mat-form-field>
 <!--                            <button type="button" (click)="selectCompany()">Select company</button>-->
                         </td>

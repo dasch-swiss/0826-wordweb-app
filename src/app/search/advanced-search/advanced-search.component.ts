@@ -11,6 +11,7 @@ import {ResultsComponent} from "../results/results.component";
 import {ListService} from "../../services/list.service";
 import {TreeTableService} from "../../services/tree-table.service";
 import {FillInComponent} from "../dialog/fill-in/fill-in.component";
+import {forkJoin} from "rxjs";
 
 @Component({
     selector: "app-advanced-search",
@@ -343,6 +344,7 @@ export class AdvancedSearchComponent implements OnInit {
     languages: any[];
     functionVoices: any[];
     markings: any[];
+    companies: any[];
 
     priority = 0;
 
@@ -356,7 +358,8 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this.listService.getList("genre"));
+        this.prepareCompanies();
+
         const genresNode = this.listService.getList("genre").nodes;
         this.genres = genresNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
 
@@ -402,7 +405,7 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     search() {
-        if ((!this.form.get("text").value
+        if (!this.form.get("text").value
             && !this.form.get("author").value
             && !this.form.get("gender").value
             && !this.form.get("bookTitle").value
@@ -410,13 +413,14 @@ export class AdvancedSearchComponent implements OnInit {
             && !this.form.get("language").value
             && !this.form.get("function").value
             && !this.form.get("marking").value
-            && !this.form.get("createdDate").value)
+            && !this.form.get("createdDate").value
+            && !this.form.get("performedCompany").value
             && (!this.form.get("plays").value && !this.form.get("genre").value)) {
-            console.log("empty");
+
             const dialogConfig = new MatDialogConfig();
             dialogConfig.width = "650px";
             dialogConfig.data = {
-                title: "Please note",
+                title: this.stringService.getString("default_title"),
                 text: this.stringService.getString("text_not_filled")
             };
             this.helpDialog.open(FillInComponent, dialogConfig);
@@ -499,11 +503,14 @@ export class AdvancedSearchComponent implements OnInit {
             this.createdDateRef.searchVal2 = null;
         }
 
-        // if (this.form.get("performedCompany").valid) {
-        //     this.performedCompanyRef.searchVal1 = this.form.get("performedCompany").value;
-        // } else {
-        //     this.performedCompanyRef.searchVal1 = null;
-        // }
+        if (this.form.get("performedCompany").valid) {
+            console.log(this.form.get("performedCompany").value);
+            this.performedCompanyRef.searchVal1 = this.form.get("performedCompany").value;
+            this.performedCompanyRef.priority = 0;
+        } else {
+            this.performedCompanyRef.searchVal1 = null;
+            this.performedCompanyRef.priority = 1;
+        }
 
         if (this.form.get("plays").value) {
             // Only plays means if genre is "Drama (Theatre)"
@@ -517,6 +524,36 @@ export class AdvancedSearchComponent implements OnInit {
                 this.genreRef.priority = 1;
             }
         }
+    }
+
+    prepareCompanies() {
+        this.knoraService.getCompaniesCount()
+            .subscribe(amount => {
+                const maxOffset = Math.ceil(amount / 25);
+                console.log(maxOffset);
+                const requests = [];
+
+                for (let offset = 0; offset < maxOffset; offset++) {
+                    requests.push(this.knoraService.getCompanies(offset));
+                }
+
+                forkJoin<any>(...requests)
+                    .subscribe((res: Array<Array<any>>) => {
+                        this.companies = []
+                            .concat(...res)
+                            .map(company => {
+                                if (company.hasCompanyTitle.length === 1) {
+                                    company.hasCompanyTitle = company.hasCompanyTitle[0].value;
+                                    return company;
+                                }
+                            })
+                            .sort((res1, res2) => this.sortCompanies(res1, res2));
+                        console.log(this.companies);
+                        // requests.map(a => a.unsubscribe());
+                    }, error => {
+                        requests.map(a => a.unsubscribe());
+                    });
+            });
     }
 
     getHelpText(formControlName: string) {
@@ -592,5 +629,12 @@ export class AdvancedSearchComponent implements OnInit {
 
     selectCompany() {
         console.log("select company");
+    }
+
+    sortCompanies(comp1: any, comp2: any) {
+        const companyTitle1 = comp1.hasCompanyTitle.toUpperCase();
+        const companyTitle2 = comp2.hasCompanyTitle.toUpperCase();
+
+        return companyTitle1 <= companyTitle2 ? (companyTitle1 === companyTitle2 ? 0 : -1) : 1;
     }
 }
