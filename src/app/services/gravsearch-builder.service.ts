@@ -306,7 +306,8 @@ export class GravsearchBuilderService {
         },
         hasPlaceVenue: {
             cardinality: "1",
-            type: "String",
+            type: "List",
+            list: "placeVenue",
             queryStr: this.getQueryStr(GravsearchBuilderService.VENUE_VAR, "hasPlaceVenue", "placeVenue")
         },
         isLexiaVenue: {
@@ -616,6 +617,56 @@ export class GravsearchBuilderService {
             "?company teimww:hasCompanyTitle ?companyTitle .",
             "?company teimww:hasCompanyInternalId ?companyInternalId .",
             "?book teimww:performedBy ?company .",
+            "}",
+            "",
+            `OFFSET ${offset ? offset : 0}`
+        ];
+        return query.join("\n");
+    }
+
+    getVenuesQuery(offset?: number): string {
+        const node: IMainClassObject = {name: "venue", variable: "venue"};
+        const query = [
+            "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
+            "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
+            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            "",
+            "CONSTRUCT {",
+            `${this.getFirstConstructLine(node).join("")}`,
+            "?venue teimww:hasPlaceVenue ?placeVenue .",
+            "?venue teimww:hasVenueInternalId ?venueInternalId .",
+            // "?book teimww:performedIn ?venue .",
+            "} WHERE {",
+            `${this.getFirstWhereLine(node).join("")}`,
+            "?venue teimww:hasPlaceVenue ?placeVenue .",
+            "?venue teimww:hasVenueInternalId ?venueInternalId .",
+            // "?book teimww:performedIn ?venue .",
+            "}",
+            "",
+            `OFFSET ${offset ? offset : 0}`
+        ];
+        return query.join("\n");
+    }
+
+    getActorsQuery(offset?: number): string {
+        const node: IMainClassObject = {name: "person", variable: "person"};
+        const query = [
+            "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
+            "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
+            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            "",
+            "CONSTRUCT {",
+            `${this.getFirstConstructLine(node).join("")}`,
+            "?person teimww:hasPersonInternalId ?personInternalId .",
+            "?person teimww:hasFirstName ?firstName .",
+            "?person teimww:hasLastName ?lastName .",
+            "} WHERE {",
+            `${this.getFirstWhereLine(node).join("")}`,
+            "?person teimww:hasPersonInternalId ?personInternalId .",
+            "OPTIONAL { ?person teimww:hasFirstName ?firstName . }",
+            "?person teimww:hasLastName ?lastName .",
+            // Adapt next line if direction of property is changed
+            "?person teimww:personPerformedIn ?book .",
             "}",
             "",
             `OFFSET ${offset ? offset : 0}`

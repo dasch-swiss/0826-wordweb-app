@@ -27,6 +27,7 @@ export class StringService {
             "narrative voice, or explore references in stage directions, play titles etc.",
         per_company_help: "Limit your searches to plays that were premiered by a certain troupe like The King's Men or The " +
             "Children of Paul's.",
+        per_venue_help: "Not written yet",
         per_actor_help: "Limit your searches to plays whose premiere involved a certain actor.",
         language_help: "Limit your search to English material or explore a selection of passages from European " +
             "literature and the Classics.",

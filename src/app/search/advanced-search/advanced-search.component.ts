@@ -338,6 +338,7 @@ export class AdvancedSearchComponent implements OnInit {
     markingRef: IDisplayedProperty;
     createdDateRef: IDisplayedProperty;
     performedCompanyRef: IDisplayedProperty;
+    performedVenueRef: IDisplayedProperty;
 
     genders: any[];
     genres: any[];
@@ -345,6 +346,8 @@ export class AdvancedSearchComponent implements OnInit {
     functionVoices: any[];
     markings: any[];
     companies: any[];
+    venues: any[];
+    actors: any[];
 
     priority = 0;
 
@@ -358,6 +361,8 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     ngOnInit() {
+        // this.prepareActors();
+        this.prepareVenues();
         this.prepareCompanies();
 
         const genresNode = this.listService.getList("genre").nodes;
@@ -386,6 +391,7 @@ export class AdvancedSearchComponent implements OnInit {
         this.markingRef = this.myPassage.props[7];
         this.createdDateRef = this.myPassage.props[11].res.props[6];
         this.performedCompanyRef = this.myPassage.props[11].res.props[11];
+        this.performedVenueRef = this.myPassage.props[11].res.props[12];
 
         this.form = new FormGroup({
             text: new FormControl("", []),
@@ -399,9 +405,105 @@ export class AdvancedSearchComponent implements OnInit {
             marking: new FormControl("", []),
             createdDate: new FormControl("", [CustomValidators.correctDate]),
             performedCompany: new FormControl("", []),
-            performedActor: new FormControl("", []),
+            performedVenue: new FormControl("", []),
+            // performedActor: new FormControl("", []),
             plays: new FormControl(false, [])
         });
+    }
+
+    prepareActors() {
+        this.knoraService.getActorsCount()
+            .subscribe(amount => {
+                const maxOffset = Math.ceil(amount / 25);
+                console.log(maxOffset);
+                const requests = [];
+
+                for (let offset = 0; offset < maxOffset; offset++) {
+                    requests.push(this.knoraService.getActors(offset));
+                }
+
+                forkJoin<any>(...requests)
+                    .subscribe((res: Array<Array<any>>) => {
+                        this.actors = []
+                            .concat(...res)
+                            .map(actor => {
+                                if (actor.hasLastName.length === 1) {
+                                    actor.hasLastName = actor.hasLastName[0].value;
+                                }
+                                if (actor.hasFirstName.length === 1) {
+                                    actor.hasFirstName = actor.hasFirstName[0].value;
+                                }
+                                return actor;
+                            })
+                            .sort((res1, res2) => this.sortActors(res1, res2));
+                        console.log(this.actors);
+                    }, error => {
+                        requests.map(a => a.unsubscribe());
+                    });
+            });
+    }
+
+    prepareVenues() {
+        this.knoraService.getVenuesCount()
+            .subscribe(amount => {
+                const maxOffset = Math.ceil(amount / 25);
+                console.log(maxOffset);
+                const requests = [];
+
+                for (let offset = 0; offset < maxOffset; offset++) {
+                    requests.push(this.knoraService.getVenues(offset));
+                }
+
+                forkJoin<any>(requests)
+                    .subscribe((res: Array<Array<any>>) => {
+                        console.log("forkJoin", res);
+                        this.venues = []
+                            .concat(...res)
+                            .map(venue => {
+                                if (venue.hasPlaceVenue.length === 1) {
+                                    venue.value = this.listService.searchNodeById(venue.hasPlaceVenue[0].listNode);
+                                    venue.hasPlaceVenue = venue.hasPlaceVenue[0].listNode;
+                                    return venue;
+                                }
+                            })
+                            .sort((res1, res2) => this.sortVenues(res1, res2));
+                        console.log(this.venues);
+                        // requests.map(a => a.unsubscribe());
+                    }, error => {
+                        requests.map(a => a.unsubscribe());
+                    });
+            });
+    }
+
+    prepareCompanies() {
+        this.knoraService.getCompaniesCount()
+            .subscribe(amount => {
+                const maxOffset = Math.ceil(amount / 25);
+                console.log(maxOffset);
+                const requests = [];
+
+                for (let offset = 0; offset < maxOffset; offset++) {
+                    requests.push(this.knoraService.getCompanies(offset));
+                }
+
+                forkJoin<any>(...requests)
+                    .subscribe((res: Array<Array<any>>) => {
+                        this.companies = []
+                            .concat(...res)
+                            .map(company => {
+                                if (company.hasCompanyTitle.length === 1) {
+                                    company.hasCompanyTitle = company.hasCompanyTitle[0].value;
+                                    return company;
+                                }
+                            })
+                            .sort((res1, res2) => this.sortCompanies(res1, res2));
+                        console.log(this.companies);
+                        // requests.map(a => a.unsubscribe());
+                    }, error => {
+                        requests.map(a => a.unsubscribe());
+                    });
+            });
+
     }
 
     search() {
@@ -415,6 +517,7 @@ export class AdvancedSearchComponent implements OnInit {
             && !this.form.get("marking").value
             && !this.form.get("createdDate").value
             && !this.form.get("performedCompany").value
+            && !this.form.get("performedVenue").value
             && (!this.form.get("plays").value && !this.form.get("genre").value)) {
 
             const dialogConfig = new MatDialogConfig();
@@ -512,6 +615,15 @@ export class AdvancedSearchComponent implements OnInit {
             this.performedCompanyRef.priority = 1;
         }
 
+        if (this.form.get("performedVenue").valid) {
+            console.log(this.form.get("performedVenue").value);
+            this.performedVenueRef.searchVal1 = this.form.get("performedVenue").value;
+            this.performedVenueRef.priority = 0;
+        } else {
+            this.performedVenueRef.searchVal1 = null;
+            this.performedVenueRef.priority = 1;
+        }
+
         if (this.form.get("plays").value) {
             // Only plays means if genre is "Drama (Theatre)"
             this.genreRef.searchVal1 = this.listService.searchNodeByName("ALL DRAMA");
@@ -524,36 +636,6 @@ export class AdvancedSearchComponent implements OnInit {
                 this.genreRef.priority = 1;
             }
         }
-    }
-
-    prepareCompanies() {
-        this.knoraService.getCompaniesCount()
-            .subscribe(amount => {
-                const maxOffset = Math.ceil(amount / 25);
-                console.log(maxOffset);
-                const requests = [];
-
-                for (let offset = 0; offset < maxOffset; offset++) {
-                    requests.push(this.knoraService.getCompanies(offset));
-                }
-
-                forkJoin<any>(...requests)
-                    .subscribe((res: Array<Array<any>>) => {
-                        this.companies = []
-                            .concat(...res)
-                            .map(company => {
-                                if (company.hasCompanyTitle.length === 1) {
-                                    company.hasCompanyTitle = company.hasCompanyTitle[0].value;
-                                    return company;
-                                }
-                            })
-                            .sort((res1, res2) => this.sortCompanies(res1, res2));
-                        console.log(this.companies);
-                        // requests.map(a => a.unsubscribe());
-                    }, error => {
-                        requests.map(a => a.unsubscribe());
-                    });
-            });
     }
 
     getHelpText(formControlName: string) {
@@ -588,6 +670,10 @@ export class AdvancedSearchComponent implements OnInit {
             }
             case ("performedCompany"): {
                 this.openHelpDialog(this.stringService.getString("per_company_help"), this.stringService.getString("default_title"));
+                break;
+            }
+            case ("performedVenue"): {
+                this.openHelpDialog(this.stringService.getString("per_venue_help"), this.stringService.getString("default_title"));
                 break;
             }
             case ("performedActor"): {
@@ -636,5 +722,19 @@ export class AdvancedSearchComponent implements OnInit {
         const companyTitle2 = comp2.hasCompanyTitle.toUpperCase();
 
         return companyTitle1 <= companyTitle2 ? (companyTitle1 === companyTitle2 ? 0 : -1) : 1;
+    }
+
+    sortVenues(ven1: any, ven2: any) {
+        const placeVenue1 = ven1.hasPlaceVenue.toUpperCase();
+        const placeVenue2 = ven2.hasPlaceVenue.toUpperCase();
+
+        return placeVenue1 <= placeVenue2 ? (placeVenue1 === placeVenue2 ? 0 : -1) : 1;
+    }
+
+    sortActors(act1: any, act2: any) {
+        const actorLastName1 = act1.hasLastName.toUpperCase();
+        const actorLastName2 = act2.hasLastName.toUpperCase();
+
+        return actorLastName1 <= actorLastName2 ? (actorLastName1 === actorLastName2 ? 0 : -1) : 1;
     }
 }

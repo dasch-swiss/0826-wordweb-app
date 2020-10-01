@@ -223,6 +223,48 @@ export class KnoraService {
             );
     }
 
+    getVenuesCount(offset?: number) {
+        const gravsearch = this.gsBuilder.getVenuesQuery(offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
+            .pipe(
+                map((data: CountQueryResponse) => data.numberOfResults)
+            );
+    }
+
+    getVenues(offset?: number) {
+        const gravsearch = this.gsBuilder.getVenuesQuery(offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
+            .pipe(
+                tap(data => console.log(data)),
+                map((sequence: ReadResourceSequence) => {
+                    return sequence.resources.map(resource => this.processRes(resource));
+                })
+            );
+    }
+
+    getActorsCount(offset?: number) {
+        const gravsearch = this.gsBuilder.getActorsQuery(offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
+            .pipe(
+                map((data: CountQueryResponse) => data.numberOfResults)
+            );
+    }
+
+    getActors(offset?: number) {
+        const gravsearch = this.gsBuilder.getActorsQuery(offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
+            .pipe(
+                tap(data => console.log(data)),
+                map((sequence: ReadResourceSequence) => {
+                    return sequence.resources.map(resource => this.processRes(resource));
+                })
+            );
+    }
+
     // Empty methods for future
     // getProjectOntology() {}
     // getNodeOfList(iri: string) {}
