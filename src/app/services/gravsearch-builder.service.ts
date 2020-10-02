@@ -347,7 +347,6 @@ export class GravsearchBuilderService {
 
     set apiURL(host: string) {
         this.host = host.replace("https", "http");
-        console.log("host", this.host);
     }
 
     getQueryStr(classVariable: string, propName: string, valueVar: string): string[] {
@@ -425,6 +424,7 @@ export class GravsearchBuilderService {
                     const result = this.setOrderPriority(prop.res);
                     prop.res = result.node;
                     prop.orderPriority = prop.orderPriority + result.resCounter;
+                    resCounter = resCounter + result.resCounter;
                 }
 
                 return prop;

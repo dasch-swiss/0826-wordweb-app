@@ -725,7 +725,6 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     sortVenues(ven1: any, ven2: any) {
-        console.log(ven1, ven2);
         const placeVenue1 = ven1.value.toUpperCase();
         const placeVenue2 = ven2.value.toUpperCase();
 
