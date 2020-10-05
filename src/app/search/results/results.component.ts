@@ -53,7 +53,6 @@ export class ResultsComponent implements OnInit {
 
         this.knoraService.gravseachQuery(this.structure, priority)
             .subscribe(data => {
-                console.log(data);
                 this.passages = data.map(passage => {
                     passage.expanded = false;
                     passage.original = false;

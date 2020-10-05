@@ -27,7 +27,7 @@
         <mat-card-content *ngIf="!alphabeticSearchStarted">
             <div *ngFor="let alphaRes of alphabeticResources; let first = first;">
                 <div class="divider" *ngIf="!first"></div>
-                <div class="list-item" (click)="detailSelected(alphaRes)">{{getListName(alphaRes)}}</div>
+                <div class="list-item" (click)="selectDetail(alphaRes.id)">{{getListName(alphaRes)}}</div>
             </div>
         </mat-card-content>
 

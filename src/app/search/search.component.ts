@@ -1,4 +1,6 @@
 import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {filter} from "rxjs/operators";
 
 @Component({
     selector: "app-search",
@@ -8,14 +10,21 @@ import {Component, OnInit} from "@angular/core";
 export class SearchComponent implements OnInit {
     selectedSearch: string;
 
-    constructor() {}
+    constructor(private router: Router, private route: ActivatedRoute) {
+        this.router.events
+            .pipe(
+                filter(data => data instanceof (NavigationEnd))
+            )
+            .subscribe(data => {
+                this.selectedSearch = this.route.snapshot.firstChild.url[0].path;
+        });
+    }
 
-    selectSearch(search: string) {
-        this.selectedSearch = search;
+    selectSearch(search: any) {
+        this.router.navigate([`${search}`], { relativeTo: this.route });
     }
 
     ngOnInit() {
-        this.selectedSearch = "simple";
     }
 
 }

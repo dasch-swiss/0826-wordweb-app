@@ -1,16 +1,17 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from "@angular/core";
 import {KnoraService} from "../../services/knora.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {ResultsComponent} from "../results/results.component";
 import {forkJoin} from "rxjs";
 import {NgxSpinnerService} from "ngx-spinner";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: "app-browsing",
     templateUrl: "./browsing.component.html",
     styleUrls: ["./browsing.component.scss"]
 })
-export class BrowsingComponent implements OnInit {
+export class BrowsingComponent implements OnInit, AfterViewInit {
     @ViewChild("results") resultBox: ResultsComponent;
 
     myPassage: IMainClass = {
@@ -307,7 +308,7 @@ export class BrowsingComponent implements OnInit {
     alphabeticResources: Array<any>;
     alphabeticResAmount: number;
 
-    alphabeticSearchStarted = true;
+    alphabeticSearchStarted = false;
     detailStarted = false;
     errorObject = null;
     priority = 0;
@@ -315,6 +316,7 @@ export class BrowsingComponent implements OnInit {
     resTypeSelected: string;
     chars: Array<string> = [];
     charSelected: string;
+    detailSelected: string;
 
     static getCharacterRange() {
         const start = "A";
@@ -328,7 +330,26 @@ export class BrowsingComponent implements OnInit {
         return arr;
     }
 
-    constructor(private knoraService: KnoraService, private spinner: NgxSpinnerService) {
+    constructor(
+        private knoraService: KnoraService,
+        private spinner: NgxSpinnerService,
+        private router: Router,
+        private route: ActivatedRoute,
+        private cdr: ChangeDetectorRef) {
+        // this.route.queryParams.subscribe(data => {
+        //     if (data.res && this.checkResType(data.res) && data.letter && this.checkLetter(data.letter)) {
+        //         this.resTypeSelected = data.res;
+        //         this.charSelected = data.letter;
+        //     }
+        // });
+    }
+
+    checkResType(res: string): boolean {
+        return (res === "book" || res === "author" || res === "lexia");
+    }
+
+    checkLetter(char: string): boolean {
+        return /^[a-zA-Z]$/.test(char);
     }
 
     ngOnInit() {
@@ -343,11 +364,28 @@ export class BrowsingComponent implements OnInit {
         this.authorRef = this.myPassage.props[11].res.props[8];
         this.bookRef = this.myPassage.props[11];
         this.lexiaRef = this.myPassage.props[14];
-        // Default char and resource type
-        // this.charSelected = "A";
-        this.resTypeSelected = "book";
 
-        this.requestResources();
+        if (!this.resTypeSelected) {
+            this.resTypeSelected = "book";
+        }
+    }
+
+    ngAfterViewInit(): void {
+        this.route.queryParams.subscribe(data => {
+            if (data.res && this.checkResType(data.res) && data.letter && this.checkLetter(data.letter)) {
+                this.resTypeSelected = data.res;
+                this.charSelected = data.letter;
+
+                this.requestResources();
+
+                if (data.id) {
+                    console.log(data.id);
+                    this.detailSelected = data.id;
+                    this.selectDetail(data.id);
+                }
+            }
+        });
+        this.cdr.detectChanges();
     }
 
     requestResources() {
@@ -534,16 +572,19 @@ export class BrowsingComponent implements OnInit {
         if (this.alphabeticSearchStarted) {
             return;
         }
+
         // Clears the results from previous search
         if (this.resTypeSelected !== name) {
+            this.resTypeSelected = name;
+            this.charSelected = null;
+            this.alphabeticResources = null;
             this.resultBox.reset();
+            this.router.navigate(["search/browsing"], { queryParams: {res: name}});
         }
-        this.resTypeSelected = name;
-        this.alphabeticResources = null;
-        this.requestResources();
     }
 
     selectChar(event) {
+        this.router.navigate(["search/browsing"], { queryParams: {letter: event}, queryParamsHandling : "merge"});
         this.resultBox.reset();
         this.alphabeticResources = null;
         this.requestResources();
@@ -564,22 +605,21 @@ export class BrowsingComponent implements OnInit {
         }
     }
 
-    detailSelected(res: any) {
+    selectDetail(resID: any) {
         if (this.resTypeSelected === "author") {
-            this.authorRef.searchVal1 = res.id;
+            this.authorRef.searchVal1 = resID;
             this.bookRef.searchVal1 = null;
             this.lexiaRef.searchVal1 = null;
 
         } else if (this.resTypeSelected === "book") {
-            this.bookRef.searchVal1 = res.id;
+            this.bookRef.searchVal1 = resID;
             this.authorRef.searchVal1 = null;
             this.lexiaRef.searchVal1 = null;
 
         } else if (this.resTypeSelected === "lexia") {
-            this.lexiaRef.searchVal1 = res.id;
+            this.lexiaRef.searchVal1 = resID;
             this.bookRef.searchVal1 = null;
             this.authorRef.searchVal1 = null;
-
         }
 
         this.resultBox.search(this.myPassage);

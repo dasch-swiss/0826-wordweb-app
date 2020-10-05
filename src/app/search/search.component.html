@@ -7,7 +7,7 @@
     </nav>
     <nav class="mobile-search-menu" fxHide fxShow.lt-sm>
         <mat-form-field appearance="outline" color="accent">
-            <mat-select [(value)]="selectedSearch">
+            <mat-select [(value)]="selectedSearch" (selectionChange)="selectSearch($event.value)">
                 <mat-option value="simple">Simple Search</mat-option>
                 <mat-option value="advanced">Advanced Search</mat-option>
                 <mat-option value="expert">Expert Search</mat-option>
@@ -17,9 +17,5 @@
     </nav>
 </div>
 
-<ng-container [ngSwitch]="selectedSearch">
-    <app-simple-search *ngIf="selectedSearch ==='simple'"></app-simple-search>
-    <app-advanced-search *ngIf="selectedSearch === 'advanced'"></app-advanced-search>
-    <app-expert-search *ngIf="selectedSearch === 'expert'"></app-expert-search>
-    <app-browsing *ngIf="selectedSearch === 'browsing'"></app-browsing>
-</ng-container>
+<router-outlet></router-outlet>
+

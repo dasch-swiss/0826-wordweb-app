@@ -26,12 +26,18 @@ import {ExpertSearchComponent} from "./search/expert-search/expert-search.compon
 import {BrowsingComponent} from "./search/browsing/browsing.component";
 
 const routes: Routes = [
-  {path: "search", component: SearchComponent},
   {path: "", redirectTo: "search", pathMatch: "full"},
-  {path: "simple-search", component: SimpleSearchComponent},
-  {path: "advanced-search", component: AdvancedSearchComponent},
-  {path: "expert-search", component: ExpertSearchComponent},
-  {path: "browsing", component: BrowsingComponent},
+  {
+    path: "search",
+    component: SearchComponent,
+    children: [
+      {path: "", redirectTo: "simple", pathMatch: "full"},
+      {path: "simple", component: SimpleSearchComponent},
+      {path: "advanced", component: AdvancedSearchComponent},
+      {path: "expert", component: ExpertSearchComponent},
+      {path: "browsing", component: BrowsingComponent},
+    ]
+  },
   {path: "categories", component: CategoriesComponent},
   {path: "author", component: AuthorComponent},
   {path: "book", component: BookComponent},
