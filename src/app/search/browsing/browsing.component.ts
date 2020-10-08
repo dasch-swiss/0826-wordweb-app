@@ -366,22 +366,25 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
         this.lexiaRef = this.myPassage.props[14];
 
         if (!this.resTypeSelected) {
-            this.router.navigate(["search/browsing"], { queryParams: {res: "book"}});
+            this.router.navigate(["search/browsing"], { queryParams: {res: "book"}, queryParamsHandling : "merge"});
         }
     }
 
     ngAfterViewInit(): void {
         this.route.queryParams.subscribe(data => {
-            if (data.res && this.checkResType(data.res) && data.letter && this.checkLetter(data.letter)) {
+            if (data.res && this.checkResType(data.res)) {
                 this.resTypeSelected = data.res;
-                this.charSelected = data.letter;
 
-                this.requestResources();
+                if (data.letter && this.checkLetter(data.letter)) {
+                    this.charSelected = data.letter;
 
-                if (data.id) {
-                    console.log(data.id);
-                    this.detailSelected = data.id;
-                    this.selectDetail(data.id);
+                    this.requestResources();
+
+                    if (data.id) {
+                        console.log(data.id);
+                        this.detailSelected = data.id;
+                        this.selectDetail(data.id);
+                    }
                 }
             }
         });
