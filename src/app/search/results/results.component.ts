@@ -2,6 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {IMainClass} from "../../model/displayModel";
 import {NgxSpinnerService} from "ngx-spinner";
 import {forkJoin, Observable} from "rxjs";
+import {map} from "rxjs/operators";
 import {KnoraService} from "../../services/knora.service";
 import {ListService} from "../../services/list.service";
 
@@ -56,6 +57,8 @@ export class ResultsComponent implements OnInit {
                 this.passages = data.map(passage => {
                     passage.expanded = false;
                     passage.original = false;
+                    passage.occursIn[0].isWrittenBy = passage.occursIn[0].isWrittenBy
+                        .sort((author1, author2) => author1.hasLastName[0].value < author2.hasLastName[0].value ? -1 : (author1.hasLastName[0].value > author2.hasLastName[0].value ? 1 : 0));
                     return passage;
                 });
                 this.sortResults();
@@ -93,8 +96,14 @@ export class ResultsComponent implements OnInit {
 
         this.knoraService.gravseachQuery(this.structure, this.priority, offset)
             .subscribe(data => {
-                console.log(data);
-                this.passages.push(...data);
+                const dataChanged = data.map(passage => {
+                    passage.expanded = false;
+                    passage.original = false;
+                    // passage.occursIn[0] = passage.occursIn[0].isWrittenBy
+                    //     .sort((author1, author2) => author1.hasLastName[0].value < author2.hasLastName[0].value ? -1 : (author1.hasLastName[0].value > author2.hasLastName[0].value ? 1 : 0));
+                    return passage;
+                });
+                this.passages.push(...dataChanged);
                 this.sortResults();
                 this.spinner.hide("spinner-small");
                 this.searchStarted = false;

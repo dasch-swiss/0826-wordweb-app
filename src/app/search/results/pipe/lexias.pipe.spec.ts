@@ -1,8 +1,8 @@
-import { LexiasPipe } from './lexias.pipe';
+import {LexiasPipe} from "./lexias.pipe";
 
-describe('LexiasPipe', () => {
-  it('create an instance', () => {
-    const pipe = new LexiasPipe();
-    expect(pipe).toBeTruthy();
-  });
+describe("LexiasPipe", () => {
+    it("create an instance", () => {
+        const pipe = new LexiasPipe();
+        expect(pipe).toBeTruthy();
+    });
 });

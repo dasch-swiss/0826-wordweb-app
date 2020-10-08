@@ -366,7 +366,7 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
         this.lexiaRef = this.myPassage.props[14];
 
         if (!this.resTypeSelected) {
-            this.resTypeSelected = "book";
+            this.router.navigate(["search/browsing"], { queryParams: {res: "book"}});
         }
     }
 
@@ -603,6 +603,10 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
             }
 
         }
+    }
+
+    selectFromList(resID: any) {
+        this.router.navigate(["search/browsing"], { queryParams: {id: resID}, queryParamsHandling : "merge"});
     }
 
     selectDetail(resID: any) {

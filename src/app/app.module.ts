@@ -91,6 +91,8 @@ import {KnoraService} from "./services/knora.service";
 import {ListService} from "./services/list.service";
 import {GravsearchBuilderService} from "./services/gravsearch-builder.service";
 import {FillInComponent} from "./search/dialog/fill-in/fill-in.component";
+import { AuthorsPipe } from './search/results/pipe/authors.pipe';
+import { YearPipe } from './search/results/pipe/year.pipe';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -148,7 +150,9 @@ export function initializeApp(appInitService: AppInitService) {
         BibliographyPipe,
         SourcePipe,
         LexiasPipe,
-        FillInComponent
+        FillInComponent,
+        AuthorsPipe,
+        YearPipe
     ],
     imports: [
         BrowserModule,

@@ -16,6 +16,24 @@
 
       .title {
         font-weight: bold;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+
+        div {
+          display: inline;
+
+          .author {
+            display: inline;
+
+            a {
+              color: rgba(159, 11, 11, 1)
+            }
+          }
+        }
+
+        .authors, .title, .year {
+          margin-right: 0.3rem
+        }
       }
 
       .lexias {
@@ -143,7 +161,7 @@
 }
 
 :host::ng-deep .quote {
-  color: rgba(0, 102, 51);
+  color: rgba(159, 11, 11, 1);
 }
 
 :host::ng-deep .annotation {

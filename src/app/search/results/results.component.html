@@ -16,12 +16,23 @@
         <div class="result" *ngFor="let passage of passages; let pIndex = index;">
             <div class="overview">
                 <div class="numbering">{{pIndex | numbering}}</div>
-                <div class="title" [innerHTML]="passage | title"></div>
-                <div class="text" [innerHTML]="passage.original ? passage.hasTextHist[0].value : passage.hasText[0].value"></div>
-<!--                <div class="lexias" [innerHTML]="passage | lexias"></div>-->
+                <div class="title">
+                    <div class="authors">
+                        <div class="author" *ngFor="let author of passage.occursIn[0].isWrittenBy; let last = last;">
+                            <a [routerLink]="['/search/browsing']" [queryParams]="{id:author.id, res: 'author', letter: author.hasLastName[0].value[0]}">
+                                {{author | authors}}<span *ngIf="!last">,</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="title" [innerHTML]="passage | title"></div>
+                    <div class="year">{{passage | year}}</div>
+                </div>
+                <div class="text"
+                     [innerHTML]="passage.original ? passage.hasTextHist[0].value : passage.hasText[0].value"></div>
                 <div class="lexias">
                     <div class="lexia" *ngFor="let lexia of passage.contains">
-                        <a [routerLink]="['/search/browsing']" [queryParams]="{id:lexia.id, res: 'lexia', letter: lexia.hasLexiaTitle[0].value[0]}">{{lexia.hasLexiaTitle[0].value}}</a><br>
+                        <a [routerLink]="['/search/browsing']"
+                           [queryParams]="{id:lexia.id, res: 'lexia', letter: lexia.hasLexiaTitle[0].value[0]}">{{lexia.hasLexiaTitle[0].value}}</a><br>
                     </div>
                 </div>
                 <div class="expand-btn">
@@ -41,7 +52,8 @@
                     </div>
                     <div class="source" [innerHTML]="detailPas | source: listService"></div>
                     <div class="original-btn">
-                        <button *ngIf="passage.hasTextHist" (click)="originalOrNormalized(passage)">{{spellingBtnText(passage)}}</button>
+                        <button *ngIf="passage.hasTextHist"
+                                (click)="originalOrNormalized(passage)">{{spellingBtnText(passage)}}</button>
                     </div>
                 </div>
             </div>
