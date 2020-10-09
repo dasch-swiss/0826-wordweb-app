@@ -234,7 +234,7 @@ export class ResultsComponent implements OnInit {
     }
 
     expandBtnText(passage: any): string {
-        return passage.expanded ? "Hide" : "Expand";
+        return passage.expanded ? "Hide" : "Show more";
     }
 
     originalOrNormalized(passage: any) {

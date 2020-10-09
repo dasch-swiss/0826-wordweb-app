@@ -37,6 +37,8 @@
                 </div>
                 <div class="expand-btn">
                     <button [disabled]="false" (click)="expandOrClose(passage)">{{expandBtnText(passage)}}</button>
+                    <button *ngIf="passage.hasTextHist"
+                            (click)="originalOrNormalized(passage)">{{spellingBtnText(passage)}}</button>
                 </div>
             </div>
 
@@ -51,10 +53,6 @@
                         <div [innerHTML]="detailPas | bibliography"></div>
                     </div>
                     <div class="source" [innerHTML]="detailPas | source: listService"></div>
-                    <div class="original-btn">
-                        <button *ngIf="passage.hasTextHist"
-                                (click)="originalOrNormalized(passage)">{{spellingBtnText(passage)}}</button>
-                    </div>
                 </div>
             </div>
         </div>
