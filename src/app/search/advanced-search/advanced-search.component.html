@@ -10,7 +10,8 @@
                         <td>
                             <mat-form-field>
                                 <mat-label>Text</mat-label>
-                                <input matInput formControlName="text" (keydown.escape)="clear('text')">
+                                <input matInput formControlName="text" placeholder="type just one word"
+                                       (keydown.escape)="clear('text')">
                                 <button *ngIf="form.get('text').value" type="button" mat-button matSuffix
                                         mat-icon-button aria-label="Clear" (click)="clear('text')">
                                     <mat-icon>close</mat-icon>
@@ -26,7 +27,8 @@
                         <td>
                             <mat-form-field>
                                 <mat-label>Title</mat-label>
-                                <input matInput formControlName="bookTitle" (keydown.escape)="clear('bookTitle')">
+                                <input matInput formControlName="bookTitle" placeholder="type just one word"
+                                       (keydown.escape)="clear('bookTitle')">
                                 <button *ngIf="form.get('bookTitle').value" type="button" mat-button matSuffix
                                         mat-icon-button aria-label="Clear" (click)="clear('bookTitle')">
                                     <mat-icon>close</mat-icon>
@@ -42,7 +44,8 @@
                         <td>
                             <mat-form-field>
                                 <mat-label>Author</mat-label>
-                                <input matInput formControlName="author" (keydown.escape)="clear('author')">
+                                <input matInput formControlName="author" placeholder="Family name"
+                                       (keydown.escape)="clear('author')">
                                 <button *ngIf="form.get('author').value" type="button" mat-button matSuffix
                                         mat-icon-button aria-label="Clear" (click)="clear('author')">
                                     <mat-icon>close</mat-icon>
@@ -74,7 +77,8 @@
                         <td>
                             <mat-form-field>
                                 <mat-label>Lexia</mat-label>
-                                <input matInput formControlName="lexia" (keydown.escape)="clear('lexia')">
+                                <input matInput formControlName="lexia" placeholder="type just one word"
+                                       (keydown.escape)="clear('lexia')">
                                 <button *ngIf="form.get('lexia').value" type="button" mat-button matSuffix
                                         mat-icon-button aria-label="Clear" (click)="clear('lexia')">
                                     <mat-icon>close</mat-icon>
