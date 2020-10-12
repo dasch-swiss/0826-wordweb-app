@@ -2,9 +2,10 @@ import {Component, OnInit} from "@angular/core";
 import {IMainClass} from "../../model/displayModel";
 import {NgxSpinnerService} from "ngx-spinner";
 import {forkJoin, Observable} from "rxjs";
-import {map} from "rxjs/operators";
 import {KnoraService} from "../../services/knora.service";
 import {ListService} from "../../services/list.service";
+import {Clipboard} from "@angular/cdk/clipboard";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: "app-results",
@@ -27,7 +28,9 @@ export class ResultsComponent implements OnInit {
     constructor(
         private spinner: NgxSpinnerService,
         public listService: ListService,
-        private knoraService: KnoraService) {
+        private knoraService: KnoraService,
+        private clipBoard: Clipboard,
+        private snackBar: MatSnackBar) {
     }
 
     ngOnInit() {
@@ -310,5 +313,10 @@ export class ResultsComponent implements OnInit {
         }
 
         return date1 < date2 ? -1 : 1;
+    }
+
+    copyClipboard(ark: string) {
+        this.clipBoard.copy(ark);
+        this.snackBar.open("ARK was copied to clipboard");
     }
 }

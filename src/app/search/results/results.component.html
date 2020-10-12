@@ -53,6 +53,16 @@
                         <div [innerHTML]="detailPas | bibliography"></div>
                     </div>
                     <div class="source" [innerHTML]="detailPas | source: listService"></div>
+                    <div class="ark">
+                        <div class="title">Persistent ID (ARK):</div>
+                        <div class="url">
+                            <input [value]=detailPas.arkUrl>
+                            <button type="button" mat-icon-button (click)="copyClipboard(detailPas.arkUrl)">
+                                <mat-icon inline="true">content_copy</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

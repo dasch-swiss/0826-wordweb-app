@@ -80,6 +80,29 @@
       .source {
         margin-top: 1rem;
       }
+
+      .ark {
+        margin-top: 1rem;
+
+        .title {
+          font-weight: bold;
+        }
+
+        .url {
+          width: 100%;
+          display: flex;
+          align-items: center;
+
+          input {
+            padding-left: 0.5rem;
+            height: 1.5rem;
+            width: 100%;
+            flex-grow: 1;
+          }
+        }
+      }
+
+
     }
 
     .details.opened {
