@@ -28,7 +28,7 @@ export class SourcePipe implements PipeTransform {
             const sBooks = detailPas.isMentionedIn
                 .map(sPassage => sPassage.occursIn);
 
-            const full = `${firstLine}<br> must be fetched`;
+            const full = `${firstLine}<br> not implemented`;
 
             return `${full}`;
         } else {
