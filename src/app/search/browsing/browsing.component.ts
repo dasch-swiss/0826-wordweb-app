@@ -309,14 +309,21 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
     alphabeticResAmount: number;
 
     alphabeticSearchStarted = false;
-    detailStarted = false;
     errorObject = null;
     priority = 0;
+    chars: Array<string> = [];
 
     resTypeSelected: string;
-    chars: Array<string> = [];
     charSelected: string;
-    detailSelected: string;
+    listElSelected: string;
+
+    constructor(
+        private knoraService: KnoraService,
+        private spinner: NgxSpinnerService,
+        private router: Router,
+        private route: ActivatedRoute,
+        private cdr: ChangeDetectorRef) {
+    }
 
     static getCharacterRange() {
         const start = "A";
@@ -330,25 +337,11 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
         return arr;
     }
 
-    constructor(
-        private knoraService: KnoraService,
-        private spinner: NgxSpinnerService,
-        private router: Router,
-        private route: ActivatedRoute,
-        private cdr: ChangeDetectorRef) {
-        // this.route.queryParams.subscribe(data => {
-        //     if (data.res && this.checkResType(data.res) && data.letter && this.checkLetter(data.letter)) {
-        //         this.resTypeSelected = data.res;
-        //         this.charSelected = data.letter;
-        //     }
-        // });
-    }
-
-    checkResType(res: string): boolean {
+    static checkResType(res: string): boolean {
         return (res === "book" || res === "author" || res === "lexia");
     }
 
-    checkLetter(char: string): boolean {
+    static checkLetter(char: string): boolean {
         return /^[a-zA-Z]$/.test(char);
     }
 
@@ -364,36 +357,38 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
         this.authorRef = this.myPassage.props[11].res.props[8];
         this.bookRef = this.myPassage.props[11];
         this.lexiaRef = this.myPassage.props[14];
-
-        if (!this.resTypeSelected) {
-            this.router.navigate(["search/browsing"], { queryParams: {res: "book"}, queryParamsHandling : "merge"});
-        }
     }
 
-    ngAfterViewInit(): void {
-        this.route.queryParams.subscribe(data => {
-            if (data.res && this.checkResType(data.res)) {
-                this.resTypeSelected = data.res;
+    ngAfterViewInit() {
+        this.route.queryParams
+            .subscribe(data => {
+                if (data.res && BrowsingComponent.checkResType(data.res)) {
+                    this.resTypeSelected = data.res;
 
-                if (data.letter && this.checkLetter(data.letter)) {
-                    this.charSelected = data.letter;
+                    if (data.letter && BrowsingComponent.checkLetter(data.letter)) {
+                        this.charSelected = data.letter;
+                        this.requestResources();
 
-                    this.requestResources();
+                        if (data.id) {
+                            this.listElSelected = data.id;
+                            this.selectDetail();
+                        }
 
-                    if (data.id) {
-                        console.log(data.id);
-                        this.detailSelected = data.id;
-                        this.selectDetail(data.id);
+                    } else {
+                        this.router.navigate(["search/browsing"], {queryParams: {res: this.resTypeSelected}});
                     }
+
+                } else {
+                    this.router.navigate(["search/browsing"], {queryParams: {res: "book"}});
                 }
-            }
-        });
+            });
+
         this.cdr.detectChanges();
     }
 
     requestResources() {
         this.alphabeticSearchStarted = true;
-        this.spinner.show(`spinner-${this.selectChar}`, {
+        this.spinner.show(`spinner-${this.charSelected}`, {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
@@ -402,15 +397,12 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
         });
 
         if (this.resTypeSelected === "author") {
-
             this.requestAuthors();
 
         } else if (this.resTypeSelected === "book") {
-
             this.requestBooks();
 
         } else if (this.resTypeSelected === "lexia") {
-
             this.requestLexias();
         }
     }
@@ -419,12 +411,11 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
         if (!this.books[this.charSelected]) {
             this.knoraService.getPrimaryBooksCount(this.charSelected)
                 .subscribe(amount => {
-                    console.log(amount);
                     this.alphabeticResAmount = amount;
                     this.books[this.charSelected] = {amount};
 
                     if (amount === 0) {
-                        this.spinner.hide(`spinner-${this.selectChar}`);
+                        this.spinner.hide(`spinner-${this.charSelected}`);
                         this.alphabeticSearchStarted = false;
                         return;
                     }
@@ -438,7 +429,7 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
 
                     forkJoin<any>(...requests)
                         .subscribe((res: Array<Array<any>>) => {
-                            this.spinner.hide(`spinner-${this.selectChar}`);
+                            this.spinner.hide(`spinner-${this.charSelected}`);
                             this.alphabeticSearchStarted = false;
                             this.alphabeticResources = []
                                 .concat(...res)
@@ -446,13 +437,13 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
                             // Saves data in cache
                             this.books[this.charSelected].data = this.alphabeticResources;
                         }, error => {
-                            this.spinner.hide(`spinner-${this.selectChar}`);
+                            this.spinner.hide(`spinner-${this.charSelected}`);
                         });
                 }, error => {
-                    this.spinner.hide(`spinner-${this.selectChar}`);
+                    this.spinner.hide(`spinner-${this.charSelected}`);
                 });
         } else {
-            this.spinner.hide(`spinner-${this.selectChar}`);
+            this.spinner.hide(`spinner-${this.charSelected}`);
             this.alphabeticSearchStarted = false;
             // Gets data from cache
             this.alphabeticResources = this.books[this.charSelected].data;
@@ -464,12 +455,11 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
         if (!this.authors[this.charSelected]) {
             this.knoraService.getPrimaryAuthorsCount(this.charSelected)
                 .subscribe(amount => {
-                    console.log(amount);
                     this.alphabeticResAmount = amount;
                     this.authors[this.charSelected] = {amount};
 
                     if (amount === 0) {
-                        this.spinner.hide(`spinner-${this.selectChar}`);
+                        this.spinner.hide(`spinner-${this.charSelected}`);
                         this.alphabeticSearchStarted = false;
                         return;
                     }
@@ -483,7 +473,7 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
 
                     forkJoin<any>(...requests)
                         .subscribe((res: Array<Array<any>>) => {
-                            this.spinner.hide(`spinner-${this.selectChar}`);
+                            this.spinner.hide(`spinner-${this.charSelected}`);
                             this.alphabeticSearchStarted = false;
                             this.alphabeticResources = []
                                 .concat(...res)
@@ -491,13 +481,13 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
                             // Saves data in cache
                             this.authors[this.charSelected].data = this.alphabeticResources;
                         }, error => {
-                            this.spinner.hide(`spinner-${this.selectChar}`);
+                            this.spinner.hide(`spinner-${this.charSelected}`);
                         });
                 }, error => {
-                    this.spinner.hide(`spinner-${this.selectChar}`);
+                    this.spinner.hide(`spinner-${this.charSelected}`);
                 });
         } else {
-            this.spinner.hide(`spinner-${this.selectChar}`);
+            this.spinner.hide(`spinner-${this.charSelected}`);
             this.alphabeticSearchStarted = false;
             // Gets data from cache
             this.alphabeticResources = this.authors[this.charSelected].data;
@@ -509,12 +499,11 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
         if (!this.lexias[this.charSelected]) {
             this.knoraService.getLexiasCount(this.charSelected)
                 .subscribe(amount => {
-                    console.log(amount);
                     this.alphabeticResAmount = amount;
                     this.lexias[this.charSelected] = {amount};
 
                     if (amount === 0) {
-                        this.spinner.hide(`spinner-${this.selectChar}`);
+                        this.spinner.hide(`spinner-${this.charSelected}`);
                         this.alphabeticSearchStarted = false;
                         return;
                     }
@@ -528,7 +517,7 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
 
                     forkJoin<any>(...requests)
                         .subscribe((res: Array<Array<any>>) => {
-                            this.spinner.hide(`spinner-${this.selectChar}`);
+                            this.spinner.hide(`spinner-${this.charSelected}`);
                             this.alphabeticSearchStarted = false;
                             this.alphabeticResources = []
                                 .concat(...res)
@@ -536,13 +525,13 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
                             // Saves data in cache
                             this.lexias[this.charSelected].data = this.alphabeticResources;
                         }, error => {
-                            this.spinner.hide(`spinner-${this.selectChar}`);
+                            this.spinner.hide(`spinner-${this.charSelected}`);
                         });
                 }, error => {
-                    this.spinner.hide(`spinner-${this.selectChar}`);
+                    this.spinner.hide(`spinner-${this.charSelected}`);
                 });
         } else {
-            this.spinner.hide(`spinner-${this.selectChar}`);
+            this.spinner.hide(`spinner-${this.charSelected}`);
             this.alphabeticSearchStarted = false;
             // Gets data from cache
             this.alphabeticResources = this.lexias[this.charSelected].data;
@@ -587,10 +576,8 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
     }
 
     selectChar(event) {
-        this.router.navigate(["search/browsing"], { queryParams: {letter: event}, queryParamsHandling : "merge"});
         this.resultBox.reset();
-        this.alphabeticResources = null;
-        this.requestResources();
+        this.router.navigate(["search/browsing"], { queryParams: {letter: event, res: this.resTypeSelected}});
     }
 
     getListName(alphaRes: any): string {
@@ -612,19 +599,19 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
         this.router.navigate(["search/browsing"], { queryParams: {id: resID}, queryParamsHandling : "merge"});
     }
 
-    selectDetail(resID: any) {
+    selectDetail() {
         if (this.resTypeSelected === "author") {
-            this.authorRef.searchVal1 = resID;
+            this.authorRef.searchVal1 = this.listElSelected;
             this.bookRef.searchVal1 = null;
             this.lexiaRef.searchVal1 = null;
 
         } else if (this.resTypeSelected === "book") {
-            this.bookRef.searchVal1 = resID;
+            this.bookRef.searchVal1 = this.listElSelected;
             this.authorRef.searchVal1 = null;
             this.lexiaRef.searchVal1 = null;
 
         } else if (this.resTypeSelected === "lexia") {
-            this.lexiaRef.searchVal1 = resID;
+            this.lexiaRef.searchVal1 = this.listElSelected;
             this.bookRef.searchVal1 = null;
             this.authorRef.searchVal1 = null;
         }

@@ -6,7 +6,7 @@
 
 <div class="browse-container" fxShow.gt-sm fxHide>
     <mat-button-toggle-group [(ngModel)]="charSelected" (ngModelChange)="selectChar($event)">
-        <mat-button-toggle *ngFor="let char of chars" value="{{char}}">{{char}}</mat-button-toggle>
+        <mat-button-toggle *ngFor="let char of chars" [value]="char">{{char}}</mat-button-toggle>
     </mat-button-toggle-group>
 </div>
 
@@ -33,7 +33,7 @@
 
         <mat-card-content *ngIf="alphabeticSearchStarted">
             <div class="spinner-list">
-                <ngx-spinner name="spinner-{{selectChar}}"></ngx-spinner>
+                <ngx-spinner name="spinner-{{charSelected}}"></ngx-spinner>
             </div>
         </mat-card-content>
 

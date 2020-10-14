@@ -21,7 +21,7 @@
                 <div class="title">
                     <div class="authors">
                         <div class="author" *ngFor="let author of passage.occursIn[0].isWrittenBy; let last = last;">
-                            <a [routerLink]="['/search/browsing']" [queryParams]="{id:author.id, res: 'author', letter: author.hasLastName[0].value[0]}">
+                            <a [routerLink]="['/search/browsing']" [queryParams]="{res: 'author', letter: author.hasLastName[0].value[0], id:author.id}">
                                 {{author | authors}}<span *ngIf="!last">,</span>
                             </a>
                         </div>
@@ -34,7 +34,7 @@
                 <div class="lexias">
                     <div class="lexia" *ngFor="let lexia of passage.contains">
                         <a [routerLink]="['/search/browsing']"
-                           [queryParams]="{id:lexia.id, res: 'lexia', letter: lexia.hasLexiaTitle[0].value[0]}">{{lexia.hasLexiaTitle[0].value}}</a><br>
+                           [queryParams]="{res: 'lexia', letter: lexia.hasLexiaTitle[0].value[0], id:lexia.id}">{{lexia.hasLexiaTitle[0].value}}</a><br>
                     </div>
                 </div>
                 <div class="expand-btn">
