@@ -3,14 +3,16 @@
     <div *ngIf="passages" fxLayout="column" fxLayoutGap="10px">
         <div fxLayout="row" fxLayoutAlign="space-between center">
             <div>{{passages.length}} <span *ngIf="nPassages | async as total"> of {{total}} results</span></div>
-            <mat-form-field>
-                <mat-label>Sort</mat-label>
-                <mat-select [(ngModel)]="sortOrder" (ngModelChange)="sortResults()">
-                    <mat-option [value]="'Author'">Author</mat-option>
-                    <mat-option [value]="'Title'">Title</mat-option>
-                    <mat-option [value]="'Date'">Date</mat-option>
-                </mat-select>
-            </mat-form-field>
+            <form [formGroup]="form">
+                <mat-form-field>
+                    <mat-label>Sort</mat-label>
+                    <mat-select formControlName="sorting" (selectionChange)="sortResults($event.value)">
+                        <mat-option *ngFor="let sortOrder of sortOrders" [value]="sortOrder.name">
+                            {{sortOrder.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </form>
         </div>
 
         <div class="result" *ngFor="let passage of passages; let pIndex = index;">
