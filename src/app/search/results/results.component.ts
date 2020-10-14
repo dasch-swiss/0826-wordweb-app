@@ -102,8 +102,8 @@ export class ResultsComponent implements OnInit {
                 const dataChanged = data.map(passage => {
                     passage.expanded = false;
                     passage.original = false;
-                    // passage.occursIn[0] = passage.occursIn[0].isWrittenBy
-                    //     .sort((author1, author2) => author1.hasLastName[0].value < author2.hasLastName[0].value ? -1 : (author1.hasLastName[0].value > author2.hasLastName[0].value ? 1 : 0));
+                    passage.occursIn[0] = passage.occursIn[0].isWrittenBy
+                        .sort((author1, author2) => author1.hasLastName[0].value < author2.hasLastName[0].value ? -1 : (author1.hasLastName[0].value > author2.hasLastName[0].value ? 1 : 0));
                     return passage;
                 });
                 this.passages.push(...dataChanged);
