@@ -82,7 +82,6 @@ import {NumberingPipe} from "./search/results/pipe/numbering.pipe";
 import {TitlePipe} from "./search/results/pipe/title.pipe";
 import {TextPipe} from "./search/results/pipe/text.pipe";
 import {CommentsPipe} from "./search/results/pipe/comments.pipe";
-import {BibliographyPipe} from "./search/results/pipe/bibliography.pipe";
 import {SourcePipe} from "./search/results/pipe/source.pipe";
 import {LexiasPipe} from "./search/results/pipe/lexias.pipe";
 
@@ -93,6 +92,7 @@ import {GravsearchBuilderService} from "./services/gravsearch-builder.service";
 import {FillInComponent} from "./search/dialog/fill-in/fill-in.component";
 import {AuthorsPipe} from "./search/results/pipe/authors.pipe";
 import {YearPipe} from "./search/results/pipe/year.pipe";
+import { CitationComponent } from "./search/results/citation/citation.component";
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -143,11 +143,11 @@ export function initializeApp(appInitService: AppInitService) {
         BrowsingComponent,
         HelpComponent,
         ResultsComponent,
+        CitationComponent,
         NumberingPipe,
         TitlePipe,
         TextPipe,
         CommentsPipe,
-        BibliographyPipe,
         SourcePipe,
         LexiasPipe,
         FillInComponent,
