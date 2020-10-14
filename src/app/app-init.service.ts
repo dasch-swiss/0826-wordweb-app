@@ -52,10 +52,10 @@ export class AppInitService {
               mergeMap((lists: Array<any>) => forkJoin<any>(lists.map(list => this.knoraService.getList(list.id))))
           )
           .subscribe((fullList: Array<any>) => {
-            console.log(fullList);
+            // console.log(fullList);
             fullList.map(list => this.listService.setAllLists = list);
 
-            console.log("AppInitService: finished");
+            // console.log("AppInitService: finished");
             resolve();
           }, (error) => console.error("Failed to connect", error));
     });
