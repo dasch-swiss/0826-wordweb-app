@@ -447,6 +447,15 @@ export class SimpleSearchComponent implements OnInit {
         this.form.get(formControlName).reset("");
     }
 
+    reset() {
+        this.form.get("text").reset("");
+        this.form.get("author").reset("");
+        this.form.get("bookTitle").reset("");
+        this.form.get("lexia").reset("");
+        this.form.get("date").reset("");
+        this.form.get("plays").setValue(false);
+    }
+
     openHelpDialog(text: string, title: string) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.width = "650px";

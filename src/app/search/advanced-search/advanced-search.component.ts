@@ -699,6 +699,22 @@ export class AdvancedSearchComponent implements OnInit {
         this.form.get(formControlName).reset("");
     }
 
+    reset() {
+        this.form.get("text").reset("");
+        this.form.get("author").reset("");
+        this.form.get("gender").reset("");
+        this.form.get("bookTitle").reset("");
+        this.form.get("genre").reset("");
+        this.form.get("lexia").reset("");
+        this.form.get("language").reset("");
+        this.form.get("function").reset("");
+        this.form.get("marking").reset("");
+        this.form.get("createdDate").reset("");
+        this.form.get("performedCompany").reset("");
+        this.form.get("performedVenue").reset("");
+        this.form.get("plays").setValue(false);
+    }
+
     onChange(toggled) {
         toggled ? this.form.get("genre").disable() : this.form.get("genre").enable();
     }

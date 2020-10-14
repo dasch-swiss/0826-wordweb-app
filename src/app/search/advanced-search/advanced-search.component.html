@@ -191,13 +191,7 @@
                                         {{venue.value}}
                                     </mat-option>
                                 </mat-select>
-                                <!--                                <input matInput formControlName="performedCompany" (keydown.escape)="clear('performedCompany')">-->
-                                <!--                                <button *ngIf="form.get('performedCompany').value" type="button" mat-button matSuffix-->
-                                <!--                                        mat-icon-button aria-label="Clear" (click)="clear('performedCompany')">-->
-                                <!--                                    <mat-icon>close</mat-icon>-->
-                                <!--                                </button>-->
                             </mat-form-field>
-                            <!--                            <button type="button" (click)="selectCompany()">Select company</button>-->
                         </td>
                         <td class="min">
                             <mat-icon matSuffix (click)="getHelpText('performedVenue')">help</mat-icon>
@@ -260,7 +254,10 @@
                 <!--                    </div>-->
                 <!--                </div>-->
 
-                <button [disabled]="form.invalid" type="submit" mat-flat-button color="primary">SEARCH</button>
+                <div class="buttons">
+                    <button class="search-btn" type="submit" mat-flat-button>SEARCH</button>
+                    <button class="clear-btn" type="button" mat-flat-button (click)="reset()">Clear all</button>
+                </div>
 
             </form>
 
