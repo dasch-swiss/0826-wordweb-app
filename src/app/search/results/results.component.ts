@@ -173,7 +173,7 @@ export class ResultsComponent implements OnInit {
         ];
         // Form for sorting
         this.form = new FormGroup({
-            sorting: new FormControl("Title: A-Z", [])
+            sorting: new FormControl("Date: Oldest", [])
         });
     }
 
@@ -219,7 +219,7 @@ export class ResultsComponent implements OnInit {
         this.errorObject = null;
         this.nPassages = null;
         this.searchStarted = false;
-        this.form.get("sorting").setValue("Title: A-Z");
+        this.form.get("sorting").setValue("Date: Oldest");
     }
 
     loadMoreResults() {

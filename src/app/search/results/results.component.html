@@ -5,7 +5,7 @@
             <div>{{passages.length}} <span *ngIf="nPassages | async as total"> of {{total}} results</span></div>
             <form [formGroup]="form">
                 <mat-form-field>
-                    <mat-label>Sort</mat-label>
+                    <mat-label>Sort by</mat-label>
                     <mat-select formControlName="sorting" (selectionChange)="sortResults($event.value)">
                         <mat-option *ngFor="let sortOrder of sortOrders" [value]="sortOrder.name">
                             {{sortOrder.name}}
