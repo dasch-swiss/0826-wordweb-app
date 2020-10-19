@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {filter} from "rxjs/operators";
+import {KnoraService} from "../services/knora.service";
 
 @Component({
     selector: "app-search",
@@ -10,7 +11,7 @@ import {filter} from "rxjs/operators";
 export class SearchComponent implements OnInit {
     selectedSearch: string;
 
-    constructor(private router: Router, private route: ActivatedRoute) {
+    constructor(private router: Router, private route: ActivatedRoute, private knora: KnoraService) {
         this.router.events
             .pipe(
                 filter(data => data instanceof (NavigationEnd))
@@ -25,6 +26,8 @@ export class SearchComponent implements OnInit {
     }
 
     ngOnInit() {
+        // this.knora.getTest()
+        //     .subscribe(data => console.log("test2", data));
     }
 
 }

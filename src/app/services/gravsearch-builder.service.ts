@@ -673,4 +673,37 @@ export class GravsearchBuilderService {
         ];
         return query.join("\n");
     }
+
+    getTest(offset?: number): string {
+        const node: IMainClassObject = {name: "book", variable: "book"};
+        const query = [
+            "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
+            "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
+            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            "",
+            "CONSTRUCT {",
+            `${this.getFirstConstructLine(node).join("")}`,
+            "?book teimww:hasBookTitle ?bookTitle .",
+            "?book teimww:isWrittenBy ?author1 .",
+            "?book teimww:isWrittenBy ?author2 .",
+            "?author1 teimww:hasFirstName ?firstName .",
+            "?author1 teimww:hasLastName ?lastName .",
+            "?author2 teimww:hasFirstName ?firstName2 .",
+            "?author2 teimww:hasLastName ?lastName2 .",
+            "} WHERE {",
+            "BIND (<http://rdfh.ch/0826/z3t7pHg-SeeSx_xHwV3dRQ> AS ?author1)",
+            `${this.getFirstWhereLine(node).join("")}`,
+            "?book teimww:hasBookTitle ?bookTitle .",
+            "?book teimww:isWrittenBy ?author1 .",
+            "?book teimww:isWrittenBy ?author2 .",
+            "?author1 teimww:hasFirstName ?firstName .",
+            "?author1 teimww:hasLastName ?lastName .",
+            "?author2 teimww:hasFirstName ?firstName2 .",
+            "?author2 teimww:hasLastName ?lastName2 .",
+            "}",
+            "",
+            `OFFSET ${offset ? offset : 0}`
+        ];
+        return query.join("\n");
+    }
 }
