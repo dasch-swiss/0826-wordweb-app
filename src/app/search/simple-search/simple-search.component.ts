@@ -360,7 +360,7 @@ export class SimpleSearchComponent implements OnInit {
                 title: "Please note",
                 text: this.stringService.getString("text_not_filled")
             };
-            this.helpDialog.open(FillInComponent, dialogConfig);
+            this.fillInDialog.open(FillInComponent, dialogConfig);
             return;
         }
 
