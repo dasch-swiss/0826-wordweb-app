@@ -3,8 +3,6 @@ import {
     KnoraApiConfig,
     KnoraApiConnection,
     ApiResponseData,
-    ApiResponseError,
-    LoginResponse,
     ReadResource,
     ReadTextValueAsString,
     ReadListValue,
@@ -204,7 +202,7 @@ export class KnoraService {
 
     getCompaniesCount(offset?: number) {
         const gravsearch = this.gsBuilder.getCompaniesQuery(offset);
-        console.log(gravsearch);
+        // console.log(gravsearch);
         return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
@@ -213,7 +211,7 @@ export class KnoraService {
 
     getCompanies(offset?: number) {
         const gravsearch = this.gsBuilder.getCompaniesQuery(offset);
-        console.log(gravsearch);
+        // console.log(gravsearch);
         return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 tap(data => console.log(data)),
@@ -225,7 +223,7 @@ export class KnoraService {
 
     getVenuesCount(offset?: number) {
         const gravsearch = this.gsBuilder.getVenuesQuery(offset);
-        console.log(gravsearch);
+        // console.log(gravsearch);
         return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
@@ -234,7 +232,7 @@ export class KnoraService {
 
     getVenues(offset?: number) {
         const gravsearch = this.gsBuilder.getVenuesQuery(offset);
-        console.log(gravsearch);
+        // console.log(gravsearch);
         return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 tap(data => console.log(data)),
@@ -246,7 +244,7 @@ export class KnoraService {
 
     getActorsCount(offset?: number) {
         const gravsearch = this.gsBuilder.getActorsQuery(offset);
-        console.log(gravsearch);
+        // console.log(gravsearch);
         return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
@@ -255,7 +253,7 @@ export class KnoraService {
 
     getActors(offset?: number) {
         const gravsearch = this.gsBuilder.getActorsQuery(offset);
-        console.log(gravsearch);
+        // console.log(gravsearch);
         return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 tap(data => console.log(data)),
@@ -276,86 +274,5 @@ export class KnoraService {
                 })
             );
     }
-
-    // Empty methods for future
-    // getProjectOntology() {}
-    // getNodeOfList(iri: string) {}
-
-    // Unused code
-    // buildLinkResource(linkedStructure: any, iri: any) {
-    // const linkedStructure = {
-    //     occursIn: {
-    //         isWrittenBy: null
-    //     },
-    //     isMentionedIn: {
-    //         occursIn: {
-    //             isWrittenBy: null
-    //         }
-    //     },
-    //     wasContributedBy: null,
-    //     contains: null
-    // };
-    //
-    //     return this.knoraApiConnection.v2.res.getResource(iri)
-    //         .pipe(
-    //             map((resource: ReadResource) => {
-    //
-    //                 const newResource = {
-    //                     id: resource.id,
-    //                     arkUrl: resource.arkUrl
-    //                 };
-    //
-    //                 for (const property of Object.entries(resource.properties)) {
-    //
-    //                     const newPropertyKey = property[0].split("#").pop().replace("Value", "");
-    //
-    //                     newResource[newPropertyKey] = property[1].map((propValue: any) => {
-    //
-    //                         switch (true) {
-    //                             case (propValue instanceof ReadTextValueAsString): {
-    //                                 return {
-    //                                     id: propValue.id,
-    //                                     value: propValue.text
-    //                                 };
-    //                             }
-    //                             case (propValue instanceof ReadListValue): {
-    //                                 return {
-    //                                     id: propValue.id,
-    //                                     listNode: propValue.listNode
-    //                                 };
-    //                             }
-    //                             case (propValue instanceof ReadLinkValue): {
-    //                                 if (linkedStructure.hasOwnProperty(newPropertyKey)) {
-    //                                     return {
-    //                                         id: propValue.linkedResource.id,
-    //                                         res: this.buildLinkResource(linkedStructure[newPropertyKey], propValue.linkedResource.id)
-    //                                     };
-    //                                 } else {
-    //                                     return {};
-    //                                 }
-    //                             }
-    //                             case (propValue instanceof ReadDateValue): {
-    //                                 return (propValue.date instanceof KnoraPeriod) ?
-    //                                     {
-    //                                         id: propValue.id,
-    //                                         start: propValue.date.start.year,
-    //                                         end: propValue.date.end.year
-    //                                     } :
-    //                                     {
-    //                                         id: propValue.id,
-    //                                         start: propValue.date.year,
-    //                                         end: propValue.date.year
-    //                                     };
-    //                             }
-    //                         }
-    //
-    //                     });
-    //                 }
-    //
-    //                 return newResource;
-    //
-    //             })
-    //         );
-    // }
 
 }
