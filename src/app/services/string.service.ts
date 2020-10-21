@@ -23,7 +23,7 @@ export class StringService {
         author_help: "Authors are given as in Martin Wiggins' <i>British Drama 1533-1642: A Catalogue</i>, " +
             "where applicable. We include \"assigned\" authors and, in a few cases, authors which Wiggins does " +
             "not recognize.",
-        lexia_help: "<b>\"Lexia\"</b> is our term for \"quoted phrase or name\". These small items constitute" +
+        lexia_help: "<b>\"Lexia\"</b> is our term for \"quoted phrase or name\". These small items constitute " +
             "the early modern \"web of words\". Type in a word or a name to find passages that reference each other " +
             "or use the same phrase.",
         date_help: "Years or timespans are given as in Martin Wiggins' <i>British Drama 1533-1642: A Catalogue</i>, " +
@@ -33,11 +33,11 @@ export class StringService {
         plays_help: "We focus on plays but include some passages from nondramatic works that were written or " +
             "referenced by Renaissance dramatists.<br>" +
             "Use this switch to include or exclude poems, treatises, letters, the Bible etc. from your searches.",
-        marking_help: "This is our term for the way in which authors signal the use of somebody else's" +
+        marking_help: "This is our term for the way in which authors signal the use of somebody else's " +
             "words. Marking includes" +
             "<ul>" +
             "<li>verbal signals: \"as the play says\"</li>" +
-            "<li>typographical features : italics, quotation marks</li>" +
+            "<li>typographical features: italics, quotation marks</li>" +
             "<li>names: \"Ovid says\" or \"Hamlet, revenge!\"</li>" +
             "</ul>",
         function_help: "<p><b>\"Function\"</b> is our term for the part of a text which contains a quotation. A " +
@@ -56,7 +56,7 @@ export class StringService {
             "literature and the Classics.</p>" +
             "Latin and Classical Greek texts are given according to <a href='https://www.loebclassics.com' " +
             "target=\"_blank\">loebclassics.com.</a>",
-        genre_help: "This information is given as in <i>Martin Wiggins' British Drama 1533-1642: A" +
+        genre_help: "This information is given as in Martin Wiggins' <i>British Drama 1533-1642: A " +
             "Catalogue</i>, where applicable.<br>" +
             "Some plays are assigned more than one genre; Shakespeare's <i>Richard III</i>, for\n" +
             "example, can be found both under \"Tragedy\" and \"History play\"."
