@@ -415,7 +415,7 @@ export class AdvancedSearchComponent implements OnInit {
         this.knoraService.getActorsCount()
             .subscribe(amount => {
                 const maxOffset = Math.ceil(amount / 25);
-                console.log(maxOffset);
+
                 const requests = [];
 
                 for (let offset = 0; offset < maxOffset; offset++) {
@@ -436,7 +436,6 @@ export class AdvancedSearchComponent implements OnInit {
                                 return actor;
                             })
                             .sort((res1, res2) => this.sortActors(res1, res2));
-                        console.log(this.actors);
                     }, error => {
                         requests.map(a => a.unsubscribe());
                     });
@@ -447,7 +446,7 @@ export class AdvancedSearchComponent implements OnInit {
         this.knoraService.getVenuesCount()
             .subscribe(amount => {
                 const maxOffset = Math.ceil(amount / 25);
-                console.log(maxOffset);
+
                 const requests = [];
 
                 for (let offset = 0; offset < maxOffset; offset++) {
@@ -456,7 +455,6 @@ export class AdvancedSearchComponent implements OnInit {
 
                 forkJoin<any>(requests)
                     .subscribe((res: Array<Array<any>>) => {
-                        console.log("forkJoin", res);
                         this.venues = []
                             .concat(...res)
                             .map(venue => {
@@ -467,8 +465,6 @@ export class AdvancedSearchComponent implements OnInit {
                                 }
                             })
                             .sort((res1, res2) => this.sortVenues(res1, res2));
-                        console.log(this.venues);
-                        // requests.map(a => a.unsubscribe());
                     }, error => {
                         requests.map(a => a.unsubscribe());
                     });
@@ -479,7 +475,7 @@ export class AdvancedSearchComponent implements OnInit {
         this.knoraService.getCompaniesCount()
             .subscribe(amount => {
                 const maxOffset = Math.ceil(amount / 25);
-                console.log(maxOffset);
+
                 const requests = [];
 
                 for (let offset = 0; offset < maxOffset; offset++) {
@@ -497,8 +493,6 @@ export class AdvancedSearchComponent implements OnInit {
                                 }
                             })
                             .sort((res1, res2) => this.sortCompanies(res1, res2));
-                        console.log(this.companies);
-                        // requests.map(a => a.unsubscribe());
                     }, error => {
                         requests.map(a => a.unsubscribe());
                     });
@@ -606,8 +600,7 @@ export class AdvancedSearchComponent implements OnInit {
             this.createdDateRef.searchVal2 = null;
         }
 
-        if (this.form.get("performedCompany").valid) {
-            console.log(this.form.get("performedCompany").value);
+        if (this.form.get("performedCompany").value) {
             this.performedCompanyRef.searchVal1 = this.form.get("performedCompany").value;
             this.performedCompanyRef.priority = 0;
         } else {
@@ -615,8 +608,7 @@ export class AdvancedSearchComponent implements OnInit {
             this.performedCompanyRef.priority = 1;
         }
 
-        if (this.form.get("performedVenue").valid) {
-            console.log(this.form.get("performedVenue").value);
+        if (this.form.get("performedVenue").value) {
             this.performedVenueRef.searchVal1 = this.form.get("performedVenue").value;
             this.performedVenueRef.priority = 0;
         } else {
