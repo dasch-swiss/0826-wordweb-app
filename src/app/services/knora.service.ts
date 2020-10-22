@@ -263,16 +263,4 @@ export class KnoraService {
             );
     }
 
-    getTest(offset?: number) {
-        const gravsearch = this.gsBuilder.getTest(offset);
-        console.log(gravsearch);
-        return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
-            .pipe(
-                tap(data => console.log(data)),
-                map((sequence: ReadResourceSequence) => {
-                    return sequence.resources.map(resource => this.processRes(resource));
-                })
-            );
-    }
-
 }

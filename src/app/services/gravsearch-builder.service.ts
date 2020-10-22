@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {IDisplayedClass, IMainClass, IMainClassObject} from "../model/displayModel";
+import {IDisplayedClass, IDisplayedProperty, IMainClass, IMainClassObject} from "../model/displayModel";
 
 @Injectable({
     providedIn: "root"
@@ -391,22 +391,21 @@ export class GravsearchBuilderService {
             "",
             `OFFSET ${offset ? offset : 0}`
         ];
-
         // Add the resource restriction with IRI
         if (node.iri) {
             query[7] = query[7] + `BIND (<${node.iri}> AS ?${this.getClass[node.name].variable})` + "\n";
         }
-
-        const optimisedNode = this.setOrderPriority(node).node;
-
+        // prioritizing node based on given search values
+        const prioritizedNode = this.setOrderPriority(node).node;
+        // copying sub properties in case there are nested search values and if prop has one-to-many relationship
+        const modifiedNode = this.duplicateSubProps(prioritizedNode);
         // recursion function to fill in the query line
-        this.rec(optimisedNode, priority, query);
+        this.rec(modifiedNode, priority, query);
 
         return query.join("\n");
     }
 
     private setOrderPriority(node: IDisplayedClass) {
-        const name = node.name;
         let resCounter = 0;
 
         node.props = node.props
@@ -418,7 +417,7 @@ export class GravsearchBuilderService {
                     prop.orderPriority = 0;
                 }
 
-                const oProp = this.getClass[name].ref[prop.name];
+                const oProp = this.getClass[node.name].ref[prop.name];
 
                 if (oProp.type === "Resource") {
                     const result = this.setOrderPriority(prop.res);
@@ -434,6 +433,71 @@ export class GravsearchBuilderService {
             });
 
         return {node, resCounter};
+    }
+
+    private duplicateSubProps(n: IDisplayedClass) {
+        const node = JSON.parse(JSON.stringify(n));
+        const duplicatedProps = [];
+
+        for (const prop of node.props) {
+            // Original property
+            const oProp = this.getClass[node.name].ref[prop.name];
+            // ...
+            if (oProp.type === "Resource") {
+                if (oProp.cardinality === "0-n" || oProp.cardinality === "1-n") {
+                    if (prop.searchVal1) {
+                        const duplicatedProp = JSON.parse(JSON.stringify(prop));
+                        const newProp = this.resetRename(duplicatedProp, oProp);
+                        duplicatedProps.push(newProp);
+                        prop.res = this.duplicateSubProps(prop.res);
+                    } else {
+                        let found = false;
+                        for (const p of prop.res.props) {
+                            if (p.searchVal1) {
+                                found = true;
+                            }
+                        }
+                        if (found) {
+                            const duplicatedProp = JSON.parse(JSON.stringify(prop));
+                            const newProp = this.resetRename(duplicatedProp, oProp);
+                            duplicatedProps.push(newProp);
+                        }
+                        prop.res = this.duplicateSubProps(prop.res);
+                    }
+                }
+            } else {
+                if ((prop.searchVal1) && (oProp.cardinality === "0-n" || oProp.cardinality === "1-n")) {
+                    const duplicatedProp = JSON.parse(JSON.stringify(prop));
+                    const newProp = this.resetRename(duplicatedProp, oProp);
+                    duplicatedProps.push(newProp);
+                }
+            }
+        }
+        // Adds the duplicated properties to the node properties
+        duplicatedProps.map(prop => node.props.push(prop));
+
+        return node;
+    }
+
+    private resetRename(node: IDisplayedProperty, originalNode: any) {
+        if (node.searchVal1) {
+            node.searchVal1 = null;
+        }
+        if (node.searchVal2) {
+            node.searchVal2 = null;
+        }
+        node.orderPriority = 0;
+
+        node.valVar = `${originalNode.queryStr[3]}2`;
+
+        if (node.res) {
+            for (const prop of node.res.props) {
+                const oProp = this.getClass[node.res.name].ref[prop.name];
+                this.resetRename(prop, oProp);
+            }
+        }
+
+        return node;
     }
 
     private rec(node: IDisplayedClass, priority: number, query: string[], classVar?: string) {
@@ -481,7 +545,7 @@ export class GravsearchBuilderService {
                     // Continuous with next property node
                     this.rec(prop.res, priority, query, newClassVar);
 
-                // Checks if property is a list value
+                    // Checks if property is a list value
                 } else if (oProp.type === "List") {
 
                     if (prop.searchVal1) {
@@ -489,7 +553,7 @@ export class GravsearchBuilderService {
                         query[8] = query[8] + "\n" + `?${qStrCopy[3]} knora-api:listValueAsListNode <${prop.searchVal1}> .`;
                     }
 
-                // Checks if property is a date
+                    // Checks if property is a date
                 } else if (oProp.type === "Date") {
 
                     if (prop.searchVal1) {
@@ -501,7 +565,7 @@ export class GravsearchBuilderService {
                             query[8] = query[8] + "\n" + `FILTER (knora-api:toSimpleDate(?${qStrCopy[3]}) = "GREGORIAN:${prop.searchVal1}"^^knora-api-simple:Date)`;
                         }
                     }
-                // Checks if property is a string
+                    // Checks if property is a string
                 } else if (oProp.type === "String") {
 
                     if (prop.searchVal1) {
@@ -667,39 +731,6 @@ export class GravsearchBuilderService {
             "?person teimww:hasLastName ?lastName .",
             // Adapt next line if direction of property is changed
             "?person teimww:personPerformedIn ?book .",
-            "}",
-            "",
-            `OFFSET ${offset ? offset : 0}`
-        ];
-        return query.join("\n");
-    }
-
-    getTest(offset?: number): string {
-        const node: IMainClassObject = {name: "book", variable: "book"};
-        const query = [
-            "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
-            "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
-            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
-            "",
-            "CONSTRUCT {",
-            `${this.getFirstConstructLine(node).join("")}`,
-            "?book teimww:hasBookTitle ?bookTitle .",
-            "?book teimww:isWrittenBy ?author1 .",
-            "?book teimww:isWrittenBy ?author2 .",
-            "?author1 teimww:hasFirstName ?firstName .",
-            "?author1 teimww:hasLastName ?lastName .",
-            "?author2 teimww:hasFirstName ?firstName2 .",
-            "?author2 teimww:hasLastName ?lastName2 .",
-            "} WHERE {",
-            "BIND (<http://rdfh.ch/0826/z3t7pHg-SeeSx_xHwV3dRQ> AS ?author1)",
-            `${this.getFirstWhereLine(node).join("")}`,
-            "?book teimww:hasBookTitle ?bookTitle .",
-            "?book teimww:isWrittenBy ?author1 .",
-            "?book teimww:isWrittenBy ?author2 .",
-            "?author1 teimww:hasFirstName ?firstName .",
-            "?author1 teimww:hasLastName ?lastName .",
-            "?author2 teimww:hasFirstName ?firstName2 .",
-            "?author2 teimww:hasLastName ?lastName2 .",
             "}",
             "",
             `OFFSET ${offset ? offset : 0}`
