@@ -45,6 +45,7 @@ Person
 
 Book
     hasBookInternalId           1
+    hasPrefixBookTitle          0-1
     hasBookTitle                1
     hasEdition                  1
     hasEditionHist              0-1
@@ -64,6 +65,7 @@ Book
 Passages
     hasText                     1   (Sec: Minus as placeholder)
     hasTextHist                 0-1
+    hasPrefixDisplayedTitle     0-1
     hasDisplayedTitle           1   (Sec: Column "Title" from God bless you)
     hasPage                     0-1
     hasPageHist                 0-1
