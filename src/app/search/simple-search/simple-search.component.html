@@ -11,7 +11,7 @@
                         <td>
                             <mat-form-field>
                                 <mat-label>Text</mat-label>
-                                <input matInput formControlName="text" placeholder="type just one word"
+                                <input matInput formControlName="text"
                                        (keydown.escape)="clear('text')">
                                 <button *ngIf="form.get('text').value" type="button" mat-button matSuffix
                                         mat-icon-button aria-label="Clear" (click)="clear('text')">
@@ -28,7 +28,7 @@
                         <td>
                             <mat-form-field>
                                 <mat-label>Title</mat-label>
-                                <input matInput formControlName="bookTitle" placeholder="type just one word"
+                                <input matInput formControlName="bookTitle" placeholder="e.g. Hamlet"
                                        (keydown.escape)="clear('bookTitle')">
                                 <button *ngIf="form.get('bookTitle').value" type="button" mat-button matSuffix
                                         mat-icon-button aria-label="Clear" (click)="clear('bookTitle')">
@@ -62,7 +62,7 @@
                         <td>
                             <mat-form-field>
                                 <mat-label>Lexia</mat-label>
-                                <input matInput formControlName="lexia" placeholder="type just one word"
+                                <input matInput formControlName="lexia" placeholder="e.g. to be or not to be"
                                        (keydown.escape)="clear('lexia')">
                                 <button *ngIf="form.get('lexia').value" type="button" mat-button matSuffix
                                         mat-icon-button aria-label="Clear" (click)="clear('lexia')">
