@@ -39,6 +39,11 @@ export class AdvancedSearchComponent implements OnInit {
                 res: null
             },
             {
+                name: "hasPrefixDisplayedTitle",
+                priority: 0,
+                res: null
+            },
+            {
                 name: "hasDisplayedTitle",
                 priority: 0,
                 res: null
@@ -89,6 +94,11 @@ export class AdvancedSearchComponent implements OnInit {
                 res: {
                     name: "book",
                     props: [
+                        {
+                            name: "hasPrefixBookTitle",
+                            priority: 0,
+                            res: null
+                        },
                         {
                             name: "hasBookTitle",
                             priority: 0,
@@ -200,9 +210,7 @@ export class AdvancedSearchComponent implements OnInit {
             },
             {
                 name: "isMentionedIn",
-                // searchVal1: "http://rdfh.ch/0826/V36CJpAuSTuhDATfiflaTA",
                 priority: 1,
-                mandatory: true,
                 res: {
                     name: "passage",
                     props: [
@@ -381,17 +389,17 @@ export class AdvancedSearchComponent implements OnInit {
         this.markings = markingNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
 
         this.textRef = this.myPassage.props[0];
-        this.authorLastNameRef = this.myPassage.props[11].res.props[10].res.props[1];
-        this.genderRef = this.myPassage.props[11].res.props[10].res.props[2];
-        this.bookTitleRef = this.myPassage.props[11].res.props[0];
-        this.genreRef = this.myPassage.props[11].res.props[4];
-        this.lexiaRef = this.myPassage.props[14].res.props[0];
-        this.languageRef = this.myPassage.props[11].res.props[3];
-        this.functionRef = this.myPassage.props[6];
-        this.markingRef = this.myPassage.props[7];
-        this.createdDateRef = this.myPassage.props[11].res.props[6];
-        this.performedCompanyRef = this.myPassage.props[11].res.props[11];
-        this.performedVenueRef = this.myPassage.props[11].res.props[12];
+        this.authorLastNameRef = this.myPassage.props[12].res.props[11].res.props[1];
+        this.genderRef = this.myPassage.props[12].res.props[11].res.props[2];
+        this.bookTitleRef = this.myPassage.props[12].res.props[1];
+        this.genreRef = this.myPassage.props[12].res.props[5];
+        this.lexiaRef = this.myPassage.props[15].res.props[0];
+        this.languageRef = this.myPassage.props[12].res.props[4];
+        this.functionRef = this.myPassage.props[7];
+        this.markingRef = this.myPassage.props[8];
+        this.createdDateRef = this.myPassage.props[12].res.props[7];
+        this.performedCompanyRef = this.myPassage.props[12].res.props[12];
+        this.performedVenueRef = this.myPassage.props[12].res.props[13];
 
         this.form = new FormGroup({
             text: new FormControl("", []),

@@ -29,6 +29,11 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
                 res: null
             },
             {
+                name: "hasPrefixDisplayedTitle",
+                priority: 0,
+                res: null
+            },
+            {
                 name: "hasDisplayedTitle",
                 priority: 0,
                 res: null
@@ -79,6 +84,11 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
                 res: {
                     name: "book",
                     props: [
+                        {
+                            name: "hasPrefixBookTitle",
+                            priority: 0,
+                            res: null
+                        },
                         {
                             name: "hasBookTitle",
                             priority: 0,
@@ -354,9 +364,9 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
             this.chars.push(letter);
         }
 
-        this.authorRef = this.myPassage.props[11].res.props[8];
-        this.bookRef = this.myPassage.props[11];
-        this.lexiaRef = this.myPassage.props[14];
+        this.authorRef = this.myPassage.props[12].res.props[9];
+        this.bookRef = this.myPassage.props[12];
+        this.lexiaRef = this.myPassage.props[15];
     }
 
     ngAfterViewInit() {
@@ -586,7 +596,7 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
                 return (alphaRes.hasFirstName && alphaRes.hasFirstName[0].value !== "_") ? `${alphaRes.hasLastName[0].value}, ${alphaRes.hasFirstName[0].value}` : alphaRes.hasLastName[0].value;
             }
             case "book": {
-                return alphaRes.hasBookTitle[0].value;
+                return alphaRes.hasPrefixBookTitle ? `${alphaRes.hasPrefixBookTitle[0].value} ${alphaRes.hasBookTitle[0].value}` : `${alphaRes.hasBookTitle[0].value}`;
             }
             case "lexia": {
                 return alphaRes.hasLexiaTitle[0].value;

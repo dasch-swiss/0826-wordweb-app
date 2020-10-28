@@ -77,6 +77,11 @@ export class GravsearchBuilderService {
             type: "String",
             queryStr: this.getQueryStr(GravsearchBuilderService.BOOK_VAR, "hasBookInternalId", "bookInternalId")
         },
+        hasPrefixBookTitle: {
+            cardinality: "0-1",
+            type: "String",
+            queryStr: this.getQueryStr(GravsearchBuilderService.BOOK_VAR, "hasPrefixBookTitle", "prefixBookTitle")
+        },
         hasBookTitle: {
             cardinality: "1",
             type: "String",
@@ -167,6 +172,11 @@ export class GravsearchBuilderService {
             cardinality: "0-1",
             type: "String",
             queryStr: this.getQueryStr(GravsearchBuilderService.PASSAGE_VAR, "hasTextHist", "textHist")
+        },
+        hasPrefixDisplayedTitle: {
+            cardinality: "0-1",
+            type: "String",
+            queryStr: this.getQueryStr(GravsearchBuilderService.PASSAGE_VAR, "hasPrefixDisplayedTitle", "prefixDisplayedTitle")
         },
         hasDisplayedTitle: {
             cardinality: "1",
@@ -623,11 +633,13 @@ export class GravsearchBuilderService {
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node).join("")}`,
+            "?book teimww:hasPrefixBookTitle ?prefixBookTitle .",
             "?book teimww:hasBookTitle ?bookTitle .",
             "?passage teimww:occursIn ?book .",
             "?passage teimww:isMentionedIn ?sPassage .",
             "} WHERE {",
             `${this.getFirstWhereLine(node).join("")}`,
+            "OPTIONAL { ?book teimww:hasPrefixBookTitle ?prefixBookTitle . }",
             "?book teimww:hasBookTitle ?bookTitle .",
             "?bookTitle knora-api:valueAsString ?bookTitleString .",
             `FILTER regex(?bookTitleString, \"^${char}\", \"i\")`,

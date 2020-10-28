@@ -35,6 +35,11 @@ export class SimpleSearchComponent implements OnInit {
                 res: null
             },
             {
+                name: "hasPrefixDisplayedTitle",
+                priority: 0,
+                res: null
+            },
+            {
                 name: "hasDisplayedTitle",
                 priority: 0,
                 res: null
@@ -85,6 +90,11 @@ export class SimpleSearchComponent implements OnInit {
                 res: {
                     name: "book",
                     props: [
+                        {
+                            name: "hasPrefixBookTitle",
+                            priority: 0,
+                            res: null
+                        },
                         {
                             name: "hasBookTitle",
                             priority: 0,
@@ -181,9 +191,7 @@ export class SimpleSearchComponent implements OnInit {
             },
             {
                 name: "isMentionedIn",
-                // searchVal1: "http://rdfh.ch/0826/V36CJpAuSTuhDATfiflaTA",
                 priority: 1,
-                mandatory: true,
                 res: {
                     name: "passage",
                     props: [
@@ -330,11 +338,11 @@ export class SimpleSearchComponent implements OnInit {
 
     ngOnInit() {
         this.textRef = this.myPassage.props[0];
-        this.authorLastNameRef = this.myPassage.props[11].res.props[8].res.props[1];
-        this.bookTitleRef = this.myPassage.props[11].res.props[0];
-        this.genreRef = this.myPassage.props[11].res.props[3];
-        this.lexiaRef = this.myPassage.props[14].res.props[0];
-        this.dateRef = this.myPassage.props[11].res.props[4];
+        this.authorLastNameRef = this.myPassage.props[12].res.props[9].res.props[1];
+        this.bookTitleRef = this.myPassage.props[12].res.props[1];
+        this.genreRef = this.myPassage.props[12].res.props[4];
+        this.lexiaRef = this.myPassage.props[15].res.props[0];
+        this.dateRef = this.myPassage.props[12].res.props[5];
 
         this.form = new FormGroup({
             text: new FormControl("", []),
