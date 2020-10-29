@@ -9,6 +9,10 @@
       padding: 1rem 2rem 1rem 2rem;
       background-color: rgb(220, 220, 220);
 
+      a {
+        color: rgba(159, 11, 11, 1)
+      }
+
       .numbering {
         text-align: right;
         font-size: smaller;
@@ -24,10 +28,6 @@
 
           .author {
             display: inline;
-
-            a {
-              color: rgba(159, 11, 11, 1)
-            }
           }
         }
 
@@ -42,15 +42,7 @@
         .lexia {
           font-style: italic;
           text-align: right;
-
-          a {
-            color: rgba(159, 11, 11, 1)
-          }
         }
-      }
-
-      .expand-btn {
-        //margin-top: 1rem;
       }
     }
 
