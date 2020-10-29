@@ -1226,6 +1226,10 @@ display: none;
   padding-left: 80px;
 }
 
+.service-content > p {
+  text-align: left;
+}
+
 .service + .service {
   margin-top: 50px;
 }
@@ -1253,6 +1257,7 @@ display: none;
   margin: 0 0 20px;
   font-weight: 700;
   font-size: 16px;
+  text-align: left;
 }
 
 /* Section: Counter */
