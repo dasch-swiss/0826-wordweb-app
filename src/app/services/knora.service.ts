@@ -64,7 +64,8 @@ export class KnoraService {
     processRes(resource: ReadResource) {
         const newResource = {
             id: resource.id,
-            arkUrl: resource.arkUrl
+            arkUrl: resource.arkUrl,
+            type: resource.type.split("#")[1]
         };
 
         for (const property of Object.entries(resource.properties)) {
