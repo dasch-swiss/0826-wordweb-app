@@ -288,24 +288,24 @@ export class ResultsComponent implements OnInit {
 
             this.knoraService.getPassageRes(passage.id)
                 .pipe(
-                    mergeMap(pass => forkJoin([of(pass), from(pass.wasContributedBy)
+                    mergeMap((pass: any) => forkJoin([of(pass), from(pass.wasContributedBy)
                             .pipe(
-                                mergeMap(contributor => this.knoraService.getPassageRes(contributor.id)),
+                                mergeMap((contributor: any) => this.knoraService.getPassageRes(contributor.id)),
                                 toArray())]
                         )
                     ),
                     mergeMap(([pass, contributors]) => forkJoin([of(pass), of(contributors), from(pass.contains)
                         .pipe(
-                            mergeMap(lexia => this.knoraService.getPassageRes(lexia.id)),
+                            mergeMap((lexia: any) => this.knoraService.getPassageRes(lexia.id)),
                             toArray()
                         )])
                     ),
                     mergeMap(([pass, contributors, lexias]) => forkJoin([of(pass), of(contributors), of(lexias), from(pass.occursIn)
                         .pipe(
-                            mergeMap(book => this.knoraService.getPassageRes(book.id)),
-                            mergeMap(book => forkJoin([of(book), from(book.isWrittenBy)
+                            mergeMap((book: any) => this.knoraService.getPassageRes(book.id)),
+                            mergeMap((book: any) => forkJoin([of(book), from(book.isWrittenBy)
                                 .pipe(
-                                    mergeMap(author => this.knoraService.getPassageRes(author.id)),
+                                    mergeMap((author: any) => this.knoraService.getPassageRes(author.id)),
                                     toArray()
                                 )])
                             ),
@@ -328,13 +328,13 @@ export class ResultsComponent implements OnInit {
                     if (data.isMentionedIn) {
                         from(data.isMentionedIn)
                             .pipe(
-                                mergeMap(sPassage => this.knoraService.getPassageRes(sPassage.id)),
-                                mergeMap(sPassage => forkJoin([of(sPassage), from(sPassage.occursIn)
+                                mergeMap((sPassage: any) => this.knoraService.getPassageRes(sPassage.id)),
+                                mergeMap((sPassage: any) => forkJoin([of(sPassage), from(sPassage.occursIn)
                                     .pipe(
-                                        mergeMap(sBook => this.knoraService.getPassageRes(sBook.id)),
-                                        mergeMap(sBook => forkJoin([of(sBook), from(sBook.isWrittenBy)
+                                        mergeMap((sBook: any) => this.knoraService.getPassageRes(sBook.id)),
+                                        mergeMap((sBook: any) => forkJoin([of(sBook), from(sBook.isWrittenBy)
                                             .pipe(
-                                                mergeMap(author => this.knoraService.getPassageRes(author.id)),
+                                                mergeMap((author: any) => this.knoraService.getPassageRes(author.id)),
                                                 toArray()
                                             )
                                         ])),
