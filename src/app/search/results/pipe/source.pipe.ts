@@ -24,11 +24,32 @@ export class SourcePipe implements PipeTransform {
             return `<b>Passage identified by</b> ${contributor} <b>using</b> ${titles}`;
         } else if (listService.searchNodeById(detailPas.hasResearchField[0].listNode) === "Previous Research") {
             const firstLine = `<b>Passage uploaded by</b> ${contributor} <b>and mentioned in:</b>`;
+            const sources = [];
 
-            const sBooks = detailPas.isMentionedIn
-                .map(sPassage => sPassage.occursIn);
+            for (const sPassage of detailPas.isMentionedIn) {
+                const sBook = sPassage.occursIn[0];
 
-            const full = `${firstLine}<br> is not yet implemented`;
+                const sAuthors = sBook.isWrittenBy
+                    .map(sAuthor => (sAuthor.hasFirstName && sAuthor.hasFirstName[0].value !== "_") ? {firstName: sAuthor.hasFirstName[0].value, lastName: sAuthor.hasLastName[0].value} :
+                        {lastName: sAuthor.hasLastName[0].value}
+                    )
+                    .sort((sAuthor1, sAuthor2) => sAuthor1.lastName < sAuthor2.lastName ? -1 : (sAuthor1.lastName > sAuthor2.lastName ? 1 : 0)
+                    )
+                    .map(sAuthor => sAuthor.firstName ? `${sAuthor.lastName} ${sAuthor.firstName}` : `${sAuthor.lastName}`)
+                    .join(", ");
+
+                const sEdition = sPassage.occursIn[0].hasEdition[0].value;
+                const sPage = sPassage.hasPage ? sPassage.hasPage[0].value : "";
+                const sEditionPage = `${sEdition} ${sPage}`;
+
+                sources.push(`${sAuthors}. ${sEditionPage}`);
+            }
+
+            let full = `${firstLine}`;
+
+            sources.map(source => {
+                full = `${full}<br>${source}`;
+            });
 
             return `${full}`;
         } else {

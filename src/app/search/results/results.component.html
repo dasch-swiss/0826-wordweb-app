@@ -21,12 +21,14 @@
                 <div class="title">
                     <div class="authors">
                         <div class="author" *ngFor="let author of passage.occursIn[0].isWrittenBy; let last = last;">
-                            <a [routerLink]="['/search/browsing']" [queryParams]="{res: 'author', letter: author.hasLastName[0].value[0], id:author.id}">
+                            <a [routerLink]="['/search/browsing']"
+                               [queryParams]="{res: 'author', letter: author.hasLastName[0].value[0], id:author.id}">
                                 {{author | authors}}<span *ngIf="!last">,</span>
                             </a>
                         </div>
                     </div>
-                    <a [routerLink]="['/search/browsing']" [queryParams]="{res: 'book', letter: passage.occursIn[0].hasBookTitle[0].value[0], id: passage.occursIn[0].id}">
+                    <a [routerLink]="['/search/browsing']"
+                       [queryParams]="{res: 'book', letter: passage.occursIn[0].hasBookTitle[0].value[0], id: passage.occursIn[0].id}">
                         <div class="title" [innerHTML]="passage | title"></div>
                     </a>
                     <div class="year">{{passage | year}}</div>

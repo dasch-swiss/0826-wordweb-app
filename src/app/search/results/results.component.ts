@@ -1,7 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {IMainClass} from "../../model/displayModel";
 import {NgxSpinnerService} from "ngx-spinner";
-import {forkJoin, Observable} from "rxjs";
+import {forkJoin, Observable, from, of} from "rxjs";
+import {mergeMap, toArray, map} from "rxjs/operators";
 import {KnoraService} from "../../services/knora.service";
 import {ListService} from "../../services/list.service";
 import {Clipboard} from "@angular/cdk/clipboard";
@@ -284,95 +285,87 @@ export class ResultsComponent implements OnInit {
         detailStructure.iri = passage.id;
 
         if (!this.detailPassages[passage.id]) {
+
             this.knoraService.getPassageRes(passage.id)
+                .pipe(
+                    mergeMap(pass => forkJoin([of(pass), from(pass.wasContributedBy)
+                            .pipe(
+                                mergeMap(contributor => this.knoraService.getPassageRes(contributor.id)),
+                                toArray())]
+                        )
+                    ),
+                    mergeMap(([pass, contributors]) => forkJoin([of(pass), of(contributors), from(pass.contains)
+                        .pipe(
+                            mergeMap(lexia => this.knoraService.getPassageRes(lexia.id)),
+                            toArray()
+                        )])
+                    ),
+                    mergeMap(([pass, contributors, lexias]) => forkJoin([of(pass), of(contributors), of(lexias), from(pass.occursIn)
+                        .pipe(
+                            mergeMap(book => this.knoraService.getPassageRes(book.id)),
+                            mergeMap(book => forkJoin([of(book), from(book.isWrittenBy)
+                                .pipe(
+                                    mergeMap(author => this.knoraService.getPassageRes(author.id)),
+                                    toArray()
+                                )])
+                            ),
+                            map(([book, authors]) => {
+                                book.isWrittenBy = authors;
+                                return book;
+                            }),
+                            toArray()
+                        )])
+                    ),
+                    map(([pass, contributors, lexias, books]) => {
+                        pass.wasContributedBy = contributors;
+                        pass.contains = lexias;
+                        pass.occursIn = books;
+                        return pass;
+                    })
+                )
                 .subscribe((data: any) => {
-                    const a = forkJoin<any>(data.occursIn.map(item => this.knoraService.getPassageRes(item.id)));
-                    const b = forkJoin<any>(data.isMentionedIn.map(item => this.knoraService.getPassageRes(item.id)));
-                    const c = forkJoin<any>(data.wasContributedBy.map(item => this.knoraService.getPassageRes(item.id)));
-                    const d = forkJoin<any>(data.contains.map(item => this.knoraService.getPassageRes(item.id)));
 
-                    forkJoin<any>(a, b, c, d)
-                        .subscribe(([resA, resB, resC, resD]) => {
-                            resA.map(book => {
-                                forkJoin<any>(book.isWrittenBy.map(item => this.knoraService.getPassageRes(item.id)))
-                                    .subscribe(authors => {
-                                        book.isWrittenBy = authors;
-                                        data.occursIn = resA;
-
-                                        resB.map(sPassage => {
-                                            forkJoin<any>(sPassage.occursIn.map(item => this.knoraService.getPassageRes(item.id)))
-                                                .subscribe(sBooks => {
-                                                    sBooks.map((sBook: any) => {
-                                                        forkJoin<any>(sBook.isWrittenBy.map(item => this.knoraService.getPassageRes(item.id)))
-                                                            .subscribe(sAuthors => {
-                                                                sBook.isWrittenBy = sAuthors;
-                                                                sPassage.occursIn = sBooks;
-                                                                data.isMentionedIn = resB;
-
-                                                                data.wasContributedBy = resC;
-                                                                data.contains = resD;
-                                                                console.log(data);
-
-                                                                this.detailPassages[passage.id] = data;
-                                                                this.detailStarted = false;
-                                                                this.spinner.hide(`spinner-${passage.id}`);
-                                                            }, error => {
-                                                                // TODO Different error concept reporting
-                                                                this.detailStarted = false;
-                                                                this.spinner.hide(`spinner-${passage.id}`);
-                                                            });
-                                                    });
-                                                }, error => {
-                                                    // TODO Different error concept reporting
-                                                    this.detailStarted = false;
-                                                    this.spinner.hide(`spinner-${passage.id}`);
-                                                });
-                                        });
-                                    });
+                    if (data.isMentionedIn) {
+                        from(data.isMentionedIn)
+                            .pipe(
+                                mergeMap(sPassage => this.knoraService.getPassageRes(sPassage.id)),
+                                mergeMap(sPassage => forkJoin([of(sPassage), from(sPassage.occursIn)
+                                    .pipe(
+                                        mergeMap(sBook => this.knoraService.getPassageRes(sBook.id)),
+                                        mergeMap(sBook => forkJoin([of(sBook), from(sBook.isWrittenBy)
+                                            .pipe(
+                                                mergeMap(author => this.knoraService.getPassageRes(author.id)),
+                                                toArray()
+                                            )
+                                        ])),
+                                        map(([sBook, sAuthors]) => {
+                                            sBook.isWrittenBy = sAuthors;
+                                            return sBook;
+                                        }),
+                                        toArray()
+                                    )])
+                                ),
+                                map(([sPassage, sBooks]) => {
+                                    sPassage.occursIn = sBooks;
+                                    return sPassage;
+                                }),
+                                toArray()
+                            )
+                            .subscribe(extraData => {
+                                data.isMentionedIn = extraData;
+                                console.log("Data: ", data);
+                                this.detailPassages[passage.id] = data;
+                                this.detailStarted = false;
+                                this.spinner.hide(`spinner-${passage.id}`);
                             });
-                        }, error => {
-                            // TODO Different error concept reporting
-                            this.detailStarted = false;
-                            this.spinner.hide(`spinner-${passage.id}`);
-                        });
+                    }
 
-                    // forkJoin<any>(a, b, c, d)
-                    //     .subscribe(([resA, resB, resC, resD]) => {
-                    //
-                    //         resA.map(book => {
-                    //             forkJoin<any>(book.isWrittenBy.map(item => this.knoraService.getPassageRes(item.id)))
-                    //                 .subscribe(authors => {
-                    //                     book.isWrittenBy = authors;
-                    //                     data.occursIn = resA;
-                    //                     console.log("After 2", data);
-                    //                 });
-                    //         });
-                    //
-                    //         resB.map(sPassage => {
-                    //             forkJoin<any>(sPassage.occursIn.map(item => this.knoraService.getPassageRes(item.id)))
-                    //                 .subscribe(sBooks => {
-                    //                     sBooks.map(sBook => {
-                    //                         forkJoin<any>(sBook.isWrittenBy.map(item => this.knoraService.getPassageRes(item.id)))
-                    //                             .subscribe(sAuthors => {
-                    //                                 sBook.isWrittenBy = sAuthors;
-                    //                                 sPassage.occursIn = sBooks;
-                    //                                 data.isMentionedIn = resB;
-                    //                                 console.log("After 3", data);
-                    //                             });
-                    //                     });
-                    //                 });
-                    //         });
-                    //
-                    //         data.wasContributedBy = resC;
-                    //         data.contains = resD;
-                    //         console.log("End", data);
-                    //
-                    //     });
                 }, error => {
                     // TODO Different error concept reporting
                     this.detailStarted = false;
                     this.spinner.hide(`spinner-${passage.id}`);
                 });
+
         }
     }
 
