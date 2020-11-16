@@ -387,11 +387,16 @@ export class ResultsComponent implements OnInit {
                             )
                             .subscribe(extraData => {
                                 data.isMentionedIn = extraData;
-                                console.log("Data: ", data);
+                                console.log("Data of passage: ", data);
                                 this.detailPassages[passage.id] = data;
                                 this.detailStarted = false;
                                 this.spinner.hide(`spinner-${passage.id}`);
                             });
+                    } else {
+                        console.log("Data of passage: ", data);
+                        this.detailPassages[passage.id] = data;
+                        this.detailStarted = false;
+                        this.spinner.hide(`spinner-${passage.id}`);
                     }
 
                 }, error => {
