@@ -288,21 +288,55 @@ export class ResultsComponent implements OnInit {
 
             this.knoraService.getPassageRes(passage.id)
                 .pipe(
+                    // Requests the contributor
                     mergeMap((pass: any) => forkJoin([of(pass), from(pass.wasContributedBy)
                             .pipe(
                                 mergeMap((contributor: any) => this.knoraService.getPassageRes(contributor.id)),
                                 toArray())]
                         )
                     ),
+                    // Requests all the lexias contained in the passage
                     mergeMap(([pass, contributors]) => forkJoin([of(pass), of(contributors), from(pass.contains)
                         .pipe(
                             mergeMap((lexia: any) => this.knoraService.getPassageRes(lexia.id)),
                             toArray()
                         )])
                     ),
+                    // Requests the book in which the passage occurs in
                     mergeMap(([pass, contributors, lexias]) => forkJoin([of(pass), of(contributors), of(lexias), from(pass.occursIn)
                         .pipe(
                             mergeMap((book: any) => this.knoraService.getPassageRes(book.id)),
+                            // Check if book has performedIn and requests the venues
+                            mergeMap((book: any) => {
+                                if (book.performedIn) {
+                                    return forkJoin([of(book), from(book.performedIn)
+                                        .pipe(mergeMap((venue: any) => this.knoraService.getPassageRes(venue.id)), toArray())]);
+                                } else {
+                                    return forkJoin([of(book), of("empty")]);
+                                }
+                            }),
+                            map(([book, venues]) => {
+                                if (venues !== "empty") {
+                                    book.performedIn = venues;
+                                }
+                                return book;
+                            }),
+                            // Checks if book has performedBy and requests the companies
+                            mergeMap((book: any) => {
+                                if (book.performedBy) {
+                                    return forkJoin([of(book), from(book.performedBy)
+                                        .pipe(mergeMap((company: any) => this.knoraService.getPassageRes(company.id)), toArray())]);
+                                } else {
+                                    return forkJoin([of(book), of("empty")]);
+                                }
+                            }),
+                            map(([book, companies]) => {
+                                if (companies !== "empty") {
+                                    book.performedBy = companies;
+                                }
+                                return book;
+                            }),
+                            // Requests the authors of the book
                             mergeMap((book: any) => forkJoin([of(book), from(book.isWrittenBy)
                                 .pipe(
                                     mergeMap((author: any) => this.knoraService.getPassageRes(author.id)),
@@ -324,7 +358,7 @@ export class ResultsComponent implements OnInit {
                     })
                 )
                 .subscribe((data: any) => {
-
+                    // Checks if the passages was mentioned somewhere. If yes, all the secondary data will be requested
                     if (data.isMentionedIn) {
                         from(data.isMentionedIn)
                             .pipe(
