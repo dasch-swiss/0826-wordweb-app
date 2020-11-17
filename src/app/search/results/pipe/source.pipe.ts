@@ -35,25 +35,42 @@ export class SourcePipe implements PipeTransform {
                     )
                     .sort((sAuthor1, sAuthor2) => sAuthor1.lastName < sAuthor2.lastName ? -1 : (sAuthor1.lastName > sAuthor2.lastName ? 1 : 0)
                     )
-                    .map(sAuthor => sAuthor.firstName ? `${sAuthor.lastName} ${sAuthor.firstName}` : `${sAuthor.lastName}`)
+                    .map((sAuthor, index) => {
+                        if (index === 0) {
+                            // Capitalize last name before string concatenation
+                            return sAuthor.firstName ? `${sAuthor.lastName.charAt(0).toUpperCase() + sAuthor.lastName.slice(1)}, ${sAuthor.firstName}` : `${sAuthor.lastName.charAt(0).toUpperCase() + sAuthor.lastName.slice(1)}`;
+                        } else {
+                            // Capitalize first name before string concatenation
+                            return sAuthor.firstName ? `${sAuthor.firstName.charAt(0).toUpperCase() + sAuthor.firstName.slice(1)} ${sAuthor.lastName}` : `${sAuthor.lastName.charAt(0).toUpperCase() + sAuthor.lastName.slice(1)}`;
+                        }
+                    });
+
+                const numsSAuthors = sAuthors.length;
+                const lastAuthor = sAuthors[sAuthors.length - 1];
+                // Concatenates last two authors with "and". Ignores if there is only one author.
+                if (numsSAuthors > 1) {
+                    const secondLast = sAuthors[numsSAuthors - 2];
+                    sAuthors.splice(numsSAuthors - 2, 2, `${secondLast} and ${lastAuthor}`);
+                }
+
+                let sAuthorString = sAuthors
                     .join(", ");
+                // Adds a full stop if there is none
+                sAuthorString = sAuthorString.charAt(sAuthorString.length - 1) === "." ? sAuthorString : `${sAuthorString}.`;
 
                 const sEdition = sPassage.occursIn[0].hasEdition[0].value;
                 const sPage = sPassage.hasPage ? sPassage.hasPage[0].value : "";
                 const sEditionPage = `${sEdition} ${sPage}`;
 
-                sources.push(`${sAuthors}. ${sEditionPage}`);
+                sources.push(`${sAuthorString} ${sEditionPage}`);
             }
 
-            let full = `${firstLine}`;
+            // Sorts sources alphabetically and joins with a <br> html tag
+            const sourceString = sources
+                .sort((source1, source2) => source1 < source2 ? -1 : (source1 > source2 ? 1 : 0))
+                .join("<br>");
 
-            sources.map(source => {
-                full = `${full}<br>${source}`;
-            });
-
-            return `${full}`;
-        } else {
-            return `[Research is missing!]`;
+            return `${firstLine}<br>${sourceString}`;
         }
     }
 
