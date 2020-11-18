@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {IMainClass} from "../../model/displayModel";
 import {NgxSpinnerService} from "ngx-spinner";
 import {forkJoin, Observable, from, of} from "rxjs";
-import {mergeMap, toArray, map} from "rxjs/operators";
+import {mergeMap, toArray, map, tap} from "rxjs/operators";
 import {KnoraService} from "../../services/knora.service";
 import {ListService} from "../../services/list.service";
 import {Clipboard} from "@angular/cdk/clipboard";
@@ -310,7 +310,10 @@ export class ResultsComponent implements OnInit {
                             mergeMap((book: any) => {
                                 if (book.performedIn) {
                                     return forkJoin([of(book), from(book.performedIn)
-                                        .pipe(mergeMap((venue: any) => this.knoraService.getPassageRes(venue.id)), toArray())]);
+                                        .pipe(
+                                            mergeMap((venue: any) => this.knoraService.getPassageRes(venue.id)),
+                                            toArray()
+                                        )]);
                                 } else {
                                     return forkJoin([of(book), of("empty")]);
                                 }

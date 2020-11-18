@@ -135,7 +135,9 @@ export class KnoraService {
 
     getPassageRes(iri: string) {
         return this.knoraApiConnection.v2.res.getResource(iri)
-            .pipe(map((res: ReadResource) => this.processRes(res)));
+            .pipe(
+                map((res: ReadResource) => this.processRes(res))
+            );
     }
 
     getPrimaryAuthorsCount(char: string, offset?: number) {
@@ -152,7 +154,6 @@ export class KnoraService {
         console.log(gravsearch);
         return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                tap(data => console.log(data)),
                 map((sequence: ReadResourceSequence) => {
                     return sequence.resources.map(resource => this.processRes(resource));
                 })
@@ -173,7 +174,6 @@ export class KnoraService {
         console.log(gravsearch);
         return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                tap(data => console.log(data)),
                 map((sequence: ReadResourceSequence) => {
                     return sequence.resources.map(resource => this.processRes(resource));
                 })
@@ -194,7 +194,6 @@ export class KnoraService {
         console.log(gravsearch);
         return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                tap(data => console.log(data)),
                 map((sequence: ReadResourceSequence) => {
                     return sequence.resources.map(resource => this.processRes(resource));
                 })
@@ -215,7 +214,6 @@ export class KnoraService {
         // console.log(gravsearch);
         return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                tap(data => console.log(data)),
                 map((sequence: ReadResourceSequence) => {
                     return sequence.resources.map(resource => this.processRes(resource));
                 })
@@ -236,7 +234,6 @@ export class KnoraService {
         // console.log(gravsearch);
         return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                tap(data => console.log(data)),
                 map((sequence: ReadResourceSequence) => {
                     return sequence.resources.map(resource => this.processRes(resource));
                 })
@@ -257,7 +254,6 @@ export class KnoraService {
         // console.log(gravsearch);
         return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                tap(data => console.log(data)),
                 map((sequence: ReadResourceSequence) => {
                     return sequence.resources.map(resource => this.processRes(resource));
                 })
