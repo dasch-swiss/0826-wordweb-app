@@ -414,7 +414,7 @@ export class SimpleSearchComponent implements OnInit {
 
         if (this.form.get("plays").value) {
             // Only plays means if genre is "Drama (Theatre)"
-            this.genreRef.searchVal1 = this.listService.searchNodeByName("ALL DRAMA");
+            this.genreRef.searchVal1 = this.listService.getIdOfNode("ALL DRAMA");
         } else {
             this.genreRef.searchVal1 = null;
         }

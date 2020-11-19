@@ -53,7 +53,7 @@
                     <ngx-spinner name="spinner-{{passage.id}}"></ngx-spinner>
                 </div>
                 <div *ngIf="detailPassages[passage.id]; let detailPas">
-                    <div class="comments" [innerHTML]="detailPas | comments"></div>
+                    <div class="comments" [innerHTML]="detailPas | comments: listService"></div>
                     <app-citation [passage]="detailPas" [original]="passage.original"></app-citation>
                     <div class="source" [innerHTML]="detailPas | source: listService"></div>
                     <div class="ark">

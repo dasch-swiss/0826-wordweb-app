@@ -17,11 +17,11 @@ export class SearchComponent implements OnInit {
             )
             .subscribe(data => {
                 this.selectedSearch = this.route.snapshot.firstChild.url[0].path;
-        });
+            });
     }
 
     selectSearch(search: any) {
-        this.router.navigate([`${search}`], { relativeTo: this.route });
+        this.router.navigate([`${search}`], {relativeTo: this.route});
     }
 
     ngOnInit() {

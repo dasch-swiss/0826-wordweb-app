@@ -467,7 +467,7 @@ export class AdvancedSearchComponent implements OnInit {
                             .concat(...res)
                             .map(venue => {
                                 if (venue.hasPlaceVenue.length === 1) {
-                                    venue.value = this.listService.searchNodeById(venue.hasPlaceVenue[0].listNode);
+                                    venue.value = this.listService.getNameOfNode(venue.hasPlaceVenue[0].listNode);
                                     venue.hasPlaceVenue = venue.hasPlaceVenue[0].listNode;
                                     return venue;
                                 }
@@ -626,7 +626,7 @@ export class AdvancedSearchComponent implements OnInit {
 
         if (this.form.get("plays").value) {
             // Only plays means if genre is "Drama (Theatre)"
-            this.genreRef.searchVal1 = this.listService.searchNodeByName("ALL DRAMA");
+            this.genreRef.searchVal1 = this.listService.getIdOfNode("ALL DRAMA");
         } else {
             if (this.form.get("genre").value) {
                 this.genreRef.searchVal1 = this.form.get("genre").value;

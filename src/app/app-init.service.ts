@@ -37,9 +37,8 @@ export class AppInitService {
   Init() {
 
     return new Promise<void>((resolve, reject) => {
-      console.log("AppInitService.init() called");
       // do your initialisation stuff here
-
+      // console.log("AppInitService.init() called");
       AppInitService.settings = window["tempConfigStorage"] as IAppConfig;
 
       this.gsBuilder.apiURL = AppInitService.settings.apiURL;

@@ -5,6 +5,7 @@ export interface ListStructure {
     name: string;
     root: boolean;
     rootNode: string;
+    parentId: string;
     nodes: ListStructure[];
 }
 
@@ -25,35 +26,56 @@ export class ListService {
         placeVenue: null,
     };
 
-    static getNodes(nodes) {
+    static getNodes(nodes, parendId) {
         return nodes.map(node => {
             const customNode = {
                 id: node.id,
                 name: node.name,
                 root: false,
                 rootNode: node.hasRootNode,
+                parentId: parendId,
                 nodes: []
             };
 
             if (node.children.length !== 0) {
-                customNode.nodes = ListService.getNodes(node.children);
+                customNode.nodes = ListService.getNodes(node.children, node.id);
             }
 
             return customNode;
         });
     }
 
-    searchNodeById(id: string): string {
-        return this.searchId(Object.values(this.lists), id);
+    getNode(id: string): any {
+        return this.getNodeByNodeId(Object.values(this.lists), id);
     }
 
-    private searchId(nodes: ListStructure[], nodeId: string): string {
+    private getNodeByNodeId(nodes: ListStructure[], nodeId: string): any {
+        for (const node of nodes) {
+            if (node) {
+                if (node.id === nodeId) {
+                    return node;
+                } else if (node.nodes.length !== 0) {
+                    const foundNode = this.getNodeByNodeId(node.nodes, nodeId);
+                    if (foundNode) {
+                        return foundNode;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    getNameOfNode(id: string): string {
+        return this.getNameByNodeId(Object.values(this.lists), id);
+    }
+
+    private getNameByNodeId(nodes: ListStructure[], nodeId: string): string {
         for (const node of nodes) {
             if (node) {
                 if (node.id === nodeId) {
                     return node.name;
                 } else if (node.nodes.length !== 0) {
-                    const name = this.searchId(node.nodes, nodeId);
+                    const name = this.getNameByNodeId(node.nodes, nodeId);
                     if (name !== "-1") {
                         return name;
                     }
@@ -63,17 +85,17 @@ export class ListService {
         return "-1";
     }
 
-    searchNodeByName(nodeName: string): string {
-        return this.searchName(Object.values(this.lists), nodeName);
+    getIdOfNode(nodeName: string): string {
+        return this.getIdByNodeName(Object.values(this.lists), nodeName);
     }
 
-    private searchName(nodes: ListStructure[], nodeName: string): string {
+    private getIdByNodeName(nodes: ListStructure[], nodeName: string): string {
         for (const node of nodes) {
             if (node) {
                 if (node.name === nodeName) {
                     return node.id;
                 } else if (node.nodes.length !== 0) {
-                    const iri = this.searchName(node.nodes, nodeName);
+                    const iri = this.getIdByNodeName(node.nodes, nodeName);
                     if (iri !== "-1") {
                         return iri;
                     }
@@ -94,7 +116,8 @@ export class ListService {
                 name: data.listinfo.name,
                 root: true,
                 rootNode: data.listinfo.id,
-                nodes: ListService.getNodes(data.children)
+                parentId: null,
+                nodes: ListService.getNodes(data.children, data.listinfo.id)
             };
         }
     }

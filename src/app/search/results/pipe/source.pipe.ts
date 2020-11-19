@@ -13,16 +13,16 @@ export class SourcePipe implements PipeTransform {
 
         const sPassages = detailPas.isMentionedIn;
 
-        if (listService.searchNodeById(detailPas.hasResearchField[0].listNode) === "Reading") {
+        if (listService.getNameOfNode(detailPas.hasResearchField[0].listNode) === "Reading") {
             return `<b>Passage identified by</b> ${contributor}`;
-        } else if (listService.searchNodeById(detailPas.hasResearchField[0].listNode) === "Electronic Search") {
+        } else if (listService.getNameOfNode(detailPas.hasResearchField[0].listNode) === "Electronic Search") {
             const titles = sPassages
                 .map(sPassage => sPassage.hasDisplayedTitle[0].value)
                 .sort((sPassage1, sPassage2) => sPassage1 < sPassage2 ? -1 : (sPassage1 > sPassage2 ? 1 : 0))
                 .join(" ,");
 
             return `<b>Passage identified by</b> ${contributor} <b>using</b> ${titles}`;
-        } else if (listService.searchNodeById(detailPas.hasResearchField[0].listNode) === "Previous Research") {
+        } else if (listService.getNameOfNode(detailPas.hasResearchField[0].listNode) === "Previous Research") {
             const firstLine = `<b>Passage uploaded by</b> ${contributor} <b>and mentioned in:</b>`;
             const sources = [];
 
