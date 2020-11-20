@@ -33,13 +33,17 @@
         <div>{{listService.getNameOfNode(passage.hasResearchField[0].listNode)}}</div>
 
         <div class="header">Function Voice</div>
-        <div *ngFor="let functionVoice of passage.hasFunctionVoice">
-            {{listService.getNameOfNode(functionVoice.listNode)}}
+        <div>
+            <div *ngFor="let functionVoice of passage.hasFunctionVoice">
+                {{listService.getNameOfNode(functionVoice.listNode)}}
+            </div>
         </div>
 
         <div class="header">Marking</div>
-        <div *ngFor="let marking of passage.hasMarking">
-            {{listService.getNameOfNode(marking.listNode)}}
+        <div>
+            <div *ngFor="let marking of passage.hasMarking">
+                {{listService.getNameOfNode(marking.listNode)}}
+            </div>
         </div>
 
         <div class="header">Status</div>
