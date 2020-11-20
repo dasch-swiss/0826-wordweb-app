@@ -1,0 +1,5 @@
+<div *ngIf="$resource | async as res">
+    <div [ngSwitch]="res.type">
+        <app-passage-info *ngSwitchCase="'passage'" [passage]="res"></app-passage-info>
+    </div>
+</div>

@@ -3,7 +3,7 @@ import {APP_INITIALIZER, NgModule} from "@angular/core";
 
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ResourceComponent} from "./resource/resource.component";
 import {CategoriesComponent} from "./categories/categories.component";
 import {AuthorComponent} from "./categories/author/author.component";
 import {BookComponent} from "./categories/book/book.component";
@@ -24,6 +24,7 @@ import {VenueComponent} from "./categories/venue/venue.component";
 import {FormalClassComponent} from "./categories/formal-class/formal-class.component";
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material/snack-bar";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -77,6 +78,9 @@ import {ExpertSearchComponent} from "./search/expert-search/expert-search.compon
 import {BrowsingComponent} from "./search/browsing/browsing.component";
 import {HelpComponent} from "./search/dialog/help/help.component";
 import {ResultsComponent} from "./search/results/results.component";
+import {FillInComponent} from "./search/dialog/fill-in/fill-in.component";
+import {CitationComponent} from "./search/results/citation/citation.component";
+import {PassageInfoComponent} from "./resource/passage-info/passage-info.component";
 
 import {NumberingPipe} from "./search/results/pipe/numbering.pipe";
 import {TitlePipe} from "./search/results/pipe/title.pipe";
@@ -84,15 +88,13 @@ import {TextPipe} from "./search/results/pipe/text.pipe";
 import {CommentsPipe} from "./search/results/pipe/comments.pipe";
 import {SourcePipe} from "./search/results/pipe/source.pipe";
 import {LexiasPipe} from "./search/results/pipe/lexias.pipe";
+import {AuthorsPipe} from "./search/results/pipe/authors.pipe";
+import {YearPipe} from "./search/results/pipe/year.pipe";
 
 import {AppInitService} from "./app-init.service";
 import {KnoraService} from "./services/knora.service";
 import {ListService} from "./services/list.service";
 import {GravsearchBuilderService} from "./services/gravsearch-builder.service";
-import {FillInComponent} from "./search/dialog/fill-in/fill-in.component";
-import {AuthorsPipe} from "./search/results/pipe/authors.pipe";
-import {YearPipe} from "./search/results/pipe/year.pipe";
-import { CitationComponent } from "./search/results/citation/citation.component";
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -101,6 +103,7 @@ export function initializeApp(appInitService: AppInitService) {
 @NgModule({
     declarations: [
         AppComponent,
+        ResourceComponent,
         CategoriesComponent,
         AuthorComponent,
         BookComponent,
@@ -144,15 +147,16 @@ export function initializeApp(appInitService: AppInitService) {
         HelpComponent,
         ResultsComponent,
         CitationComponent,
+        FillInComponent,
+        PassageInfoComponent,
         NumberingPipe,
         TitlePipe,
         TextPipe,
         CommentsPipe,
         SourcePipe,
         LexiasPipe,
-        FillInComponent,
         AuthorsPipe,
-        YearPipe
+        YearPipe,
     ],
     imports: [
         BrowserModule,

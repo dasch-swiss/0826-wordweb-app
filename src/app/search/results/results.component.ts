@@ -437,4 +437,9 @@ export class ResultsComponent implements OnInit {
         this.clipBoard.copy(ark);
         this.snackBar.open("ARK was copied to clipboard");
     }
+
+    openArk(arkUrl: string) {
+        window.open(arkUrl, "_blank");
+        return false;
+    }
 }

@@ -24,6 +24,7 @@ import {SimpleSearchComponent} from "./search/simple-search/simple-search.compon
 import {AdvancedSearchComponent} from "./search/advanced-search/advanced-search.component";
 import {ExpertSearchComponent} from "./search/expert-search/expert-search.component";
 import {BrowsingComponent} from "./search/browsing/browsing.component";
+import {ResourceComponent} from "./resource/resource.component";
 
 const routes: Routes = [
   {path: "", redirectTo: "search", pathMatch: "full"},
@@ -38,6 +39,7 @@ const routes: Routes = [
       {path: "browsing", component: BrowsingComponent},
     ]
   },
+  {path: "resource/:id", component: ResourceComponent},
   {path: "categories", component: CategoriesComponent},
   {path: "author", component: AuthorComponent},
   {path: "book", component: BookComponent},

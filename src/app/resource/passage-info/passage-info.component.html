@@ -1,0 +1,73 @@
+<div *ngIf="passageData;" fxLayout="row" fxLayoutAlign.gt-sm="center start">
+    <div class="res-container" fxFlex.gt-sm="700px">
+
+        <div class="res-header">Passage</div>
+        <div></div>
+
+        <div class="header">Displayed Title</div>
+        <div>
+            <span *ngIf="passage.hasPrefixDisplayedTitle">{{passage.hasPrefixDisplayedTitle[0].value}}&nbsp;</span>
+            {{passage.hasDisplayedTitle[0].value}}
+        </div>
+
+        <div class="header">Text</div>
+        <div [innerHTML]="passage.hasText[0].value"></div>
+
+        <div class="header" *ngIf="passage.hasTextHist">Text Hist</div>
+        <div *ngIf="passage.hasTextHist" [innerHTML]="passage.hasTextHist[0].value"></div>
+
+        <div class="header" *ngIf="passage.contains">Lexia</div>
+        <div *ngIf="passage.contains">
+            <div *ngFor="let lexia of passage.contains">
+                {{lexia.hasLexiaTitle[0].value}}
+            </div>
+        </div>
+
+        <div class="header">Page</div>
+        <div>{{passage.hasPage[0].value}}</div>
+
+        <div class="header" *ngIf="passage.hasPageHist">Page Hist</div>
+        <div *ngIf="passage.hasPageHist">{{passage.hasPageHist[0].value}}</div>
+
+        <div class="header">Research Field</div>
+        <div>{{listService.getNameOfNode(passage.hasResearchField[0].listNode)}}</div>
+
+        <div class="header">Function Voice</div>
+        <div *ngFor="let functionVoice of passage.hasFunctionVoice">
+            {{listService.getNameOfNode(functionVoice.listNode)}}
+        </div>
+
+        <div class="header">Marking</div>
+        <div *ngFor="let marking of passage.hasMarking">
+            {{listService.getNameOfNode(marking.listNode)}}
+        </div>
+
+        <div class="header">Status</div>
+        <div>{{listService.getNameOfNode(passage.hasStatus[0].listNode)}}</div>
+
+        <div class="header" *ngIf="passage.hasPassageComment">Passage Comment</div>
+        <div *ngIf="passage.hasPassageComment">{{passage.hasPassageComment[0].value}}</div>
+
+        <div class="header">Book</div>
+        <div>
+            <span *ngIf="passage.occursIn[0].hasPrefixBookTitle">{{passage.occursIn[0].hasPrefixBookTitle[0].value}}&nbsp;</span>
+            {{passage.occursIn[0].hasBookTitle[0].value}}
+            <a href="{{passage.occursIn[0].arkUrl}}" target="_blank">📖</a>
+        </div>
+
+        <div class="header">Contributor</div>
+        <div>
+            {{passage.wasContributedBy[0].hasFirstName[0].value}} {{passage.wasContributedBy[0].hasLastName[0].value}}
+        </div>
+
+        <div class="header">Persistent ID</div>
+        <div class="url">
+            <a href="{{passage.arkUrl}}" target="_blank">{{passage.arkUrl}}</a>
+        </div>
+
+    </div>
+</div>
+
+<div class="spinner" *ngIf="!passageData">
+    <ngx-spinner name="spinner"></ngx-spinner>
+</div>
