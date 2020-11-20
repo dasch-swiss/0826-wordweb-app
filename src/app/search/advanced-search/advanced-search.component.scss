@@ -1,49 +1,49 @@
 .search-container {
-  margin: 2rem 1rem;
+    margin: 2rem 1rem;
 
-  form {
+    form {
 
-    table {
-      margin-bottom: 1rem;
+        table {
+            margin-bottom: 1rem;
 
-      mat-form-field {
-        width: 100%;
-      }
+            mat-form-field {
+                width: 100%;
+            }
 
-      .min {
-        width: 1%;
+            .min {
+                width: 1%;
 
-        mat-icon {
-          margin-left: 0.5rem;
-          color: rgb(150, 150, 150);
+                mat-icon {
+                    margin-left: 0.5rem;
+                    color: rgb(150, 150, 150);
+                }
+
+                mat-icon:hover {
+                    cursor: pointer;
+                }
+            }
+
+            .play-toggle {
+                text-align: right;
+            }
         }
 
-        mat-icon:hover {
-          cursor: pointer;
+        .buttons {
+            display: flex;
+
+            .search-btn {
+                //background-color: rgb(115, 71, 42);
+                background-color: rgb(159, 11, 11);
+                color: white;
+                flex-grow: 1;
+            }
+
+            .clear-btn {
+                margin-left: 1rem;
+                font-weight: normal;
+            }
         }
-      }
-
-      .play-toggle {
-        text-align: right;
-      }
     }
-
-    .buttons {
-      display: flex;
-
-      .search-btn {
-        //background-color: rgb(115, 71, 42);
-        background-color: rgb(159, 11, 11);
-        color: white;
-        flex-grow: 1;
-      }
-
-      .clear-btn {
-        margin-left: 1rem;
-        font-weight: normal;
-      }
-    }
-  }
 }
 
 //Form fields are smaller

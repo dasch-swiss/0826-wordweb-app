@@ -1,120 +1,120 @@
 .dialog-multiple {
-  width: 600px;
+    width: 600px;
 
-  .result-container {
-    max-height: 14.3rem;
-    overflow-y: auto;
+    .result-container {
+        max-height: 14.3rem;
+        overflow-y: auto;
 
-    .chosen-data-table {
-      min-width: 100%;
-      border-spacing: 0;
+        .chosen-data-table {
+            min-width: 100%;
+            border-spacing: 0;
 
-      th {
-        border: 1px solid white;
-        background-color: rgb(64, 84, 178);
-        //background-color: rgb(210, 210, 210);
-        color: white;
-        text-align: left;
-        position: sticky;
-        top: 0px;
-        padding: 0.4rem 0.7rem;
-      }
+            th {
+                border: 1px solid white;
+                background-color: rgb(64, 84, 178);
+                //background-color: rgb(210, 210, 210);
+                color: white;
+                text-align: left;
+                position: sticky;
+                top: 0px;
+                padding: 0.4rem 0.7rem;
+            }
 
-      td {
-        padding: 0.3rem 0.7rem;
-      }
+            td {
+                padding: 0.3rem 0.7rem;
+            }
 
-      .data-row:nth-child(even) {
-        background-color: white;
-      }
+            .data-row:nth-child(even) {
+                background-color: white;
+            }
 
-      .data-row:nth-child(odd) {
-        background: whitesmoke;
-      }
+            .data-row:nth-child(odd) {
+                background: whitesmoke;
+            }
 
-      .delete-cell {
+            .delete-cell {
+                text-align: center;
+            }
+
+            .empty-row {
+                background-color: white;
+
+                td {
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    .full-data-container {
+        padding: 0 1rem;
+
+        max-height: 0px;
+        overflow-y: hidden;
+        transition: ease-in-out 200ms max-height;
+
+        mat-form-field {
+            margin-top: 2rem;
+            width: 100%;
+        }
+
+        .full-data-table-container {
+            border: 1px solid darkgray;
+            height: 14rem;
+            overflow-y: scroll;
+
+            .full-data-table {
+                min-width: 100%;
+                border-spacing: 0;
+
+                th, td {
+                    padding: 0 0.4rem;
+                }
+
+                th {
+                    text-align: left;
+                    background-color: lightgray;
+                    position: sticky;
+                    font-weight: normal;
+                    top: 0px;
+                }
+
+                .data-row:nth-child(even) {
+                    background-color: white;
+                }
+
+                .data-row:nth-child(odd) {
+                    background: whitesmoke;
+                }
+
+                .empty-row {
+                    background-color: whitesmoke;
+
+                    td {
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+
+    .full-data-container.opened {
+        max-height: 450px;
+        //height: 100%;
+        transition: ease-in-out 600ms max-height;
+    }
+
+    .add-btn-container {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
         text-align: center;
-      }
-
-      .empty-row {
-        background-color: white;
-
-        td {
-          text-align: center;
-        }
-      }
-    }
-  }
-
-  .full-data-container {
-    padding: 0 1rem;
-
-    max-height: 0px;
-    overflow-y: hidden;
-    transition: ease-in-out 200ms max-height;
-
-    mat-form-field {
-      margin-top: 2rem;
-      width: 100%;
     }
 
-    .full-data-table-container {
-      border: 1px solid darkgray;
-      height: 14rem;
-      overflow-y: scroll;
+    .action-btn-container {
+        text-align: right;
 
-      .full-data-table {
-        min-width: 100%;
-        border-spacing: 0;
-
-        th, td {
-          padding: 0 0.4rem;
+        button {
+            margin-top: 1rem;
         }
-
-        th {
-          text-align: left;
-          background-color: lightgray;
-          position: sticky;
-          font-weight: normal;
-          top: 0px;
-        }
-
-        .data-row:nth-child(even) {
-          background-color: white;
-        }
-
-        .data-row:nth-child(odd) {
-          background: whitesmoke;
-        }
-
-        .empty-row {
-          background-color: whitesmoke;
-
-          td {
-            text-align: center;
-          }
-        }
-      }
     }
-  }
-
-  .full-data-container.opened {
-    max-height: 450px;
-    //height: 100%;
-    transition: ease-in-out 600ms max-height;
-  }
-
-  .add-btn-container {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-
-  .action-btn-container {
-    text-align: right;
-
-    button {
-      margin-top: 1rem;
-    }
-  }
 }

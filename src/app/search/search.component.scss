@@ -1,44 +1,45 @@
 .search-menu {
-  margin: 4rem 1rem 0;
-  padding: 1rem;
+    margin: 4rem 1rem 0;
+    padding: 1rem;
 
-  .search-item {
-    padding: 0.75rem 1rem;
-    background-color: white;
-    color: rgba(159, 11, 11, 1);
-    -webkit-box-shadow: 1px 1px 1px 1px rgba(190,190,190,1);
-    -moz-box-shadow: 1px 1px 1px 1px rgba(190,190,190,1);
-    box-shadow: 1px 1px 1px 1px rgba(190,190,190,1);
-  }
+    .search-item {
+        padding: 0.75rem 1rem;
+        background-color: white;
+        color: rgba(159, 11, 11, 1);
+        -webkit-box-shadow: 1px 1px 1px 1px rgba(190, 190, 190, 1);
+        -moz-box-shadow: 1px 1px 1px 1px rgba(190, 190, 190, 1);
+        box-shadow: 1px 1px 1px 1px rgba(190, 190, 190, 1);
+    }
 
-  .search-item:hover {
-    cursor: pointer;
-    background-color: rgba(220, 220, 220, 1);
-  }
+    .search-item:hover {
+        cursor: pointer;
+        background-color: rgba(220, 220, 220, 1);
+    }
 
-  .search-item:first-child {
-    border-radius: 4px 0 0 4px;
-  }
+    .search-item:first-child {
+        border-radius: 4px 0 0 4px;
+    }
 
-  .search-item:last-child {
-    border-radius: 0 4px 4px 0;
-  }
+    .search-item:last-child {
+        border-radius: 0 4px 4px 0;
+    }
 
-  .active {
-    background-color: rgba(159, 11, 11, 1);
-    color: white;
-  }
+    .active {
+        background-color: rgba(159, 11, 11, 1);
+        color: white;
+    }
 
-  .active:hover {
-    background-color: rgba(159, 11, 11, 1);
-    cursor: auto;
-  }
+    .active:hover {
+        background-color: rgba(159, 11, 11, 1);
+        cursor: auto;
+    }
 
 }
 
 .mobile-search-menu {
-  margin: 3rem 1rem 0;
-  .mat-form-field {
-    width: 100%;
-  }
+    margin: 3rem 1rem 0;
+
+    .mat-form-field {
+        width: 100%;
+    }
 }

@@ -1,96 +1,96 @@
 .table-container {
-  margin: 1rem 3rem;
+    margin: 1rem 3rem;
 
-  .filter-container {
-    display: flex;
-
-    .create-btn-container {
-      margin: auto;
-    }
-
-    mat-form-field {
-      margin: 0 2rem;
-      flex-grow: 1;
-    }
-
-    .row-counter {
-      margin: auto;
-      color: gray;
-    }
-  }
-
-  table {
-    width: 100%;
-
-    th, td {
-      padding: 0 0.5rem;
-
-      .read-only-value {
-        min-height: 1rem;
-        padding: 0.25rem 0.5rem;
-      }
-
-      .edit-value {
-        min-height: 1rem;
-        padding: 0.25rem 0.25rem;
-        border: 1px solid white;
-      }
-
-      .edit-value:hover {
-        cursor: pointer;
-        border: 1px solid rgb(150, 150, 150);
-      }
-
-      .action-btn-container {
+    .filter-container {
         display: flex;
-      }
+
+        .create-btn-container {
+            margin: auto;
+        }
+
+        mat-form-field {
+            margin: 0 2rem;
+            flex-grow: 1;
+        }
+
+        .row-counter {
+            margin: auto;
+            color: gray;
+        }
     }
-  }
+
+    table {
+        width: 100%;
+
+        th, td {
+            padding: 0 0.5rem;
+
+            .read-only-value {
+                min-height: 1rem;
+                padding: 0.25rem 0.5rem;
+            }
+
+            .edit-value {
+                min-height: 1rem;
+                padding: 0.25rem 0.25rem;
+                border: 1px solid white;
+            }
+
+            .edit-value:hover {
+                cursor: pointer;
+                border: 1px solid rgb(150, 150, 150);
+            }
+
+            .action-btn-container {
+                display: flex;
+            }
+        }
+    }
 }
 
 // Expansion stuff
 
 tr.example-detail-row {
-  height: 0;
+    height: 0;
 }
 
 tr.example-element-row:not(.example-expanded-row):hover {
-  //background: #777;
+    //background: #777;
 }
 
 tr.example-element-row:not(.example-expanded-row):active {
-  //background: #efefef;
+    //background: #efefef;
 }
 
 .example-element-row td {
-  border-bottom-width: 0;
+    border-bottom-width: 0;
 }
 
 .example-element-detail {
-  overflow: hidden;
-  display: flex;
+    overflow: hidden;
+    display: flex;
 }
 
 .example-element-diagram {
-  min-width: 80px;
-  border: 2px solid black;
-  padding: 8px;
-  font-weight: lighter;
-  margin: 8px 0;
-  height: 104px;
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
 }
 
 .example-element-symbol {
-  font-weight: bold;
-  font-size: 40px;
-  line-height: normal;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
 }
 
 .example-element-description {
-  padding: 16px;
+    padding: 16px;
 }
 
 .example-element-description-attribution {
-  opacity: 0.5;
+    opacity: 0.5;
 }
 

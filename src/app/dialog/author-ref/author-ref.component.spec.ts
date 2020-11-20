@@ -1,25 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from "@angular/core/testing";
 
-import { AuthorRefComponent } from './author-ref.component';
+import {AuthorRefComponent} from "./author-ref.component";
 
-describe('AuthorRefComponent', () => {
-  let component: AuthorRefComponent;
-  let fixture: ComponentFixture<AuthorRefComponent>;
+describe("AuthorRefComponent", () => {
+    let component: AuthorRefComponent;
+    let fixture: ComponentFixture<AuthorRefComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ AuthorRefComponent ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [AuthorRefComponent]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AuthorRefComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(AuthorRefComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

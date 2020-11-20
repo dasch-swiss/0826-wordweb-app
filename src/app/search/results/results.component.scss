@@ -1,171 +1,171 @@
 .result-container {
 
-  .result {
-    //margin: 0.5rem;
-    border: 1px solid lightgrey;
-    //background-color: white;
+    .result {
+        //margin: 0.5rem;
+        border: 1px solid lightgrey;
+        //background-color: white;
 
-    .overview {
-      padding: 1rem 2rem 1rem 2rem;
-      background-color: rgb(220, 220, 220);
+        .overview {
+            padding: 1rem 2rem 1rem 2rem;
+            background-color: rgb(220, 220, 220);
 
-      a {
-        color: rgba(159, 11, 11, 1)
-      }
+            a {
+                color: rgba(159, 11, 11, 1)
+            }
 
-      .numbering {
-        text-align: right;
-        font-size: smaller;
-      }
+            .numbering {
+                text-align: right;
+                font-size: smaller;
+            }
 
-      .title {
-        font-weight: bold;
-        margin-top: 1rem;
-        margin-bottom: 0.5rem;
+            .title {
+                font-weight: bold;
+                margin-top: 1rem;
+                margin-bottom: 0.5rem;
 
-        div {
-          display: inline;
+                div {
+                    display: inline;
 
-          .author {
-            display: inline;
-          }
+                    .author {
+                        display: inline;
+                    }
+                }
+
+                .authors, .title, .year {
+                    margin-right: 0.3rem
+                }
+            }
+
+            .lexias {
+                margin-top: 1rem;
+
+                .lexia {
+                    font-style: italic;
+                    text-align: right;
+                }
+            }
         }
 
-        .authors, .title, .year {
-          margin-right: 0.3rem
-        }
-      }
+        .details {
+            max-height: 0;
+            overflow-y: hidden;
+            transition: ease-in-out 0ms max-height;
 
-      .lexias {
-        margin-top: 1rem;
+            .spinner-container {
+                height: 3rem;
+                // Necessary to display the spinner within the div container (-> ngx spinner)
+                position: relative;
+            }
 
-        .lexia {
-          font-style: italic;
-          text-align: right;
+            .comments {
+                //margin-bottom: 1rem;
+            }
+
+            .source {
+                margin-top: 1rem;
+            }
+
+            .ark {
+                margin-top: 2rem;
+
+                .title {
+                    font-size: smaller;
+                }
+
+                .url {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+
+                    input {
+                        padding-left: 0.5rem;
+                        height: 1.5rem;
+                        width: 100%;
+                        flex-grow: 1;
+                    }
+                }
+            }
+
         }
-      }
+
+        .details.opened {
+            padding: 1rem 2rem 1rem 2rem;
+            max-height: 800px;
+            transition: ease-in-out 500ms max-height;
+        }
     }
 
-    .details {
-      max-height: 0;
-      overflow-y: hidden;
-      transition: ease-in-out 0ms max-height;
+    // Every second box has different result-text background color
+    .result:nth-child(even) > .overview {
+        background-color: rgb(200, 200, 200);
+    }
 
-      .spinner-container {
-        height: 3rem;
+    .no-results {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    .load-more {
+        height: 4rem;
+        // loading button is vertically aligned
+        display: flex;
+        align-items: center;
+
+        button {
+            width: 100%;
+        }
+    }
+
+    .spinner-small {
+        height: 4rem;
         // Necessary to display the spinner within the div container (-> ngx spinner)
         position: relative;
-      }
+    }
 
-      .comments {
-        //margin-bottom: 1rem;
-      }
+    .error {
+        padding: 1rem;
+        // Sets the image- and text-container to the center
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
-      .source {
-        margin-top: 1rem;
-      }
-
-      .ark {
-        margin-top: 2rem;
-
-        .title {
-          font-size: smaller;
+        .img-container {
+            width: 150px;
+            height: 150px;
+            // background-color: rgb(170, 180, 190);
+            background-color: rgba(200, 175, 150, 0.4);
+            border-radius: 50%;
+            // Sets the image in the center of the circle
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        .url {
-          width: 100%;
-          display: flex;
-          align-items: center;
+        .text {
+            margin-top: 2rem;
+            text-align: center;
 
-          input {
-            padding-left: 0.5rem;
-            height: 1.5rem;
-            width: 100%;
-            flex-grow: 1;
-          }
+            .title {
+                margin-bottom: 1rem;
+                font-weight: bold;
+                font-size: x-large;
+            }
         }
-      }
-
     }
 
-    .details.opened {
-      padding: 1rem 2rem 1rem 2rem;
-      max-height: 800px;
-      transition: ease-in-out 500ms max-height;
+    .spinner-big {
+        height: 8rem;
+        // Necessary to display the spinner within the div container (-> ngx spinner)
+        position: relative
     }
-  }
-
-  // Every second box has different result-text background color
-  .result:nth-child(even) > .overview {
-    background-color: rgb(200, 200, 200);
-  }
-
-  .no-results {
-    margin-top: 2rem;
-    text-align: center;
-  }
-
-  .load-more {
-    height: 4rem;
-    // loading button is vertically aligned
-    display: flex;
-    align-items: center;
-
-    button {
-      width: 100%;
-    }
-  }
-
-  .spinner-small {
-    height: 4rem;
-    // Necessary to display the spinner within the div container (-> ngx spinner)
-    position: relative;
-  }
-
-  .error {
-    padding: 1rem;
-    // Sets the image- and text-container to the center
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    .img-container {
-      width: 150px;
-      height: 150px;
-      // background-color: rgb(170, 180, 190);
-      background-color: rgba(200, 175, 150, 0.4);
-      border-radius: 50%;
-      // Sets the image in the center of the circle
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .text {
-      margin-top: 2rem;
-      text-align: center;
-
-      .title {
-        margin-bottom: 1rem;
-        font-weight: bold;
-        font-size: x-large;
-      }
-    }
-  }
-
-  .spinner-big {
-    height: 8rem;
-    // Necessary to display the spinner within the div container (-> ngx spinner)
-    position: relative
-  }
 }
 
 :host::ng-deep .quote {
-  color: rgba(159, 11, 11, 1);
+    color: rgba(159, 11, 11, 1);
 }
 
 :host::ng-deep .annotation {
-  color: rgba(139, 69, 19);
+    color: rgba(139, 69, 19);
 }
