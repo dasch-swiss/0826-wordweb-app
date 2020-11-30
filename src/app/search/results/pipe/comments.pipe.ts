@@ -17,7 +17,7 @@ export class CommentsPipe implements PipeTransform {
 
     generateBookComment(book: any, listService: ListService): string {
         // TODO: What if there are more than one genre?
-        const genre = listService.getNameOfNode(book.hasGenre[0].listNode);
+        const genre = listService.getNameOfNode(book.hasGenre[0].listNode).toLowerCase();
         const firstPerDate = book.hasFirstPerformanceDate ? (book.hasFirstPerformanceDate[0].start === book.hasFirstPerformanceDate[0].end ? `in ${book.hasFirstPerformanceDate[0].start}` : `between ${book.hasFirstPerformanceDate[0].start} and ${book.hasFirstPerformanceDate[0].end}`) : null;
         const firstPrintDate = book.hasPublicationDate ? (book.hasPublicationDate[0].start === book.hasPublicationDate[0].end ? `in ${book.hasPublicationDate[0].start}` : `between ${book.hasPublicationDate[0].start} and ${book.hasPublicationDate[0].end}`) : null;
         const perByCom = book.performedBy ? (book.performedBy.length === 2 ? `${book.performedBy[0].hasCompanyTitle[0].value} or ${book.performedBy[1].hasCompanyTitle[0].value}` : `${book.performedBy[0].hasCompanyTitle[0].value}`) : null;
