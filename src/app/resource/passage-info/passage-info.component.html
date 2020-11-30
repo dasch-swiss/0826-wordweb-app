@@ -1,4 +1,4 @@
-<div *ngIf="passageData;" fxLayout="row" fxLayoutAlign.gt-sm="center start">
+<div *ngIf="passageData" fxLayout="row" fxLayoutAlign.gt-sm="center start">
     <div class="res-container" fxFlex.gt-sm="700px">
 
         <div class="res-header">Passage</div>
@@ -23,8 +23,8 @@
             </div>
         </div>
 
-        <div class="header">Page</div>
-        <div>{{passage.hasPage[0].value}}</div>
+        <div class="header" *ngIf="passage.hasPage">Page</div>
+        <div *ngIf="passage.hasPage">{{passage.hasPage[0].value}}</div>
 
         <div class="header" *ngIf="passage.hasPageHist">Page Hist</div>
         <div *ngIf="passage.hasPageHist">{{passage.hasPageHist[0].value}}</div>
@@ -56,7 +56,7 @@
         <div>
             <span *ngIf="passage.occursIn[0].hasPrefixBookTitle">{{passage.occursIn[0].hasPrefixBookTitle[0].value}}&nbsp;</span>
             {{passage.occursIn[0].hasBookTitle[0].value}}
-            <a href="{{passage.occursIn[0].arkUrl}}" target="_blank">📖</a>
+<!--            <a href="{{passage.occursIn[0].arkUrl}}" target="_blank">📖</a>-->
         </div>
 
         <div class="header">Contributor</div>
