@@ -29,9 +29,9 @@
                     </div>
                     <a [routerLink]="['/search/browsing']"
                        [queryParams]="{res: 'book', letter: passage.occursIn[0].hasBookTitle[0].value[0], id: passage.occursIn[0].id}">
-                        <div class="title" [innerHTML]="passage | title"></div>
+                        <span class="title" [innerHTML]="passage | title"></span>
+                        <span class="year">{{passage | year}}</span>
                     </a>
-                    <div class="year">{{passage | year}}</div>
                 </div>
                 <div class="text"
                      [innerHTML]="passage.original ? passage.hasTextHist[0].value : passage.hasText[0].value"></div>
