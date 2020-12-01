@@ -75,7 +75,7 @@ Passages
     hasStatus                   1   (Sec: Depends of primary passage status)
     hasInternalComment          0-1
     hasPassageComment           0-1
-    occursIn (Book)             1-n
+    occursIn (Book)             1
     isMentionedIn (Passage)     0-n
     wasContributedBy (Person)   1   (Sec: Regula Hohl)
     contains (Lexia)            0-n
