@@ -204,6 +204,26 @@ export class AdvancedSearchComponent implements OnInit {
                                     }
                                 ]
                             }
+                        },
+                        {
+                            name: "performedByActor",
+                            priority: 1,
+                            res: {
+                                name: "person",
+                                props: [
+                                    {
+                                        name: "hasFirstName",
+                                        priority: 1,
+                                        mandatory: true,
+                                        res: null
+                                    },
+                                    {
+                                        name: "hasLastName",
+                                        priority: 1,
+                                        res: null
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }
@@ -347,6 +367,7 @@ export class AdvancedSearchComponent implements OnInit {
     createdDateRef: IDisplayedProperty;
     performedCompanyRef: IDisplayedProperty;
     performedVenueRef: IDisplayedProperty;
+    performedActorRef: IDisplayedProperty;
 
     genders: any[];
     genres: any[];
@@ -369,9 +390,9 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.prepareActors();
-        this.prepareVenues();
         this.prepareCompanies();
+        this.prepareVenues();
+        this.prepareActors();
 
         const genresNode = this.listService.getList("genre").nodes;
         this.genres = genresNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
@@ -400,6 +421,7 @@ export class AdvancedSearchComponent implements OnInit {
         this.createdDateRef = this.myPassage.props[12].res.props[7];
         this.performedCompanyRef = this.myPassage.props[12].res.props[12];
         this.performedVenueRef = this.myPassage.props[12].res.props[13];
+        this.performedActorRef = this.myPassage.props[12].res.props[14];
 
         this.form = new FormGroup({
             text: new FormControl("", []),
@@ -417,66 +439,6 @@ export class AdvancedSearchComponent implements OnInit {
             // performedActor: new FormControl("", []),
             plays: new FormControl(false, [])
         });
-    }
-
-    prepareActors() {
-        this.knoraService.getActorsCount()
-            .subscribe(amount => {
-                const maxOffset = Math.ceil(amount / 25);
-
-                const requests = [];
-
-                for (let offset = 0; offset < maxOffset; offset++) {
-                    requests.push(this.knoraService.getActors(offset));
-                }
-
-                forkJoin<any>(...requests)
-                    .subscribe((res: Array<Array<any>>) => {
-                        this.actors = []
-                            .concat(...res)
-                            .map(actor => {
-                                if (actor.hasLastName.length === 1) {
-                                    actor.hasLastName = actor.hasLastName[0].value;
-                                }
-                                if (actor.hasFirstName.length === 1) {
-                                    actor.hasFirstName = actor.hasFirstName[0].value;
-                                }
-                                return actor;
-                            })
-                            .sort((res1, res2) => this.sortActors(res1, res2));
-                    }, error => {
-                        requests.map(a => a.unsubscribe());
-                    });
-            });
-    }
-
-    prepareVenues() {
-        this.knoraService.getVenuesCount()
-            .subscribe(amount => {
-                const maxOffset = Math.ceil(amount / 25);
-
-                const requests = [];
-
-                for (let offset = 0; offset < maxOffset; offset++) {
-                    requests.push(this.knoraService.getVenues(offset));
-                }
-
-                forkJoin<any>(requests)
-                    .subscribe((res: Array<Array<any>>) => {
-                        this.venues = []
-                            .concat(...res)
-                            .map(venue => {
-                                if (venue.hasPlaceVenue.length === 1) {
-                                    venue.value = this.listService.getNameOfNode(venue.hasPlaceVenue[0].listNode);
-                                    venue.hasPlaceVenue = venue.hasPlaceVenue[0].listNode;
-                                    return venue;
-                                }
-                            })
-                            .sort((res1, res2) => this.sortVenues(res1, res2));
-                    }, error => {
-                        requests.map(a => a.unsubscribe());
-                    });
-            });
     }
 
     prepareCompanies() {
@@ -508,6 +470,67 @@ export class AdvancedSearchComponent implements OnInit {
 
     }
 
+    prepareVenues() {
+        this.knoraService.getVenuesCount()
+            .subscribe(amount => {
+                const maxOffset = Math.ceil(amount / 25);
+
+                const requests = [];
+
+                for (let offset = 0; offset < maxOffset; offset++) {
+                    requests.push(this.knoraService.getVenues(offset));
+                }
+
+                forkJoin<any>(requests)
+                    .subscribe((res: Array<Array<any>>) => {
+                        this.venues = []
+                            .concat(...res)
+                            .map(venue => {
+                                if (venue.hasPlaceVenue.length === 1) {
+                                    venue.value = this.listService.getNameOfNode(venue.hasPlaceVenue[0].listNode);
+                                    venue.hasPlaceVenue = venue.hasPlaceVenue[0].listNode;
+                                    return venue;
+                                }
+                            })
+                            .sort((res1, res2) => this.sortVenues(res1, res2));
+                    }, error => {
+                        requests.map(a => a.unsubscribe());
+                    });
+            });
+    }
+
+    prepareActors() {
+        this.knoraService.getActorsCount()
+            .subscribe(amount => {
+                const maxOffset = Math.ceil(amount / 25);
+
+                const requests = [];
+
+                for (let offset = 0; offset < maxOffset; offset++) {
+                    requests.push(this.knoraService.getActors(offset));
+                }
+
+                forkJoin<any>(...requests)
+                    .subscribe((res: Array<Array<any>>) => {
+                        this.actors = []
+                            .concat(...res)
+                            .map(actor => {
+                                if (actor.hasLastName.length === 1) {
+                                    actor.hasLastName = actor.hasLastName[0].value;
+                                }
+                                if (actor.hasFirstName.length === 1) {
+                                    actor.hasFirstName = actor.hasFirstName[0].value;
+                                }
+                                return actor;
+                            })
+                            .sort((res1, res2) => this.sortActors(res1, res2));
+                        console.log(this.actors);
+                    }, error => {
+                        requests.map(a => a.unsubscribe());
+                    });
+            });
+    }
+
     search() {
         if (!this.form.get("text").value
             && !this.form.get("author").value
@@ -520,6 +543,7 @@ export class AdvancedSearchComponent implements OnInit {
             && !this.form.get("createdDate").value
             && !this.form.get("performedCompany").value
             && !this.form.get("performedVenue").value
+            // && !this.form.get("performedActor").value
             && (!this.form.get("plays").value && !this.form.get("genre").value)) {
 
             const dialogConfig = new MatDialogConfig();
@@ -624,6 +648,14 @@ export class AdvancedSearchComponent implements OnInit {
             this.performedVenueRef.priority = 1;
         }
 
+        // if (this.form.get("performedActor").value) {
+        //     this.performedActorRef.searchVal1 = this.form.get("performedActor").value;
+        //     this.performedActorRef.priority = 0;
+        // } else {
+        //     this.performedActorRef.searchVal1 = null;
+        //     this.performedActorRef.priority = 1;
+        // }
+
         if (this.form.get("plays").value) {
             // Only plays means if genre is "Drama (Theatre)"
             this.genreRef.searchVal1 = this.listService.getIdOfNode("ALL DRAMA");
@@ -712,6 +744,7 @@ export class AdvancedSearchComponent implements OnInit {
         this.form.get("createdDate").reset("");
         this.form.get("performedCompany").reset("");
         this.form.get("performedVenue").reset("");
+        // this.form.get("performedActor").reset("");
         this.form.get("plays").setValue(false);
     }
 

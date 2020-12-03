@@ -21,7 +21,30 @@ export class CommentsPipe implements PipeTransform {
         const firstPerDate = book.hasFirstPerformanceDate ? (book.hasFirstPerformanceDate[0].start === book.hasFirstPerformanceDate[0].end ? `in ${book.hasFirstPerformanceDate[0].start}` : `between ${book.hasFirstPerformanceDate[0].start} and ${book.hasFirstPerformanceDate[0].end}`) : null;
         const firstPrintDate = book.hasPublicationDate ? (book.hasPublicationDate[0].start === book.hasPublicationDate[0].end ? `in ${book.hasPublicationDate[0].start}` : `between ${book.hasPublicationDate[0].start} and ${book.hasPublicationDate[0].end}`) : null;
         const perByCom = book.performedBy ? (book.performedBy.length === 2 ? `${book.performedBy[0].hasCompanyTitle[0].value} or ${book.performedBy[1].hasCompanyTitle[0].value}` : `${book.performedBy[0].hasCompanyTitle[0].value}`) : null;
-        const personPerIn = null;
+        let perByActors = null;
+        if (book.performedByActor) {
+            const actors = book.performedByActor
+                .map(author => (author.hasFirstName && author.hasFirstName[0].value !== "_") ? {firstName: author.hasFirstName[0].value, lastName: author.hasLastName[0].value} :
+                    {lastName: author.hasLastName[0].value}
+                )
+                .sort((author1, author2) => author1.lastName < author2.lastName ? -1 : (author1.lastName > author2.lastName ? 1 : 0)
+                )
+                .map((author) =>
+                    // Capitalize first name before string concatenation
+                    author.firstName ? `${author.firstName.charAt(0).toUpperCase() + author.firstName.slice(1)} ${author.lastName}` : `${author.lastName.charAt(0).toUpperCase() + author.lastName.slice(1)}`
+                );
+
+            const numActors = actors.length;
+            const lastAuthor = actors[actors.length - 1];
+            // Concatenates last two authors with "and". Ignores if there is only one author.
+            if (numActors > 1) {
+                const secondLast = actors[numActors - 2];
+                actors.splice(numActors - 2, 2, `${secondLast} and ${lastAuthor}`);
+            }
+
+            perByActors = actors
+                .join(", ");
+        }
         let perInVen = null;
         if (book.performedIn) {
             if (book.performedIn.length === 2) {
@@ -40,44 +63,44 @@ export class CommentsPipe implements PipeTransform {
         const firstPerDateCode = firstPerDate ? "1" : "0";
         const firstPrintDateCode = firstPrintDate ? "1" : "0";
         const perByComCode = perByCom ? "1" : "0";
-        const personPerInCode = personPerIn ? "1" : "0";
+        const perByActorsCode = perByActors ? "1" : "0";
         const perInVenCode = perInVen ? "1" : "0";
 
-        const fullCode = `${firstPrintDateCode}${perInVenCode}${personPerInCode}${perByComCode}${firstPerDateCode}${genreCode}`;
+        const fullCode = `${firstPrintDateCode}${perInVenCode}${perByActorsCode}${perByComCode}${firstPerDateCode}${genreCode}`;
 
         const codeObject = {
             "000001": ``,
             "000011": `This ${genre} was first performed ${firstPerDate}.`,
             "000101": `This ${genre} was first performed by ${perByCom}.`,
             "000111": `This ${genre} was first performed by ${perByCom} ${firstPerDate}.`,
-            "001001": `The cast of the first performance of this ${genre} included ${personPerIn}.`,
-            "001011": `This ${genre} was first performed ${firstPerDate}. The cast included ${personPerIn}.`,
-            "001101": `This ${genre} was first performed by ${perByCom}. The cast included ${personPerIn}.`,
-            "001111": `This ${genre} was first performed by ${perByCom} ${firstPerDate}. The cast included ${personPerIn}.`,
+            "001001": `The cast of the first performance of this ${genre} included ${perByActors}.`,
+            "001011": `This ${genre} was first performed ${firstPerDate}. The cast included ${perByActors}.`,
+            "001101": `This ${genre} was first performed by ${perByCom}. The cast included ${perByActors}.`,
+            "001111": `This ${genre} was first performed by ${perByCom} ${firstPerDate}. The cast included ${perByActors}.`,
             "010001": `This ${genre} was first performed at ${perInVen}.`,
             "010011": `This ${genre} was first performed at ${perInVen} ${firstPerDate}.`,
             "010101": `This ${genre} was first performed by ${perByCom} at ${perInVen}.`,
             "010111": `This ${genre} was first performed by ${perByCom} at ${perInVen} ${firstPerDate}.`,
-            "011001": `This ${genre} was first performed at ${perInVen}. The cast included ${personPerIn}.`,
-            "011011": `This ${genre} was first performed at ${perInVen} ${firstPerDate}. The cast included ${personPerIn}.`,
-            "011101": `This ${genre} was first performed by ${perByCom} at ${perInVen}. The cast included ${personPerIn}.`,
-            "011111": `This ${genre} was first performed by ${perByCom} at ${perInVen} ${firstPerDate}. The cast included ${personPerIn}.`,
+            "011001": `This ${genre} was first performed at ${perInVen}. The cast included ${perByActors}.`,
+            "011011": `This ${genre} was first performed at ${perInVen} ${firstPerDate}. The cast included ${perByActors}.`,
+            "011101": `This ${genre} was first performed by ${perByCom} at ${perInVen}. The cast included ${perByActors}.`,
+            "011111": `This ${genre} was first performed by ${perByCom} at ${perInVen} ${firstPerDate}. The cast included ${perByActors}.`,
             "100001": `This ${genre} was first printed ${firstPrintDate}`,
             "100011": `This ${genre} was first performed ${firstPerDate}. The text was first printed ${firstPrintDate}.`,
             "100101": `This ${genre} was first performed by ${perByCom}. The text was first printed ${firstPrintDate}.`,
             "100111": `This ${genre} was first performed by ${perByCom} ${firstPerDate}. The text was first printed ${firstPrintDate}.`,
-            "101001": `The cast of the first performance of this ${genre} included ${personPerIn}. The text was first printed ${firstPrintDate}.`,
-            "101011": `This ${genre} was first performed ${firstPerDate}. The cast included ${personPerIn}. The text was first printed ${firstPrintDate}.`,
-            "101101": `This ${genre} was first performed by ${perByCom}. The cast included ${personPerIn}. The text was first printed ${firstPrintDate}.`,
-            "101111": `This ${genre} was first performed by ${perByCom} ${firstPerDate}. The cast included ${personPerIn}. The text was first printed ${firstPrintDate}.`,
+            "101001": `The cast of the first performance of this ${genre} included ${perByActors}. The text was first printed ${firstPrintDate}.`,
+            "101011": `This ${genre} was first performed ${firstPerDate}. The cast included ${perByActors}. The text was first printed ${firstPrintDate}.`,
+            "101101": `This ${genre} was first performed by ${perByCom}. The cast included ${perByActors}. The text was first printed ${firstPrintDate}.`,
+            "101111": `This ${genre} was first performed by ${perByCom} ${firstPerDate}. The cast included ${perByActors}. The text was first printed ${firstPrintDate}.`,
             "110001": `This ${genre} was first performed at ${perInVen}. The text was first printed ${firstPrintDate}.`,
             "110011": `This ${genre} was first performed at ${perInVen} ${firstPerDate}. The text was first printed ${firstPrintDate}.`,
             "110101": `This ${genre} was first performed by ${perByCom} at ${perInVen}. The text was first printed ${firstPrintDate}.`,
             "110111": `This ${genre} was first performed by ${perByCom} at ${perInVen} ${firstPerDate}. The text was first printed ${firstPrintDate}.`,
-            "111001": `This ${genre} was first performed at ${perInVen}. The cast included ${personPerIn}. The text was first printed ${firstPrintDate}.`,
-            "111011": `This ${genre} was first performed at ${perInVen} ${firstPerDate}. The cast included ${personPerIn}. The text was first printed ${firstPrintDate}.`,
-            "111101": `This ${genre} was first performed by ${perByCom} at ${perInVen}. The cast included ${personPerIn}. The text was first printed ${firstPrintDate}.`,
-            "111111": `This ${genre} was first performed by ${perByCom} at ${perInVen} ${firstPerDate}. The cast included ${personPerIn}. The text was first printed ${firstPrintDate}.`
+            "111001": `This ${genre} was first performed at ${perInVen}. The cast included ${perByActors}. The text was first printed ${firstPrintDate}.`,
+            "111011": `This ${genre} was first performed at ${perInVen} ${firstPerDate}. The cast included ${perByActors}. The text was first printed ${firstPrintDate}.`,
+            "111101": `This ${genre} was first performed by ${perByCom} at ${perInVen}. The cast included ${perByActors}. The text was first printed ${firstPrintDate}.`,
+            "111111": `This ${genre} was first performed by ${perByCom} at ${perInVen} ${firstPerDate}. The cast included ${perByActors}. The text was first printed ${firstPrintDate}.`
         };
 
         return  codeObject[fullCode] ? codeObject[fullCode] : "";

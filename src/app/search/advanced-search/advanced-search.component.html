@@ -202,11 +202,12 @@
 <!--                        <td>-->
 <!--                            <mat-form-field>-->
 <!--                                <mat-label>First performance: Actor</mat-label>-->
-<!--                                <input matInput formControlName="performedActor" (keydown.escape)="clear('performedActor')">-->
-<!--                                <button *ngIf="form.get('performedActor').value" type="button" mat-button matSuffix-->
-<!--                                        mat-icon-button aria-label="Clear" (click)="clear('performedActor')">-->
-<!--                                    <mat-icon>close</mat-icon>-->
-<!--                                </button>-->
+<!--                                <mat-select formControlName="performedActor">-->
+<!--                                    <mat-option value="">-</mat-option>-->
+<!--                                    <mat-option *ngFor="let actor of actors" [value]="actor.id">-->
+<!--                                        <span *ngIf="actor.hasFirstName">{{actor.hasFirstName}}</span> {{actor.hasLastName}}-->
+<!--                                    </mat-option>-->
+<!--                                </mat-select>-->
 <!--                            </mat-form-field>-->
 <!--                        </td>-->
 <!--                        <td class="min">-->

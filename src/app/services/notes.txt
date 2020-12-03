@@ -40,7 +40,6 @@ Person
     hasActiveDate               0-1
     hasGender                   1
     isLexiaPerson (Lexia)       0-n
-    personPerformedIn (Book)    0-n
     hasPersonExtraInfo          0-1
 
 Book
@@ -58,6 +57,7 @@ Book
     hasBookComment              0-1
     isWrittenBy (Person)        1-n
     performedBy (Company)       0-n
+    performedByActor (Person)   0-n
     performedIn (Venue)         0-n
     isLexiaBook (Lexia)         0-n
     hasBookExtraInfo            0-1

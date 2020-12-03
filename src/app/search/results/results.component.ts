@@ -339,6 +339,21 @@ export class ResultsComponent implements OnInit {
                                 }
                                 return book;
                             }),
+                            // Checks if book has performedByActors and requests the actors (=persons)
+                            mergeMap((book: any) => {
+                                if (book.performedByActor) {
+                                    return forkJoin([of(book), from(book.performedByActor)
+                                        .pipe(mergeMap((actor: any) => this.knoraService.getPassageRes(actor.id)), toArray())]);
+                                } else {
+                                    return forkJoin([of(book), of("empty")]);
+                                }
+                            }),
+                            map(([book, actors]) => {
+                                if (actors !== "empty") {
+                                    book.performedByActor = actors;
+                                }
+                                return book;
+                            }),
                             // Requests the authors of the book
                             mergeMap((book: any) => forkJoin([of(book), from(book.isWrittenBy)
                                 .pipe(

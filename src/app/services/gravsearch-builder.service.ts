@@ -62,12 +62,6 @@ export class GravsearchBuilderService {
             type: "Resource",
             res: "lexia",
             queryStr: this.getQueryStr(GravsearchBuilderService.PERSON_VAR, "isLexiaPerson", "lexiaPerson")
-        },
-        personPerformedIn: {
-            cardinality: "0-1",
-            type: "Resource",
-            res: "book",
-            queryStr: this.getQueryStr(GravsearchBuilderService.PERSON_VAR, "personPerformedIn", "personPerformedIn")
         }
     };
 
@@ -146,6 +140,12 @@ export class GravsearchBuilderService {
             type: "Resource",
             res: "company",
             queryStr: this.getQueryStr(GravsearchBuilderService.BOOK_VAR, "performedBy", "performedCompany")
+        },
+        performedByActor: {
+            cardinality: "0-1",
+            type: "Resource",
+            res: "person",
+            queryStr: this.getQueryStr(GravsearchBuilderService.PERSON_VAR, "performedByActor", "actor")
         },
         performedIn: {
             cardinality: "0-n",
@@ -733,16 +733,14 @@ export class GravsearchBuilderService {
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node).join("")}`,
-            "?person teimww:hasPersonInternalId ?personInternalId .",
+            "?book teimww:performedByActor ?person .",
             "?person teimww:hasFirstName ?firstName .",
             "?person teimww:hasLastName ?lastName .",
             "} WHERE {",
             `${this.getFirstWhereLine(node).join("")}`,
-            "?person teimww:hasPersonInternalId ?personInternalId .",
+            "?book teimww:performedByActor ?person .",
             "OPTIONAL { ?person teimww:hasFirstName ?firstName . }",
             "?person teimww:hasLastName ?lastName .",
-            // Adapt next line if direction of property is changed
-            "?person teimww:personPerformedIn ?book .",
             "}",
             "",
             `OFFSET ${offset ? offset : 0}`
