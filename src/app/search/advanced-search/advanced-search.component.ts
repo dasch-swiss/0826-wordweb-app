@@ -524,7 +524,6 @@ export class AdvancedSearchComponent implements OnInit {
                                 return actor;
                             })
                             .sort((res1, res2) => this.sortActors(res1, res2));
-                        console.log(this.actors);
                     }, error => {
                         requests.map(a => a.unsubscribe());
                     });
