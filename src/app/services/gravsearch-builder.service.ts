@@ -593,6 +593,44 @@ export class GravsearchBuilderService {
         return this.getMainQuery(structure, priority, offset);
     }
 
+    getAllAuthorsQuery(offset?: number): string {
+        const node: IMainClassObject = {name: "person", variable: "person"};
+        const query = [
+            "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
+            "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
+            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            "",
+            "CONSTRUCT {",
+            `${this.getFirstConstructLine(node).join("")}`,
+            "?person teimww:hasPersonInternalId ?personInternalId .",
+            "?person teimww:hasFirstName ?firstName .",
+            "?person teimww:hasLastName ?lastName .",
+            "?person teimww:hasDescription ?description .",
+            "?person teimww:hasBirthDate ?birthDate .",
+            "?person teimww:hasDeathDate ?deathDate .",
+            "?person teimww:hasActiveDate ?hasActiveDate .",
+            "?person teimww:hasGender ?gender .",
+            "?person teimww:hasPersonExtraInfo ?personExtraInfo .",
+            "?book teimww:isWrittenBy ?person .",
+            "} WHERE {",
+            `${this.getFirstWhereLine(node).join("")}`,
+            "?person teimww:hasPersonInternalId ?personInternalId .",
+            "OPTIONAL { ?person teimww:hasFirstName ?firstName . }",
+            "?person teimww:hasLastName ?lastName .",
+            "?person teimww:hasDescription ?description .",
+            "OPTIONAL { ?person teimww:hasBirthDate ?birthDate . }",
+            "OPTIONAL { ?person teimww:hasDeathDate ?deathDate . }",
+            "OPTIONAL { ?person teimww:hasActiveDate ?hasActiveDate . }",
+            "?person teimww:hasGender ?gender .",
+            "OPTIONAL { ?person teimww:hasPersonExtraInfo ?personExtraInfo . }",
+            "?book teimww:isWrittenBy ?person .",
+            "}",
+            "",
+            `OFFSET ${offset ? offset : 0}`
+        ];
+        return query.join("\n");
+    }
+
     getPrimaryAuthorsQuery(char: string, offset?: number): string {
         const node: IMainClassObject = {name: "person", variable: "person"};
         const query = [
@@ -624,8 +662,8 @@ export class GravsearchBuilderService {
         return query.join("\n");
     }
 
-    getAllAuthorsQuery(offset?: number): string {
-        const node: IMainClassObject = {name: "person", variable: "person"};
+    getAllBooksQuery(offset?: number): string {
+        const node: IMainClassObject = {name: "book", variable: "book"};
         const query = [
             "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
             "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
@@ -633,28 +671,44 @@ export class GravsearchBuilderService {
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node).join("")}`,
-            "?person teimww:hasPersonInternalId ?personInternalId .",
-            "?person teimww:hasFirstName ?firstName .",
-            "?person teimww:hasLastName ?lastName .",
-            "?person teimww:hasDescription ?description .",
-            "?person teimww:hasBirthDate ?birthDate .",
-            "?person teimww:hasDeathDate ?deathDate .",
-            "?person teimww:hasDeathDate ?hasActiveDate .",
-            "?person teimww:hasGender ?gender .",
-            "?person teimww:hasPersonExtraInfo ?personExtraInfo .",
-            "?book teimww:isWrittenBy ?person .",
+            "?book teimww:hasBookInternalId ?bookInternalId .",
+            "?book teimww:hasPrefixBookTitle ?prefixBookTitle .",
+            "?book teimww:hasBookTitle ?bookTitle .",
+            "?book teimww:hasEdition ?edition .",
+            "?book teimww:hasEditionHist ?editionHist .",
+            "?book teimww:hasLanguage ?language .",
+            "?book teimww:hasGenre ?genre .",
+            "?book teimww:hasSubject ?subject .",
+            "?book teimww:hasCreationDate ?creationDate .",
+            "?book teimww:hasPublicationDate ?publicationDate .",
+            "?book teimww:hasFirstPerformanceDate ?firstPerformanceDate .",
+            "?book teimww:hasBookComment ?bookComment .",
+            "?book teimww:isWrittenBy ?author .",
+            "?author teimww:hasFirstName ?firstName .",
+            "?author teimww:hasLastName ?lastName .",
+            "?book teimww:performedBy ?performedCompany .",
+            "?book teimww:performedByActor ?actor .",
+            "?book teimww:performedIn ?performedVenue .",
             "} WHERE {",
             `${this.getFirstWhereLine(node).join("")}`,
-            "?person teimww:hasPersonInternalId ?personInternalId .",
-            "OPTIONAL { ?person teimww:hasFirstName ?firstName . }",
-            "?person teimww:hasLastName ?lastName .",
-            "?person teimww:hasDescription ?description .",
-            "OPTIONAL { ?person teimww:hasBirthDate ?birthDate . }",
-            "OPTIONAL { ?person teimww:hasDeathDate ?deathDate . }",
-            "OPTIONAL { ?person teimww:hasDeathDate ?hasActiveDate . }",
-            "?person teimww:hasGender ?gender .",
-            "OPTIONAL { ?person teimww:hasPersonExtraInfo ?personExtraInfo . }",
-            "?book teimww:isWrittenBy ?person .",
+            "?book teimww:hasBookInternalId ?bookInternalId .",
+            "OPTIONAL { ?book teimww:hasPrefixBookTitle ?prefixBookTitle . }",
+            "?book teimww:hasBookTitle ?bookTitle .",
+            "?book teimww:hasEdition ?edition .",
+            "OPTIONAL { ?book teimww:hasEditionHist ?editionHist . }",
+            "?book teimww:hasLanguage ?language .",
+            "?book teimww:hasGenre ?genre .",
+            "OPTIONAL { ?book teimww:hasSubject ?subject . }",
+            "?book teimww:hasCreationDate ?creationDate .",
+            "OPTIONAL { ?book teimww:hasPublicationDate ?publicationDate . }",
+            "OPTIONAL { ?book teimww:hasFirstPerformanceDate ?firstPerformanceDate . }",
+            "OPTIONAL { ?book teimww:hasBookComment ?bookComment . }",
+            "?book teimww:isWrittenBy ?author .",
+            "OPTIONAL { ?author teimww:hasFirstName ?firstName . }",
+            "?author teimww:hasLastName ?lastName .",
+            "OPTIONAL { ?book teimww:performedBy ?performedCompany . }",
+            "OPTIONAL { ?book teimww:performedByActor ?actor . }",
+            "OPTIONAL { ?book teimww:performedIn ?performedVenue . }",
             "}",
             "",
             `OFFSET ${offset ? offset : 0}`

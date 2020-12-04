@@ -180,6 +180,27 @@ export class KnoraService {
             );
     }
 
+
+    getAllBooksCount(offset?: number) {
+        const gravsearch = this.gsBuilder.getAllBooksQuery(offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
+            .pipe(
+                map((data: CountQueryResponse) => data.numberOfResults)
+            );
+    }
+
+    getAllBooks(offset?: number) {
+        const gravsearch = this.gsBuilder.getAllBooksQuery(offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
+            .pipe(
+                map((sequence: ReadResourceSequence) => {
+                    return sequence.resources.map(resource => this.processRes(resource));
+                })
+            );
+    }
+
     getPrimaryBooksCount(char: string, offset?: number) {
         const gravsearch = this.gsBuilder.getPrimaryBooksQuery(char, offset);
         console.log(gravsearch);
