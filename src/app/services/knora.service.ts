@@ -140,6 +140,26 @@ export class KnoraService {
             );
     }
 
+    getAllAuthorsCount(offset?: number) {
+        const gravsearch = this.gsBuilder.getAllAuthorsQuery(offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
+            .pipe(
+                map((data: CountQueryResponse) => data.numberOfResults)
+            );
+    }
+
+    getAllAuthors(offset?: number) {
+        const gravsearch = this.gsBuilder.getAllAuthorsQuery(offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
+            .pipe(
+                map((sequence: ReadResourceSequence) => {
+                    return sequence.resources.map(resource => this.processRes(resource));
+                })
+            );
+    }
+
     getPrimaryAuthorsCount(char: string, offset?: number) {
         const gravsearch = this.gsBuilder.getPrimaryAuthorsQuery(char, offset);
         console.log(gravsearch);

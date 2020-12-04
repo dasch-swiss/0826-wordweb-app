@@ -624,6 +624,44 @@ export class GravsearchBuilderService {
         return query.join("\n");
     }
 
+    getAllAuthorsQuery(offset?: number): string {
+        const node: IMainClassObject = {name: "person", variable: "person"};
+        const query = [
+            "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
+            "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
+            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            "",
+            "CONSTRUCT {",
+            `${this.getFirstConstructLine(node).join("")}`,
+            "?person teimww:hasPersonInternalId ?personInternalId .",
+            "?person teimww:hasFirstName ?firstName .",
+            "?person teimww:hasLastName ?lastName .",
+            "?person teimww:hasDescription ?description .",
+            "?person teimww:hasBirthDate ?birthDate .",
+            "?person teimww:hasDeathDate ?deathDate .",
+            "?person teimww:hasDeathDate ?hasActiveDate .",
+            "?person teimww:hasGender ?gender .",
+            "?person teimww:hasPersonExtraInfo ?personExtraInfo .",
+            "?book teimww:isWrittenBy ?person .",
+            "} WHERE {",
+            `${this.getFirstWhereLine(node).join("")}`,
+            "?person teimww:hasPersonInternalId ?personInternalId .",
+            "OPTIONAL { ?person teimww:hasFirstName ?firstName . }",
+            "?person teimww:hasLastName ?lastName .",
+            "?person teimww:hasDescription ?description .",
+            "OPTIONAL { ?person teimww:hasBirthDate ?birthDate . }",
+            "OPTIONAL { ?person teimww:hasDeathDate ?deathDate . }",
+            "OPTIONAL { ?person teimww:hasDeathDate ?hasActiveDate . }",
+            "?person teimww:hasGender ?gender .",
+            "OPTIONAL { ?person teimww:hasPersonExtraInfo ?personExtraInfo . }",
+            "?book teimww:isWrittenBy ?person .",
+            "}",
+            "",
+            `OFFSET ${offset ? offset : 0}`
+        ];
+        return query.join("\n");
+    }
+
     getPrimaryBooksQuery(char: string, offset?: number): string {
         const node: IMainClassObject = {name: "book", variable: "book"};
         const query = [
