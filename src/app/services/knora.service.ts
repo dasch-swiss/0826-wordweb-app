@@ -221,6 +221,26 @@ export class KnoraService {
             );
     }
 
+    getAllLexiasCount(offset?: number) {
+        const gravsearch = this.gsBuilder.getAllLexiasQuery(offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
+            .pipe(
+                map((data: CountQueryResponse) => data.numberOfResults)
+            );
+    }
+
+    getAllLexias(offset?: number) {
+        const gravsearch = this.gsBuilder.getAllLexiasQuery(offset);
+        console.log(gravsearch);
+        return this.knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
+            .pipe(
+                map((sequence: ReadResourceSequence) => {
+                    return sequence.resources.map(resource => this.processRes(resource));
+                })
+            );
+    }
+
     getLexiasCount(char: string, offset?: number) {
         const gravsearch = this.gsBuilder.getLexiasQuery(char, offset);
         console.log(gravsearch);

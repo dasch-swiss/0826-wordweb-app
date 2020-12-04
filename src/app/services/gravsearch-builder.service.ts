@@ -745,6 +745,34 @@ export class GravsearchBuilderService {
         return query.join("\n");
     }
 
+    getAllLexiasQuery(offset?: number): string {
+        const node: IMainClassObject = {name: "lexia", variable: "lexia"};
+        const query = [
+            "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
+            "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
+            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            "",
+            "CONSTRUCT {",
+            `${this.getFirstConstructLine(node).join("")}`,
+            "?lexia teimww:hasLexiaInternalId ?lexiaInternalId .",
+            "?lexia teimww:hasLexiaTitle ?lexiaTitle .",
+            "?lexia teimww:hasLexiaDisplayedTitle ?lexiaDisplayedTitle .",
+            "?lexia teimww:hasFormalClass ?formalClass .",
+            "?lexia teimww:hasImage ?image .",
+            "} WHERE {",
+            `${this.getFirstWhereLine(node).join("")}`,
+            "?lexia teimww:hasLexiaInternalId ?lexiaInternalId .",
+            "?lexia teimww:hasLexiaTitle ?lexiaTitle .",
+            "OPTIONAL { ?lexia teimww:hasLexiaDisplayedTitle ?lexiaDisplayedTitle . }",
+            "?lexia teimww:hasFormalClass ?formalClass .",
+            "OPTIONAL { ?lexia teimww:hasImage ?image . }",
+            "}",
+            "",
+            `OFFSET ${offset ? offset : 0}`
+        ];
+        return query.join("\n");
+    }
+
     getLexiasQuery(char: string, offset?: number): string {
         const node: IMainClassObject = {name: "lexia", variable: "lexia"};
         const query = [
