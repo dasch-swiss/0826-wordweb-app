@@ -5,6 +5,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {Author} from "../../model/model";
 import {ApiService} from "../../services/api.service";
 import {CreateUpdateAuthorComponent} from "./create-update-author/create-update-author.component";
+import {KnoraService} from "../../services/knora.service";
 
 @Component({
     selector: "app-author",
@@ -13,13 +14,15 @@ import {CreateUpdateAuthorComponent} from "./create-update-author/create-update-
 })
 export class AuthorComponent implements OnInit {
 
-    displayedColumns: string[] = ["internalID", "firstName", "lastName", "gender", "description", "birthDate", "deathDate", "activeDate", "lexia", "order", "references", "action"];
-    dataSource: MatTableDataSource<Author>;
+    // displayedColumns: string[] = ["internalID", "firstName", "lastName", "gender", "description", "birthDate", "deathDate", "activeDate", "lexia", "order", "references", "action"];
+    displayedColumns: string[] = ["hasPersonInternalId", "hasFirstName", "hasLastName"];
+    dataSource: MatTableDataSource<any>;
     value: string;
 
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(public apiService: ApiService,
+                private knoraService: KnoraService,
                 private createAuthorDialog: MatDialog) {
     }
 
@@ -28,12 +31,21 @@ export class AuthorComponent implements OnInit {
     }
 
     resetTable() {
-        this.apiService.getAuthors(true).subscribe((authors) => {
-            console.log(authors);
-            this.dataSource = new MatTableDataSource(authors);
-            this.dataSource.sort = this.sort;
-        });
+        // this.apiService.getAuthors(true).subscribe((authors) => {
+        //     console.log(authors);
+        //     this.dataSource = new MatTableDataSource(authors);
+        //     this.dataSource.sort = this.sort;
+        // });
 
+        this.knoraService.getAllAuthors()
+            .subscribe(data => {
+                console.log(data);
+                this.dataSource = new MatTableDataSource(data);
+                this.dataSource.sort = this.sort;
+            });
+
+        this.knoraService.getAllAuthorsCount()
+            .subscribe(amount => console.log(amount));
     }
 
     applyFilter(filterValue: string) {

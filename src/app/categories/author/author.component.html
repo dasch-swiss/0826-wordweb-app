@@ -26,26 +26,26 @@
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
         <!-- internal id -->
-        <ng-container matColumnDef="internalID">
+        <ng-container matColumnDef="hasPersonInternalId">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Internal ID</th>
             <td mat-cell *matCellDef="let element">
-                <div>{{element.internalID}}</div>
+                <div>{{element.hasPersonInternalId[0].value}}</div>
             </td>
         </ng-container>
 
         <!-- first name column -->
-        <ng-container matColumnDef="firstName">
+        <ng-container matColumnDef="hasFirstName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Firstname</th>
             <td mat-cell *matCellDef="let element">
-                <div>{{element.firstName}}</div>
+                <div>{{element.hasFirstName[0].value}}</div>
             </td>
         </ng-container>
 
         <!-- last name column -->
-        <ng-container matColumnDef="lastName">
+        <ng-container matColumnDef="hasLastName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</th>
             <td mat-cell *matCellDef="let element">
-                <div>{{element.lastName}}</div>
+                <div>{{element.hasLastName[0].value}}</div>
             </td>
         </ng-container>
 
