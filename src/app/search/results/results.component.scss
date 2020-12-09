@@ -9,10 +9,6 @@
             padding: 1rem 2rem 1rem 2rem;
             background-color: rgb(220, 220, 220);
 
-            a {
-                color: rgba(159, 11, 11, 1)
-            }
-
             .numbering {
                 text-align: right;
                 font-size: smaller;
@@ -22,6 +18,15 @@
                 font-weight: bold;
                 margin-top: 1rem;
                 margin-bottom: 0.5rem;
+
+                .title-link {
+                    text-decoration: none;
+                    color: black;
+                }
+
+                .title-link:hover {
+                    text-decoration: underline;
+                }
 
                 div {
                     display: inline;
@@ -42,6 +47,10 @@
                 .lexia {
                     font-style: italic;
                     text-align: right;
+                }
+
+                .lexia > a {
+                    color: rgba(159, 11, 11, 1)
                 }
             }
         }
@@ -160,6 +169,11 @@
         // Necessary to display the spinner within the div container (-> ngx spinner)
         position: relative
     }
+}
+
+:host::ng-deep .indent {
+    text-indent: -2rem;
+    padding-left: 2rem;
 }
 
 :host::ng-deep .quote {
