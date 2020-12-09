@@ -183,7 +183,6 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
             {
                 name: "isMentionedIn",
                 priority: 0,
-                mandatory: true,
                 res: {
                     name: "passage",
                     props: [
