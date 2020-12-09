@@ -65,7 +65,7 @@ export class CitationComponent implements OnInit {
 
         const bibliography = this.showOriginal ? editionHistPageHist : editionPage;
 
-        return `${authorString} ${bibliography}`;
+        return `<div class="indent">${authorString} ${bibliography}</div>`;
     }
 
 }

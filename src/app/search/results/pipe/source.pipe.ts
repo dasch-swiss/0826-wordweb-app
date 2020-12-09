@@ -62,13 +62,13 @@ export class SourcePipe implements PipeTransform {
                 const sPage = sPassage.hasPage ? sPassage.hasPage[0].value : "";
                 const sEditionPage = `${sEdition} ${sPage}`;
 
-                sources.push(`${sAuthorString} ${sEditionPage}`);
+                sources.push(`<div class="indent">${sAuthorString} ${sEditionPage}</div>`);
             }
 
             // Sorts sources alphabetically and joins with a <br> html tag
             const sourceString = sources
                 .sort((source1, source2) => source1 < source2 ? -1 : (source1 > source2 ? 1 : 0))
-                .join("<br>");
+                .join("");
 
             return `${firstLine}<br>${sourceString}`;
         }
