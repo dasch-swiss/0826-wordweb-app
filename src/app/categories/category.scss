@@ -37,34 +37,38 @@
     }
 }
 
-.search-container {
-    margin: 5rem 3rem;
+.container {
+    margin: 2rem 3rem;
 
-    form {
+    .search-container {
+        margin-top: 2rem;
 
-        table {
+        form {
 
-            mat-form-field {
-                width: 100%;
+            table {
+
+                mat-form-field {
+                    width: 100%;
+                }
+
+                .min {
+                    width: 1%;
+                }
             }
 
-            .min {
-                width: 1%;
-            }
-        }
+            .buttons {
+                display: flex;
 
-        .buttons {
-            display: flex;
+                .search-btn {
+                    background-color: rgb(159, 11, 11);
+                    color: white;
+                    flex-grow: 1;
+                }
 
-            .search-btn {
-                background-color: rgb(159, 11, 11);
-                color: white;
-                flex-grow: 1;
-            }
-
-            .clear-btn {
-                margin-left: 1rem;
-                font-weight: normal;
+                .clear-btn {
+                    margin-left: 1rem;
+                    font-weight: normal;
+                }
             }
         }
     }
