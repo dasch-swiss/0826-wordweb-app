@@ -36,3 +36,36 @@
         }
     }
 }
+
+.search-container {
+    margin: 5rem 3rem;
+
+    form {
+
+        table {
+
+            mat-form-field {
+                width: 100%;
+            }
+
+            .min {
+                width: 1%;
+            }
+        }
+
+        .buttons {
+            display: flex;
+
+            .search-btn {
+                background-color: rgb(159, 11, 11);
+                color: white;
+                flex-grow: 1;
+            }
+
+            .clear-btn {
+                margin-left: 1rem;
+                font-weight: normal;
+            }
+        }
+    }
+}
