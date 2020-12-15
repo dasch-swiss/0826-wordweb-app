@@ -94,3 +94,41 @@ tr.example-element-row:not(.example-expanded-row):active {
 .example-element-description-attribution {
     opacity: 0.5;
 }
+
+
+.container {
+    margin: 2rem 3rem;
+
+    .search-container {
+        margin-top: 2rem;
+
+        form {
+
+            table {
+
+                mat-form-field {
+                    width: 100%;
+                }
+
+                .min {
+                    width: 1%;
+                }
+            }
+
+            .buttons {
+                display: flex;
+
+                .search-btn {
+                    background-color: rgb(159, 11, 11);
+                    color: white;
+                    flex-grow: 1;
+                }
+
+                .clear-btn {
+                    margin-left: 1rem;
+                    font-weight: normal;
+                }
+            }
+        }
+    }
+}

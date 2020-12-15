@@ -6,6 +6,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {Book} from "../../model/model";
 import {ApiService} from "../../services/api.service";
 import {CreateUpdateBookComponent} from "./create-update-book/create-update-book.component";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
     selector: "app-book",
@@ -24,6 +25,7 @@ export class BookComponent implements OnInit {
     columnsToDisplay = ["detail", "internalID", "title", "authors", "createdDate", "publishDate", "order", "references", "action"];
     expandedElements: any[] = [];
     value: string;
+    form: FormGroup;
 
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -35,7 +37,85 @@ export class BookComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.form = new FormGroup({
+            internalId: new FormControl("", []),
+            prefBookTitleNull: new FormControl("", []),
+            prefBookTitle: new FormGroup({
+                prefbt: new FormControl("", []),
+            }),
+            bookTitle: new FormControl("", []),
+            edition: new FormControl("", []),
+            editionHistNull: new FormControl("", []),
+            editionHist: new FormGroup({
+                eh: new FormControl("", []),
+            }),
+            language: new FormControl("", []),
+            genre: new FormControl("", []),
+            subjectNull: new FormControl("", []),
+            subject: new FormGroup({
+                sub: new FormControl("", []),
+            }),
+            creationDate: new FormControl("", []),
+            publicNull: new FormControl("", []),
+            public: new FormGroup({
+                pdate: new FormControl("", [])
+            }),
+            firstPerNull: new FormControl("", []),
+            firstPer: new FormGroup({
+                fpdate: new FormControl("", [])
+            }),
+            bookCommentNull: new FormControl("", []),
+            bookComment: new FormGroup({
+                bc: new FormControl("", [])
+            }),
+            authors: new FormControl("", []),
+            performedNull: new FormControl("", []),
+            performed: new FormGroup({
+                perf: new FormControl("", [])
+            }),
+            performedActorNull: new FormControl("", []),
+            performedActor: new FormGroup({
+                perfA: new FormControl("", [])
+            }),
+            performedInNull: new FormControl("", []),
+            performedIn: new FormGroup({
+                perfI: new FormControl("", [])
+            }),
+            extraNull: new FormControl("", []),
+            extra: new FormGroup({
+                ex: new FormControl("", [])
+            })
+        });
         this.resetTable();
+    }
+
+    resetSearch() {
+        // this.form.get("internalId").reset("");
+        // this.form.controls.firstNameNull.setValue(false);
+        // this.form.get("firstName").enable();
+        // this.form.get("firstName.fn").reset("");
+        // this.form.get("lastName").reset("");
+        // this.form.get("description").reset("");
+        // this.form.controls.birthNull.setValue(false);
+        // this.form.get("birth").enable();
+        // this.form.get("birth.bdate").reset("");
+        // this.form.controls.deathNull.setValue(false);
+        // this.form.get("death").enable();
+        // this.form.get("death.ddate").reset("");
+        // this.form.controls.activeNull.setValue(false);
+        // this.form.get("active").enable();
+        // this.form.get("active.adate").reset("");
+        // this.form.controls.extraNull.setValue(false);
+        // this.form.get("extra").enable();
+        // this.form.get("extra.ex").reset("");
+    }
+
+    clear(formControlName: string) {
+        this.form.get(formControlName).reset("");
+    }
+
+    onChange(event, groupName: string) {
+        event.checked ? this.form.get(groupName).disable() : this.form.get(groupName).enable();
     }
 
     resetTable() {
@@ -71,7 +151,7 @@ export class BookComponent implements OnInit {
         return containsInternalID || containsTitle || containEdition || containEditionHist || containsAuthorName || containsVenue || containsOrganisation;
     }
 
-    clear() {
+    clearFilter() {
         this.dataSource.filter = this.value = "";
     }
 
