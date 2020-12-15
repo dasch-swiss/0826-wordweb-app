@@ -4,7 +4,7 @@
     <h2>List of Authors</h2>
 
     <div class="search-container" fxLayout="row" fxLayoutGap="30px" fxLayoutAlign="start start">
-        <mat-card fxFlex.gt-sm="350px">
+        <mat-card fxFlex.gt-sm="300px">
             <mat-card-content>
                 <form [formGroup]="form" fxLayout="column">
 
@@ -12,133 +12,127 @@
 
                         <tr>
                             <td>
-                                <mat-form-field>
-                                    <mat-label>Internal ID</mat-label>
-                                    <input matInput formControlName="internalId" (keydown.escape)="clear('internalId')">
-                                    <button *ngIf="form.get('internalId').value" type="button" mat-button matSuffix
-                                            mat-icon-button aria-label="Clear" (click)="clear('internalId')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
+                                <mat-label>Internal ID</mat-label>
                             </td>
                             <td></td>
                         </tr>
+                        <tr>
+                            <td>
+                                <input formControlName="internalId">
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
 
+                        <tr>
+                            <td>
+                                <mat-label>First Name</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
                         <tr>
                             <td formGroupName="firstName">
-                                <mat-form-field>
-                                    <mat-label>First Name</mat-label>
-                                    <input matInput formControlName="fn" (keydown.escape)="clear('firstName.fn')">
-                                    <button *ngIf="form.get('firstName.fn').value" type="button" mat-button matSuffix
-                                            mat-icon-button aria-label="Clear" (click)="clear('firstName.fn')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
+                                <input formControlName="fn">
                             </td>
-                            <td class="min">
+                            <td class="checkbox">
                                 <mat-checkbox [color]="'warn'" formControlName="firstNameNull"
-                                              (change)="onChange($event, 'firstName')">is null
+                                              (change)="onChange($event, 'firstName')">null
                                 </mat-checkbox>
                             </td>
                         </tr>
 
                         <tr>
                             <td>
-                                <mat-form-field>
-                                    <mat-label>Last Name</mat-label>
-                                    <input matInput formControlName="lastName" (keydown.escape)="clear('lastName')">
-                                    <button *ngIf="form.get('lastName').value" type="button" mat-button matSuffix
-                                            mat-icon-button aria-label="Clear" (click)="clear('lastName')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
+                                <mat-label>Last Name</mat-label>
                             </td>
                             <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input formControlName="lastName">
+                            </td>
+                            <td>
+                            </td>
                         </tr>
 
                         <tr>
                             <td>
-                                <mat-form-field>
-                                    <mat-label>Description</mat-label>
-                                    <input matInput formControlName="description"
-                                           (keydown.escape)="clear('description')">
-                                    <button *ngIf="form.get('description').value" type="button" mat-button matSuffix
-                                            mat-icon-button aria-label="Clear" (click)="clear('description')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
+                                <mat-label>Description</mat-label>
                             </td>
                             <td></td>
                         </tr>
+                        <tr>
+                            <td>
+                                <input formControlName="description">
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
 
+                        <tr>
+                            <td>
+                                <mat-label>Birth Date</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
                         <tr>
                             <td formGroupName="birth">
-                                <mat-form-field>
-                                    <mat-label>Birth Date</mat-label>
-                                    <input matInput formControlName="bdate" (keydown.escape)="clear('birth.bdate')">
-                                    <button *ngIf="form.get('birth.bdate').value" type="button" mat-button matSuffix
-                                            mat-icon-button aria-label="Clear" (click)="clear('birth.bdate')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
+                                <input formControlName="bdate">
                             </td>
-                            <td class="min">
+                            <td class="checkbox">
                                 <mat-checkbox [color]="'warn'" formControlName="birthNull"
-                                              (change)="onChange($event, 'birth')">is null
+                                              (change)="onChange($event, 'birth')">null
                                 </mat-checkbox>
                             </td>
                         </tr>
 
+                        <tr>
+                            <td>
+                                <mat-label>Death Date</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
                         <tr>
                             <td formGroupName="death">
-                                <mat-form-field>
-                                    <mat-label>Death Date</mat-label>
-                                    <input matInput formControlName="ddate" (keydown.escape)="clear('death.ddate')">
-                                    <button *ngIf="form.get('death.ddate').value" type="button" mat-button matSuffix
-                                            mat-icon-button aria-label="Clear" (click)="clear('death.ddate')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
+                                <input formControlName="ddate">
                             </td>
-                            <td class="min">
+                            <td class="checkbox">
                                 <mat-checkbox [color]="'warn'" formControlName="deathNull"
-                                              (change)="onChange($event, 'death')">is null
+                                              (change)="onChange($event, 'death')">null
                                 </mat-checkbox>
                             </td>
                         </tr>
 
+                        <tr>
+                            <td>
+                                <mat-label>Active Date</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
                         <tr>
                             <td formGroupName="active">
-                                <mat-form-field>
-                                    <mat-label>Active Date</mat-label>
-                                    <input matInput formControlName="adate" (keydown.escape)="clear('active.adate')">
-                                    <button *ngIf="form.get('active.adate').value" type="button" mat-button matSuffix
-                                            mat-icon-button aria-label="Clear" (click)="clear('active.adate')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
+                                <input formControlName="adate">
                             </td>
-                            <td class="min">
+                            <td class="checkbox">
                                 <mat-checkbox [color]="'warn'" formControlName="activeNull"
-                                              (change)="onChange($event, 'active')">is null
+                                              (change)="onChange($event, 'active')">null
                                 </mat-checkbox>
                             </td>
                         </tr>
 
                         <tr>
-                            <td formGroupName="extra">
-                                <mat-form-field>
-                                    <mat-label>Extra info</mat-label>
-                                    <input matInput formControlName="ex" (keydown.escape)="clear('extra.ex')">
-                                    <button *ngIf="form.get('extra.ex').value" type="button" mat-button matSuffix
-                                            mat-icon-button aria-label="Clear" (click)="clear('extra.ex')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
+                            <td>
+                                <mat-label>Extra info</mat-label>
                             </td>
-                            <td class="min">
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td formGroupName="extra">
+                                <input formControlName="ex">
+                            </td>
+                            <td class="checkbox">
                                 <mat-checkbox [color]="'warn'" formControlName="extraNull"
-                                              (change)="onChange($event, 'extra')">is null
+                                              (change)="onChange($event, 'extra')">null
                                 </mat-checkbox>
                             </td>
                         </tr>
