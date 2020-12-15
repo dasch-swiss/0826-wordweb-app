@@ -5,6 +5,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {Lexia} from "../../model/model";
 import {ApiService} from "../../services/api.service";
 import {CreateUpdateLexiaComponent} from "./create-update-lexia/create-update-lexia.component";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
     selector: "app-lexia",
@@ -15,6 +16,7 @@ export class LexiaComponent implements OnInit {
     displayedColumns: string[] = ["internalID", "name", "order", "references", "action"];
     dataSource: MatTableDataSource<Lexia>;
     value: string;
+    form: FormGroup;
 
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -23,7 +25,50 @@ export class LexiaComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.form = new FormGroup({
+            internalId: new FormControl("", []),
+            lexiaTitle: new FormControl("", []),
+            displayedTitleNull: new FormControl("", []),
+            displayedTitle: new FormGroup({
+                distit: new FormControl("", []),
+            }),
+            formalClass: new FormControl("", []),
+            imageNull: new FormControl("", []),
+            image: new FormGroup({
+                img: new FormControl("", []),
+            }),
+            extraNull: new FormControl("", []),
+            extra: new FormGroup({
+                ex: new FormControl("", [])
+            })
+        });
         this.resetTable();
+    }
+
+    resetSearch() {
+        // this.form.get("internalId").reset("");
+        // this.form.get("creationDate").reset("");
+        // this.form.controls.firstNameNull.setValue(false);
+        // this.form.get("firstName").enable();
+        // this.form.get("firstName.fn").reset("");
+        // this.form.get("lastName").reset("");
+        // this.form.get("description").reset("");
+        // this.form.controls.birthNull.setValue(false);
+        // this.form.get("birth").enable();
+        // this.form.get("birth.bdate").reset("");
+        // this.form.controls.deathNull.setValue(false);
+        // this.form.get("death").enable();
+        // this.form.get("death.ddate").reset("");
+        // this.form.controls.activeNull.setValue(false);
+        // this.form.get("active").enable();
+        // this.form.get("active.adate").reset("");
+        // this.form.controls.extraNull.setValue(false);
+        // this.form.get("extra").enable();
+        // this.form.get("extra.ex").reset("");
+    }
+
+    onChange(event, groupName: string) {
+        event.checked ? this.form.get(groupName).disable() : this.form.get(groupName).enable();
     }
 
     resetTable() {
