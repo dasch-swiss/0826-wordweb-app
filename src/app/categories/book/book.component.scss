@@ -100,22 +100,27 @@ tr.example-element-row:not(.example-expanded-row):active {
     margin: 2rem 3rem;
 
     .search-container {
-        margin-top: 2rem;
+        margin-top: 1rem;
 
         form {
 
             table {
 
-                mat-form-field {
+                tr, td {
+                    //border: 1px solid black;
+                }
+
+                input, select {
                     width: 100%;
                 }
 
-                .min {
-                    width: 1%;
+                .checkbox {
+                    text-align: right;
                 }
             }
 
             .buttons {
+                margin-top: 1rem;
                 display: flex;
 
                 .search-btn {

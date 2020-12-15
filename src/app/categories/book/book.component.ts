@@ -90,7 +90,8 @@ export class BookComponent implements OnInit {
     }
 
     resetSearch() {
-        // this.form.get("internalId").reset("");
+        this.form.get("internalId").reset("");
+        this.form.get("creationDate").reset("");
         // this.form.controls.firstNameNull.setValue(false);
         // this.form.get("firstName").enable();
         // this.form.get("firstName.fn").reset("");
@@ -108,10 +109,6 @@ export class BookComponent implements OnInit {
         // this.form.controls.extraNull.setValue(false);
         // this.form.get("extra").enable();
         // this.form.get("extra.ex").reset("");
-    }
-
-    clear(formControlName: string) {
-        this.form.get(formControlName).reset("");
     }
 
     onChange(event, groupName: string) {
