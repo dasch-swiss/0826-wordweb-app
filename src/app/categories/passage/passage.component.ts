@@ -7,6 +7,7 @@ import {ApiService} from "../../services/api.service";
 import {CreateUpdatePassageComponent} from "./create-update-passage/create-update-passage.component";
 import {BookRefComponent} from "../../dialog/book-ref/book-ref.component";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: "app-passage",
@@ -25,6 +26,7 @@ export class PassageComponent implements OnInit {
     dataSource: MatTableDataSource<Passage>;
     expandedElements: any[] = [];
     value: string;
+    form: FormGroup;
 
     @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -41,7 +43,68 @@ export class PassageComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.form = new FormGroup({
+            text: new FormControl("", []),
+            textHistNull: new FormControl("", []),
+            textHist: new FormGroup({
+                txh: new FormControl("", [])
+            }),
+            prefDisplayedTitleNull: new FormControl("", []),
+            prefDisplayedTitle: new FormGroup({
+                prefdistit: new FormControl("", []),
+            }),
+            pageNull: new FormControl("", []),
+            page: new FormGroup({
+                pg: new FormControl("", [])
+            }),
+            pagHistNull: new FormControl("", []),
+            pageHist: new FormGroup({
+                pgh: new FormControl("", [])
+            }),
+            research: new FormControl("", []),
+            function: new FormControl("", []),
+            marking: new FormControl("", []),
+            status: new FormControl("", []),
+            intCommentNull: new FormControl("", []),
+            intComment: new FormGroup({
+                intc: new FormControl("", [])
+            }),
+            passCommentNull: new FormControl("", []),
+            passComment: new FormGroup({
+                pc: new FormControl("", [])
+            }),
+            extraNull: new FormControl("", []),
+            extra: new FormGroup({
+                ex: new FormControl("", [])
+            })
+        });
         this.resetTable();
+    }
+
+    resetSearch() {
+        // this.form.get("internalId").reset("");
+        // this.form.get("creationDate").reset("");
+        // this.form.controls.firstNameNull.setValue(false);
+        // this.form.get("firstName").enable();
+        // this.form.get("firstName.fn").reset("");
+        // this.form.get("lastName").reset("");
+        // this.form.get("description").reset("");
+        // this.form.controls.birthNull.setValue(false);
+        // this.form.get("birth").enable();
+        // this.form.get("birth.bdate").reset("");
+        // this.form.controls.deathNull.setValue(false);
+        // this.form.get("death").enable();
+        // this.form.get("death.ddate").reset("");
+        // this.form.controls.activeNull.setValue(false);
+        // this.form.get("active").enable();
+        // this.form.get("active.adate").reset("");
+        // this.form.controls.extraNull.setValue(false);
+        // this.form.get("extra").enable();
+        // this.form.get("extra.ex").reset("");
+    }
+
+    onChange(event, groupName: string) {
+        event.checked ? this.form.get(groupName).disable() : this.form.get(groupName).enable();
     }
 
     resetTable() {

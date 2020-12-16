@@ -1,127 +1,367 @@
-<div class="table-container">
+<div class="container" fxLayout="column">
 
     <a [routerLink]="['/categories']">< back</a>
     <h2>List of Passages</h2>
 
-    <div class="filter-container">
+    <div class="search-container" fxLayout="row" fxLayoutGap="30px" fxLayoutAlign="start start">
+        <mat-card fxFlex.gt-sm="300px">
+            <mat-card-content>
+                <form [formGroup]="form" fxLayout="column">
 
-        <div class="create-btn-container">
-            <button mat-raised-button type="button" color="primary" (click)="create()">
-                <mat-icon>add</mat-icon>
-                Create Passage
-            </button>
+                    <table>
+
+                        <tr>
+                            <td>
+                                <mat-label>Text</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input formControlName="text">
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Text Hist.</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td formGroupName="textHist">
+                                <input formControlName="txh">
+                            </td>
+                            <td class="checkbox">
+                                <mat-checkbox [color]="'warn'" formControlName="textHistNull"
+                                              (change)="onChange($event, 'textHist')">null
+                                </mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Prefix Displayed Title</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td formGroupName="prefDisplayedTitle">
+                                <input formControlName="prefdistit">
+                            </td>
+                            <td class="checkbox">
+                                <mat-checkbox [color]="'warn'" formControlName="prefDisplayedTitleNull"
+                                              (change)="onChange($event, 'prefDisplayedTitle')">null
+                                </mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Page</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td formGroupName="page">
+                                <input formControlName="pg">
+                            </td>
+                            <td class="checkbox">
+                                <mat-checkbox [color]="'warn'" formControlName="pageNull"
+                                              (change)="onChange($event, 'page')">null
+                                </mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Page Hist.</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td formGroupName="pageHist">
+                                <input formControlName="pgh">
+                            </td>
+                            <td class="checkbox">
+                                <mat-checkbox [color]="'warn'" formControlName="pagHistNull"
+                                              (change)="onChange($event, 'pageHist')">null
+                                </mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Research Field</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select formControlName="research">
+                                    <option value="">-</option>
+                                    <!--                                    <mat-option *ngFor="let research of researches" [value]="research.id">-->
+                                    <!--                                        {{research.name}}-->
+                                    <!--                                    </mat-option>-->
+                                </select>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Function</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select formControlName="function">
+                                    <option value="">-</option>
+                                    <!--                                    <mat-option *ngFor="let function of functions" [value]="function.id">-->
+                                    <!--                                        {{function.name}}-->
+                                    <!--                                    </mat-option>-->
+                                </select>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Marking</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select formControlName="marking">
+                                    <option value="">-</option>
+                                    <!--                                    <mat-option *ngFor="let marking of markings" [value]="marking.id">-->
+                                    <!--                                        {{marking.name}}-->
+                                    <!--                                    </mat-option>-->
+                                </select>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Status</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select formControlName="status">
+                                    <option value="">-</option>
+                                    <!--                                    <mat-option *ngFor="let status of statuses" [value]="status.id">-->
+                                    <!--                                        {{status.name}}-->
+                                    <!--                                    </mat-option>-->
+                                </select>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Internal Comment</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td formGroupName="intComment">
+                                <input formControlName="intc">
+                            </td>
+                            <td class="checkbox">
+                                <mat-checkbox [color]="'warn'" formControlName="intCommentNull"
+                                              (change)="onChange($event, 'intComment')">null
+                                </mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Passage Comment</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td formGroupName="passComment">
+                                <input formControlName="pc">
+                            </td>
+                            <td class="checkbox">
+                                <mat-checkbox [color]="'warn'" formControlName="passCommentNull"
+                                              (change)="onChange($event, 'passComment')">null
+                                </mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Extra info</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td formGroupName="extra">
+                                <input formControlName="ex">
+                            </td>
+                            <td class="checkbox">
+                                <mat-checkbox [color]="'warn'" formControlName="extraNull"
+                                              (change)="onChange($event, 'extra')">null
+                                </mat-checkbox>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                    <div class="buttons">
+                        <button class="search-btn" type="submit" mat-flat-button>SEARCH</button>
+                        <button class="clear-btn" type="button" mat-flat-button (click)="resetSearch()">Clear search
+                        </button>
+                    </div>
+
+                </form>
+            </mat-card-content>
+        </mat-card>
+
+        <div style="border: 1px solid black; width: 100%;">
+            Table with the results
         </div>
-
-        <mat-form-field>
-            <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter"
-                   (keydown.escape)="clear()">
-            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-form-field>
-
-        <div class="row-counter">Anzahl: {{rowCount()}}</div>
     </div>
 
-    <table mat-table matSort [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
-
-        <ng-container matColumnDef="detail">
-            <th mat-header-cell *matHeaderCellDef style="width:1rem;"></th>
-            <td mat-cell *matCellDef="let element">
-                <div class="action-btn-container">
-                    <button mat-button mat-icon-button color="primary" (click)="expansion(element)">
-                        <mat-icon>{{contains(element, expandedElements) ? 'expand_more' : 'chevron_right'}}</mat-icon>
-                    </button>
-                </div>
-            </td>
-        </ng-container>
-
-        <!-- edition column -->
-        <ng-container matColumnDef="book">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Buch</th>
-            <td mat-cell *matCellDef="let element">{{element.occursIn.title}}</td>
-        </ng-container>
-
-        <!-- text column -->
-        <ng-container matColumnDef="text">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Text</th>
-            <td mat-cell *matCellDef="let element">
-                <div>{{element.text}}</div>
-            </td>
-        </ng-container>
-
-        <!-- text hist column -->
-        <ng-container matColumnDef="textHist">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Text hist.</th>
-            <td mat-cell *matCellDef="let element">
-                <div>{{element.textHist}}</div>
-            </td>
-        </ng-container>
-
-        <!-- page column -->
-        <ng-container matColumnDef="page">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Seite</th>
-            <td mat-cell *matCellDef="let element">
-                <div>{{element.page}}</div>
-            </td>
-        </ng-container>
-
-        <!-- page hist column -->
-        <ng-container matColumnDef="pageHist">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Seite hist.</th>
-            <td mat-cell *matCellDef="let element">
-                <div>{{element.pageHist}}</div>
-            </td>
-        </ng-container>
-
-        <!-- order column -->
-        <ng-container matColumnDef="order">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Reihenfolge</th>
-            <td mat-cell *matCellDef="let element">
-                <div>{{element.order}}</div>
-            </td>
-        </ng-container>
-
-        <!-- reference column -->
-        <ng-container matColumnDef="references">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Referenzen</th>
-            <td mat-cell *matCellDef="let element">
-                <div class="read-only-value">{{element.references}}</div>
-            </td>
-        </ng-container>
-
-        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-        <ng-container matColumnDef="expandedDetail">
-            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-                <div class="example-element-detail"
-                     [@detailExpand]="contains(element, expandedElements) ? 'expanded' : 'collapsed'">
-                    Contributor: {{element.wasContributedBy.firstName}} {{element.wasContributedBy.lastName}}
-                </div>
-            </td>
-        </ng-container>
-
-        <!-- button column -->
-        <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element">
-                <div class="action-btn-container">
-                    <button mat-button mat-icon-button color="primary" (click)="edit(element)">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-button mat-icon-button color="warn" (click)="delete(element.id)"
-                            [disabled]="element.references !== 0">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </div>
-            </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
-            class="example-element-row"
-            [class.example-expanded-row]="contains(element, expandedElements)">
-        </tr>
-        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-    </table>
-
 </div>
+
+<!--<div class="table-container">-->
+
+<!--    <a [routerLink]="['/categories']">< back</a>-->
+<!--    <h2>List of Passages</h2>-->
+
+<!--    <div class="filter-container">-->
+
+<!--        <div class="create-btn-container">-->
+<!--            <button mat-raised-button type="button" color="primary" (click)="create()">-->
+<!--                <mat-icon>add</mat-icon>-->
+<!--                Create Passage-->
+<!--            </button>-->
+<!--        </div>-->
+
+<!--        <mat-form-field>-->
+<!--            <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter"-->
+<!--                   (keydown.escape)="clear()">-->
+<!--            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">-->
+<!--                <mat-icon>close</mat-icon>-->
+<!--            </button>-->
+<!--        </mat-form-field>-->
+
+<!--        <div class="row-counter">Anzahl: {{rowCount()}}</div>-->
+<!--    </div>-->
+
+<!--    <table mat-table matSort [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">-->
+
+<!--        <ng-container matColumnDef="detail">-->
+<!--            <th mat-header-cell *matHeaderCellDef style="width:1rem;"></th>-->
+<!--            <td mat-cell *matCellDef="let element">-->
+<!--                <div class="action-btn-container">-->
+<!--                    <button mat-button mat-icon-button color="primary" (click)="expansion(element)">-->
+<!--                        <mat-icon>{{contains(element, expandedElements) ? 'expand_more' : 'chevron_right'}}</mat-icon>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </td>-->
+<!--        </ng-container>-->
+
+<!--        &lt;!&ndash; edition column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="book">-->
+<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Buch</th>-->
+<!--            <td mat-cell *matCellDef="let element">{{element.occursIn.title}}</td>-->
+<!--        </ng-container>-->
+
+<!--        &lt;!&ndash; text column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="text">-->
+<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Text</th>-->
+<!--            <td mat-cell *matCellDef="let element">-->
+<!--                <div>{{element.text}}</div>-->
+<!--            </td>-->
+<!--        </ng-container>-->
+
+<!--        &lt;!&ndash; text hist column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="textHist">-->
+<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Text hist.</th>-->
+<!--            <td mat-cell *matCellDef="let element">-->
+<!--                <div>{{element.textHist}}</div>-->
+<!--            </td>-->
+<!--        </ng-container>-->
+
+<!--        &lt;!&ndash; page column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="page">-->
+<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Seite</th>-->
+<!--            <td mat-cell *matCellDef="let element">-->
+<!--                <div>{{element.page}}</div>-->
+<!--            </td>-->
+<!--        </ng-container>-->
+
+<!--        &lt;!&ndash; page hist column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="pageHist">-->
+<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Seite hist.</th>-->
+<!--            <td mat-cell *matCellDef="let element">-->
+<!--                <div>{{element.pageHist}}</div>-->
+<!--            </td>-->
+<!--        </ng-container>-->
+
+<!--        &lt;!&ndash; order column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="order">-->
+<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Reihenfolge</th>-->
+<!--            <td mat-cell *matCellDef="let element">-->
+<!--                <div>{{element.order}}</div>-->
+<!--            </td>-->
+<!--        </ng-container>-->
+
+<!--        &lt;!&ndash; reference column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="references">-->
+<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Referenzen</th>-->
+<!--            <td mat-cell *matCellDef="let element">-->
+<!--                <div class="read-only-value">{{element.references}}</div>-->
+<!--            </td>-->
+<!--        </ng-container>-->
+
+<!--        &lt;!&ndash; Expanded Content Column - The detail row is made up of this one column that spans across all columns &ndash;&gt;-->
+<!--        <ng-container matColumnDef="expandedDetail">-->
+<!--            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">-->
+<!--                <div class="example-element-detail"-->
+<!--                     [@detailExpand]="contains(element, expandedElements) ? 'expanded' : 'collapsed'">-->
+<!--                    Contributor: {{element.wasContributedBy.firstName}} {{element.wasContributedBy.lastName}}-->
+<!--                </div>-->
+<!--            </td>-->
+<!--        </ng-container>-->
+
+<!--        &lt;!&ndash; button column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="action">-->
+<!--            <th mat-header-cell *matHeaderCellDef></th>-->
+<!--            <td mat-cell *matCellDef="let element">-->
+<!--                <div class="action-btn-container">-->
+<!--                    <button mat-button mat-icon-button color="primary" (click)="edit(element)">-->
+<!--                        <mat-icon>edit</mat-icon>-->
+<!--                    </button>-->
+<!--                    <button mat-button mat-icon-button color="warn" (click)="delete(element.id)"-->
+<!--                            [disabled]="element.references !== 0">-->
+<!--                        <mat-icon>delete</mat-icon>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </td>-->
+<!--        </ng-container>-->
+
+<!--        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>-->
+<!--        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"-->
+<!--            class="example-element-row"-->
+<!--            [class.example-expanded-row]="contains(element, expandedElements)">-->
+<!--        </tr>-->
+<!--        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>-->
+<!--    </table>-->
+
+<!--</div>-->
