@@ -68,7 +68,7 @@ export class BookComponent implements OnInit {
             bookComment: new FormGroup({
                 bc: new FormControl("", [])
             }),
-            authors: new FormControl("", []),
+            authorName: new FormControl("", []),
             performedNull: new FormControl("", []),
             performed: new FormGroup({
                 perf: new FormControl("", [])

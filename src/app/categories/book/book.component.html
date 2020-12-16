@@ -213,6 +213,81 @@
 
                         <tr>
                             <td>
+                                <mat-label>Author Name</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input formControlName="authorName">
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Performed by Company</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td formGroupName="performed">
+                                <select formControlName="perf">
+                                    <option value="">-</option>
+                                    <!--                                    <mat-option *ngFor="let subject of subjects" [value]="subject.id">-->
+                                    <!--                                        {{subject.name}}-->
+                                    <!--                                    </mat-option>-->
+                                </select>
+                            </td>
+                            <td class="checkbox">
+                                <mat-checkbox [color]="'warn'" formControlName="performedNull"
+                                              (change)="onChange($event, 'performed')">null
+                                </mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Performed by Actor</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td formGroupName="performedActor">
+                                <input formControlName="perfA">
+                            </td>
+                            <td class="checkbox">
+                                <mat-checkbox [color]="'warn'" formControlName="performedActorNull"
+                                              (change)="onChange($event, 'performedActor')">null
+                                </mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Performed in Venue</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td formGroupName="performedIn">
+                                <select formControlName="perfI">
+                                    <option value="">-</option>
+                                    <!--                                    <mat-option *ngFor="let subject of subjects" [value]="subject.id">-->
+                                    <!--                                        {{subject.name}}-->
+                                    <!--                                    </mat-option>-->
+                                </select>
+                            </td>
+                            <td class="checkbox">
+                                <mat-checkbox [color]="'warn'" formControlName="performedInNull"
+                                              (change)="onChange($event, 'performedIn')">null
+                                </mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
                                 <mat-label>Extra info</mat-label>
                             </td>
                             <td></td>
