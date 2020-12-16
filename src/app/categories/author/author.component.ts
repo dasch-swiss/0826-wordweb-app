@@ -49,6 +49,7 @@ export class AuthorComponent implements OnInit {
             active: new FormGroup({
                 adate: new FormControl("", [])
             }),
+            gender: new FormControl("", []),
             extraNull: new FormControl("", []),
             extra: new FormGroup({
                 ex: new FormControl("", [])
