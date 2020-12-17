@@ -4,6 +4,7 @@ import {
     KnoraApiConnection,
     ApiResponseData,
     ReadResource,
+    ReadResourceSequence,
     ReadTextValueAsString,
     ReadListValue,
     ReadLinkValue,
@@ -17,7 +18,6 @@ import {GravsearchBuilderService} from "./gravsearch-builder.service";
 import {IMainClass} from "../model/displayModel";
 import {map, tap} from "rxjs/operators";
 import {Observable, throwError} from "rxjs";
-import {ReadResourceSequence} from "@dasch-swiss/dsp-js";
 
 @Injectable({
     providedIn: "root"
