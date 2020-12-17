@@ -204,6 +204,68 @@
 
                         <tr>
                             <td>
+                                <mat-label>Book Title</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input formControlName="bookTitle">
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Sec Book Title</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td formGroupName="secBookTitle">
+                                <input formControlName="secbt">
+                            </td>
+                            <td class="checkbox">
+                                <mat-checkbox [color]="'warn'" formControlName="secBookTitleNull"
+                                              (change)="onChange($event, 'secBookTitle')">null
+                                </mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Contributor</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input formControlName="contributor">
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <mat-label>Lexia</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td formGroupName="lexia">
+                                <input formControlName="lex">
+                            </td>
+                            <td class="checkbox">
+                                <mat-checkbox [color]="'warn'" formControlName="lexiaNull"
+                                              (change)="onChange($event, 'lexia')">null
+                                </mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
                                 <mat-label>Extra info</mat-label>
                             </td>
                             <td></td>

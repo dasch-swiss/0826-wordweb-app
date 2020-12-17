@@ -73,6 +73,16 @@ export class PassageComponent implements OnInit {
             passComment: new FormGroup({
                 pc: new FormControl("", [])
             }),
+            bookTitle: new FormControl("", []),
+            secBookTitleNull: new FormControl("", []),
+            secBookTitle: new FormGroup({
+                secbt: new FormControl("", [])
+            }),
+            contributor: new FormControl("", []),
+            lexiaNull: new FormControl("", []),
+            lexia: new FormGroup({
+                lex: new FormControl("", [])
+            }),
             extraNull: new FormControl("", []),
             extra: new FormGroup({
                 ex: new FormControl("", [])
