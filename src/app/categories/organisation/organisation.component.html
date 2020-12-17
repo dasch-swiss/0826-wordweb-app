@@ -40,6 +40,23 @@
 
                         <tr>
                             <td>
+                                <mat-label>Member Name</mat-label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td formGroupName="member">
+                                <input formControlName="mem">
+                            </td>
+                            <td class="checkbox">
+                                <mat-checkbox [color]="'warn'" formControlName="memberNull"
+                                              (change)="onChange($event, 'member')">null
+                                </mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
                                 <mat-label>Extra info</mat-label>
                             </td>
                             <td></td>

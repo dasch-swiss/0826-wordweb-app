@@ -28,6 +28,10 @@ export class OrganisationComponent implements OnInit {
         this.form = new FormGroup({
             internalId: new FormControl("", []),
             companyTitle: new FormControl("", []),
+            memberNull: new FormControl("", []),
+            member: new FormGroup({
+                mem: new FormControl("", [])
+            }),
             extraNull: new FormControl("", []),
             extra: new FormGroup({
                 ex: new FormControl("", [])
