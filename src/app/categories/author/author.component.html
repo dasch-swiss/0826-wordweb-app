@@ -130,9 +130,9 @@
                             <td>
                                 <select formControlName="gender">
                                     <option value="">-</option>
-                                    <!--                                    <mat-option *ngFor="let gen of gender" [value]="gen.id">-->
-                                    <!--                                        {{gen.name}}-->
-                                    <!--                                    </mat-option>-->
+                                    <option *ngFor="let gen of genders" [value]="gen.id">
+                                        {{gen.name}}
+                                    </option>
                                 </select>
                             </td>
                             <td>

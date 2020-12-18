@@ -7,6 +7,8 @@ import {ApiService} from "../../services/api.service";
 import {CreateUpdateAuthorComponent} from "./create-update-author/create-update-author.component";
 import {KnoraService} from "../../services/knora.service";
 import {FormControl, FormGroup} from "@angular/forms";
+import {ListService} from "../../services/list.service";
+import {TreeTableService} from "../../services/tree-table.service";
 
 @Component({
     selector: "app-author",
@@ -20,12 +22,15 @@ export class AuthorComponent implements OnInit {
     dataSource: MatTableDataSource<any>;
     value: string;
     form: FormGroup;
+    genders: any[];
 
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(public apiService: ApiService,
+                private listService: ListService,
                 private knoraService: KnoraService,
-                private createAuthorDialog: MatDialog) {
+                private createAuthorDialog: MatDialog,
+                private treeTableService: TreeTableService) {
     }
 
     ngOnInit() {
@@ -55,6 +60,10 @@ export class AuthorComponent implements OnInit {
                 ex: new FormControl("", [])
             })
         });
+
+        const genderNode = this.listService.getList("gender").nodes;
+        this.genders = genderNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
+
         this.resetTable();
     }
 
