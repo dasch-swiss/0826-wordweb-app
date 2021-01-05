@@ -46,6 +46,11 @@
         form {
 
             table {
+                width: 100%;
+
+                tr, td {
+                    //border: 1px solid black;
+                }
 
                 input, select {
                     width: 100%;
