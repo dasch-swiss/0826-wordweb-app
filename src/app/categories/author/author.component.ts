@@ -36,26 +36,26 @@ export class AuthorComponent implements OnInit {
     ngOnInit() {
         this.form = new FormGroup({
             internalId: new FormControl("", []),
-            firstNameNull: new FormControl("", []),
+            firstNameNull: new FormControl(false, []),
             firstName: new FormGroup({
                 fn: new FormControl("", []),
             }),
             lastName: new FormControl("", []),
             description: new FormControl("", []),
-            birthNull: new FormControl("", []),
+            birthNull: new FormControl(false, []),
             birth: new FormGroup({
                 bdate: new FormControl("", [])
             }),
-            deathNull: new FormControl("", []),
+            deathNull: new FormControl(false, []),
             death: new FormGroup({
                 ddate: new FormControl("", [])
             }),
-            activeNull: new FormControl("", []),
+            activeNull: new FormControl(false, []),
             active: new FormGroup({
                 adate: new FormControl("", [])
             }),
             gender: new FormControl("", []),
-            extraNull: new FormControl("", []),
+            extraNull: new FormControl(false, []),
             extra: new FormGroup({
                 ex: new FormControl("", [])
             })
@@ -158,5 +158,13 @@ export class AuthorComponent implements OnInit {
 
     getDateFormat(dateStart: string, dateEnd: string): string {
         return dateStart === dateEnd ? dateStart : `${dateStart}-${dateEnd}`;
+    }
+
+    search() {
+        console.log("searching...");
+
+        // Checks if nothing was filled in
+
+        // Fills in the parameter
     }
 }

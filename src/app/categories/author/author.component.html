@@ -6,7 +6,7 @@
     <div class="search-container" fxLayout="row" fxLayoutGap="30px" fxLayoutAlign="start start">
         <mat-card fxFlex.gt-sm="300px">
             <mat-card-content>
-                <form [formGroup]="form" fxLayout="column">
+                <form [formGroup]="form" fxLayout="column" (ngSubmit)="search()">
 
                     <table>
 
