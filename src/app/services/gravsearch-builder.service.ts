@@ -420,7 +420,7 @@ export class GravsearchBuilderService {
 
         node.props = node.props
             .map(prop => {
-                if (prop.searchVal1) {
+                if (prop.searchVal1 || prop.isNull) {
                     prop.orderPriority = 1;
                     resCounter = resCounter + 1;
                 } else {
@@ -532,13 +532,16 @@ export class GravsearchBuilderService {
                 let line = qStrCopy.join("");
                 // Adds to the construct clause
                 query[5] = query[5] + "\n" + line;
-                // Puts optional brackets if property is not mandatory, has no search value and cardinality can be zero
-                if (!prop.mandatory && !prop.searchVal1 && (oProp.cardinality === "0-1" || oProp.cardinality === "0-n")) {
+                // Puts optional brackets if property is not mandatory, has no search value, can not be null and cardinality can be zero
+                if (!prop.mandatory && !prop.searchVal1 && !prop.isNull && (oProp.cardinality === "0-1" || oProp.cardinality === "0-n")) {
                     line = `OPTIONAL { ${line} }`;
                 }
+
                 // Fills in the properties of the resource that should be searched for. Line contains class variable,
                 // property name, value variable and if property is optional
-                query[8] = query[8] + "\n" + line;
+                if (!prop.isNull) {
+                    query[8] = query[8] + "\n" + line;
+                }
 
                 // Checks if property is a resource
                 if (oProp.type === "Resource") {
@@ -549,6 +552,11 @@ export class GravsearchBuilderService {
 
                     if (prop.searchVal1) {
                         query[7] = query[7] + `BIND (<${prop.searchVal1}> AS ?${qStrCopy[3]})` + "\n";
+                    }
+                    // ...
+                    if (!prop.searchVal1 && prop.isNull) {
+                        query[8] = query[8] + "\n" + `FILTER NOT EXISTS { ${qStrCopy.join("")} }`;
+                        return;
                     }
                     // Overrides default class name if property variable is given
                     const newClassVar = prop.valVar ? prop.valVar : qStrCopy[3];
@@ -561,6 +569,8 @@ export class GravsearchBuilderService {
                     if (prop.searchVal1) {
                         // Query line where value list node
                         query[8] = query[8] + "\n" + `?${qStrCopy[3]} knora-api:listValueAsListNode <${prop.searchVal1}> .`;
+                    } else if (prop.isNull) {
+                        query[8] = query[8] + "\n" + `FILTER NOT EXISTS { ${qStrCopy.join("")} }`;
                     }
 
                     // Checks if property is a date
@@ -574,6 +584,8 @@ export class GravsearchBuilderService {
                         } else {
                             query[8] = query[8] + "\n" + `FILTER (knora-api:toSimpleDate(?${qStrCopy[3]}) = "GREGORIAN:${prop.searchVal1}"^^knora-api-simple:Date)`;
                         }
+                    } else if (prop.isNull) {
+                        query[8] = query[8] + "\n" + `FILTER NOT EXISTS { ${qStrCopy.join("")} }`;
                     }
                     // Checks if property is a string
                 } else if (oProp.type === "String") {
@@ -581,6 +593,8 @@ export class GravsearchBuilderService {
                     if (prop.searchVal1) {
                         query[8] = query[8] + "\n" + `?${qStrCopy[3]} knora-api:valueAsString ?${qStrCopy[3]}String .`;
                         query[8] = query[8] + "\n" + `FILTER regex(?${qStrCopy[3]}String, "${prop.searchVal1}", "i")`;
+                    } else if (prop.isNull) {
+                        query[8] = query[8] + "\n" + `FILTER NOT EXISTS { ${qStrCopy.join("")} }`;
                     }
                 } else {
                     console.error("FAIL PROPERTY TYPE");

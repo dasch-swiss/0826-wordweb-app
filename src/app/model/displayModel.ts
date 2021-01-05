@@ -17,6 +17,7 @@ export interface IDisplayedProperty {
     name: string;
     valVar?: string;
     negation?: boolean;
+    isNull?: boolean;
     searchVal1?: string;
     searchVal2?: string;
     orderPriority?: number;
