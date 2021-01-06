@@ -9,6 +9,7 @@ import {KnoraService} from "../../services/knora.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ListService} from "../../services/list.service";
 import {TreeTableService} from "../../services/tree-table.service";
+import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 
 @Component({
     selector: "app-author",
@@ -16,6 +17,75 @@ import {TreeTableService} from "../../services/tree-table.service";
     styleUrls: ["../category.scss"]
 })
 export class AuthorComponent implements OnInit {
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+    myAuthor: IMainClass = {
+        name: "book",
+        mainClass: {name: "person", variable: "author"},
+        props: [
+            {
+                name: "isWrittenBy",
+                priority: 0,
+                valVar: "author",
+                res: {
+                    name: "person",
+                    props: [
+                        {
+                            name: "hasPersonInternalId",
+                            priority: 0,
+                            res: null
+                        },
+                        {
+                            name: "hasFirstName",
+                            priority: 0,
+                            res: null
+                        },
+                        {
+                            name: "hasLastName",
+                            priority: 0,
+                            res: null
+                        },
+                        {
+                            name: "hasDescription",
+                            priority: 0,
+                            res: null
+                        },
+                        {
+                            name: "hasBirthDate",
+                            priority: 0,
+                            res: null
+                        },
+                        {
+                            name: "hasDeathDate",
+                            priority: 0,
+                            res: null
+                        },
+                        {
+                            name: "hasActiveDate",
+                            priority: 0,
+                            res: null
+                        },
+                        {
+                            name: "hasGender",
+                            priority: 0,
+                            res: null
+                        }
+                    ]
+                }
+            }
+        ]
+    };
+
+    internalIDRef: IDisplayedProperty;
+    firstNameRef: IDisplayedProperty;
+    lastNameRef: IDisplayedProperty;
+    descriptionRef: IDisplayedProperty;
+    birthRef: IDisplayedProperty;
+    deathRef: IDisplayedProperty;
+    activeRef: IDisplayedProperty;
+    genderRef: IDisplayedProperty;
+
+    priority = 0;
 
     // displayedColumns: string[] = ["internalID", "firstName", "lastName", "gender", "description", "birthDate", "deathDate", "activeDate", "lexia", "order", "references", "action"];
     displayedColumns: string[] = ["hasPersonInternalId", "hasFirstName", "hasLastName"];
@@ -23,8 +93,6 @@ export class AuthorComponent implements OnInit {
     value: string;
     form: FormGroup;
     genders: any[];
-
-    @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(public apiService: ApiService,
                 private listService: ListService,
@@ -34,6 +102,15 @@ export class AuthorComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.internalIDRef = this.myAuthor.props[0].res.props[0];
+        this.firstNameRef = this.myAuthor.props[0].res.props[1];
+        this.lastNameRef = this.myAuthor.props[0].res.props[2];
+        this.descriptionRef = this.myAuthor.props[0].res.props[3];
+        this.birthRef = this.myAuthor.props[0].res.props[4];
+        this.deathRef = this.myAuthor.props[0].res.props[5];
+        this.activeRef = this.myAuthor.props[0].res.props[6];
+        this.genderRef = this.myAuthor.props[0].res.props[7];
+
         this.form = new FormGroup({
             internalId: new FormControl("", []),
             firstNameNull: new FormControl(false, []),
@@ -166,5 +243,28 @@ export class AuthorComponent implements OnInit {
         // Checks if nothing was filled in
 
         // Fills in the parameter
+        if (this.form.controls.firstNameNull.value) {
+            console.log("first Name is null");
+            this.firstNameRef.isNull = true;
+        } else {
+            this.firstNameRef.isNull = false;
+            console.log("first Name not null", this.form.get("firstName").value);
+        }
+
+        if (this.form.controls.birthNull.value) {
+            console.log("birth is null");
+            this.birthRef.isNull = true;
+        } else {
+            this.birthRef.isNull = false;
+            console.log("birth not null", );
+            if (this.form.get("birth").get("bdate").value) {
+                this.birthRef.searchVal1 = this.form.get("birth").get("bdate").value;
+            } else {
+                this.birthRef.searchVal1 = null;
+            }
+        }
+
+        this.knoraService.gravseachQuery(this.myAuthor, this.priority)
+            .subscribe(data => console.log("second", data));
     }
 }
