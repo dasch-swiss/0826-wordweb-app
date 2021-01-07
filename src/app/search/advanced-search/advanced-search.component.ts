@@ -437,7 +437,7 @@ export class AdvancedSearchComponent implements OnInit {
                     requests.push(this.knoraService.getCompanies(offset));
                 }
 
-                forkJoin<any>(...requests)
+                forkJoin<any>(requests)
                     .subscribe((res: Array<Array<any>>) => {
                         this.companies = []
                             .concat(...res)
@@ -495,7 +495,7 @@ export class AdvancedSearchComponent implements OnInit {
                     requests.push(this.knoraService.getActors(offset));
                 }
 
-                forkJoin<any>(...requests)
+                forkJoin<any>(requests)
                     .subscribe((res: Array<Array<any>>) => {
                         this.actors = []
                             .concat(...res)
