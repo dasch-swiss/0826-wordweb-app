@@ -238,33 +238,85 @@ export class AuthorComponent implements OnInit {
     }
 
     search() {
-        console.log("searching...");
+        console.log("Searching starts...");
 
-        // Checks if nothing was filled in
-
-        // Fills in the parameter
+        // Sets internal ID property
+        if (this.form.get("internalId").value) {
+            this.internalIDRef.searchVal1 = this.form.get("internalId").value;
+        } else {
+            this.internalIDRef.searchVal1 = null;
+        }
+        // Sets first name property
         if (this.form.controls.firstNameNull.value) {
-            console.log("first Name is null");
             this.firstNameRef.isNull = true;
+            this.firstNameRef.searchVal1 = null;
         } else {
             this.firstNameRef.isNull = false;
-            console.log("first Name not null", this.form.get("firstName").value);
+            if (this.form.get("firstName.fn").value) {
+                this.firstNameRef.searchVal1 = this.form.get("firstName.fn").value;
+            } else {
+                this.firstNameRef.searchVal1 = null;
+            }
         }
-
+        // Sets last name property
+        if (this.form.get("lastName").value) {
+            this.lastNameRef.searchVal1 = this.form.get("lastName").value;
+        } else {
+            this.lastNameRef.searchVal1 = null;
+        }
+        // Sets description property
+        if (this.form.get("description").value) {
+            this.descriptionRef.searchVal1 = this.form.get("description").value;
+        } else {
+            this.descriptionRef.searchVal1 = null;
+        }
+        // Sets birth date property
         if (this.form.controls.birthNull.value) {
-            console.log("birth is null");
             this.birthRef.isNull = true;
+            this.birthRef.searchVal1 = null;
         } else {
             this.birthRef.isNull = false;
-            console.log("birth not null", );
-            if (this.form.get("birth").get("bdate").value) {
-                this.birthRef.searchVal1 = this.form.get("birth").get("bdate").value;
+            if (this.form.get("birth.bdate").value) {
+                this.birthRef.searchVal1 = this.form.get("birth.bdate").value;
             } else {
                 this.birthRef.searchVal1 = null;
             }
         }
+        // Sets death date property
+        if (this.form.controls.deathNull.value) {
+            this.deathRef.isNull = true;
+            this.deathRef.searchVal1 = null;
+        } else {
+            this.deathRef.isNull = false;
+            if (this.form.get("death.ddate").value) {
+                this.deathRef.searchVal1 = this.form.get("death.ddate").value;
+            } else {
+                this.deathRef.searchVal1 = null;
+            }
+        }
+        // Sets active date property
+        if (this.form.controls.activeNull.value) {
+            this.activeRef.isNull = true;
+            this.activeRef.searchVal1 = null;
+        } else {
+            this.activeRef.isNull = false;
+            if (this.form.get("active.adate").value) {
+                this.activeRef.searchVal1 = this.form.get("active.adate").value;
+            } else {
+                this.activeRef.searchVal1 = null;
+            }
+        }
+        // Sets gender property
+        if (this.form.get("gender").value) {
+            this.genderRef.searchVal1 = this.form.get("gender").value;
+        } else {
+            this.genderRef.searchVal1 = null;
+        }
+
+        this.knoraService.gravsearchQueryCount(this.myAuthor, this.priority)
+            .subscribe(numb => console.log("amount", numb));
 
         this.knoraService.gravseachQuery(this.myAuthor, this.priority)
-            .subscribe(data => console.log("second", data));
+            .subscribe(data => console.log("results", data));
     }
 }
