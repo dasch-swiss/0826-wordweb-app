@@ -711,11 +711,11 @@ export class AdvancedSearchComponent implements OnInit {
         }
     }
 
-    clear(formControlName: string) {
+    reset(formControlName: string) {
         this.form.get(formControlName).reset("");
     }
 
-    reset() {
+    resetAll() {
         this.form.get("text").reset("");
         this.form.get("author").reset("");
         this.form.get("gender").reset("");
