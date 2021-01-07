@@ -552,19 +552,21 @@ export class GravsearchBuilderService {
                     if (oProp.res !== prop.res.name) {
                         console.error("FAIL - Property Resource doesn't correspond the real structure");
                     }
+                    // Overrides default class name if property variable is given
+                    const newClassVar = prop.valVar ? prop.valVar : qStrCopy[3];
 
                     if (prop.searchVal1) {
                         query[7] = query[7] + `BIND (<${prop.searchVal1}> AS ?${qStrCopy[3]})` + "\n";
+                        // Continuous with next property node
+                        this.rec(prop.res, priority, query, newClassVar);
+                    } else {
+                        if (prop.isNull) {
+                            query[8] = query[8] + "\n" + `FILTER NOT EXISTS { ${qStrCopy.join("")} }`;
+                        } else {
+                            // Continuous with next property node
+                            this.rec(prop.res, priority, query, newClassVar);
+                        }
                     }
-                    // ...
-                    if (!prop.searchVal1 && prop.isNull) {
-                        query[8] = query[8] + "\n" + `FILTER NOT EXISTS { ${qStrCopy.join("")} }`;
-                        return;
-                    }
-                    // Overrides default class name if property variable is given
-                    const newClassVar = prop.valVar ? prop.valVar : qStrCopy[3];
-                    // Continuous with next property node
-                    this.rec(prop.res, priority, query, newClassVar);
 
                     // Checks if property is a list value
                 } else if (oProp.type === "List") {
