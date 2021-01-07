@@ -193,22 +193,22 @@
                         </td>
                     </tr>
 
-<!--                    <tr>-->
-<!--                        <td>-->
-<!--                            <mat-form-field>-->
-<!--                                <mat-label>First performance: Actor</mat-label>-->
-<!--                                <mat-select formControlName="performedActor">-->
-<!--                                    <mat-option value="">-</mat-option>-->
-<!--                                    <mat-option *ngFor="let actor of actors" [value]="actor.id">-->
-<!--                                        <span *ngIf="actor.hasFirstName">{{actor.hasFirstName}}</span> {{actor.hasLastName}}-->
-<!--                                    </mat-option>-->
-<!--                                </mat-select>-->
-<!--                            </mat-form-field>-->
-<!--                        </td>-->
-<!--                        <td class="min">-->
-<!--                            <mat-icon matSuffix (click)="getHelpText('performedActor')">help</mat-icon>-->
-<!--                        </td>-->
-<!--                    </tr>-->
+                    <tr>
+                        <td>
+                            <mat-form-field>
+                                <mat-label>First performance: Actor</mat-label>
+                                <mat-select formControlName="performedActor">
+                                    <mat-option value="">-</mat-option>
+                                    <mat-option *ngFor="let actor of actors" [value]="actor.id">
+                                        <span *ngIf="actor.hasFirstName">{{actor.hasFirstName}}</span> {{actor.hasLastName}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td class="min">
+                            <mat-icon matSuffix (click)="getHelpText('performedActor')">help</mat-icon>
+                        </td>
+                    </tr>
 
                     <tr>
                         <td>

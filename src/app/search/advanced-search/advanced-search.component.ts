@@ -436,7 +436,7 @@ export class AdvancedSearchComponent implements OnInit {
             createdDate: new FormControl("", [CustomValidators.correctDate]),
             performedCompany: new FormControl("", []),
             performedVenue: new FormControl("", []),
-            // performedActor: new FormControl("", []),
+            performedActor: new FormControl("", []),
             plays: new FormControl(false, [])
         });
     }
@@ -542,7 +542,7 @@ export class AdvancedSearchComponent implements OnInit {
             && !this.form.get("createdDate").value
             && !this.form.get("performedCompany").value
             && !this.form.get("performedVenue").value
-            // && !this.form.get("performedActor").value
+            && !this.form.get("performedActor").value
             && (!this.form.get("plays").value && !this.form.get("genre").value)) {
 
             const dialogConfig = new MatDialogConfig();
@@ -647,13 +647,13 @@ export class AdvancedSearchComponent implements OnInit {
             this.performedVenueRef.priority = 1;
         }
 
-        // if (this.form.get("performedActor").value) {
-        //     this.performedActorRef.searchVal1 = this.form.get("performedActor").value;
-        //     this.performedActorRef.priority = 0;
-        // } else {
-        //     this.performedActorRef.searchVal1 = null;
-        //     this.performedActorRef.priority = 1;
-        // }
+        if (this.form.get("performedActor").value) {
+            this.performedActorRef.searchVal1 = this.form.get("performedActor").value;
+            this.performedActorRef.priority = 0;
+        } else {
+            this.performedActorRef.searchVal1 = null;
+            this.performedActorRef.priority = 1;
+        }
 
         if (this.form.get("plays").value) {
             // Only plays means if genre is "Drama (Theatre)"
@@ -743,7 +743,7 @@ export class AdvancedSearchComponent implements OnInit {
         this.form.get("createdDate").reset("");
         this.form.get("performedCompany").reset("");
         this.form.get("performedVenue").reset("");
-        // this.form.get("performedActor").reset("");
+        this.form.get("performedActor").reset("");
         this.form.get("plays").setValue(false);
     }
 
