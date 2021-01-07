@@ -496,6 +496,9 @@ export class GravsearchBuilderService {
         if (node.searchVal2) {
             node.searchVal2 = null;
         }
+        if (node.isNull) {
+            node.isNull = null;
+        }
         node.orderPriority = 0;
 
         node.valVar = `${originalNode.queryStr[3]}2`;
