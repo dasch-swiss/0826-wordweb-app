@@ -6,7 +6,7 @@
     <div class="search-container" fxLayout="row" fxLayoutGap="30px" fxLayoutAlign="start start">
         <mat-card fxFlex.gt-sm="300px">
             <mat-card-content>
-                <form [formGroup]="form" fxLayout="column">
+                <form [formGroup]="form" fxLayout="column" (ngSubmit)="search()">
 
                     <table>
 
@@ -96,9 +96,9 @@
                             <td>
                                 <select formControlName="language">
                                     <option value="">-</option>
-<!--                                    <mat-option *ngFor="let language of languages" [value]="language.id">-->
-<!--                                        {{language.name}}-->
-<!--                                    </mat-option>-->
+                                    <option *ngFor="let language of languages" [value]="language.id">
+                                        {{language.name}}
+                                    </option>
                                 </select>
                             </td>
                             <td>
@@ -115,9 +115,9 @@
                             <td>
                                 <select formControlName="genre">
                                     <option value="">-</option>
-<!--                                    <mat-option *ngFor="let genre of genres" [value]="genre.id">-->
-<!--                                        {{genre.name}}-->
-<!--                                    </mat-option>-->
+                                    <option *ngFor="let genre of genres" [value]="genre.id">
+                                        {{genre.name}}
+                                    </option>
                                 </select>
                             </td>
                             <td>
@@ -134,9 +134,9 @@
                             <td formGroupName="subject">
                                 <select formControlName="sub">
                                     <option value="">-</option>
-<!--                                    <mat-option *ngFor="let subject of subjects" [value]="subject.id">-->
-<!--                                        {{subject.name}}-->
-<!--                                    </mat-option>-->
+                                    <option *ngFor="let subject of subjects" [value]="subject.id">
+                                        {{subject.name}}
+                                    </option>
                                 </select>
                             </td>
                             <td class="checkbox">
@@ -235,9 +235,9 @@
                             <td formGroupName="performed">
                                 <select formControlName="perf">
                                     <option value="">-</option>
-                                    <!--                                    <mat-option *ngFor="let subject of subjects" [value]="subject.id">-->
-                                    <!--                                        {{subject.name}}-->
-                                    <!--                                    </mat-option>-->
+                                    <option *ngFor="let company of companies" [value]="company.id">
+                                        {{company.hasCompanyTitle}}
+                                    </option>
                                 </select>
                             </td>
                             <td class="checkbox">
@@ -255,7 +255,12 @@
                         </tr>
                         <tr>
                             <td formGroupName="performedActor">
-                                <input formControlName="perfA">
+                                <select formControlName="perfA">
+                                    <option value="">-</option>
+                                    <option *ngFor="let actor of actors" [value]="actor.id">
+                                        <span *ngIf="actor.hasFirstName">{{actor.hasFirstName}}</span> {{actor.hasLastName}}
+                                    </option>
+                                </select>
                             </td>
                             <td class="checkbox">
                                 <mat-checkbox [color]="'warn'" formControlName="performedActorNull"
@@ -274,9 +279,9 @@
                             <td formGroupName="performedIn">
                                 <select formControlName="perfI">
                                     <option value="">-</option>
-                                    <!--                                    <mat-option *ngFor="let subject of subjects" [value]="subject.id">-->
-                                    <!--                                        {{subject.name}}-->
-                                    <!--                                    </mat-option>-->
+                                    <option *ngFor="let venue of venues" [value]="venue.id">
+                                        {{venue.value}}
+                                    </option>
                                 </select>
                             </td>
                             <td class="checkbox">
@@ -286,22 +291,22 @@
                             </td>
                         </tr>
 
-                        <tr>
-                            <td>
-                                <mat-label>Extra info</mat-label>
-                            </td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td formGroupName="extra">
-                                <input formControlName="ex">
-                            </td>
-                            <td class="checkbox">
-                                <mat-checkbox [color]="'warn'" formControlName="extraNull"
-                                              (change)="onChange($event, 'extra')">null
-                                </mat-checkbox>
-                            </td>
-                        </tr>
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <mat-label>Extra info</mat-label>-->
+<!--                            </td>-->
+<!--                            <td></td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td formGroupName="extra">-->
+<!--                                <input formControlName="ex">-->
+<!--                            </td>-->
+<!--                            <td class="checkbox">-->
+<!--                                <mat-checkbox [color]="'warn'" formControlName="extraNull"-->
+<!--                                              (change)="onChange($event, 'extra')">null-->
+<!--                                </mat-checkbox>-->
+<!--                            </td>-->
+<!--                        </tr>-->
 
                     </table>
 
