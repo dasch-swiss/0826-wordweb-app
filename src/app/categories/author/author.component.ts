@@ -76,15 +76,14 @@ export class AuthorComponent implements OnInit {
         ]
     };
 
-    internalIDRef: IDisplayedProperty;
-    firstNameRef: IDisplayedProperty;
-    lastNameRef: IDisplayedProperty;
-    descriptionRef: IDisplayedProperty;
-    birthRef: IDisplayedProperty;
-    deathRef: IDisplayedProperty;
-    activeRef: IDisplayedProperty;
-    genderRef: IDisplayedProperty;
-
+    internalIDRef: IDisplayedProperty = this.myAuthor.props[0].res.props[0];
+    firstNameRef: IDisplayedProperty = this.myAuthor.props[0].res.props[1];
+    lastNameRef: IDisplayedProperty = this.myAuthor.props[0].res.props[2];
+    descriptionRef: IDisplayedProperty = this.myAuthor.props[0].res.props[3];
+    birthRef: IDisplayedProperty = this.myAuthor.props[0].res.props[4];
+    deathRef: IDisplayedProperty = this.myAuthor.props[0].res.props[5];
+    activeRef: IDisplayedProperty = this.myAuthor.props[0].res.props[6];
+    genderRef: IDisplayedProperty = this.myAuthor.props[0].res.props[7];
     priority = 0;
 
     // displayedColumns: string[] = ["internalID", "firstName", "lastName", "gender", "description", "birthDate", "deathDate", "activeDate", "lexia", "order", "references", "action"];
@@ -102,15 +101,6 @@ export class AuthorComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.internalIDRef = this.myAuthor.props[0].res.props[0];
-        this.firstNameRef = this.myAuthor.props[0].res.props[1];
-        this.lastNameRef = this.myAuthor.props[0].res.props[2];
-        this.descriptionRef = this.myAuthor.props[0].res.props[3];
-        this.birthRef = this.myAuthor.props[0].res.props[4];
-        this.deathRef = this.myAuthor.props[0].res.props[5];
-        this.activeRef = this.myAuthor.props[0].res.props[6];
-        this.genderRef = this.myAuthor.props[0].res.props[7];
-
         this.form = new FormGroup({
             internalId: new FormControl("", []),
             firstNameNull: new FormControl(false, []),

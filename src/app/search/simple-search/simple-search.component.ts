@@ -315,16 +315,14 @@ export class SimpleSearchComponent implements OnInit {
         ]
     };
 
+    textRef: IDisplayedProperty = this.myPassage.props[0];
+    authorLastNameRef: IDisplayedProperty = this.myPassage.props[12].res.props[9].res.props[1];
+    bookTitleRef: IDisplayedProperty = this.myPassage.props[12].res.props[1];
+    genreRef: IDisplayedProperty = this.myPassage.props[12].res.props[4];
+    lexiaRef: IDisplayedProperty = this.myPassage.props[15].res.props[0];
+    dateRef: IDisplayedProperty = this.myPassage.props[12].res.props[5];
+
     form: FormGroup;
-
-    textRef: IDisplayedProperty;
-    authorLastNameRef: IDisplayedProperty;
-    bookTitleRef: IDisplayedProperty;
-    genreRef: IDisplayedProperty;
-    lexiaRef: IDisplayedProperty;
-    dateRef: IDisplayedProperty;
-
-    priority = 0;
 
     constructor(
         private apiService: ApiService,
@@ -337,13 +335,6 @@ export class SimpleSearchComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.textRef = this.myPassage.props[0];
-        this.authorLastNameRef = this.myPassage.props[12].res.props[9].res.props[1];
-        this.bookTitleRef = this.myPassage.props[12].res.props[1];
-        this.genreRef = this.myPassage.props[12].res.props[4];
-        this.lexiaRef = this.myPassage.props[15].res.props[0];
-        this.dateRef = this.myPassage.props[12].res.props[5];
-
         this.form = new FormGroup({
             text: new FormControl("", []),
             author: new FormControl("", []),
@@ -419,7 +410,7 @@ export class SimpleSearchComponent implements OnInit {
             this.genreRef.searchVal1 = null;
         }
 
-        this.resultBox.search(this.myPassage, this.priority);
+        this.resultBox.search(this.myPassage);
     }
 
     getHelpText(property: string) {

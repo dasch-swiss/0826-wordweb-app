@@ -306,13 +306,13 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
         ]
     };
 
+    authorRef: IDisplayedProperty = this.myPassage.props[12].res.props[9];
+    lexiaRef: IDisplayedProperty = this.myPassage.props[15];
+    bookRef: IDisplayedProperty = this.myPassage.props[12];
+
     books = {};
     authors = {};
     lexias = {};
-
-    authorRef: IDisplayedProperty;
-    lexiaRef: IDisplayedProperty;
-    bookRef: IDisplayedProperty;
 
     alphabeticResources: Array<any>;
     alphabeticResAmount: number;
@@ -362,10 +362,6 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
             this.lexias[letter] = null;
             this.chars.push(letter);
         }
-
-        this.authorRef = this.myPassage.props[12].res.props[9];
-        this.bookRef = this.myPassage.props[12];
-        this.lexiaRef = this.myPassage.props[15];
     }
 
     ngAfterViewInit() {

@@ -353,21 +353,20 @@ export class AdvancedSearchComponent implements OnInit {
             }
         ]
     };
-    form: FormGroup;
 
-    textRef: IDisplayedProperty;
-    authorLastNameRef: IDisplayedProperty;
-    genderRef: IDisplayedProperty;
-    bookTitleRef: IDisplayedProperty;
-    genreRef: IDisplayedProperty;
-    lexiaRef: IDisplayedProperty;
-    languageRef: IDisplayedProperty;
-    functionRef: IDisplayedProperty;
-    markingRef: IDisplayedProperty;
-    createdDateRef: IDisplayedProperty;
-    performedCompanyRef: IDisplayedProperty;
-    performedVenueRef: IDisplayedProperty;
-    performedActorRef: IDisplayedProperty;
+    textRef: IDisplayedProperty = this.myPassage.props[0];
+    authorLastNameRef: IDisplayedProperty = this.myPassage.props[12].res.props[11].res.props[1];
+    genderRef: IDisplayedProperty = this.myPassage.props[12].res.props[11].res.props[2];
+    bookTitleRef: IDisplayedProperty = this.myPassage.props[12].res.props[1];
+    genreRef: IDisplayedProperty = this.myPassage.props[12].res.props[5];
+    lexiaRef: IDisplayedProperty = this.myPassage.props[15].res.props[0];
+    languageRef: IDisplayedProperty = this.myPassage.props[12].res.props[4];
+    functionRef: IDisplayedProperty = this.myPassage.props[7];
+    markingRef: IDisplayedProperty = this.myPassage.props[8];
+    createdDateRef: IDisplayedProperty = this.myPassage.props[12].res.props[7];
+    performedCompanyRef: IDisplayedProperty = this.myPassage.props[12].res.props[12];
+    performedVenueRef: IDisplayedProperty = this.myPassage.props[12].res.props[13];
+    performedActorRef: IDisplayedProperty = this.myPassage.props[12].res.props[14];
 
     genders: any[];
     genres: any[];
@@ -378,7 +377,7 @@ export class AdvancedSearchComponent implements OnInit {
     venues: any[];
     actors: any[];
 
-    priority = 0;
+    form: FormGroup;
 
     constructor(
         private apiService: ApiService,
@@ -408,20 +407,6 @@ export class AdvancedSearchComponent implements OnInit {
 
         const markingNode = this.listService.getList("marking").nodes;
         this.markings = markingNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
-        this.textRef = this.myPassage.props[0];
-        this.authorLastNameRef = this.myPassage.props[12].res.props[11].res.props[1];
-        this.genderRef = this.myPassage.props[12].res.props[11].res.props[2];
-        this.bookTitleRef = this.myPassage.props[12].res.props[1];
-        this.genreRef = this.myPassage.props[12].res.props[5];
-        this.lexiaRef = this.myPassage.props[15].res.props[0];
-        this.languageRef = this.myPassage.props[12].res.props[4];
-        this.functionRef = this.myPassage.props[7];
-        this.markingRef = this.myPassage.props[8];
-        this.createdDateRef = this.myPassage.props[12].res.props[7];
-        this.performedCompanyRef = this.myPassage.props[12].res.props[12];
-        this.performedVenueRef = this.myPassage.props[12].res.props[13];
-        this.performedActorRef = this.myPassage.props[12].res.props[14];
 
         this.form = new FormGroup({
             text: new FormControl("", []),
@@ -555,7 +540,7 @@ export class AdvancedSearchComponent implements OnInit {
             return;
         }
         this.prepareStructure();
-        this.resultBox.search(this.myPassage, this.priority);
+        this.resultBox.search(this.myPassage);
     }
 
     prepareStructure() {
