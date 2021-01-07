@@ -145,7 +145,7 @@ export class GravsearchBuilderService {
             cardinality: "0-1",
             type: "Resource",
             res: "person",
-            queryStr: this.getQueryStr(GravsearchBuilderService.PERSON_VAR, "performedByActor", "actor")
+            queryStr: this.getQueryStr(GravsearchBuilderService.BOOK_VAR, "performedByActor", "actor")
         },
         performedIn: {
             cardinality: "0-n",
