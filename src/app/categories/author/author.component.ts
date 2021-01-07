@@ -132,10 +132,10 @@ export class AuthorComponent implements OnInit {
                 adate: new FormControl("", [])
             }),
             gender: new FormControl("", []),
-            extraNull: new FormControl(false, []),
-            extra: new FormGroup({
-                ex: new FormControl("", [])
-            })
+            // extraNull: new FormControl(false, []),
+            // extra: new FormGroup({
+            //     ex: new FormControl("", [])
+            // })
         });
 
         const genderNode = this.listService.getList("gender").nodes;
@@ -160,6 +160,7 @@ export class AuthorComponent implements OnInit {
         this.form.controls.activeNull.setValue(false);
         this.form.get("active").enable();
         this.form.get("active.adate").reset("");
+        this.form.get("gender").reset("");
         this.form.controls.extraNull.setValue(false);
         this.form.get("extra").enable();
         this.form.get("extra.ex").reset("");
