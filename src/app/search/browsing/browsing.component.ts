@@ -319,7 +319,6 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
 
     alphabeticSearchStarted = false;
     errorObject = null;
-    priority = 0;
     chars: Array<string> = [];
 
     resTypeSelected: string;

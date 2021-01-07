@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ApiService} from "../../services/api.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
-import {KnoraService} from "../../services/knora.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {HelpComponent} from "../dialog/help/help.component";
 import {StringService} from "../../services/string.service";
@@ -328,7 +327,6 @@ export class SimpleSearchComponent implements OnInit {
         private apiService: ApiService,
         private listService: ListService,
         private stringService: StringService,
-        private knoraService: KnoraService,
         private spinner: NgxSpinnerService,
         private helpDialog: MatDialog,
         private fillInDialog: MatDialog) {
