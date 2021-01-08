@@ -85,6 +85,7 @@ export class AuthorComponent implements OnInit {
     activeRef: IDisplayedProperty = this.myAuthor.props[0].res.props[6];
     genderRef: IDisplayedProperty = this.myAuthor.props[0].res.props[7];
     priority = 0;
+    searchResults = [];
 
     // displayedColumns: string[] = ["internalID", "firstName", "lastName", "gender", "description", "birthDate", "deathDate", "activeDate", "lexia", "order", "references", "action"];
     displayedColumns: string[] = ["hasPersonInternalId", "hasFirstName", "hasLastName"];
@@ -308,6 +309,9 @@ export class AuthorComponent implements OnInit {
             .subscribe(numb => console.log("amount", numb));
 
         this.knoraService.gravseachQuery(this.myAuthor, this.priority)
-            .subscribe(data => console.log("results", data));
+            .subscribe(data => {
+                console.log("results", data);
+                this.searchResults = data;
+            });
     }
 }

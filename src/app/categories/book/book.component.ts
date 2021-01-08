@@ -181,6 +181,7 @@ export class BookComponent implements OnInit {
     actorRef: IDisplayedProperty = this.myBook.props[14];
     venueRef: IDisplayedProperty = this.myBook.props[15];
     priority = 0;
+    searchResults = [];
 
     dataSource: MatTableDataSource<Book>;
     columnsToDisplay = ["detail", "internalID", "title", "authors", "createdDate", "publishDate", "order", "references", "action"];
@@ -664,7 +665,10 @@ export class BookComponent implements OnInit {
             .subscribe(numb => console.log("amount", numb));
 
         this.knoraService.gravseachQuery(this.myBook, this.priority)
-            .subscribe(data => console.log("results", data));
+            .subscribe(data => {
+                console.log("results", data);
+                this.searchResults = data;
+            });
     }
 
     sortCompanies(comp1: any, comp2: any) {

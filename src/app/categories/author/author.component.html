@@ -168,9 +168,18 @@
             </mat-card-content>
         </mat-card>
 
-        <div style="border: 1px solid black; width: 100%;">
-            Table with the results
+        <div style="border: 1px solid black; width: 100%; padding: 1rem;">
+            <div *ngIf="searchResults.length == 0"> No results</div>
+            <table>
+                <tr *ngFor="let result of searchResults">
+                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasPersonInternalId[0].value}}</td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasFirstName[0].value}}</td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasLastName[0].value}}</td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasDescription[0].value}}</td>
+                </tr>
+            </table>
         </div>
+
     </div>
 
 </div>

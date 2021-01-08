@@ -320,8 +320,17 @@
             </mat-card-content>
         </mat-card>
 
-        <div style="border: 1px solid black; width: 100%;">
-            Table with the results
+        <div style="border: 1px solid black; width: 100%; padding: 1rem;">
+            <div *ngIf="searchResults.length == 0"> No results</div>
+            <table>
+                <tr *ngFor="let result of searchResults">
+                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasBookInternalId[0].value}}</td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;"><span *ngIf="result.hasPrefixBookTitle">{{result.hasPrefixBookTitle[0].value}}</span></td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasBookTitle[0].value}}</td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasEdition[0].value}}</td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;"><span *ngIf="result.hasEditionHist">{{result.hasEditionHist[0].value}}</span></td>
+                </tr>
+            </table>
         </div>
     </div>
 
