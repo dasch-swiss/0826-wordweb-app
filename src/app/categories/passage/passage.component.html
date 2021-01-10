@@ -6,7 +6,7 @@
     <div class="search-container" fxLayout="row" fxLayoutGap="30px" fxLayoutAlign="start start">
         <mat-card fxFlex.gt-sm="300px">
             <mat-card-content>
-                <form [formGroup]="form" fxLayout="column">
+                <form [formGroup]="form" fxLayout="column" (ngSubmit)="search()">
 
                     <table>
 
@@ -102,9 +102,9 @@
                             <td>
                                 <select formControlName="research">
                                     <option value="">-</option>
-                                    <!--                                    <mat-option *ngFor="let research of researches" [value]="research.id">-->
-                                    <!--                                        {{research.name}}-->
-                                    <!--                                    </mat-option>-->
+                                    <option *ngFor="let research of researchFields" [value]="research.id">
+                                        {{research.name}}
+                                    </option>
                                 </select>
                             </td>
                             <td>
@@ -121,9 +121,9 @@
                             <td>
                                 <select formControlName="function">
                                     <option value="">-</option>
-                                    <!--                                    <mat-option *ngFor="let function of functions" [value]="function.id">-->
-                                    <!--                                        {{function.name}}-->
-                                    <!--                                    </mat-option>-->
+                                    <option *ngFor="let func of functionVoices" [value]="func.id">
+                                        {{func.name}}
+                                    </option>
                                 </select>
                             </td>
                             <td>
@@ -140,9 +140,9 @@
                             <td>
                                 <select formControlName="marking">
                                     <option value="">-</option>
-                                    <!--                                    <mat-option *ngFor="let marking of markings" [value]="marking.id">-->
-                                    <!--                                        {{marking.name}}-->
-                                    <!--                                    </mat-option>-->
+                                    <option *ngFor="let marking of markings" [value]="marking.id">
+                                        {{marking.name}}
+                                    </option>
                                 </select>
                             </td>
                             <td>
@@ -159,9 +159,9 @@
                             <td>
                                 <select formControlName="status">
                                     <option value="">-</option>
-                                    <!--                                    <mat-option *ngFor="let status of statuses" [value]="status.id">-->
-                                    <!--                                        {{status.name}}-->
-                                    <!--                                    </mat-option>-->
+                                    <option *ngFor="let stat of status" [value]="stat.id">
+                                        {{stat.name}}
+                                    </option>
                                 </select>
                             </td>
                             <td>
@@ -204,7 +204,7 @@
 
                         <tr>
                             <td>
-                                <mat-label>Book Title</mat-label>
+                                <mat-label>Book Title (no prefix)</mat-label>
                             </td>
                             <td></td>
                         </tr>
@@ -218,7 +218,7 @@
 
                         <tr>
                             <td>
-                                <mat-label>Sec Book Title</mat-label>
+                                <mat-label>Sec Book Title (no prefix)</mat-label>
                             </td>
                             <td></td>
                         </tr>
@@ -264,22 +264,22 @@
                             </td>
                         </tr>
 
-                        <tr>
-                            <td>
-                                <mat-label>Extra info</mat-label>
-                            </td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td formGroupName="extra">
-                                <input formControlName="ex">
-                            </td>
-                            <td class="checkbox">
-                                <mat-checkbox [color]="'warn'" formControlName="extraNull"
-                                              (change)="onChange($event, 'extra')">null
-                                </mat-checkbox>
-                            </td>
-                        </tr>
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <mat-label>Extra info</mat-label>-->
+<!--                            </td>-->
+<!--                            <td></td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td formGroupName="extra">-->
+<!--                                <input formControlName="ex">-->
+<!--                            </td>-->
+<!--                            <td class="checkbox">-->
+<!--                                <mat-checkbox [color]="'warn'" formControlName="extraNull"-->
+<!--                                              (change)="onChange($event, 'extra')">null-->
+<!--                                </mat-checkbox>-->
+<!--                            </td>-->
+<!--                        </tr>-->
 
                     </table>
 
