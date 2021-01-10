@@ -329,6 +329,10 @@
                     <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasBookTitle[0].value}}</td>
                     <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasEdition[0].value}}</td>
                     <td style="border: 1px solid lightgrey; padding: 5px;"><span *ngIf="result.hasEditionHist">{{result.hasEditionHist[0].value}}</span></td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;">{{listService.getNameOfNode(result.hasLanguage[0].listNode)}}</td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;">
+                        <div *ngFor="let genre of result.hasGenre;">{{listService.getNameOfNode(genre.listNode)}}</div>
+                    </td>
                 </tr>
             </table>
         </div>

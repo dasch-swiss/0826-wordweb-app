@@ -132,8 +132,12 @@
                     <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasLexiaInternalId[0].value}}</td>
                     <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasLexiaTitle[0].value}}</td>
                     <td style="border: 1px solid lightgrey; padding: 5px;"><span *ngIf="result.hasLexiaDisplayedTitle">{{result.hasLexiaDisplayedTitle[0].value}}</span></td>
-                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasFormalClass[0].value}}</td>
-                    <td style="border: 1px solid lightgrey; padding: 5px;"><span *ngIf="result.hasImage">{{result.hasImage[0].value}}</span></td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;">
+                        <div *ngFor="let fc of result.hasFormalClass">{{listService.getNameOfNode(fc.listNode)}}</div>
+                    </td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;">
+                        <span *ngIf="result.hasImage">{{listService.getNameOfNode(result.hasImage[0].listNode)}}</span>
+                    </td>
                 </tr>
             </table>
         </div>

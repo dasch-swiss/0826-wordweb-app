@@ -95,7 +95,7 @@ export class AuthorComponent implements OnInit {
     genders: any[];
 
     constructor(public apiService: ApiService,
-                private listService: ListService,
+                public listService: ListService,
                 private knoraService: KnoraService,
                 private createAuthorDialog: MatDialog,
                 private treeTableService: TreeTableService) {

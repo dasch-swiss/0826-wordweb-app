@@ -67,7 +67,7 @@ export class LexiaComponent implements OnInit {
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(private apiService: ApiService,
-                private listService: ListService,
+                public listService: ListService,
                 private knoraService: KnoraService,
                 private createLexiaDialog: MatDialog,
                 private treeTableService: TreeTableService) {

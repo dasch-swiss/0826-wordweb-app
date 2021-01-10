@@ -196,7 +196,7 @@ export class BookComponent implements OnInit {
     actors: any[];
 
     constructor(private apiService: ApiService,
-                private listService: ListService,
+                public listService: ListService,
                 private knoraService: KnoraService,
                 private authorDialog: MatDialog,
                 private venueDialog: MatDialog,
