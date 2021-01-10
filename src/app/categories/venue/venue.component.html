@@ -6,7 +6,7 @@
     <div class="search-container" fxLayout="row" fxLayoutGap="30px" fxLayoutAlign="start start">
         <mat-card fxFlex.gt-sm="300px">
             <mat-card-content>
-                <form [formGroup]="form" fxLayout="column">
+                <form [formGroup]="form" fxLayout="column" (ngSubmit)="search()">
 
                     <table>
 
@@ -34,31 +34,31 @@
                             <td>
                                 <select formControlName="placeVenue">
                                     <option value="">-</option>
-                                    <!--                                    <mat-option *ngFor="let placevenue of placeVenues" [value]="placevenue.id">-->
-                                    <!--                                        {{placevenue.name}}-->
-                                    <!--                                    </mat-option>-->
+                                    <option *ngFor="let placevenue of placeVenues" [value]="placevenue.id">
+                                        {{placevenue.name}}
+                                    </option>
                                 </select>
                             </td>
                             <td>
                             </td>
                         </tr>
 
-                        <tr>
-                            <td>
-                                <mat-label>Extra info</mat-label>
-                            </td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td formGroupName="extra">
-                                <input formControlName="ex">
-                            </td>
-                            <td class="checkbox">
-                                <mat-checkbox [color]="'warn'" formControlName="extraNull"
-                                              (change)="onChange($event, 'extra')">null
-                                </mat-checkbox>
-                            </td>
-                        </tr>
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <mat-label>Extra info</mat-label>-->
+<!--                            </td>-->
+<!--                            <td></td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td formGroupName="extra">-->
+<!--                                <input formControlName="ex">-->
+<!--                            </td>-->
+<!--                            <td class="checkbox">-->
+<!--                                <mat-checkbox [color]="'warn'" formControlName="extraNull"-->
+<!--                                              (change)="onChange($event, 'extra')">null-->
+<!--                                </mat-checkbox>-->
+<!--                            </td>-->
+<!--                        </tr>-->
 
                     </table>
 
@@ -72,9 +72,16 @@
             </mat-card-content>
         </mat-card>
 
-        <div style="border: 1px solid black; width: 100%;">
-            Table with the results
+        <div style="border: 1px solid black; width: 100%; padding: 1rem;">
+            <div *ngIf="searchResults.length == 0"> No results</div>
+            <table>
+                <tr *ngFor="let result of searchResults">
+                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasVenueInternalId[0].value}}</td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;">{{listService.getNameOfNode(result.hasPlaceVenue[0].listNode)}}</td>
+                </tr>
+            </table>
         </div>
+
     </div>
 
 </div>

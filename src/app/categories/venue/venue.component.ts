@@ -6,6 +6,10 @@ import {Venue} from "../../model/model";
 import {ApiService} from "../../services/api.service";
 import {CreateUpdateVenueComponent} from "./create-update-venue/create-update-venue.component";
 import {FormControl, FormGroup} from "@angular/forms";
+import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
+import {ListService} from "../../services/list.service";
+import {KnoraService} from "../../services/knora.service";
+import {TreeTableService} from "../../services/tree-table.service";
 
 @Component({
     selector: "app-venue",
@@ -13,49 +17,62 @@ import {FormControl, FormGroup} from "@angular/forms";
     styleUrls: ["../category.scss"]
 })
 export class VenueComponent implements OnInit {
+    myVenue: IMainClass = {
+        name: "venue",
+        mainClass: {name: "venue", variable: "venue"},
+        props: [
+            {
+                name: "hasVenueInternalId",
+                priority: 0,
+                res: null
+            },
+            {
+                name: "hasPlaceVenue",
+                priority: 0,
+                res: null
+            }
+        ]
+    };
+
+    internalIDRef: IDisplayedProperty = this.myVenue.props[0];
+    placeVenueRef: IDisplayedProperty = this.myVenue.props[1];
+    priority = 0;
+    searchResults = [];
+
     displayedColumns: string[] = ["internalID", "name", "place", "order", "references", "action"];
     dataSource: MatTableDataSource<Venue>;
     value: string;
     form: FormGroup;
+    placeVenues: any[];
 
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(private apiService: ApiService,
-                private createVenueDialog: MatDialog) {
+                public listService: ListService,
+                private knoraService: KnoraService,
+                private createVenueDialog: MatDialog,
+                private treeTableService: TreeTableService) {
     }
 
     ngOnInit() {
         this.form = new FormGroup({
             internalId: new FormControl("", []),
             placeVenue: new FormControl("", []),
-            extraNull: new FormControl("", []),
-            extra: new FormGroup({
-                ex: new FormControl("", [])
-            })
+            // extraNull: new FormControl("", []),
+            // extra: new FormGroup({
+            //     ex: new FormControl("", [])
+            // })
         });
+
+        const placeVenueNode = this.listService.getList("placeVenue").nodes
+        this.placeVenues = placeVenueNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
+
         this.resetTable();
     }
 
     resetSearch() {
-        // this.form.get("internalId").reset("");
-        // this.form.get("creationDate").reset("");
-        // this.form.controls.firstNameNull.setValue(false);
-        // this.form.get("firstName").enable();
-        // this.form.get("firstName.fn").reset("");
-        // this.form.get("lastName").reset("");
-        // this.form.get("description").reset("");
-        // this.form.controls.birthNull.setValue(false);
-        // this.form.get("birth").enable();
-        // this.form.get("birth.bdate").reset("");
-        // this.form.controls.deathNull.setValue(false);
-        // this.form.get("death").enable();
-        // this.form.get("death.ddate").reset("");
-        // this.form.controls.activeNull.setValue(false);
-        // this.form.get("active").enable();
-        // this.form.get("active.adate").reset("");
-        // this.form.controls.extraNull.setValue(false);
-        // this.form.get("extra").enable();
-        // this.form.get("extra.ex").reset("");
+        this.form.get("internalId").reset("");
+        this.form.get("placeVenue").reset("");
     }
 
     onChange(event, groupName: string) {
@@ -108,6 +125,32 @@ export class VenueComponent implements OnInit {
 
     delete(id: number) {
         console.log(`Venue ID: ${id}`);
+    }
+
+    search() {
+        console.log("Searching starts...");
+
+        // Sets internal ID property
+        if (this.form.get("internalId").value) {
+            this.internalIDRef.searchVal1 = this.form.get("internalId").value;
+        } else {
+            this.internalIDRef.searchVal1 = null;
+        }
+        // Sets internal ID property
+        if (this.form.get("placeVenue").value) {
+            this.placeVenueRef.searchVal1 = this.form.get("placeVenue").value;
+        } else {
+            this.placeVenueRef.searchVal1 = null;
+        }
+
+        this.knoraService.gravsearchQueryCount(this.myVenue, this.priority)
+            .subscribe(numb => console.log("amount", numb));
+
+        this.knoraService.gravseachQuery(this.myVenue, this.priority)
+            .subscribe(data => {
+                console.log("results", data);
+                this.searchResults = data;
+            });
     }
 
 }
