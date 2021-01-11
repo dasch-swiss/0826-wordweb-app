@@ -293,9 +293,27 @@
             </mat-card-content>
         </mat-card>
 
-        <div style="border: 1px solid black; width: 100%;">
-            Table with the results
+        <div style="border: 1px solid black; width: 100%; padding: 1rem;">
+            <div *ngIf="searchResults.length == 0"> No results</div>
+            <table>
+                <tr *ngFor="let result of searchResults">
+                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasText[0].value}}</td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;"><span *ngIf="result.hasTextHist">{{result.hasTextHist[0].value}}</span></td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;"><span *ngIf="result.hasPrefixDisplayedTitle">{{result.hasPrefixDisplayedTitle[0].value}}</span></td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasDisplayedTitle[0].value}}</td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;"><span *ngIf="result.hasPage">{{result.hasPage[0].value}}</span></td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;"><span *ngIf="result.hasPageHist">{{result.hasPageHist[0].value}}</span></td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;">{{listService.getNameOfNode(result.hasResearchField[0].listNode)}}</td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;">
+                        <div *ngFor="let func of result.hasFunctionVoice;">{{listService.getNameOfNode(func.listNode)}}</div>
+                    </td>
+                    <td style="border: 1px solid lightgrey; padding: 5px;">
+                        <div *ngFor="let marking of result.hasMarking;">{{listService.getNameOfNode(marking.listNode)}}</div>
+                    </td>
+                </tr>
+            </table>
         </div>
+
     </div>
 
 </div>
