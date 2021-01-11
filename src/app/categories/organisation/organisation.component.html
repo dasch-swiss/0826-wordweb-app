@@ -46,7 +46,12 @@
                         </tr>
                         <tr>
                             <td formGroupName="member">
-                                <input formControlName="mem">
+                                <select formControlName="mem">
+                                    <option value="">-</option>
+                                    <option *ngFor="let mem of members" [value]="mem.id">
+                                        <span *ngIf="mem.hasFirstName">{{mem.hasFirstName}}</span> {{mem.hasLastName}}
+                                    </option>
+                                </select>
                             </td>
                             <td class="checkbox">
                                 <mat-checkbox [color]="'warn'" formControlName="memberNull"

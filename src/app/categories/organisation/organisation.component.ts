@@ -8,6 +8,7 @@ import {CreateUpdateOrganisationComponent} from "./create-update-organisation/cr
 import {FormControl, FormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {KnoraService} from "../../services/knora.service";
+import {forkJoin} from "rxjs";
 
 @Component({
     selector: "app-organisation",
@@ -53,14 +54,15 @@ export class OrganisationComponent implements OnInit {
 
     internalIDRef: IDisplayedProperty = this.myCompany.props[0];
     companyTitleRef: IDisplayedProperty = this.myCompany.props[1];
-    member: IDisplayedProperty = this.myCompany.props[2];
-    priority = 0
+    memberRef: IDisplayedProperty = this.myCompany.props[2];
+    priority = 0;
     searchResults = [];
 
     displayedColumns: string[] = ["internalID", "name", "order", "references", "action"];
     dataSource: MatTableDataSource<Organisation>;
     value: string;
     form: FormGroup;
+    members: any[];
 
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -82,7 +84,41 @@ export class OrganisationComponent implements OnInit {
             //     ex: new FormControl("", [])
             // })
         });
+
+        this.prepareMembers();
+
         this.resetTable();
+    }
+
+    prepareMembers() {
+        this.knoraService.getMembersCount()
+            .subscribe(amount => {
+                const maxOffset = Math.ceil(amount / 25);
+
+                const requests = [];
+
+                for (let offset = 0; offset < maxOffset; offset++) {
+                    requests.push(this.knoraService.getMembers(offset));
+                }
+
+                forkJoin<any>(requests)
+                    .subscribe((res: Array<Array<any>>) => {
+                        this.members = []
+                            .concat(...res)
+                            .map(member => {
+                                if (member.hasLastName.length === 1) {
+                                    member.hasLastName = member.hasLastName[0].value;
+                                }
+                                if (member.hasFirstName.length === 1) {
+                                    member.hasFirstName = member.hasFirstName[0].value;
+                                }
+                                return member;
+                            })
+                            .sort((res1, res2) => this.sortMembers(res1, res2));
+                    }, error => {
+                        requests.map(a => a.unsubscribe());
+                    });
+            });
     }
 
     resetSearch() {
@@ -130,8 +166,8 @@ export class OrganisationComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            resource: resource,
-            editMod: editMod,
+            resource,
+            editMod,
         };
         const dialogRef = this.createOrganisationDialog.open(CreateUpdateOrganisationComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
@@ -159,6 +195,18 @@ export class OrganisationComponent implements OnInit {
         } else {
             this.companyTitleRef.searchVal1 = null;
         }
+        // Sets member property
+        if (this.form.controls.memberNull.value) {
+            this.memberRef.isNull = true;
+            this.memberRef.searchVal1 = null;
+        } else {
+            this.memberRef.isNull = false;
+            if (this.form.get("member.mem").value) {
+                this.memberRef.searchVal1 = this.form.get("member.mem").value;
+            } else {
+                this.memberRef.searchVal1 = null;
+            }
+        }
 
         this.knoraService.gravsearchQueryCount(this.myCompany, this.priority)
             .subscribe(numb => console.log("amount", numb));
@@ -168,6 +216,13 @@ export class OrganisationComponent implements OnInit {
                 console.log("results", data);
                 this.searchResults = data;
             });
+    }
+
+    sortMembers(mem1: any, mem2: any) {
+        const memberLastName1 = mem1.hasLastName.toUpperCase();
+        const memberLastName2 = mem2.hasLastName.toUpperCase();
+
+        return memberLastName1 <= memberLastName2 ? (memberLastName1 === memberLastName2 ? 0 : -1) : 1;
     }
 
 }

@@ -886,4 +886,30 @@ export class GravsearchBuilderService {
         ];
         return query.join("\n");
     }
+
+    getMembersQuery(offset?: number): string {
+        const node: IMainClassObject = {name: "person", variable: "member"};
+        const query = [
+            "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
+            "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
+            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            "",
+            "CONSTRUCT {",
+            `${this.getFirstConstructLine(node).join("")}`,
+            "?company teimww:hasMember ?member .",
+            "?member teimww:hasPersonInternalId ?personInternalId .",
+            "?member teimww:hasFirstName ?firstName .",
+            "?member teimww:hasLastName ?lastName .",
+            "} WHERE {",
+            `${this.getFirstWhereLine(node).join("")}`,
+            "?company teimww:hasMember ?member .",
+            "?member teimww:hasPersonInternalId ?personInternalId .",
+            "OPTIONAL { ?member teimww:hasFirstName ?firstName . }",
+            "?member teimww:hasLastName ?lastName .",
+            "}",
+            "",
+            `OFFSET ${offset ? offset : 0}`
+        ];
+        return query.join("\n");
+    }
 }
