@@ -123,23 +123,6 @@
                     <tr>
                         <td>
                             <mat-form-field>
-                                <mat-label>Language</mat-label>
-                                <mat-select formControlName="language">
-                                    <mat-option value="">-</mat-option>
-                                    <mat-option *ngFor="let language of languages" [value]="language.id">
-                                        {{language.name}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td class="min">
-                            <mat-icon matSuffix (click)="getHelpText('language')">help</mat-icon>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <mat-form-field>
                                 <mat-label>First performance: Company</mat-label>
                                 <mat-select formControlName="performedCompany">
                                     <mat-option value="">-</mat-option>
@@ -191,6 +174,23 @@
                         </td>
                         <td class="min">
                             <mat-icon matSuffix (click)="getHelpText('performedActor')">help</mat-icon>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <mat-form-field>
+                                <mat-label>Language</mat-label>
+                                <mat-select formControlName="language">
+                                    <mat-option value="">-</mat-option>
+                                    <mat-option *ngFor="let language of languages" [value]="language.id">
+                                        {{language.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td class="min">
+                            <mat-icon matSuffix (click)="getHelpText('language')">help</mat-icon>
                         </td>
                     </tr>
 
