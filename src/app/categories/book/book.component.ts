@@ -298,7 +298,6 @@ export class BookComponent implements OnInit {
                         requests.map(a => a.unsubscribe());
                     });
             });
-
     }
 
     prepareVenues() {

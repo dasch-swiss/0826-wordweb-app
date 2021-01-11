@@ -334,6 +334,9 @@ export class PassageComponent implements OnInit {
         this.form.controls.secBookTitleNull.setValue(false);
         this.form.get("secBookTitle").enable();
         this.form.get("secBookTitle.secbt").reset("");
+        // this.form.controls.extraNull.setValue(false);
+        // this.form.get("extra").enable();
+        // this.form.get("extra.ex").reset("");
     }
 
     onChange(event, groupName: string) {
@@ -381,8 +384,8 @@ export class PassageComponent implements OnInit {
         dialogConfig.autoFocus = true;
         dialogConfig.width = "650px";
         dialogConfig.data = {
-            resource: resource,
-            editMod: editMod,
+            resource,
+            editMod,
         };
         const dialogRef = this.passageDialog.open(CreateUpdatePassageComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {

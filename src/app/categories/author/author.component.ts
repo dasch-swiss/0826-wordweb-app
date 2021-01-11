@@ -152,9 +152,9 @@ export class AuthorComponent implements OnInit {
         this.form.get("active").enable();
         this.form.get("active.adate").reset("");
         this.form.get("gender").reset("");
-        this.form.controls.extraNull.setValue(false);
-        this.form.get("extra").enable();
-        this.form.get("extra.ex").reset("");
+        // this.form.controls.extraNull.setValue(false);
+        // this.form.get("extra").enable();
+        // this.form.get("extra.ex").reset("");
     }
 
     clear(formControlName: string) {
