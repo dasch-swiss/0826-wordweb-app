@@ -171,7 +171,7 @@ export class AdvancedSearchComponent implements OnInit {
                                     },
                                     {
                                         name: "hasGender",
-                                        priority: 0,
+                                        priority: 1,
                                         res: null
                                     }
                                 ]
@@ -356,7 +356,6 @@ export class AdvancedSearchComponent implements OnInit {
 
     textRef: IDisplayedProperty = this.myPassage.props[0];
     authorLastNameRef: IDisplayedProperty = this.myPassage.props[12].res.props[11].res.props[1];
-    genderRef: IDisplayedProperty = this.myPassage.props[12].res.props[11].res.props[2];
     bookTitleRef: IDisplayedProperty = this.myPassage.props[12].res.props[1];
     genreRef: IDisplayedProperty = this.myPassage.props[12].res.props[5];
     lexiaRef: IDisplayedProperty = this.myPassage.props[15].res.props[0];
@@ -368,7 +367,6 @@ export class AdvancedSearchComponent implements OnInit {
     performedVenueRef: IDisplayedProperty = this.myPassage.props[12].res.props[13];
     performedActorRef: IDisplayedProperty = this.myPassage.props[12].res.props[14];
 
-    genders: any[];
     genres: any[];
     languages: any[];
     functionVoices: any[];
@@ -396,9 +394,6 @@ export class AdvancedSearchComponent implements OnInit {
         const genresNode = this.listService.getList("genre").nodes;
         this.genres = genresNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
 
-        const genderNode = this.listService.getList("gender").nodes;
-        this.genders = genderNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
         const languageNode = this.listService.getList("language").nodes;
         this.languages = languageNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
 
@@ -411,7 +406,6 @@ export class AdvancedSearchComponent implements OnInit {
         this.form = new FormGroup({
             text: new FormControl("", []),
             author: new FormControl("", []),
-            gender: new FormControl("", []),
             bookTitle: new FormControl("", []),
             genre: new FormControl("", []),
             lexia: new FormControl("", []),
@@ -518,7 +512,6 @@ export class AdvancedSearchComponent implements OnInit {
     search() {
         if (!this.form.get("text").value
             && !this.form.get("author").value
-            && !this.form.get("gender").value
             && !this.form.get("bookTitle").value
             && !this.form.get("lexia").value
             && !this.form.get("language").value
@@ -554,14 +547,6 @@ export class AdvancedSearchComponent implements OnInit {
             this.authorLastNameRef.searchVal1 = this.form.get("author").value;
         } else {
             this.authorLastNameRef.searchVal1 = null;
-        }
-
-        if (this.form.get("gender").value) {
-            this.genderRef.searchVal1 = this.form.get("gender").value;
-            this.genderRef.priority = 0;
-        } else {
-            this.genderRef.searchVal1 = null;
-            this.genderRef.priority = 1;
         }
 
         if (this.form.get("bookTitle").value) {
@@ -718,7 +703,6 @@ export class AdvancedSearchComponent implements OnInit {
     resetAll() {
         this.form.get("text").reset("");
         this.form.get("author").reset("");
-        this.form.get("gender").reset("");
         this.form.get("bookTitle").reset("");
         this.form.get("genre").reset("");
         this.form.get("lexia").reset("");

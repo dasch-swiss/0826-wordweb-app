@@ -57,22 +57,6 @@
                     <tr>
                         <td>
                             <mat-form-field>
-                                <mat-label>Author's gender</mat-label>
-                                <mat-select formControlName="gender">
-                                    <mat-option value="">-</mat-option>
-                                    <mat-option *ngFor="let gender of genders" [value]="gender.id">
-                                        {{gender.name}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td class="min">
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <mat-form-field>
                                 <mat-label>Lexia</mat-label>
                                 <input matInput formControlName="lexia" placeholder="e.g. to be or not to be">
                                 <button *ngIf="form.get('lexia').value" type="button" mat-button matSuffix
