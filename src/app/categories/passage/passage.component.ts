@@ -92,7 +92,7 @@ export class PassageComponent implements OnInit {
             },
             {
                 name: "occursIn",
-                priority: 1,
+                priority: 0,
                 res: {
                     name: "book",
                     props: [
@@ -118,20 +118,14 @@ export class PassageComponent implements OnInit {
                         {
                             name: "occursIn",
                             valVar: "sBook",
-                            priority: 1,
+                            priority: 0,
                             res: {
                                 name: "book",
                                 props: [
                                     {
                                         name: "hasBookTitle",
                                         valVar: "sBookTitle",
-                                        priority: 1,
-                                        res: null
-                                    },
-                                    {
-                                        name: "hasEdition",
-                                        valVar: "sEdition",
-                                        priority: 1,
+                                        priority: 0,
                                         res: null
                                     },
                                     {
@@ -185,12 +179,17 @@ export class PassageComponent implements OnInit {
             },
             {
                 name: "contains",
-                priority: 1,
+                priority: 0,
                 res: {
                     name: "lexia",
                     props: [
                         {
                             name: "hasLexiaTitle",
+                            priority: 0,
+                            res: null
+                        },
+                        {
+                            name: "hasLexiaDisplayedTitle",
                             priority: 0,
                             res: null
                         }
@@ -214,6 +213,9 @@ export class PassageComponent implements OnInit {
     passCommentRef: IDisplayedProperty = this.myPassage.props[11];
     bookTitleRef: IDisplayedProperty = this.myPassage.props[12].res.props[1];
     secBookTitleRef: IDisplayedProperty = this.myPassage.props[13].res.props[0].res.props[0];
+    contributorRef: IDisplayedProperty = this.myPassage.props[14].res.props[1];
+    lexiaRef: IDisplayedProperty = this.myPassage.props[15];
+    lexiaTitleRef: IDisplayedProperty = this.myPassage.props[15].res.props[0];
     priority = 0;
     searchResults = [];
 
@@ -255,6 +257,7 @@ export class PassageComponent implements OnInit {
             prefDisplayedTitle: new FormGroup({
                 prefdistit: new FormControl("", []),
             }),
+            displayedTitle: new FormControl("", []),
             pageNull: new FormControl(false, []),
             page: new FormGroup({
                 pg: new FormControl("", [])
@@ -315,6 +318,7 @@ export class PassageComponent implements OnInit {
         this.form.get("prefDisplayedTitle").enable();
         this.form.get("prefDisplayedTitle.prefdistit").reset("");
         this.form.controls.pageNull.setValue(false);
+        this.form.get("displayedTitle").reset("");
         this.form.get("page").enable();
         this.form.get("page.pg").reset("");
         this.form.controls.pagHistNull.setValue(false);
@@ -334,6 +338,10 @@ export class PassageComponent implements OnInit {
         this.form.controls.secBookTitleNull.setValue(false);
         this.form.get("secBookTitle").enable();
         this.form.get("secBookTitle.secbt").reset("");
+        this.form.get("contributor").reset("");
+        this.form.controls.lexiaNull.setValue(false);
+        this.form.get("lexia").enable();
+        this.form.get("lexia.lex").reset("");
         // this.form.controls.extraNull.setValue(false);
         // this.form.get("extra").enable();
         // this.form.get("extra.ex").reset("");
@@ -445,13 +453,13 @@ export class PassageComponent implements OnInit {
     search() {
         console.log("Searching starts...");
 
-        // Sets internal ID property
+        // Sets text property
         if (this.form.get("text").value) {
             this.textRef.searchVal1 = this.form.get("text").value;
         } else {
             this.textRef.searchVal1 = null;
         }
-        // Sets first name property
+        // Sets text hist property
         if (this.form.controls.textHistNull.value) {
             this.textHistRef.isNull = true;
             this.textHistRef.searchVal1 = null;
@@ -463,7 +471,7 @@ export class PassageComponent implements OnInit {
                 this.textHistRef.searchVal1 = null;
             }
         }
-        // Sets first name property
+        // Sets prefix displayed title property
         if (this.form.controls.prefDisplayedTitleNull.value) {
             this.prefixDisptitleRef.isNull = true;
             this.prefixDisptitleRef.searchVal1 = null;
@@ -473,6 +481,113 @@ export class PassageComponent implements OnInit {
                 this.prefixDisptitleRef.searchVal1 = this.form.get("prefDisplayedTitle.prefdistit").value;
             } else {
                 this.prefixDisptitleRef.searchVal1 = null;
+            }
+        }
+        // Sets displayed title property
+        if (this.form.get("displayedTitle").value) {
+            this.disptitleRef.searchVal1 = this.form.get("displayedTitle").value;
+        } else {
+            this.disptitleRef.searchVal1 = null;
+        }
+        // Sets page property
+        if (this.form.controls.pageNull.value) {
+            this.pageRef.isNull = true;
+            this.pageRef.searchVal1 = null;
+        } else {
+            this.pageRef.isNull = false;
+            if (this.form.get("page.pg").value) {
+                this.pageRef.searchVal1 = this.form.get("page.pg").value;
+            } else {
+                this.pageRef.searchVal1 = null;
+            }
+        }
+        // Sets page hist property
+        if (this.form.controls.pagHistNull.value) {
+            this.pageHistRef.isNull = true;
+            this.pageHistRef.searchVal1 = null;
+        } else {
+            this.pageHistRef.isNull = false;
+            if (this.form.get("pageHist.pgh").value) {
+                this.pageHistRef.searchVal1 = this.form.get("pageHist.pgh").value;
+            } else {
+                this.pageHistRef.searchVal1 = null;
+            }
+        }
+        // Sets research property
+        if (this.form.get("research").value) {
+            this.researchRef.searchVal1 = this.form.get("research").value;
+        } else {
+            this.researchRef.searchVal1 = null;
+        }
+        // Sets function property
+        if (this.form.get("function").value) {
+            this.functionRef.searchVal1 = this.form.get("function").value;
+        } else {
+            this.functionRef.searchVal1 = null;
+        }
+        // Sets marking property
+        if (this.form.get("marking").value) {
+            this.markingRef.searchVal1 = this.form.get("marking").value;
+        } else {
+            this.markingRef.searchVal1 = null;
+        }
+        // Sets status property
+        if (this.form.get("status").value) {
+            this.statusRef.searchVal1 = this.form.get("status").value;
+        } else {
+            this.statusRef.searchVal1 = null;
+        }
+        // Sets internal comment property
+        if (this.form.controls.intCommentNull.value) {
+            this.intCommentRef.isNull = true;
+            this.intCommentRef.searchVal1 = null;
+        } else {
+            this.intCommentRef.isNull = false;
+            if (this.form.get("intComment.intc").value) {
+                this.intCommentRef.searchVal1 = this.form.get("intComment.intc").value;
+            } else {
+                this.intCommentRef.searchVal1 = null;
+            }
+        }
+        // Sets passage comment property
+        if (this.form.controls.passCommentNull.value) {
+            this.passCommentRef.isNull = true;
+            this.passCommentRef.searchVal1 = null;
+        } else {
+            this.passCommentRef.isNull = false;
+            if (this.form.get("passComment.pc").value) {
+                this.passCommentRef.searchVal1 = this.form.get("passComment.pc").value;
+            } else {
+                this.passCommentRef.searchVal1 = null;
+            }
+        }
+        // Sets book title property
+        if (this.form.get("bookTitle").value) {
+            this.bookTitleRef.searchVal1 = this.form.get("bookTitle").value;
+        } else {
+            this.bookTitleRef.searchVal1 = null;
+        }
+
+
+
+        // Sets contributor name property
+        if (this.form.get("contributor").value) {
+            this.contributorRef.searchVal1 = this.form.get("contributor").value;
+        } else {
+            this.contributorRef.searchVal1 = null;
+        }
+        // Sets lexia property
+        if (this.form.controls.lexiaNull.value) {
+            this.lexiaRef.isNull = true;
+            this.lexiaTitleRef.searchVal1 = null;
+        } else {
+            this.lexiaRef.isNull = false;
+            if (this.form.get("lexia.lex").value) {
+                this.lexiaTitleRef.searchVal1 = this.form.get("lexia.lex").value;
+                this.lexiaRef.mandatory = true;
+            } else {
+                this.lexiaTitleRef.searchVal1 = null;
+                this.lexiaRef.mandatory = false;
             }
         }
 
