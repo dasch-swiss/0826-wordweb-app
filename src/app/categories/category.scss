@@ -77,5 +77,56 @@
                 }
             }
         }
+
+        .filter-container {
+            padding: 0 1rem;
+            display: flex;
+
+            .create-btn-container {
+                margin: auto;
+
+                    .create-btn {
+                        background-color: rgb(159, 11, 11);
+                        color: white;
+                        flex-grow: 1;
+                    }
+            }
+
+            mat-form-field {
+                    margin: 0 2rem;
+                    flex-grow: 1;
+            }
+
+            .row-counter {
+                    margin: auto;
+                    color: gray;
+            }
+        }
+
+        table {
+            width: 100%;
+
+            .edit-btn {
+                color: rgba(159, 11, 11, 1);
+            }
+        }
+
+        .load-more {
+            height: 4rem;
+            // loading button is vertically aligned
+            display: flex;
+            align-items: center;
+
+            button {
+                width: 100%;
+            }
+        }
+
+        .spinner-small {
+            height: 4rem;
+            // Necessary to display the spinner within the div container (-> ngx spinner)
+            position: relative;
+        }
     }
+
 }

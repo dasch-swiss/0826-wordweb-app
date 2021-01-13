@@ -10,6 +10,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {ListService} from "../../services/list.service";
 import {TreeTableService} from "../../services/tree-table.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
+import {Observable} from "rxjs";
 
 @Component({
     selector: "app-author",
@@ -86,9 +87,10 @@ export class AuthorComponent implements OnInit {
     genderRef: IDisplayedProperty = this.myAuthor.props[0].res.props[7];
     priority = 0;
     searchResults = [];
+    amountResult: Observable<number>;
 
     // displayedColumns: string[] = ["internalID", "firstName", "lastName", "gender", "description", "birthDate", "deathDate", "activeDate", "lexia", "order", "references", "action"];
-    displayedColumns: string[] = ["hasPersonInternalId", "hasFirstName", "hasLastName"];
+    displayedColumns: string[] = ["hasPersonInternalId", "hasFirstName", "hasLastName", "hasDescription", "hasGender", "action"];
     dataSource: MatTableDataSource<any>;
     value: string;
     form: FormGroup;
@@ -132,7 +134,7 @@ export class AuthorComponent implements OnInit {
         const genderNode = this.listService.getList("gender").nodes;
         this.genders = genderNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
 
-        this.resetTable();
+        // this.resetTable();
     }
 
     resetSearch() {
@@ -166,12 +168,6 @@ export class AuthorComponent implements OnInit {
     }
 
     resetTable() {
-        // this.apiService.getAuthors(true).subscribe((authors) => {
-        //     console.log(authors);
-        //     this.dataSource = new MatTableDataSource(authors);
-        //     this.dataSource.sort = this.sort;
-        // });
-
         this.knoraService.getAllAuthors()
             .subscribe(data => {
                 console.log(data);
@@ -191,16 +187,13 @@ export class AuthorComponent implements OnInit {
         this.dataSource.filter = this.value = "";
     }
 
-    rowCount() {
-        return this.dataSource ? this.dataSource.filteredData.length : 0;
-    }
-
     create() {
         this.createOrEditResource(false);
     }
 
     edit(author: Author) {
-        this.createOrEditResource(true, author);
+        console.log(author);
+        // this.createOrEditResource(true, author);
     }
 
     createOrEditResource(editMod: boolean, resource: Author = null) {
@@ -219,10 +212,6 @@ export class AuthorComponent implements OnInit {
                 this.dataSource.sort = this.sort;
             }
         });
-    }
-
-    delete(id: number) {
-        console.log(`Author ID: ${id}`);
     }
 
     getDateFormat(dateStart: string, dateEnd: string): string {
@@ -305,13 +294,14 @@ export class AuthorComponent implements OnInit {
             this.genderRef.searchVal1 = null;
         }
 
-        this.knoraService.gravsearchQueryCount(this.myAuthor, this.priority)
-            .subscribe(numb => console.log("amount", numb));
+        this.amountResult = this.knoraService.gravsearchQueryCount(this.myAuthor, this.priority);
 
         this.knoraService.gravseachQuery(this.myAuthor, this.priority)
             .subscribe(data => {
                 console.log("results", data);
                 this.searchResults = data;
+                this.dataSource = new MatTableDataSource(data);
+                this.dataSource.sort = this.sort;
             });
     }
 }
