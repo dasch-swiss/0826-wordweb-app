@@ -20,6 +20,9 @@ import {Observable} from "rxjs";
 export class AuthorComponent implements OnInit {
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
+    readonly PRIORITY = 0;
+    readonly MAX_RESOURCE_PER_RESULT = 25;
+
     myAuthor: IMainClass = {
         name: "book",
         mainClass: {name: "person", variable: "author"},
@@ -85,12 +88,12 @@ export class AuthorComponent implements OnInit {
     deathRef: IDisplayedProperty = this.myAuthor.props[0].res.props[5];
     activeRef: IDisplayedProperty = this.myAuthor.props[0].res.props[6];
     genderRef: IDisplayedProperty = this.myAuthor.props[0].res.props[7];
-    priority = 0;
+
     searchResults = [];
     amountResult: Observable<number>;
+    searchStarted = false;
 
-    // displayedColumns: string[] = ["internalID", "firstName", "lastName", "gender", "description", "birthDate", "deathDate", "activeDate", "lexia", "order", "references", "action"];
-    displayedColumns: string[] = ["hasPersonInternalId", "hasFirstName", "hasLastName", "hasDescription", "hasGender", "action"];
+    displayedColumns: string[] = ["row", "hasPersonInternalId", "hasFirstName", "hasLastName", "hasDescription", "hasGender", "hasBirthDate", "hasDeathDate", "hasActiveDate", "action"];
     dataSource: MatTableDataSource<any>;
     value: string;
     form: FormGroup;
@@ -101,6 +104,40 @@ export class AuthorComponent implements OnInit {
                 private knoraService: KnoraService,
                 private createAuthorDialog: MatDialog,
                 private treeTableService: TreeTableService) {
+    }
+
+    static customFilter(author: any, filterValue: string): boolean {
+        const containsInternalID = author.hasPersonInternalId[0].value.indexOf(filterValue) > -1;
+        const containsFirstName = author.hasFirstName ? author.hasFirstName[0].value.toLowerCase().indexOf(filterValue) > -1 : false;
+        const containsLastName = author.hasLastName[0].value.toLowerCase().indexOf(filterValue) > -1;
+        const containsDescription = author.hasDescription[0].value.indexOf(filterValue) > -1;
+        const containsBirth = author.hasBirthDate ? author.hasBirthDate[0].start.toString().indexOf(filterValue) > -1 : false;
+        const containsDeath = author.hasDeathDate ? author.hasDeathDate[0].start.toString().indexOf(filterValue) > -1 : false;
+        const containsActive = author.hasActiveDate ? author.hasActiveDate[0].start.toString().indexOf(filterValue) > -1 : false;
+
+        return containsInternalID || containsFirstName || containsLastName || containsDescription ||
+            containsBirth || containsDeath || containsActive;
+    }
+
+    static customSorting(item: any, property: string) {
+        switch (property) {
+            case "hasPersonInternalId":
+                return item.hasPersonInternalId[0].value;
+            case "hasFirstName":
+                return item.hasFirstName ? item.hasFirstName[0].value : null;
+            case "hasLastName":
+                return item.hasLastName[0].value;
+            case "hasDescription":
+                return item.hasDescription[0].value;
+            case "hasBirthDate":
+                return item.hasBirthDate ? item.hasBirthDate[0].start : null;
+            case "hasDeathDate":
+                return item.hasDeathDate ? item.hasDeathDate[0].start : null;
+            case "hasActiveDate":
+                return item.hasActiveDate ? item.hasActiveDate[0].start : null;
+            default:
+                return item[property];
+        }
     }
 
     ngOnInit() {
@@ -133,8 +170,6 @@ export class AuthorComponent implements OnInit {
 
         const genderNode = this.listService.getList("gender").nodes;
         this.genders = genderNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
-        // this.resetTable();
     }
 
     resetSearch() {
@@ -159,28 +194,15 @@ export class AuthorComponent implements OnInit {
         // this.form.get("extra.ex").reset("");
     }
 
-    clear(formControlName: string) {
-        this.form.get(formControlName).reset("");
-    }
-
     onChange(event, groupName: string) {
         event.checked ? this.form.get(groupName).disable() : this.form.get(groupName).enable();
     }
 
-    resetTable() {
-        this.knoraService.getAllAuthors()
-            .subscribe(data => {
-                console.log(data);
-                this.dataSource = new MatTableDataSource(data);
-                this.dataSource.sort = this.sort;
-            });
-
-        this.knoraService.getAllAuthorsCount()
-            .subscribe(amount => console.log(amount));
-    }
-
     applyFilter(filterValue: string) {
-        this.dataSource.filter = filterValue.trim().toLowerCase();
+        if (this.searchResults.length != 0) {
+            this.dataSource.filterPredicate = AuthorComponent.customFilter;
+            this.dataSource.filter = filterValue.trim().toLowerCase();
+        }
     }
 
     clearFilter() {
@@ -208,7 +230,7 @@ export class AuthorComponent implements OnInit {
         const dialogRef = this.createAuthorDialog.open(CreateUpdateAuthorComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
-                this.resetTable();
+                // TODO Refresh the table
                 this.dataSource.sort = this.sort;
             }
         });
@@ -294,14 +316,31 @@ export class AuthorComponent implements OnInit {
             this.genderRef.searchVal1 = null;
         }
 
-        this.amountResult = this.knoraService.gravsearchQueryCount(this.myAuthor, this.priority);
+        this.amountResult = this.knoraService.gravsearchQueryCount(this.myAuthor, this.PRIORITY);
 
-        this.knoraService.gravseachQuery(this.myAuthor, this.priority)
+        this.knoraService.gravseachQuery(this.myAuthor, this.PRIORITY)
             .subscribe(data => {
                 console.log("results", data);
                 this.searchResults = data;
                 this.dataSource = new MatTableDataSource(data);
                 this.dataSource.sort = this.sort;
+                this.dataSource.sortingDataAccessor = AuthorComponent.customSorting;
+            });
+    }
+
+    loadMoreResults() {
+        this.clearFilter();
+        this.searchStarted = true;
+
+        const offset = Math.floor(this.searchResults.length / this.MAX_RESOURCE_PER_RESULT);
+
+        this.knoraService.gravseachQuery(this.myAuthor, this.PRIORITY, offset)
+            .subscribe(data => {
+                this.searchResults.push(...data);
+                this.dataSource = new MatTableDataSource(this.searchResults);
+                this.dataSource.sort = this.sort;
+                this.dataSource.sortingDataAccessor = AuthorComponent.customSorting;
+                this.searchStarted = false;
             });
     }
 }

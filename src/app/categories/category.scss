@@ -103,11 +103,17 @@
             }
         }
 
-        table {
-            width: 100%;
+        .bla {
+            //width: 800px;
+            //max-width: 100%;
+            //overflow: auto;
 
-            .edit-btn {
-                color: rgba(159, 11, 11, 1);
+            table {
+                //width: 800px;
+
+                .edit-btn {
+                    color: rgba(159, 11, 11, 1);
+                }
             }
         }
 

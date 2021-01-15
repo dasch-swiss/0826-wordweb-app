@@ -168,20 +168,6 @@
             </mat-card-content>
         </mat-card>
 
-        <!--        <div style="border: 1px solid black; width: 100%; padding: 1rem;">-->
-        <!--            <div *ngIf="searchResults.length == 0"> No results</div>-->
-        <!--            <table>-->
-        <!--                <tr *ngFor="let result of searchResults">-->
-        <!--                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasPersonInternalId[0].value}}</td>-->
-        <!--                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasFirstName[0].value}}</td>-->
-        <!--                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasLastName[0].value}}</td>-->
-        <!--                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasDescription[0].value}}</td>-->
-        <!--                    <td style="border: 1px solid lightgrey; padding: 5px;">{{listService.getNameOfNode(result.hasGender[0].listNode)}}</td>-->
-        <!--                </tr>-->
-        <!--            </table>-->
-        <!--        </div>-->
-
-
         <div fxLayout="column" style="width: 100%;">
 
             <div class="filter-container">
@@ -206,109 +192,103 @@
 
             </div>
 
-            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+            <div class="bla">
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-                <!-- internal id -->
-                <ng-container matColumnDef="hasPersonInternalId">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Internal ID</th>
-                    <td mat-cell *matCellDef="let element">
-                        <div>{{element.hasPersonInternalId[0].value}}</div>
-                    </td>
-                </ng-container>
+                    <!-- row number -->
+                    <ng-container matColumnDef="row">
+                        <th mat-header-cell *matHeaderCellDef>Row</th>
+                        <td mat-cell *matCellDef="let element; let row = index;">
+                            <div>{{row + 1}}</div>
+                        </td>
+                    </ng-container>
 
-                <!-- first name column -->
-                <ng-container matColumnDef="hasFirstName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Firstname</th>
-                    <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element.hasFirstName">{{element.hasFirstName[0].value}}</div>
-                    </td>
-                </ng-container>
+                    <!-- internal id -->
+                    <ng-container matColumnDef="hasPersonInternalId">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Internal ID</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div>{{element.hasPersonInternalId[0].value}}</div>
+                        </td>
+                    </ng-container>
 
-                <!-- last name column -->
-                <ng-container matColumnDef="hasLastName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</th>
-                    <td mat-cell *matCellDef="let element">
-                        <div>{{element.hasLastName[0].value}}</div>
-                    </td>
-                </ng-container>
+                    <!-- first name column -->
+                    <ng-container matColumnDef="hasFirstName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Firstname</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="element.hasFirstName">{{element.hasFirstName[0].value}}</div>
+                        </td>
+                    </ng-container>
 
-                <!-- description column -->
-                <ng-container matColumnDef="hasDescription">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
-                    <td mat-cell *matCellDef="let element">
-                        <div>{{element.hasDescription[0].value}}</div>
-                    </td>
-                </ng-container>
+                    <!-- last name column -->
+                    <ng-container matColumnDef="hasLastName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div>{{element.hasLastName[0].value}}</div>
+                        </td>
+                    </ng-container>
 
-                <!--        &lt;!&ndash; birth date column &ndash;&gt;-->
-                <!--        <ng-container matColumnDef="birthDate">-->
-                <!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Birth year</th>-->
-                <!--            <td mat-cell *matCellDef="let element">-->
-                <!--                <div>{{getDateFormat(element.birthStartDate, element.birthEndDate)}}</div>-->
-                <!--            </td>-->
-                <!--        </ng-container>-->
+                    <!-- description column -->
+                    <ng-container matColumnDef="hasDescription">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div>{{element.hasDescription[0].value}}</div>
+                        </td>
+                    </ng-container>
 
-                <!--        &lt;!&ndash; death date column&ndash;&gt;-->
-                <!--        <ng-container matColumnDef="deathDate">-->
-                <!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Death year</th>-->
-                <!--            <td mat-cell *matCellDef="let element">-->
-                <!--                <div>{{getDateFormat(element.deathStartDate, element.deathEndDate)}}</div>-->
-                <!--            </td>-->
-                <!--        </ng-container>-->
+                    <!-- birth date column -->
+                    <ng-container matColumnDef="hasBirthDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Birth year</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="element.hasBirthDate">{{getDateFormat(element.hasBirthDate[0].start, element.hasBirthDate[0].end)}}</div>
+                        </td>
+                    </ng-container>
 
-                <!--        &lt;!&ndash; active date column&ndash;&gt;-->
-                <!--        <ng-container matColumnDef="activeDate">-->
-                <!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Activity</th>-->
-                <!--            <td mat-cell *matCellDef="let element">-->
-                <!--                <div>{{getDateFormat(element.flStartDate, element.flEndDate)}}</div>-->
-                <!--            </td>-->
-                <!--        </ng-container>-->
+                    <!-- death date column-->
+                    <ng-container matColumnDef="hasDeathDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Death year</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="element.hasDeathDate">{{getDateFormat(element.hasDeathDate[0].start, element.hasDeathDate[0].end)}}</div>
+                        </td>
+                    </ng-container>
 
-                <!-- gender column-->
-                <ng-container matColumnDef="hasGender">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Gender</th>
-                    <td mat-cell *matCellDef="let element">
-                        <div>{{listService.getNameOfNode(element.hasGender[0].listNode)}}</div>
-                    </td>
-                </ng-container>
+                    <!-- active date column-->
+                    <ng-container matColumnDef="hasActiveDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Activity</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="element.hasActiveDate">{{getDateFormat(element.hasActiveDate[0].start, element.hasActiveDate[0].end)}}</div>
+                        </td>
+                    </ng-container>
 
-                <!--        &lt;!&ndash; lexia column&ndash;&gt;-->
-                <!--        <ng-container matColumnDef="lexia">-->
-                <!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Lexia</th>-->
-                <!--            <td mat-cell *matCellDef="let element">-->
-                <!--                <div *ngIf="element.humanAsLexia">{{element.humanAsLexia.name}}</div>-->
-                <!--            </td>-->
-                <!--        </ng-container>-->
+                    <!-- gender column-->
+                    <ng-container matColumnDef="hasGender">
+                        <th mat-header-cell *matHeaderCellDef>Gender</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div>{{listService.getNameOfNode(element.hasGender[0].listNode)}}</div>
+                        </td>
+                    </ng-container>
 
-                <!--        &lt;!&ndash; order column &ndash;&gt;-->
-                <!--        <ng-container matColumnDef="order">-->
-                <!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Order</th>-->
-                <!--            <td mat-cell *matCellDef="let element">-->
-                <!--                <div>{{element.order}}</div>-->
-                <!--            </td>-->
-                <!--        </ng-container>-->
+                    <!-- button column -->
+                    <ng-container matColumnDef="action" stickyEnd>
+                        <th mat-header-cell *matHeaderCellDef>Detail</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="action-btn-container">
+                                <button class="edit-btn" mat-button mat-icon-button color="primary" (click)="edit(element)">
+                                    <mat-icon>navigate_next</mat-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
 
-                <!-- button column -->
-                <ng-container matColumnDef="action">
-                    <th mat-header-cell *matHeaderCellDef>Detail</th>
-                    <td mat-cell *matCellDef="let element">
-                        <div class="action-btn-container">
-                            <button class="edit-btn" mat-button mat-icon-button color="primary" (click)="edit(element)">
-                                <mat-icon>navigate_next</mat-icon>
-                            </button>
-                        </div>
-                    </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
 
             <div class="load-more" *ngIf="amountResult | async as amount">
 <!--                <button mat-button *ngIf="(passages.length !== amount) && !searchStarted" (click)="loadMoreResults()">-->
 <!--                    Load more-->
 <!--                </button>-->
-                <button mat-button>Load more</button>
+                <button mat-button (click)="loadMoreResults()">Load more</button>
             </div>
 
         </div>
