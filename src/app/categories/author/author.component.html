@@ -285,10 +285,7 @@
             </div>
 
             <div class="load-more" *ngIf="amountResult | async as amount">
-<!--                <button mat-button *ngIf="(passages.length !== amount) && !searchStarted" (click)="loadMoreResults()">-->
-<!--                    Load more-->
-<!--                </button>-->
-                <button mat-button (click)="loadMoreResults()">Load more</button>
+                <button mat-button *ngIf="(searchResults.length !== amount) && !searchStarted" (click)="loadMoreResults()">Load more</button>
             </div>
 
         </div>

@@ -214,7 +214,6 @@ export class AuthorComponent implements OnInit {
     }
 
     edit(author: Author) {
-        console.log(author);
         // this.createOrEditResource(true, author);
     }
 
@@ -241,7 +240,7 @@ export class AuthorComponent implements OnInit {
     }
 
     search() {
-        console.log("Searching starts...");
+        this.searchStarted = true;
 
         // Sets internal ID property
         if (this.form.get("internalId").value) {
@@ -320,11 +319,11 @@ export class AuthorComponent implements OnInit {
 
         this.knoraService.gravseachQuery(this.myAuthor, this.PRIORITY)
             .subscribe(data => {
-                console.log("results", data);
                 this.searchResults = data;
                 this.dataSource = new MatTableDataSource(data);
                 this.dataSource.sort = this.sort;
                 this.dataSource.sortingDataAccessor = AuthorComponent.customSorting;
+                this.searchStarted = false;
             });
     }
 
