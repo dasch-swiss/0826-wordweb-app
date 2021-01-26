@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
-import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
@@ -10,23 +9,19 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
 import {TreeTableService} from "../../services/tree-table.service";
-import {forkJoin} from "rxjs";
+import {forkJoin, Observable} from "rxjs";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 
 @Component({
     selector: "app-book",
     templateUrl: "./book.component.html",
-    styleUrls: ["./book.component.scss"],
-    animations: [
-        trigger("detailExpand", [
-            state("collapsed, void", style({height: "0px", minHeight: "0"})),
-            state("expanded", style({height: "*"})),
-            transition("expanded <=> collapsed, void => expanded", animate("225ms cubic-bezier(0.4, 0.0, 0.2, 1)"))
-        ]),
-    ]
+    styleUrls: ["../category2.scss"]
 })
 export class BookComponent implements OnInit {
     @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+    readonly PRIORITY = 0;
+    readonly MAX_RESOURCE_PER_RESULT = 25;
 
     myBook: IMainClass = {
         name: "book",
@@ -180,12 +175,14 @@ export class BookComponent implements OnInit {
     companyRef: IDisplayedProperty = this.myBook.props[13];
     actorRef: IDisplayedProperty = this.myBook.props[14];
     venueRef: IDisplayedProperty = this.myBook.props[15];
-    priority = 0;
-    searchResults = [];
 
-    dataSource: MatTableDataSource<Book>;
-    columnsToDisplay = ["detail", "internalID", "title", "authors", "createdDate", "publishDate", "order", "references", "action"];
-    expandedElements: any[] = [];
+    searchResults = [];
+    amountResult: Observable<number>;
+    searchStarted = false;
+
+    displayedColumns: string[] = ["row", "hasBookInternalId", "hasPrefixBookTitle", "hasBookTitle", "isWrittenBy", "hasEdition", "hasCreationDate", "action"];
+    dataSource: MatTableDataSource<any>;
+
     value: string;
     form: FormGroup;
     languages: any[];
@@ -203,6 +200,38 @@ export class BookComponent implements OnInit {
                 private organisationDialog: MatDialog,
                 private createBookDialog: MatDialog,
                 private treeTableService: TreeTableService) {
+    }
+
+    static customFilter(book: any, filterValue: string): boolean {
+        const containsInternalID = book.hasBookInternalId[0].value.indexOf(filterValue) > -1;
+        const containsPrefix = book.hasPrefixBookTitle ? book.hasPrefixBookTitle[0].value.toLowerCase().indexOf(filterValue) > -1 : false;
+        const containsTitle = book.hasBookTitle[0].value.toLowerCase().indexOf(filterValue) > -1;
+        const containEdition = book.hasEdition[0].value.toLowerCase().indexOf(filterValue) > -1;
+        const containsCreation = book.hasCreationDate ? book.hasCreationDate[0].start.toString().indexOf(filterValue) > -1 : false;
+        const containsAuthorName = book.isWrittenBy.filter(author => {
+            const containsFirstName = author.hasFirstName ? author.hasFirstName[0].value.toLowerCase().indexOf(filterValue) > -1 : false;
+            const containsLastName = author.hasLastName[0].value.toLowerCase().indexOf(filterValue) > -1;
+            return containsFirstName || containsLastName;
+        }).length > 0;
+
+        return containsInternalID || containsPrefix || containsTitle || containEdition || containsCreation || containsAuthorName;
+    }
+
+    static customSorting(item: any, property: string) {
+        switch (property) {
+            case "hasBookInternalId":
+                return item.hasBookInternalId[0].value;
+            case "hasPrefixBookTitle":
+                return item.hasPrefixBookTitle ? item.hasPrefixBookTitle[0].value : null;
+            case "hasBookTitle":
+                return item.hasBookTitle[0].value;
+            case "hasEdition":
+                return item.hasEdition[0].value;
+            case "hasCreationDate":
+                return item.hasCreationDate[0].start;
+            default:
+                return item[property];
+        }
     }
 
     ngOnInit() {
@@ -268,14 +297,12 @@ export class BookComponent implements OnInit {
         this.prepareCompanies();
         this.prepareVenues();
         this.prepareActors();
-
-        this.resetTable();
     }
 
     prepareCompanies() {
         this.knoraService.getCompaniesCount()
             .subscribe(amount => {
-                const maxOffset = Math.ceil(amount / 25);
+                const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
 
                 const requests = [];
 
@@ -303,7 +330,7 @@ export class BookComponent implements OnInit {
     prepareVenues() {
         this.knoraService.getVenuesCount()
             .subscribe(amount => {
-                const maxOffset = Math.ceil(amount / 25);
+                const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
 
                 const requests = [];
 
@@ -332,7 +359,7 @@ export class BookComponent implements OnInit {
     prepareActors() {
         this.knoraService.getActorsCount()
             .subscribe(amount => {
-                const maxOffset = Math.ceil(amount / 25);
+                const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
 
                 const requests = [];
 
@@ -395,51 +422,24 @@ export class BookComponent implements OnInit {
         this.form.controls.performedInNull.setValue(false);
         this.form.get("performedIn").enable();
         this.form.get("performedIn.perfI").reset("");
+        // this.form.controls.extraNull.setValue(false);
+        // this.form.get("extra").enable();
+        // this.form.get("extra.ex").reset("");
     }
 
     onChange(event, groupName: string) {
         event.checked ? this.form.get(groupName).disable() : this.form.get(groupName).enable();
     }
 
-    resetTable() {
-        this.apiService.getBooks(true).subscribe((books) => {
-            console.log(books);
-            this.dataSource = new MatTableDataSource(books);
-            this.dataSource.sort = this.sort;
-        });
-    }
-
     applyFilter(filterValue: string) {
-        this.dataSource.filterPredicate = this.customFilter;
-        this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-
-    customFilter(book: any, filterValue: string): boolean {
-        const containsInternalID = book.internalID.indexOf(filterValue) > -1;
-        const containsTitle = book.title.toLowerCase().indexOf(filterValue) > -1;
-        const containEdition = book.edition.toLowerCase().indexOf(filterValue) > -1;
-        const containEditionHist = book.editionHist.toLowerCase().indexOf(filterValue) > -1;
-        const containsAuthorName = book.authors.filter(author => {
-            const fullName = `${author.firstName} ${author.lastName}`;
-            return fullName.toLowerCase().indexOf(filterValue) > -1;
-        }).length > 0;
-        const containsVenue = book.venues.filter(venue => {
-            const fullName = `${venue.name}, ${venue.place}`;
-            return fullName.toLowerCase().indexOf(filterValue) > -1;
-        }).length > 0;
-        const containsOrganisation = book.organisations.filter(organisation => {
-            return organisation.name.toLowerCase().indexOf(filterValue) > -1;
-        }).length > 0;
-
-        return containsInternalID || containsTitle || containEdition || containEditionHist || containsAuthorName || containsVenue || containsOrganisation;
+        if (this.searchResults.length != 0) {
+            this.dataSource.filterPredicate = BookComponent.customFilter;
+            this.dataSource.filter = filterValue.trim().toLowerCase();
+        }
     }
 
     clearFilter() {
         this.dataSource.filter = this.value = "";
-    }
-
-    rowCount() {
-        return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
     create() {
@@ -447,7 +447,7 @@ export class BookComponent implements OnInit {
     }
 
     edit(book: Book) {
-        this.createOrEditResource(true, book);
+        // this.createOrEditResource(true, book);
     }
 
     createOrEditResource(editMod: boolean, resource: Book = null) {
@@ -462,35 +462,10 @@ export class BookComponent implements OnInit {
         const dialogRef = this.createBookDialog.open(CreateUpdateBookComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
-                this.resetTable();
+                // TODO Refresh the table
                 this.dataSource.sort = this.sort;
             }
         });
-    }
-
-    delete(id: number) {
-        console.log(`Book ID: ${id}`);
-    }
-
-    contains(obj: any, arr: any[]) {
-        for (const i of arr) {
-            if (JSON.stringify(obj) === JSON.stringify(i)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    addElement(obj: any, arr: any[]) {
-        arr.push(obj);
-    }
-
-    removeElement(obj: any, arr: any[]) {
-        return arr.filter((element => JSON.stringify(obj) !== JSON.stringify(element)));
-    }
-
-    expansion(element) {
-        this.contains(element, this.expandedElements) ? this.expandedElements = this.removeElement(element, this.expandedElements) : this.addElement(element, this.expandedElements);
     }
 
     getDateFormat(dateStart: string, dateEnd: string): string {
@@ -498,7 +473,7 @@ export class BookComponent implements OnInit {
     }
 
     search() {
-        console.log("Searching starts...");
+        this.searchStarted = true;
 
         // Sets internal ID property
         if (this.form.get("internalId").value) {
@@ -660,13 +635,31 @@ export class BookComponent implements OnInit {
             }
         }
 
-        this.knoraService.gravsearchQueryCount(this.myBook, this.priority)
-            .subscribe(numb => console.log("amount", numb));
+        this.amountResult = this.knoraService.gravsearchQueryCount(this.myBook, this.PRIORITY);
 
-        this.knoraService.gravseachQuery(this.myBook, this.priority)
+        this.knoraService.gravseachQuery(this.myBook, this.PRIORITY)
             .subscribe(data => {
-                console.log("results", data);
                 this.searchResults = data;
+                this.dataSource = new MatTableDataSource(data);
+                this.dataSource.sort = this.sort;
+                this.dataSource.sortingDataAccessor = BookComponent.customSorting;
+                this.searchStarted = false;
+            });
+    }
+
+    loadMoreResults() {
+        this.clearFilter();
+        this.searchStarted = true;
+
+        const offset = Math.floor(this.searchResults.length / this.MAX_RESOURCE_PER_RESULT);
+
+        this.knoraService.gravseachQuery(this.myBook, this.PRIORITY, offset)
+            .subscribe(data => {
+                this.searchResults.push(...data);
+                this.dataSource = new MatTableDataSource(this.searchResults);
+                this.dataSource.sort = this.sort;
+                this.dataSource.sortingDataAccessor = BookComponent.customSorting;
+                this.searchStarted = false;
             });
     }
 

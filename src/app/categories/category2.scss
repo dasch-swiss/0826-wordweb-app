@@ -1,0 +1,105 @@
+.container {
+    margin: 2rem 3rem;
+
+    .search-container {
+        margin-top: 1rem;
+
+        form {
+
+            table {
+                width: 100%;
+
+                tr, td {
+                    //border: 1px solid black;
+                }
+
+                input, select {
+                    width: 100%;
+                }
+
+                .checkbox {
+                    text-align: right;
+                }
+            }
+
+            .buttons {
+                margin-top: 1rem;
+                display: flex;
+
+                .search-btn {
+                    background-color: rgb(159, 11, 11);
+                    color: white;
+                    flex-grow: 1;
+                }
+
+                .clear-btn {
+                    margin-left: 1rem;
+                    font-weight: normal;
+                }
+            }
+        }
+
+        .result-container {
+            width: 100%;
+
+            .filter-container {
+                padding: 0 1rem;
+                display: flex;
+
+                .create-btn-container {
+                    margin: auto;
+
+                    .create-btn {
+                        background-color: rgb(159, 11, 11);
+                        color: white;
+                        flex-grow: 1;
+                    }
+                }
+
+                mat-form-field {
+                    margin: 0 2rem;
+                    flex-grow: 1;
+                }
+
+                .row-counter {
+                    margin: auto;
+                    color: gray;
+                }
+            }
+
+            .table-container {
+                //width: 800px;
+                //max-width: 100%;
+                //overflow: auto;
+
+                table {
+                    //width: 800px;
+                    width: 100%;
+
+                    .edit-btn {
+                        color: rgba(159, 11, 11, 1);
+                    }
+                }
+            }
+
+        }
+
+        .load-more {
+            height: 4rem;
+            // loading button is vertically aligned
+            display: flex;
+            align-items: center;
+
+            button {
+                width: 100%;
+            }
+        }
+
+        .spinner-small {
+            height: 4rem;
+            // Necessary to display the spinner within the div container (-> ngx spinner)
+            position: relative;
+        }
+    }
+
+}
