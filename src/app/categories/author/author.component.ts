@@ -15,7 +15,7 @@ import {Observable} from "rxjs";
 @Component({
     selector: "app-author",
     templateUrl: "./author.component.html",
-    styleUrls: ["../category.scss"]
+    styleUrls: ["../category2.scss"]
 })
 export class AuthorComponent implements OnInit {
     @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -110,7 +110,7 @@ export class AuthorComponent implements OnInit {
         const containsInternalID = author.hasPersonInternalId[0].value.indexOf(filterValue) > -1;
         const containsFirstName = author.hasFirstName ? author.hasFirstName[0].value.toLowerCase().indexOf(filterValue) > -1 : false;
         const containsLastName = author.hasLastName[0].value.toLowerCase().indexOf(filterValue) > -1;
-        const containsDescription = author.hasDescription[0].value.indexOf(filterValue) > -1;
+        const containsDescription = author.hasDescription[0].value.toLowerCase().indexOf(filterValue) > -1;
         const containsBirth = author.hasBirthDate ? author.hasBirthDate[0].start.toString().indexOf(filterValue) > -1 : false;
         const containsDeath = author.hasDeathDate ? author.hasDeathDate[0].start.toString().indexOf(filterValue) > -1 : false;
         const containsActive = author.hasActiveDate ? author.hasActiveDate[0].start.toString().indexOf(filterValue) > -1 : false;
