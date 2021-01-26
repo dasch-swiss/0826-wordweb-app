@@ -10,13 +10,19 @@ import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {TreeTableService} from "../../services/tree-table.service";
 import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
+import {Observable} from "rxjs";
 
 @Component({
     selector: "app-lexia",
     templateUrl: "./lexia.component.html",
-    styleUrls: ["../category.scss"]
+    styleUrls: ["../category2.scss"]
 })
 export class LexiaComponent implements OnInit {
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+    readonly PRIORITY = 0;
+    readonly MAX_RESOURCE_PER_RESULT = 25;
+
     myLexia: IMainClass = {
         name: "lexia",
         mainClass: {name: "lexia", variable: "lexia"},
@@ -54,23 +60,41 @@ export class LexiaComponent implements OnInit {
     lexiaDisplayedTitleRef: IDisplayedProperty = this.myLexia.props[2];
     formalClassRef: IDisplayedProperty = this.myLexia.props[3];
     imageRef: IDisplayedProperty = this.myLexia.props[4];
-    priority = 0;
-    searchResults = [];
 
-    displayedColumns: string[] = ["internalID", "name", "order", "references", "action"];
-    dataSource: MatTableDataSource<Lexia>;
+    searchResults = [];
+    amountResult: Observable<number>;
+    searchStarted = false;
+
+    displayedColumns: string[] = ["row", "hasLexiaInternalId", "hasLexiaTitle", "hasFormalClass", "action"];
+    dataSource: MatTableDataSource<any>;
     value: string;
     form: FormGroup;
     formalClasses: any[];
     images: any[];
-
-    @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(private apiService: ApiService,
                 public listService: ListService,
                 private knoraService: KnoraService,
                 private createLexiaDialog: MatDialog,
                 private treeTableService: TreeTableService) {
+    }
+
+    static customFilter(item: any, filterValue: string): boolean {
+        const containsInternalID = item.hasLexiaInternalId[0].value.indexOf(filterValue) > -1;
+        const containsTitle = item.hasLexiaTitle[0].value.toLowerCase().indexOf(filterValue) > -1;
+
+        return containsInternalID || containsTitle;
+    }
+
+    static customSorting(item: any, property: string) {
+        switch (property) {
+            case "hasLexiaInternalId":
+                return item.hasLexiaInternalId[0].value;
+            case "hasLexiaTitle":
+                return item.hasLexiaTitle[0].value;
+            default:
+                return item[property];
+        }
     }
 
     ngOnInit() {
@@ -97,8 +121,6 @@ export class LexiaComponent implements OnInit {
 
         const imageNode = this.listService.getList("image").nodes;
         this.images = imageNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
-        this.resetTable();
     }
 
     resetSearch() {
@@ -111,38 +133,32 @@ export class LexiaComponent implements OnInit {
         this.form.controls.imageNull.setValue(false);
         this.form.get("image").enable();
         this.form.get("image.img").reset("");
+        // this.form.controls.extraNull.setValue(false);
+        // this.form.get("extra").enable();
+        // this.form.get("extra.ex").reset("");
     }
 
     onChange(event, groupName: string) {
         event.checked ? this.form.get(groupName).disable() : this.form.get(groupName).enable();
     }
 
-    resetTable() {
-        this.apiService.getLexias(true).subscribe((lexias) => {
-            console.log(lexias);
-            this.dataSource = new MatTableDataSource(lexias);
-            this.dataSource.sort = this.sort;
-        });
-    }
-
     applyFilter(filterValue: string) {
-        this.dataSource.filter = filterValue.trim().toLowerCase();
+        if (this.searchResults.length != 0) {
+            this.dataSource.filterPredicate = LexiaComponent.customFilter;
+            this.dataSource.filter = filterValue.trim().toLowerCase();
+        }
     }
 
-    clear() {
+    clearFilter() {
         this.dataSource.filter = this.value = "";
     }
 
-    rowCount() {
-        return this.dataSource ? this.dataSource.filteredData.length : 0;
-    }
-
     create() {
-        this.createOrEditResource(false);
+        // this.createOrEditResource(false);
     }
 
-    editRow(lexia: Lexia) {
-        this.createOrEditResource(true, lexia);
+    edit(lexia: Lexia) {
+        // this.createOrEditResource(true, lexia);
     }
 
     createOrEditResource(editMod: boolean, resource: Lexia = null) {
@@ -157,17 +173,17 @@ export class LexiaComponent implements OnInit {
         const dialogRef = this.createLexiaDialog.open(CreateUpdateLexiaComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
-                this.resetTable();
+                // TODO Refresh the table
                 this.dataSource.sort = this.sort;
             }
         });
     }
 
-    deleteRow(id: number) {
+    export() {
     }
 
     search() {
-        console.log("Searching starts...");
+        this.searchStarted = true;
 
         // Sets internal ID property
         if (this.form.get("internalId").value) {
@@ -212,13 +228,32 @@ export class LexiaComponent implements OnInit {
             }
         }
 
-        this.knoraService.gravsearchQueryCount(this.myLexia, this.priority)
-            .subscribe(numb => console.log("amount", numb));
+        this.amountResult = this.knoraService.gravsearchQueryCount(this.myLexia, this.PRIORITY);
 
-        this.knoraService.gravseachQuery(this.myLexia, this.priority)
+        this.knoraService.gravseachQuery(this.myLexia, this.PRIORITY)
             .subscribe(data => {
                 console.log("results", data);
                 this.searchResults = data;
+                this.dataSource = new MatTableDataSource(data);
+                this.dataSource.sort = this.sort;
+                this.dataSource.sortingDataAccessor = LexiaComponent.customSorting;
+                this.searchStarted = false;
+            });
+    }
+
+    loadMoreResults() {
+        this.clearFilter();
+        this.searchStarted = true;
+
+        const offset = Math.floor(this.searchResults.length / this.MAX_RESOURCE_PER_RESULT);
+
+        this.knoraService.gravseachQuery(this.myLexia, this.PRIORITY, offset)
+            .subscribe(data => {
+                this.searchResults.push(...data);
+                this.dataSource = new MatTableDataSource(this.searchResults);
+                this.dataSource.sort = this.sort;
+                this.dataSource.sortingDataAccessor = LexiaComponent.customSorting;
+                this.searchStarted = false;
             });
     }
 

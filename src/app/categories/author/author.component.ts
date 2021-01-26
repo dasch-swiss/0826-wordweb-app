@@ -106,14 +106,14 @@ export class AuthorComponent implements OnInit {
                 private treeTableService: TreeTableService) {
     }
 
-    static customFilter(author: any, filterValue: string): boolean {
-        const containsInternalID = author.hasPersonInternalId[0].value.indexOf(filterValue) > -1;
-        const containsFirstName = author.hasFirstName ? author.hasFirstName[0].value.toLowerCase().indexOf(filterValue) > -1 : false;
-        const containsLastName = author.hasLastName[0].value.toLowerCase().indexOf(filterValue) > -1;
-        const containsDescription = author.hasDescription[0].value.toLowerCase().indexOf(filterValue) > -1;
-        const containsBirth = author.hasBirthDate ? author.hasBirthDate[0].start.toString().indexOf(filterValue) > -1 : false;
-        const containsDeath = author.hasDeathDate ? author.hasDeathDate[0].start.toString().indexOf(filterValue) > -1 : false;
-        const containsActive = author.hasActiveDate ? author.hasActiveDate[0].start.toString().indexOf(filterValue) > -1 : false;
+    static customFilter(item: any, filterValue: string): boolean {
+        const containsInternalID = item.hasPersonInternalId[0].value.indexOf(filterValue) > -1;
+        const containsFirstName = item.hasFirstName ? item.hasFirstName[0].value.toLowerCase().indexOf(filterValue) > -1 : false;
+        const containsLastName = item.hasLastName[0].value.toLowerCase().indexOf(filterValue) > -1;
+        const containsDescription = item.hasDescription[0].value.toLowerCase().indexOf(filterValue) > -1;
+        const containsBirth = item.hasBirthDate ? item.hasBirthDate[0].start.toString().indexOf(filterValue) > -1 : false;
+        const containsDeath = item.hasDeathDate ? item.hasDeathDate[0].start.toString().indexOf(filterValue) > -1 : false;
+        const containsActive = item.hasActiveDate ? item.hasActiveDate[0].start.toString().indexOf(filterValue) > -1 : false;
 
         return containsInternalID || containsFirstName || containsLastName || containsDescription ||
             containsBirth || containsDeath || containsActive;
@@ -210,7 +210,7 @@ export class AuthorComponent implements OnInit {
     }
 
     create() {
-        this.createOrEditResource(false);
+        // this.createOrEditResource(false);
     }
 
     edit(author: Author) {
@@ -233,6 +233,9 @@ export class AuthorComponent implements OnInit {
                 this.dataSource.sort = this.sort;
             }
         });
+    }
+
+    export() {
     }
 
     getDateFormat(dateStart: string, dateEnd: string): string {

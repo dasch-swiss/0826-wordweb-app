@@ -202,13 +202,13 @@ export class BookComponent implements OnInit {
                 private treeTableService: TreeTableService) {
     }
 
-    static customFilter(book: any, filterValue: string): boolean {
-        const containsInternalID = book.hasBookInternalId[0].value.indexOf(filterValue) > -1;
-        const containsPrefix = book.hasPrefixBookTitle ? book.hasPrefixBookTitle[0].value.toLowerCase().indexOf(filterValue) > -1 : false;
-        const containsTitle = book.hasBookTitle[0].value.toLowerCase().indexOf(filterValue) > -1;
-        const containEdition = book.hasEdition[0].value.toLowerCase().indexOf(filterValue) > -1;
-        const containsCreation = book.hasCreationDate ? book.hasCreationDate[0].start.toString().indexOf(filterValue) > -1 : false;
-        const containsAuthorName = book.isWrittenBy.filter(author => {
+    static customFilter(item: any, filterValue: string): boolean {
+        const containsInternalID = item.hasBookInternalId[0].value.indexOf(filterValue) > -1;
+        const containsPrefix = item.hasPrefixBookTitle ? item.hasPrefixBookTitle[0].value.toLowerCase().indexOf(filterValue) > -1 : false;
+        const containsTitle = item.hasBookTitle[0].value.toLowerCase().indexOf(filterValue) > -1;
+        const containEdition = item.hasEdition[0].value.toLowerCase().indexOf(filterValue) > -1;
+        const containsCreation = item.hasCreationDate ? item.hasCreationDate[0].start.toString().indexOf(filterValue) > -1 : false;
+        const containsAuthorName = item.isWrittenBy.filter(author => {
             const containsFirstName = author.hasFirstName ? author.hasFirstName[0].value.toLowerCase().indexOf(filterValue) > -1 : false;
             const containsLastName = author.hasLastName[0].value.toLowerCase().indexOf(filterValue) > -1;
             return containsFirstName || containsLastName;
@@ -443,7 +443,7 @@ export class BookComponent implements OnInit {
     }
 
     create() {
-        this.createOrEditResource(false);
+        // this.createOrEditResource(false);
     }
 
     edit(book: Book) {
@@ -466,6 +466,29 @@ export class BookComponent implements OnInit {
                 this.dataSource.sort = this.sort;
             }
         });
+    }
+
+    export() {
+        const data = [
+            {
+                id: 1,
+                firstName: 'Mark',
+                lastName: 'Otto',
+                handle: '@mdo'
+            },
+            {
+                id: 2,
+                firstName: 'Jacob',
+                lastName: 'Thornton',
+                handle: '@fat'
+            },
+            {
+                id: 3,
+                firstName: 'Larry',
+                lastName: 'the Bird',
+                handle: '@twitter'
+            },
+        ]
     }
 
     getDateFormat(dateStart: string, dateEnd: string): string {

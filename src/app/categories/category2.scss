@@ -43,16 +43,21 @@
             width: 100%;
 
             .filter-container {
-                padding: 0 1rem;
                 display: flex;
 
-                .create-btn-container {
+                .btn-container {
                     margin: auto;
 
                     .create-btn {
                         background-color: rgb(159, 11, 11);
                         color: white;
                         flex-grow: 1;
+                    }
+
+                    .download-btn {
+                        margin-left: 1rem;
+                        font-weight: normal;
+                        //color: rgb(159, 11, 11);
                     }
                 }
 

@@ -323,10 +323,16 @@
         <div class="result-container" fxLayout="column">
 
             <div class="filter-container">
-                <div class="create-btn-container">
-                    <button class="create-btn" type="button" mat-flat-button (click)="create()">
+
+                <div class="btn-container">
+                    <button class="create-btn" type="button" mat-raised-button (click)="create()">
                         <mat-icon>add</mat-icon>
-                        Create Book
+                        New Book
+                    </button>
+
+                    <button class="download-btn" type="button" mat-raised-button [disabled]="!dataSource || dataSource.filteredData.length == 0" (click)="export()">
+                        <mat-icon>get_app</mat-icon>
+                        Export
                     </button>
                 </div>
 
