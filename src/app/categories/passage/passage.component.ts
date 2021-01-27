@@ -5,27 +5,24 @@ import {MatTableDataSource} from "@angular/material/table";
 import {Book, Passage} from "../../model/model";
 import {ApiService} from "../../services/api.service";
 import {CreateUpdatePassageComponent} from "./create-update-passage/create-update-passage.component";
-import {BookRefComponent} from "../../dialog/book-ref/book-ref.component";
-import {animate, state, style, transition, trigger} from "@angular/animations";
 import {FormControl, FormGroup} from "@angular/forms";
 import {TreeTableService} from "../../services/tree-table.service";
 import {KnoraService} from "../../services/knora.service";
 import {ListService} from "../../services/list.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
+import {Observable} from "rxjs";
 
 @Component({
   selector: "app-passage",
   templateUrl: "./passage.component.html",
-  styleUrls: ["./passage.component.scss"],
-    animations: [
-        trigger("detailExpand", [
-            state("collapsed, void", style({height: "0px", minHeight: "0"})),
-            state("expanded", style({height: "*"})),
-            transition("expanded <=> collapsed, void => expanded", animate("225ms cubic-bezier(0.4, 0.0, 0.2, 1)"))
-        ]),
-    ]
+  styleUrls: ["../category2.scss"]
 })
 export class PassageComponent implements OnInit {
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+    readonly PRIORITY = 0;
+    readonly MAX_RESOURCE_PER_RESULT = 25;
+
     myPassage: IMainClass = {
         name: "passage",
         mainClass: {name: "passage", variable: "passage"},
@@ -216,12 +213,13 @@ export class PassageComponent implements OnInit {
     contributorRef: IDisplayedProperty = this.myPassage.props[14].res.props[1];
     lexiaRef: IDisplayedProperty = this.myPassage.props[15];
     lexiaTitleRef: IDisplayedProperty = this.myPassage.props[15].res.props[0];
-    priority = 0;
-    searchResults = [];
 
-    columnsToDisplay: string[] = ["detail", "book", "text", "textHist", "page", "pageHist", "order", "references", "action"];
-    dataSource: MatTableDataSource<Passage>;
-    expandedElements: any[] = [];
+    searchResults = [];
+    amountResult: Observable<number>;
+    searchStarted = false;
+
+    displayedColumns: string[] = ["row", "hasDisplayedTitle", "hasText", "hasTextHist", "contains", "action"];
+    dataSource: MatTableDataSource<any>;
     value: string;
     form: FormGroup;
     researchFields: any[];
@@ -229,7 +227,29 @@ export class PassageComponent implements OnInit {
     markings: any[];
     status: any[];
 
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    static customFilter(item: any, filterValue: string): boolean {
+        const containsDispTitle = item.hasDisplayedTitle[0].value.toLowerCase().indexOf(filterValue) > -1;
+        const containsText = item.hasText[0].value.toLowerCase().indexOf(filterValue) > -1;
+        const containsTextHist = item.hasTextHist ? item.hasTextHist[0].value.toLowerCase().indexOf(filterValue) > -1 : false;
+        const containsLexia = item.contains ? item.contains.filter(lexia => {
+            return lexia.hasLexiaTitle[0].value.toLowerCase().indexOf(filterValue) > -1;
+        }).length > 0 : false;
+
+        return containsDispTitle || containsText || containsTextHist || containsLexia;
+    }
+
+    static customSorting(item: any, property: string) {
+        switch (property) {
+            case "hasDisplayedTitle":
+                return item.hasDisplayedTitle[0].value;
+            case "hasText":
+                return item.hasText[0].value;
+            case "hasTextHist":
+                return item.hasTextHist ? item.hasTextHist[0].value : null;
+            default:
+                return item[property];
+        }
+    }
 
     constructor(private apiService: ApiService,
                 private passageDialog: MatDialog,
@@ -237,13 +257,6 @@ export class PassageComponent implements OnInit {
                 public listService: ListService,
                 private knoraService: KnoraService,
                 private treeTableService: TreeTableService) {
-    }
-
-    static customFilter(passage: Passage, filterValue: string): boolean {
-        const containsEdition = (passage.occursIn as Book).title.toLowerCase().indexOf(filterValue) > -1;
-        const containsText = passage.text.toLowerCase().indexOf(filterValue) > -1;
-
-        return containsEdition || containsText;
     }
 
     ngOnInit() {
@@ -305,8 +318,6 @@ export class PassageComponent implements OnInit {
 
         const statusNode = this.listService.getList("status").nodes;
         this.status = statusNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
-        this.resetTable();
     }
 
     resetSearch() {
@@ -351,39 +362,26 @@ export class PassageComponent implements OnInit {
         event.checked ? this.form.get(groupName).disable() : this.form.get(groupName).enable();
     }
 
-    resetTable() {
-        this.apiService.getPassages(true).subscribe((passages) => {
-            console.log(passages);
-            this.dataSource = new MatTableDataSource(passages);
-            this.dataSource.sort = this.sort;
-            this.dataSource.sortingDataAccessor = ((item: any, property) => {
-                switch (property) {
-                    case "book": return item.occursIn.title;
-                    default: return item[property];
-                }
-            });
-        });
-    }
-
     applyFilter(filterValue: string) {
-        this.dataSource.filterPredicate = PassageComponent.customFilter;
-        this.dataSource.filter = filterValue.trim().toLowerCase();
+        if (this.searchResults.length != 0) {
+            console.log("A");
+            this.dataSource.filterPredicate = PassageComponent.customFilter;
+            this.dataSource.filter = filterValue.trim().toLowerCase();
+        } else {
+            console.log("B");
+        }
     }
 
-    clear() {
+    clearFilter() {
         this.dataSource.filter = this.value = "";
     }
 
-    rowCount() {
-        return this.dataSource ? this.dataSource.filteredData.length : 0;
-    }
-
     create() {
-        this.createOrEditResource(false);
+        // this.createOrEditResource(false);
     }
 
     edit(passage: Passage) {
-        this.createOrEditResource(true, passage);
+        // this.createOrEditResource(true, passage);
     }
 
     createOrEditResource(editMod: boolean, resource: Passage = null) {
@@ -398,60 +396,17 @@ export class PassageComponent implements OnInit {
         const dialogRef = this.passageDialog.open(CreateUpdatePassageComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
-                this.resetTable();
+                // TODO Refresh the table
                 this.dataSource.sort = this.sort;
             }
         });
     }
 
-    delete(id: number) {
-        console.log(`Passage ID: ${id}`);
-    }
-
-    editBook(passage: Passage) {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
-        dialogConfig.data = {
-            list: [passage.occursIn],
-            editMod: [passage.occursIn].length > 0,
-            max: 1
-        };
-        const dialogRef = this.editionDialog.open(BookRefComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe((data) => {
-            if (data.submit) {
-                const copyPassage = JSON.parse(JSON.stringify(passage));
-                copyPassage.edition = data.data[0];
-                // update request
-                this.apiService.updatePassage(copyPassage.id, copyPassage);
-                this.resetTable();
-            }
-        });
-    }
-
-    contains(obj: any, arr: any[]) {
-        for (const i of arr) {
-            if (JSON.stringify(obj) === JSON.stringify(i)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    addElement(obj: any, arr: any[]) {
-        arr.push(obj);
-    }
-
-    removeElement(obj: any, arr: any[]) {
-        return arr.filter((element => JSON.stringify(obj) !== JSON.stringify(element)));
-    }
-
-    expansion(element) {
-        this.contains(element, this.expandedElements) ? this.expandedElements = this.removeElement(element, this.expandedElements) : this.addElement(element, this.expandedElements);
+    export() {
     }
 
     search() {
-        console.log("Searching starts...");
+        this.searchStarted = true;
 
         // Sets text property
         if (this.form.get("text").value) {
@@ -591,13 +546,32 @@ export class PassageComponent implements OnInit {
             }
         }
 
-        this.knoraService.gravsearchQueryCount(this.myPassage, this.priority)
-            .subscribe(numb => console.log("amount", numb));
+        this.amountResult = this.knoraService.gravsearchQueryCount(this.myPassage, this.PRIORITY);
 
-        this.knoraService.gravseachQuery(this.myPassage, this.priority)
+        this.knoraService.gravseachQuery(this.myPassage, this.PRIORITY)
             .subscribe(data => {
                 console.log("results", data);
                 this.searchResults = data;
+                this.dataSource = new MatTableDataSource(data);
+                this.dataSource.sort = this.sort;
+                this.dataSource.sortingDataAccessor = PassageComponent.customSorting;
+                this.searchStarted = false;
+            });
+    }
+
+    loadMoreResults() {
+        this.clearFilter();
+        this.searchStarted = true;
+
+        const offset = Math.floor(this.searchResults.length / this.MAX_RESOURCE_PER_RESULT);
+
+        this.knoraService.gravseachQuery(this.myPassage, this.PRIORITY, offset)
+            .subscribe(data => {
+                this.searchResults.push(...data);
+                this.dataSource = new MatTableDataSource(this.searchResults);
+                this.dataSource.sort = this.sort;
+                this.dataSource.sortingDataAccessor = PassageComponent.customSorting;
+                this.searchStarted = false;
             });
     }
 
