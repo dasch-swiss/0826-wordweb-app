@@ -10,13 +10,19 @@ import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
 import {TreeTableService} from "../../services/tree-table.service";
+import {Observable} from "rxjs";
 
 @Component({
     selector: "app-venue",
     templateUrl: "./venue.component.html",
-    styleUrls: ["../category.scss"]
+    styleUrls: ["../category2.scss"]
 })
 export class VenueComponent implements OnInit {
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+    readonly PRIORITY = 0;
+    readonly MAX_RESOURCE_PER_RESULT = 25;
+
     myVenue: IMainClass = {
         name: "venue",
         mainClass: {name: "venue", variable: "venue"},
@@ -36,16 +42,29 @@ export class VenueComponent implements OnInit {
 
     internalIDRef: IDisplayedProperty = this.myVenue.props[0];
     placeVenueRef: IDisplayedProperty = this.myVenue.props[1];
-    priority = 0;
-    searchResults = [];
 
-    displayedColumns: string[] = ["internalID", "name", "place", "order", "references", "action"];
+    searchResults = [];
+    amountResult: Observable<number>;
+    searchStarted = false;
+
+    displayedColumns: string[] = ["row", "hasVenueInternalId", "hasPlaceVenue", "action"];
     dataSource: MatTableDataSource<Venue>;
     value: string;
     form: FormGroup;
     placeVenues: any[];
 
-    @ViewChild(MatSort, {static: true}) sort: MatSort;
+    static customFilter(item: any, filterValue: string): boolean {
+        return item.hasVenueInternalId[0].value.indexOf(filterValue) > -1;
+    }
+
+    static customSorting(item: any, property: string) {
+        switch (property) {
+            case "hasVenueInternalId":
+                return item.hasVenueInternalId[0].value;
+            default:
+                return item[property];
+        }
+    }
 
     constructor(private apiService: ApiService,
                 public listService: ListService,
@@ -66,44 +85,37 @@ export class VenueComponent implements OnInit {
 
         const placeVenueNode = this.listService.getList("placeVenue").nodes
         this.placeVenues = placeVenueNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
-        this.resetTable();
     }
 
     resetSearch() {
         this.form.get("internalId").reset("");
         this.form.get("placeVenue").reset("");
+        // this.form.controls.extraNull.setValue(false);
+        // this.form.get("extra").enable();
+        // this.form.get("extra.ex").reset("");
     }
 
     onChange(event, groupName: string) {
         event.checked ? this.form.get(groupName).disable() : this.form.get(groupName).enable();
     }
 
-    resetTable() {
-        this.apiService.getVenues(true).subscribe((venues) => {
-            this.dataSource = new MatTableDataSource(venues);
-            this.dataSource.sort = this.sort;
-        });
-    }
-
     applyFilter(filterValue: string) {
-        this.dataSource.filter = filterValue.trim().toLowerCase();
+        if (this.searchResults.length != 0) {
+            this.dataSource.filterPredicate = VenueComponent.customFilter;
+            this.dataSource.filter = filterValue.trim().toLowerCase();
+        }
     }
 
-    clear() {
+    clearFilter() {
         this.dataSource.filter = this.value = "";
     }
 
-    rowCount() {
-        return this.dataSource ? this.dataSource.filteredData.length : 0;
-    }
-
     create() {
-        this.createOrEditResource(false);
+        // this.createOrEditResource(false);
     }
 
     edit(venue: Venue) {
-        this.createOrEditResource(true, venue);
+        // this.createOrEditResource(true, venue);
     }
 
     createOrEditResource(editMod: boolean, resource: Venue = null) {
@@ -117,18 +129,17 @@ export class VenueComponent implements OnInit {
         const dialogRef = this.createVenueDialog.open(CreateUpdateVenueComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
-                this.resetTable();
+                // TODO Refresh the table
                 this.dataSource.sort = this.sort;
             }
         });
     }
 
-    delete(id: number) {
-        console.log(`Venue ID: ${id}`);
+    export() {
     }
 
     search() {
-        console.log("Searching starts...");
+        this.searchStarted = true;
 
         // Sets internal ID property
         if (this.form.get("internalId").value) {
@@ -143,13 +154,32 @@ export class VenueComponent implements OnInit {
             this.placeVenueRef.searchVal1 = null;
         }
 
-        this.knoraService.gravsearchQueryCount(this.myVenue, this.priority)
-            .subscribe(numb => console.log("amount", numb));
+        this.amountResult = this.knoraService.gravsearchQueryCount(this.myVenue, this.PRIORITY);
 
-        this.knoraService.gravseachQuery(this.myVenue, this.priority)
+        this.knoraService.gravseachQuery(this.myVenue, this.PRIORITY)
             .subscribe(data => {
                 console.log("results", data);
                 this.searchResults = data;
+                this.dataSource = new MatTableDataSource(data);
+                this.dataSource.sort = this.sort;
+                this.dataSource.sortingDataAccessor = VenueComponent.customSorting;
+                this.searchStarted = false;
+            });
+    }
+
+    loadMoreResults() {
+        this.clearFilter();
+        this.searchStarted = true;
+
+        const offset = Math.floor(this.searchResults.length / this.MAX_RESOURCE_PER_RESULT);
+
+        this.knoraService.gravseachQuery(this.myVenue, this.PRIORITY, offset)
+            .subscribe(data => {
+                this.searchResults.push(...data);
+                this.dataSource = new MatTableDataSource(this.searchResults);
+                this.dataSource.sort = this.sort;
+                this.dataSource.sortingDataAccessor = VenueComponent.customSorting;
+                this.searchStarted = false;
             });
     }
 

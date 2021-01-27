@@ -72,102 +72,96 @@
             </mat-card-content>
         </mat-card>
 
-        <div style="border: 1px solid black; width: 100%; padding: 1rem;">
-            <div *ngIf="searchResults.length == 0"> No results</div>
-            <table>
-                <tr *ngFor="let result of searchResults">
-                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasVenueInternalId[0].value}}</td>
-                    <td style="border: 1px solid lightgrey; padding: 5px;">{{listService.getNameOfNode(result.hasPlaceVenue[0].listNode)}}</td>
-                </tr>
-            </table>
+        <div class="result-container" fxLayout="column">
+
+            <div class="filter-container">
+
+                <div class="btn-container">
+                    <button class="create-btn" type="button" mat-raised-button (click)="create()">
+                        <mat-icon>add</mat-icon>
+                        New Venue
+                    </button>
+
+                    <button class="download-btn" type="button" mat-raised-button [disabled]="!dataSource || dataSource.filteredData.length == 0" (click)="export()">
+                        <mat-icon>get_app</mat-icon>
+                        Export
+                    </button>
+                </div>
+
+                <mat-form-field>
+                    <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter">
+                    <button *ngIf="value" mat-button matSuffix mat-icon-button (click)="clearFilter()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <div class="row-counter">{{dataSource ? dataSource.filteredData.length : 0}} <span
+                        *ngIf="amountResult | async as total"> of {{total}}
+                    results</span>
+                </div>
+
+            </div>
+
+            <div class="table-container">
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+                    <!-- row number -->
+                    <ng-container matColumnDef="row">
+                        <th mat-header-cell *matHeaderCellDef>Row</th>
+                        <td mat-cell *matCellDef="let element; let row = index;">
+                            <div>{{row + 1}}</div>
+                        </td>
+                    </ng-container>
+
+                    <!-- internal id -->
+                    <ng-container matColumnDef="hasVenueInternalId">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Internal ID</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div>{{element.hasVenueInternalId[0].value}}</div>
+                        </td>
+                    </ng-container>
+
+                    <!-- place venue column -->
+                    <ng-container matColumnDef="hasPlaceVenue">
+                        <th mat-header-cell *matHeaderCellDef>Place Venue</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div>{{listService.getNameOfNode(element.hasPlaceVenue[0].listNode)}}</div>
+                        </td>
+                    </ng-container>
+
+                    <!-- button column -->
+                    <ng-container matColumnDef="action" stickyEnd>
+                        <th mat-header-cell *matHeaderCellDef>Detail</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="action-btn-container">
+                                <button class="edit-btn" mat-button mat-icon-button color="primary" (click)="edit(element)">
+                                    <mat-icon>navigate_next</mat-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+
+            <div class="load-more" *ngIf="amountResult | async as amount">
+                <button mat-button *ngIf="(searchResults.length !== amount) && !searchStarted" (click)="loadMoreResults()">Load more</button>
+            </div>
+
         </div>
+
+<!--        <div style="border: 1px solid black; width: 100%; padding: 1rem;">-->
+<!--            <div *ngIf="searchResults.length == 0"> No results</div>-->
+<!--            <table>-->
+<!--                <tr *ngFor="let result of searchResults">-->
+<!--                    <td style="border: 1px solid lightgrey; padding: 5px;">{{result.hasVenueInternalId[0].value}}</td>-->
+<!--                    <td style="border: 1px solid lightgrey; padding: 5px;">{{listService.getNameOfNode(result.hasPlaceVenue[0].listNode)}}</td>-->
+<!--                </tr>-->
+<!--            </table>-->
+<!--        </div>-->
 
     </div>
 
 </div>
-
-<!--<div class="table-container">-->
-
-<!--    <a [routerLink]="['/categories']">< back</a>-->
-<!--    <h2>List of Venues</h2>-->
-
-<!--    <div class="filter-container">-->
-<!--        <div class="create-btn-container">-->
-<!--            <button mat-raised-button type="button" color="primary" (click)="create()">-->
-<!--                <mat-icon>add</mat-icon>-->
-<!--                Create Venue-->
-<!--            </button>-->
-<!--        </div>-->
-<!--        <mat-form-field>-->
-<!--            <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter"-->
-<!--                   (keydown.escape)="clear()">-->
-<!--            <button *ngIf="value" mat-button matSuffix mat-icon-button arial-label="Clear" (click)="clear()">-->
-<!--                <mat-icon>close</mat-icon>-->
-<!--            </button>-->
-<!--        </mat-form-field>-->
-<!--        <div class="row-counter">Amount: {{rowCount()}}</div>-->
-<!--    </div>-->
-
-<!--    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">-->
-
-<!--        &lt;!&ndash; internal id &ndash;&gt;-->
-<!--        <ng-container matColumnDef="internalID">-->
-<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Internal ID</th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div>{{element.internalID}}</div>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        &lt;!&ndash; name Column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="name">-->
-<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div>{{element.name}}</div>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        &lt;!&ndash; place column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="place">-->
-<!--            <th mat-header-cell *matHeaderCellDef>Place</th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div>{{element.place}}</div>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        &lt;!&ndash; order column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="order">-->
-<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Order</th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div>{{element.order}}</div>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        &lt;!&ndash; reference column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="references">-->
-<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>References</th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div class="read-only-value">{{element.references}}</div>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        &lt;!&ndash; button column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="action">-->
-<!--            <th mat-header-cell *matHeaderCellDef></th>-->
-<!--            <td mat-cell *matCellDef="let element">-->
-<!--                <div class="action-btn-container">-->
-<!--                    <button mat-button mat-icon-button color="primary" (click)="edit(element)">-->
-<!--                        <mat-icon>edit</mat-icon>-->
-<!--                    </button>-->
-<!--                    <button mat-button mat-icon-button color="warn" (click)="delete(element.id)"-->
-<!--                            [disabled]="element.references !== 0">-->
-<!--                        <mat-icon>delete</mat-icon>-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--            </td>-->
-<!--        </ng-container>-->
-
-<!--        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>-->
-<!--        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
-<!--    </table>-->
-
-<!--</div>-->
