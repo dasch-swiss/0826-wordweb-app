@@ -184,7 +184,7 @@
 
                     <!-- formal class column -->
                     <ng-container matColumnDef="hasFormalClass">
-                        <th mat-header-cell *matHeaderCellDef>Formal Class</th>
+                        <th mat-header-cell *matHeaderCellDef>Formal Class *</th>
                         <td mat-cell *matCellDef="let element">
                             <div *ngFor="let fc of element.hasFormalClass">{{listService.getNameOfNode(fc.listNode)}}</div>
                         </td>

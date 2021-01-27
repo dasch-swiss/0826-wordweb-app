@@ -387,7 +387,7 @@
 
                     <!-- author column -->
                     <ng-container matColumnDef="isWrittenBy">
-                        <th mat-header-cell *matHeaderCellDef>Author</th>
+                        <th mat-header-cell *matHeaderCellDef>Author *</th>
                         <td mat-cell *matCellDef="let element">
                             <div *ngFor="let author of element.isWrittenBy">
                                 <span *ngIf="author.hasFirstName">{{author.hasFirstName[0].value}} </span>{{author.hasLastName[0].value}}
