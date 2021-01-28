@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
-import {Book, Passage} from "../../model/model";
+import {Passage} from "../../model/model";
 import {ApiService} from "../../services/api.service";
 import {CreateUpdatePassageComponent} from "./create-update-passage/create-update-passage.component";
 import {FormControl, FormGroup} from "@angular/forms";
@@ -11,6 +11,7 @@ import {KnoraService} from "../../services/knora.service";
 import {ListService} from "../../services/list.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {Observable} from "rxjs";
+import {ExportService} from "../../services/export.service";
 
 @Component({
   selector: "app-passage",
@@ -256,6 +257,7 @@ export class PassageComponent implements OnInit {
                 private editionDialog: MatDialog,
                 public listService: ListService,
                 private knoraService: KnoraService,
+                private exportService: ExportService,
                 private treeTableService: TreeTableService) {
     }
 
@@ -364,11 +366,8 @@ export class PassageComponent implements OnInit {
 
     applyFilter(filterValue: string) {
         if (this.searchResults.length != 0) {
-            console.log("A");
             this.dataSource.filterPredicate = PassageComponent.customFilter;
             this.dataSource.filter = filterValue.trim().toLowerCase();
-        } else {
-            console.log("B");
         }
     }
 
@@ -403,6 +402,25 @@ export class PassageComponent implements OnInit {
     }
 
     export() {
+        const dataToExport = this.searchResults.map(p => {
+            let passage = {};
+            passage["ID"] = p.id;
+            passage["Displayed Title"] = p.hasPrefixDisplayedTitle ? `${p.hasPrefixDisplayedTitle[0].value} ${p.hasDisplayedTitle[0].value}` : p.hasDisplayedTitle[0].value;
+            passage["Book Title"] = p.occursIn[0].hasPrefixBookTitle ? `${p.occursIn[0].hasPrefixBookTitle[0].value} ${p.occursIn[0].hasBookTitle[0].value}` : p.occursIn[0].hasBookTitle[0].value;
+            passage["Text"] = p.hasText[0].value;
+            passage["Page"] = p.hasPage ? p.hasPage[0].value : null;
+            passage["Text Hist."] = p.hasTextHist ? p.hasTextHist[0].value : null;
+            passage["Page Hist."] = p.hasPageHist ? p.hasPageHist[0].value : null;
+            passage["Lexia"] = p.contains ? p.contains.map(l => l.hasLexiaTitle[0].value).join("_") : null;
+            passage["Research Field"] = this.listService.getNameOfNode(p.hasResearchField[0].listNode);
+            passage["Function Voice"] = p.hasFunctionVoice.map(fv => this.listService.getNameOfNode(fv.listNode)).join("_");
+            passage["Marking"] = p.hasMarking.map(m => this.listService.getNameOfNode(m.listNode)).join("_");
+            passage["Status"] = this.listService.getNameOfNode(p.hasStatus[0].listNode);
+            passage["Internal Comment"] = p.hasInternalComment ? p.hasInternalComment[0].value : null;
+            passage["Passage Comment"] = p.hasPassageComment ? p.hasPassageComment[0].value : null
+            return passage;
+        });
+        this.exportService.exportToCsv(dataToExport, "wordweb_passages");
     }
 
     search() {

@@ -11,6 +11,7 @@ import {TreeTableService} from "../../services/tree-table.service";
 import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
 import {Observable} from "rxjs";
+import {ExportService} from "../../services/export.service";
 
 @Component({
     selector: "app-lexia",
@@ -75,6 +76,7 @@ export class LexiaComponent implements OnInit {
     constructor(private apiService: ApiService,
                 public listService: ListService,
                 private knoraService: KnoraService,
+                private exportService: ExportService,
                 private createLexiaDialog: MatDialog,
                 private treeTableService: TreeTableService) {
     }
@@ -180,6 +182,17 @@ export class LexiaComponent implements OnInit {
     }
 
     export() {
+        const dataToExport = this.searchResults.map(l => {
+            let lexia = {};
+            lexia["ID"] = l.id;
+            lexia["Internal ID"] = l.hasLexiaInternalId[0].value;
+            lexia["Title"] = l.hasLexiaTitle[0].value;
+            lexia["Displayed Title"] = l.hasLexiaDisplayedTitle ? l.hasLexiaDisplayedTitle[0].value : null;
+            lexia["Formal Class"] = l.hasFormalClass.map(fc => this.listService.getNameOfNode(fc.listNode)).join("_");
+            lexia["Image"] = l.hasImage ? l.hasImage.map(img => this.listService.getNameOfNode(img.listNode)).join("_") : null;
+            return lexia;
+        });
+        this.exportService.exportToCsv(dataToExport, "wordweb_lexias");
     }
 
     search() {

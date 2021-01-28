@@ -11,6 +11,7 @@ import {KnoraService} from "../../services/knora.service";
 import {TreeTableService} from "../../services/tree-table.service";
 import {forkJoin, Observable} from "rxjs";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
+import {ExportService} from "../../services/export.service";
 
 @Component({
     selector: "app-book",
@@ -197,6 +198,7 @@ export class BookComponent implements OnInit {
                 private knoraService: KnoraService,
                 private authorDialog: MatDialog,
                 private venueDialog: MatDialog,
+                private exportService: ExportService,
                 private organisationDialog: MatDialog,
                 private createBookDialog: MatDialog,
                 private treeTableService: TreeTableService) {
@@ -469,26 +471,31 @@ export class BookComponent implements OnInit {
     }
 
     export() {
-        const data = [
-            {
-                id: 1,
-                firstName: 'Mark',
-                lastName: 'Otto',
-                handle: '@mdo'
-            },
-            {
-                id: 2,
-                firstName: 'Jacob',
-                lastName: 'Thornton',
-                handle: '@fat'
-            },
-            {
-                id: 3,
-                firstName: 'Larry',
-                lastName: 'the Bird',
-                handle: '@twitter'
-            },
-        ]
+        const dataToExport = this.searchResults.map(b => {
+            let book = {};
+            book["ID"] = b.id;
+            book["Internal ID"] = b.hasBookInternalId[0].value;
+            book["Title"] = b.hasPrefixBookTitle ? `${b.hasPrefixBookTitle[0].value} ${b.hasBookTitle[0].value}` : b.hasBookTitle[0].value;
+            book["Author"] = b.isWrittenBy.map(a => a.hasFirstName ? `${a.hasFirstName[0].value} ${a.hasLastName[0].value}` : `${a.hasLastName[0].value}`).join("_");
+            book["Edition"] = b.hasEdition[0].value;
+            book["Edition Hist."] = b.hasEditionHist ? b.hasEditionHist[0].value : null;
+            book["Language"] = this.listService.getNameOfNode(b.hasLanguage[0].listNode);
+            book["Genre"] = b.hasGenre.map(genre => this.listService.getNameOfNode(genre.listNode)).join("_");
+            book["Subject"] = b.hasSubject ? b.hasSubject.map(s => this.listService.getNameOfNode(s.listNode)).join("_") : null;
+            book["Creation Date Start"] = b.hasCreationDate ? b.hasCreationDate[0].start : null;
+            book["Creation Date End"] = b.hasCreationDate ? b.hasCreationDate[0].end : null;
+            book["Publication Date Start"] = b.hasPublicationDate ? b.hasPublicationDate[0].start : null;
+            book["Publication Date End"] = b.hasPublicationDate ? b.hasPublicationDate[0].end : null;
+            book["First Performance Date Start"] = b.hasFirstPerformanceDate ? b.hasFirstPerformanceDate[0].start : null;
+            book["First Performance Date End"] = b.hasFirstPerformanceDate ? b.hasFirstPerformanceDate[0].end : null;
+            book["Book Comment"] = b.hasBookComment ? b.hasBookComment[0].value : null;
+            // TODO Following data were not fetched in the search and are therefore not available for export
+            // book["Performed By"] = b.performedBy ? b.performedBy.map(c => c.hasCompanyTitle[0].value).join("_") : null;
+            // book["Performed By Actor"] = b.performedByActor ? b.performedByActor.map(a => a.hasFirstName ? `${a.hasFirstName[0].value} ${a.hasLastName[0].value}` : `${a.hasLastName[0].value}`).join("_") : null;
+            // book["Performed In"] = b.performedIn ? b.performedIn.map(v => this.listService.getNameOfNode(v.hasPlaceVenue[0].listNode)).join("_") : null;
+            return book;
+        });
+        this.exportService.exportToCsv(dataToExport, "wordweb_books");
     }
 
     getDateFormat(dateStart: string, dateEnd: string): string {
@@ -662,6 +669,7 @@ export class BookComponent implements OnInit {
 
         this.knoraService.gravseachQuery(this.myBook, this.PRIORITY)
             .subscribe(data => {
+                console.log(data);
                 this.searchResults = data;
                 this.dataSource = new MatTableDataSource(data);
                 this.dataSource.sort = this.sort;

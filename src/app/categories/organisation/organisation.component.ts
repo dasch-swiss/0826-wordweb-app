@@ -9,6 +9,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {KnoraService} from "../../services/knora.service";
 import {forkJoin, Observable} from "rxjs";
+import {ExportService} from "../../services/export.service";
 
 @Component({
     selector: "app-organisation",
@@ -91,6 +92,7 @@ export class OrganisationComponent implements OnInit {
 
     constructor(private apiService: ApiService,
                 private knoraService: KnoraService,
+                private exportService: ExportService,
                 private createOrganisationDialog: MatDialog) {
     }
 
@@ -194,6 +196,16 @@ export class OrganisationComponent implements OnInit {
     }
 
     export() {
+        const dataToExport = this.searchResults.map(c => {
+            let company = {};
+            company["ID"] = c.id;
+            company["Internal ID"] = c.hasCompanyInternalId[0].value;
+            company["Title"] = c.hasCompanyTitle[0].value;
+            company["Member"] = c.hasMember ? c.hasMember.map(m => m.hasFirstName ? `${m.hasFirstName[0].value} ${m.hasLastName[0].value}` : `${m.hasLastName[0].value}`).join("_") : null;
+            return company;
+        });
+        console.log("company", dataToExport);
+        this.exportService.exportToCsv(dataToExport, "wordweb_companies");
     }
 
     search() {

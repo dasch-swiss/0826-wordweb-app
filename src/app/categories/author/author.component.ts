@@ -11,6 +11,7 @@ import {ListService} from "../../services/list.service";
 import {TreeTableService} from "../../services/tree-table.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {Observable} from "rxjs";
+import {ExportService} from "../../services/export.service";
 
 @Component({
     selector: "app-author",
@@ -102,6 +103,7 @@ export class AuthorComponent implements OnInit {
     constructor(public apiService: ApiService,
                 public listService: ListService,
                 private knoraService: KnoraService,
+                private exportService: ExportService,
                 private createAuthorDialog: MatDialog,
                 private treeTableService: TreeTableService) {
     }
@@ -236,6 +238,23 @@ export class AuthorComponent implements OnInit {
     }
 
     export() {
+        const dataToExport = this.searchResults.map(a => {
+            let author = {};
+            author["ID"] = a.id;
+            author["Internal ID"] = a.hasPersonInternalId[0].value;
+            author["First Name"] = a.hasFirstName ? a.hasFirstName[0].value : null;
+            author["Last Name"] = a.hasLastName[0].value;
+            author["Description"] = a.hasDescription[0].value;
+            author["Birth Date Start"] = a.hasBirthDate ? a.hasBirthDate[0].start : null;
+            author["Birth Date End"] = a.hasBirthDate ? a.hasBirthDate[0].end : null;
+            author["Death Date Start"] = a.hasDeathDate ? a.hasDeathDate[0].start : null;
+            author["Death Date End"] = a.hasDeathDate ? a.hasDeathDate[0].end : null;
+            author["Active Date Start"] = a.hasActiveDate ? a.hasActiveDate[0].start : null;
+            author["Active Date End"] = a.hasActiveDate ? a.hasActiveDate[0].end : null;
+            author["Gender"] = this.listService.getNameOfNode(a.hasGender[0].listNode);
+            return author;
+        });
+        this.exportService.exportToCsv(dataToExport, "wordweb_authors");
     }
 
     getDateFormat(dateStart: string, dateEnd: string): string {

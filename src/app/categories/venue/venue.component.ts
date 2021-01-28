@@ -11,6 +11,7 @@ import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
 import {TreeTableService} from "../../services/tree-table.service";
 import {Observable} from "rxjs";
+import {ExportService} from "../../services/export.service";
 
 @Component({
     selector: "app-venue",
@@ -69,6 +70,7 @@ export class VenueComponent implements OnInit {
     constructor(private apiService: ApiService,
                 public listService: ListService,
                 private knoraService: KnoraService,
+                private exportService: ExportService,
                 private createVenueDialog: MatDialog,
                 private treeTableService: TreeTableService) {
     }
@@ -136,6 +138,14 @@ export class VenueComponent implements OnInit {
     }
 
     export() {
+        const dataToExport = this.searchResults.map(v => {
+            let venue = {};
+            venue["ID"] = v.id;
+            venue["Internal ID"] = v.hasVenueInternalId[0].value;
+            venue["Place Venue"] = this.listService.getNameOfNode(v.hasPlaceVenue[0].listNode);
+            return venue;
+        });
+        this.exportService.exportToCsv(dataToExport, "wordweb_venues");
     }
 
     search() {
