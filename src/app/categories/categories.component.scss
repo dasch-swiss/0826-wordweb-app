@@ -1,14 +1,32 @@
 .container {
     margin: 5rem 8rem;
 
-    .buttons {
-        grid-gap: 1rem;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        //grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    .res {
+        margin: 2rem 0;
 
-        button {
-            text-align: left;
+        .res-btn {
+            grid-gap: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            //grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+
+            button {
+                text-align: left;
+            }
+        }
+    }
+
+    .list {
+        margin: 2rem 0;
+
+        .list-btn {
+            grid-gap: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+
+            button {
+                text-align: left;
+            }
         }
     }
 }
