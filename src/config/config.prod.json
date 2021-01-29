@@ -2,8 +2,8 @@
   "env": {
     "name": "prod"
   },
-  "apiURL": "https://api.idem.test.dasch.swiss",
-  "iiifURL": "https://iiif.idem.test.dasch.swiss",
-  "appURL": "https://idem.test.dasch.swiss",
+  "apiURL": "https://api.0826-test-server.dasch.swiss",
+  "iiifURL": "https://iiif.0826-test-server.dasch.swiss",
+  "appURL": "https://0826-test-server.dasch.swiss",
   "appName": "wordweb"
 }
