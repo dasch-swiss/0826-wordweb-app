@@ -12,7 +12,7 @@ export interface ListStructure {
 @Injectable()
 
 export class ListService {
-    lists: { [key: string]: ListStructure } = {
+    private lists: { [key: string]: ListStructure } = {
         gender: null,
         language: null,
         image: null,
@@ -26,14 +26,14 @@ export class ListService {
         placeVenue: null,
     };
 
-    static getNodes(nodes, parendId) {
+    static getNodes(nodes, parentId) {
         return nodes.map(node => {
             const customNode = {
                 id: node.id,
                 name: node.name,
                 root: false,
                 rootNode: node.hasRootNode,
-                parentId: parendId,
+                parentId: parentId,
                 nodes: []
             };
 
