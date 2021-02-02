@@ -23,7 +23,7 @@
     "@angular/platform-browser": "~10.2.4",
     "@angular/platform-browser-dynamic": "~10.2.4",
     "@angular/router": "~10.2.4",
-    "@dasch-swiss/dsp-js": "^1.2.0",
+    "@dasch-swiss/dsp-js": "~1.2.0",
     "file-saver": "^2.0.5",
     "json2typescript": "^1.4.1",
     "jsonld": "^1.8.1",
