@@ -13,9 +13,9 @@ export class GravsearchBuilderService {
     static readonly COMPANY_VAR = "company";
     static readonly VENUE_VAR = "venue";
 
-    private host: string;
+    private _host: string;
 
-    person = {
+    private _person = {
         hasPersonInternalId: {
             cardinality: "1",
             type: "String",
@@ -65,7 +65,7 @@ export class GravsearchBuilderService {
         }
     };
 
-    book = {
+    private _book = {
         hasBookInternalId: {
             cardinality: "1",
             type: "String",
@@ -162,7 +162,7 @@ export class GravsearchBuilderService {
         }
     };
 
-    passage = {
+    private _passage = {
         hasText: {
             cardinality: "1",
             type: "String",
@@ -253,7 +253,7 @@ export class GravsearchBuilderService {
         }
     };
 
-    lexia = {
+    private _lexia = {
         hasLexiaInternalId: {
             cardinality: "1",
             type: "String",
@@ -283,7 +283,7 @@ export class GravsearchBuilderService {
         },
     };
 
-    company = {
+    private _company = {
         hasCompanyInternalId: {
             cardinality: "1",
             type: "String",
@@ -308,7 +308,7 @@ export class GravsearchBuilderService {
         },
     };
 
-    venue = {
+    private _venue = {
         hasVenueInternalId: {
             cardinality: "1",
             type: "String",
@@ -330,33 +330,33 @@ export class GravsearchBuilderService {
 
     getClass = {
         person: {
-            ref: this.person,
+            ref: this._person,
             variable: GravsearchBuilderService.PERSON_VAR
         },
         book: {
-            ref: this.book,
+            ref: this._book,
             variable: GravsearchBuilderService.BOOK_VAR
         },
         passage: {
-            ref: this.passage,
+            ref: this._passage,
             variable: GravsearchBuilderService.PASSAGE_VAR
         },
         lexia: {
-            ref: this.lexia,
+            ref: this._lexia,
             variable: GravsearchBuilderService.LEXIA_VAR
         },
         company: {
-            ref: this.company,
+            ref: this._company,
             variable: GravsearchBuilderService.COMPANY_VAR
         },
         venue: {
-            ref: this.venue,
+            ref: this._venue,
             variable: GravsearchBuilderService.VENUE_VAR
         }
     };
 
     set apiURL(host: string) {
-        this.host = host.replace("https", "http");
+        this._host = host.replace("https", "http");
     }
 
     getQueryStr(classVariable: string, propName: string, valueVar: string): string[] {
@@ -389,7 +389,7 @@ export class GravsearchBuilderService {
         const query = [
             "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
             "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
-            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            `PREFIX teimww: <${this._host}/ontology/0826/teimww/v2#>`,
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node.mainClass).join("")}`,
@@ -617,7 +617,7 @@ export class GravsearchBuilderService {
         const query = [
             "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
             "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
-            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            `PREFIX teimww: <${this._host}/ontology/0826/teimww/v2#>`,
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node).join("")}`,
@@ -655,7 +655,7 @@ export class GravsearchBuilderService {
         const query = [
             "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
             "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
-            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            `PREFIX teimww: <${this._host}/ontology/0826/teimww/v2#>`,
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node).join("")}`,
@@ -686,7 +686,7 @@ export class GravsearchBuilderService {
         const query = [
             "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
             "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
-            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            `PREFIX teimww: <${this._host}/ontology/0826/teimww/v2#>`,
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node).join("")}`,
@@ -740,7 +740,7 @@ export class GravsearchBuilderService {
         const query = [
             "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
             "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
-            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            `PREFIX teimww: <${this._host}/ontology/0826/teimww/v2#>`,
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node).join("")}`,
@@ -769,7 +769,7 @@ export class GravsearchBuilderService {
         const query = [
             "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
             "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
-            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            `PREFIX teimww: <${this._host}/ontology/0826/teimww/v2#>`,
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node).join("")}`,
@@ -797,7 +797,7 @@ export class GravsearchBuilderService {
         const query = [
             "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
             "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
-            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            `PREFIX teimww: <${this._host}/ontology/0826/teimww/v2#>`,
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node).join("")}`,
@@ -820,7 +820,7 @@ export class GravsearchBuilderService {
         const query = [
             "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
             "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
-            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            `PREFIX teimww: <${this._host}/ontology/0826/teimww/v2#>`,
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node).join("")}`,
@@ -844,7 +844,7 @@ export class GravsearchBuilderService {
         const query = [
             "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
             "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
-            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            `PREFIX teimww: <${this._host}/ontology/0826/teimww/v2#>`,
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node).join("")}`,
@@ -868,7 +868,7 @@ export class GravsearchBuilderService {
         const query = [
             "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
             "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
-            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            `PREFIX teimww: <${this._host}/ontology/0826/teimww/v2#>`,
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node).join("")}`,
@@ -892,7 +892,7 @@ export class GravsearchBuilderService {
         const query = [
             "PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>",
             "PREFIX knora-api-simple: <http://api.knora.org/ontology/knora-api/simple/v2#>",
-            `PREFIX teimww: <${this.host}/ontology/0826/teimww/v2#>`,
+            `PREFIX teimww: <${this._host}/ontology/0826/teimww/v2#>`,
             "",
             "CONSTRUCT {",
             `${this.getFirstConstructLine(node).join("")}`,

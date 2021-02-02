@@ -44,7 +44,7 @@ export class AppInitService {
 
       this.gsBuilder.apiURL = AppInitService.settings.apiURL;
 
-      this.knoraService.knoraConnection = AppInitService.settings.apiURL;
+      this.knoraService.knoraApiConnection = AppInitService.settings.apiURL;
 
       this.knoraService.login("root@example.com", "test")
           .pipe(

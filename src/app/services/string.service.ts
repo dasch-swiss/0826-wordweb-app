@@ -4,7 +4,7 @@ import {Injectable} from "@angular/core";
     providedIn: "root"
 })
 export class StringService {
-    readonly strings = {
+    private readonly _STRINGS = {
         default_title: "Please note",
         text_not_filled: "Fill in at least one text field to start the search.",
         text_help: "<p>All texts are given in normalized spelling, taken from modern-spelling editions or normalized by " +
@@ -66,6 +66,10 @@ export class StringService {
     }
 
     getString(key: string): string {
-        return this.strings[key];
+        if (this._STRINGS[key] == undefined) {
+            throw new Error(`key ${key} does not exist`);
+        }
+
+        return this._STRINGS[key];
     }
 }

@@ -28,7 +28,7 @@ export class ListService {
         placeVenue: null,
     };
 
-    constructor(private treeTableService: TreeTableService) {
+    constructor(private _treeTableService: TreeTableService) {
     }
 
     private getNodes(nodes, parentId) {
@@ -116,7 +116,7 @@ export class ListService {
         }
 
         return this._lists[listName].nodes
-            .reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
+            .reduce((acc, list) => this._treeTableService.flattenTree(acc, list), []);
     }
 
     printLists() {
