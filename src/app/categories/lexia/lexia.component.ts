@@ -7,7 +7,6 @@ import {ApiService} from "../../services/api.service";
 import {CreateUpdateLexiaComponent} from "./create-update-lexia/create-update-lexia.component";
 import {FormControl, FormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
-import {TreeTableService} from "../../services/tree-table.service";
 import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
 import {Observable} from "rxjs";
@@ -77,8 +76,7 @@ export class LexiaComponent implements OnInit {
                 public listService: ListService,
                 private knoraService: KnoraService,
                 private exportService: ExportService,
-                private createLexiaDialog: MatDialog,
-                private treeTableService: TreeTableService) {
+                private createLexiaDialog: MatDialog) {
     }
 
     static customFilter(item: any, filterValue: string): boolean {
@@ -118,11 +116,8 @@ export class LexiaComponent implements OnInit {
             // })
         });
 
-        const formalClassNode = this.listService.getList("formalClass").nodes;
-        this.formalClasses = formalClassNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
-        const imageNode = this.listService.getList("image").nodes;
-        this.images = imageNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
+        this.formalClasses = this.listService.getFlattenList("formalClass");
+        this.images = this.listService.getFlattenList("image");
     }
 
     resetSearch() {

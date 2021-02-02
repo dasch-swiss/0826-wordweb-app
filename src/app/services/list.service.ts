@@ -1,4 +1,6 @@
 import {Injectable} from "@angular/core";
+import {TreeTableService} from "./tree-table.service";
+import {List} from "@dasch-swiss/dsp-js";
 
 export interface ListStructure {
     id: string;
@@ -12,7 +14,7 @@ export interface ListStructure {
 @Injectable()
 
 export class ListService {
-    private lists: { [key: string]: ListStructure } = {
+    private _lists: { [key: string]: ListStructure } = {
         gender: null,
         language: null,
         image: null,
@@ -26,7 +28,10 @@ export class ListService {
         placeVenue: null,
     };
 
-    static getNodes(nodes, parentId) {
+    constructor(private treeTableService: TreeTableService) {
+    }
+
+    private getNodes(nodes, parentId) {
         return nodes.map(node => {
             const customNode = {
                 id: node.id,
@@ -38,7 +43,7 @@ export class ListService {
             };
 
             if (node.children.length !== 0) {
-                customNode.nodes = ListService.getNodes(node.children, node.id);
+                customNode.nodes = this.getNodes(node.children, node.id);
             }
 
             return customNode;
@@ -46,7 +51,7 @@ export class ListService {
     }
 
     getNode(id: string): any {
-        return this.getNodeByNodeId(Object.values(this.lists), id);
+        return this.getNodeByNodeId(Object.values(this._lists), id);
     }
 
     private getNodeByNodeId(nodes: ListStructure[], nodeId: string): any {
@@ -66,7 +71,7 @@ export class ListService {
     }
 
     getNameOfNode(id: string): string {
-        return this.getNameByNodeId(Object.values(this.lists), id);
+        return this.getNameByNodeId(Object.values(this._lists), id);
     }
 
     private getNameByNodeId(nodes: ListStructure[], nodeId: string): string {
@@ -86,7 +91,7 @@ export class ListService {
     }
 
     getIdOfNode(nodeName: string): string {
-        return this.getIdByNodeName(Object.values(this.lists), nodeName);
+        return this.getIdByNodeName(Object.values(this._lists), nodeName);
     }
 
     private getIdByNodeName(nodes: ListStructure[], nodeName: string): string {
@@ -105,33 +110,31 @@ export class ListService {
         return "-1";
     }
 
-    constructor() {
+    getFlattenList(listName: string) :any {
+        if (this._lists[listName] == undefined) {
+            throw new Error(`list ${listName} does not exist`);
+        }
+
+        return this._lists[listName].nodes
+            .reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
     }
 
-    set setAllLists(data) {
-        if (this.lists.hasOwnProperty(data.listinfo.name)) {
+    printLists() {
+        console.log(this._lists);
+    }
 
-            this.lists[data.listinfo.name] = {
-                id: data.listinfo.id,
-                name: data.listinfo.name,
+    set list(list: List) {
+        if (this._lists.hasOwnProperty(list.listinfo.name)) {
+
+            this._lists[list.listinfo.name] = {
+                id: list.listinfo.id,
+                name: list.listinfo.name,
                 root: true,
-                rootNode: data.listinfo.id,
+                rootNode: list.listinfo.id,
                 parentId: null,
-                nodes: ListService.getNodes(data.children, data.listinfo.id)
+                nodes: this.getNodes(list.children, list.listinfo.id)
             };
         }
-    }
-
-    getListId(name: string): string {
-        return this.lists.hasOwnProperty(name) ? this.lists[name].id : "-1";
-    }
-
-    getList(name: string): ListStructure {
-        return this.lists.hasOwnProperty(name) ? this.lists[name] : null;
-    }
-
-    print() {
-        console.log(this.lists);
     }
 
 }

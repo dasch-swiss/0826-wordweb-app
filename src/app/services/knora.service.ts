@@ -12,7 +12,9 @@ import {
     CountQueryResponse,
     ListResponse,
     ListsResponse,
-    KnoraPeriod
+    KnoraPeriod,
+    ListNodeInfo,
+    List
 } from "@dasch-swiss/dsp-js";
 import {GravsearchBuilderService} from "./gravsearch-builder.service";
 import {IMainClass} from "../model/displayModel";
@@ -119,14 +121,14 @@ export class KnoraService {
             );
     }
 
-    getAllLists() {
+    getAllLists(): Observable<ListNodeInfo[]> {
         return this.knoraApiConnection.admin.listsEndpoint.getLists()
             .pipe(
                 map((data: ApiResponseData<ListsResponse>) => data.body.lists)
             );
     }
 
-    getList(iri: string) {
+    getList(iri: string): Observable<List> {
         return this.knoraApiConnection.admin.listsEndpoint.getList(iri)
             .pipe(
                 map((data: ApiResponseData<ListResponse>) => data.body.list)

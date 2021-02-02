@@ -9,7 +9,6 @@ import {StringService} from "../../services/string.service";
 import {CustomValidators} from "../../customValidators";
 import {ResultsComponent} from "../results/results.component";
 import {ListService} from "../../services/list.service";
-import {TreeTableService} from "../../services/tree-table.service";
 import {FillInComponent} from "../dialog/fill-in/fill-in.component";
 import {forkJoin} from "rxjs";
 
@@ -382,7 +381,6 @@ export class AdvancedSearchComponent implements OnInit {
         private stringService: StringService,
         private knoraService: KnoraService,
         private listService: ListService,
-        private treeTableService: TreeTableService,
         private helpDialog: MatDialog) {
     }
 
@@ -391,17 +389,10 @@ export class AdvancedSearchComponent implements OnInit {
         this.prepareVenues();
         this.prepareActors();
 
-        const genresNode = this.listService.getList("genre").nodes;
-        this.genres = genresNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
-        const languageNode = this.listService.getList("language").nodes;
-        this.languages = languageNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
-        const functionVoiceNode = this.listService.getList("functionVoice").nodes;
-        this.functionVoices = functionVoiceNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
-        const markingNode = this.listService.getList("marking").nodes;
-        this.markings = markingNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
+        this.genres = this.listService.getFlattenList("genre");
+        this.languages = this.listService.getFlattenList("language");
+        this.functionVoices = this.listService.getFlattenList("functionVoice");
+        this.markings = this.listService.getFlattenList("marking");
 
         this.form = new FormGroup({
             text: new FormControl("", []),

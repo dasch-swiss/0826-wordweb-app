@@ -8,7 +8,6 @@ import {CreateUpdateAuthorComponent} from "./create-update-author/create-update-
 import {KnoraService} from "../../services/knora.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ListService} from "../../services/list.service";
-import {TreeTableService} from "../../services/tree-table.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {Observable} from "rxjs";
 import {ExportService} from "../../services/export.service";
@@ -104,8 +103,7 @@ export class AuthorComponent implements OnInit {
                 public listService: ListService,
                 private knoraService: KnoraService,
                 private exportService: ExportService,
-                private createAuthorDialog: MatDialog,
-                private treeTableService: TreeTableService) {
+                private createAuthorDialog: MatDialog) {
     }
 
     static customFilter(item: any, filterValue: string): boolean {
@@ -170,8 +168,7 @@ export class AuthorComponent implements OnInit {
             // })
         });
 
-        const genderNode = this.listService.getList("gender").nodes;
-        this.genders = genderNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
+        this.genders = this.listService.getFlattenList("gender");
     }
 
     resetSearch() {

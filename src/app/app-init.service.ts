@@ -1,9 +1,10 @@
 import {Injectable} from "@angular/core";
 import {KnoraService} from "./services/knora.service";
 import {mergeMap} from "rxjs/operators";
-import {forkJoin} from "rxjs";
+import {forkJoin, Observable} from "rxjs";
 import {ListService} from "./services/list.service";
 import {GravsearchBuilderService} from "./services/gravsearch-builder.service";
+import {List, ListNodeInfo} from "@dasch-swiss/dsp-js";
 
 export interface IAppConfig {
 
@@ -48,11 +49,11 @@ export class AppInitService {
       this.knoraService.login("root@example.com", "test")
           .pipe(
               mergeMap(() => this.knoraService.getAllLists()),
-              mergeMap((lists: Array<any>) => forkJoin<any>(lists.map(list => this.knoraService.getList(list.id))))
+              mergeMap((lists: ListNodeInfo[]) => forkJoin<Observable<List>>(lists.map((list: ListNodeInfo) => this.knoraService.getList(list.id))))
           )
-          .subscribe((fullList: Array<any>) => {
-            // console.log(fullList);
-            fullList.map(list => this.listService.setAllLists = list);
+          .subscribe((fullList: List[]) => {
+
+            fullList.forEach(list => this.listService.list = list);
 
             // console.log("AppInitService: finished");
             resolve();

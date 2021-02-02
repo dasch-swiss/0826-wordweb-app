@@ -5,6 +5,7 @@ import * as FileSaver from 'file-saver';
     providedIn: 'root'
 })
 export class ExportService {
+    // Service was mainly taken from https://dev.to/idrisrampurawala/exporting-data-to-excel-and-csv-in-angular-3643
 
     readonly CSV_EXTENSION = '.csv';
     readonly CSV_TYPE = 'text/plain;charset=utf-8';
@@ -44,7 +45,6 @@ export class ExportService {
                     return cell;
                 }).join(separator);
             }).join('\n');
-        console.log(csvContent);
         this.saveAsFile(csvContent, `${fileName}${this.CSV_EXTENSION}`, this.CSV_TYPE);
     }
 }

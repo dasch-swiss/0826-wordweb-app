@@ -6,7 +6,6 @@ import {Passage} from "../../model/model";
 import {ApiService} from "../../services/api.service";
 import {CreateUpdatePassageComponent} from "./create-update-passage/create-update-passage.component";
 import {FormControl, FormGroup} from "@angular/forms";
-import {TreeTableService} from "../../services/tree-table.service";
 import {KnoraService} from "../../services/knora.service";
 import {ListService} from "../../services/list.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
@@ -257,8 +256,7 @@ export class PassageComponent implements OnInit {
                 private editionDialog: MatDialog,
                 public listService: ListService,
                 private knoraService: KnoraService,
-                private exportService: ExportService,
-                private treeTableService: TreeTableService) {
+                private exportService: ExportService) {
     }
 
     ngOnInit() {
@@ -309,17 +307,10 @@ export class PassageComponent implements OnInit {
             // })
         });
 
-        const researchNode = this.listService.getList("researchField").nodes;
-        this.researchFields = researchNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
-        const functionNode = this.listService.getList("functionVoice").nodes;
-        this.functionVoices = functionNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
-        const markingNode = this.listService.getList("marking").nodes;
-        this.markings = markingNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
-        const statusNode = this.listService.getList("status").nodes;
-        this.status = statusNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
+        this.researchFields = this.listService.getFlattenList("researchField");
+        this.functionVoices = this.listService.getFlattenList("functionVoice");
+        this.markings = this.listService.getFlattenList("marking");
+        this.status = this.listService.getFlattenList("status");
     }
 
     resetSearch() {

@@ -8,7 +8,6 @@ import {CreateUpdateBookComponent} from "./create-update-book/create-update-book
 import {FormControl, FormGroup} from "@angular/forms";
 import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
-import {TreeTableService} from "../../services/tree-table.service";
 import {forkJoin, Observable} from "rxjs";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {ExportService} from "../../services/export.service";
@@ -200,8 +199,7 @@ export class BookComponent implements OnInit {
                 private venueDialog: MatDialog,
                 private exportService: ExportService,
                 private organisationDialog: MatDialog,
-                private createBookDialog: MatDialog,
-                private treeTableService: TreeTableService) {
+                private createBookDialog: MatDialog) {
     }
 
     static customFilter(item: any, filterValue: string): boolean {
@@ -287,14 +285,9 @@ export class BookComponent implements OnInit {
             // })
         });
 
-        const languageNode = this.listService.getList("language").nodes;
-        this.languages = languageNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
-        const genreNode = this.listService.getList("genre").nodes;
-        this.genres = genreNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
-
-        const subjectNode = this.listService.getList("subject").nodes;
-        this.subjects = subjectNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
+        this.languages = this.listService.getFlattenList("language");
+        this.genres = this.listService.getFlattenList("genre");
+        this.subjects = this.listService.getFlattenList("subject");
 
         this.prepareCompanies();
         this.prepareVenues();

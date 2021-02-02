@@ -9,7 +9,6 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
-import {TreeTableService} from "../../services/tree-table.service";
 import {Observable} from "rxjs";
 import {ExportService} from "../../services/export.service";
 
@@ -71,8 +70,7 @@ export class VenueComponent implements OnInit {
                 public listService: ListService,
                 private knoraService: KnoraService,
                 private exportService: ExportService,
-                private createVenueDialog: MatDialog,
-                private treeTableService: TreeTableService) {
+                private createVenueDialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -85,8 +83,7 @@ export class VenueComponent implements OnInit {
             // })
         });
 
-        const placeVenueNode = this.listService.getList("placeVenue").nodes
-        this.placeVenues = placeVenueNode.reduce((acc, list) => this.treeTableService.flattenTree(acc, list), []);
+        this.placeVenues = this.listService.getFlattenList("placeVenue");
     }
 
     resetSearch() {
