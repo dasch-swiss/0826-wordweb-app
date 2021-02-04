@@ -48,7 +48,7 @@ export class AppInitService {
 
       this.knoraService.login("root@example.com", "test")
           .pipe(
-              mergeMap(() => this.knoraService.getAllLists()),
+              mergeMap(() => this.knoraService.getAllLists("http://rdfh.ch/projects/0826")),
               mergeMap((lists: ListNodeInfo[]) => forkJoin<Observable<List>>(lists.map((list: ListNodeInfo) => this.knoraService.getList(list.id))))
           )
           .subscribe((fullList: List[]) => {

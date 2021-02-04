@@ -71,7 +71,8 @@ export class KnoraService {
         };
 
         for (const property of Object.entries(resource.properties)) {
-
+            // Extracts the name of the property (may it be a text, date, list or link value)
+            // if it's a link value the string "Value" at the end must be replaced
             const newPropertyKey = property[0].split("#").pop().replace("Value", "");
 
             newResource[newPropertyKey] = property[1].map((propValue: any) => {
@@ -121,8 +122,8 @@ export class KnoraService {
             );
     }
 
-    getAllLists(): Observable<ListNodeInfo[]> {
-        return this._knoraApiConnection.admin.listsEndpoint.getLists()
+    getAllLists(projectIri: string): Observable<ListNodeInfo[]> {
+        return this._knoraApiConnection.admin.listsEndpoint.getListsInProject(projectIri)
             .pipe(
                 map((data: ApiResponseData<ListsResponse>) => data.body.lists)
             );
