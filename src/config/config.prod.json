@@ -5,5 +5,8 @@
   "apiURL": "https://api.0826-test-server.dasch.swiss",
   "iiifURL": "https://iiif.0826-test-server.dasch.swiss",
   "appURL": "https://0826-test-server.dasch.swiss",
-  "appName": "wordweb"
+  "appName": "wordweb",
+  "email": "root@example.com",
+  "pwd": "test",
+  "projectIRI": "http://rdfh.ch/projects/0826"
 }

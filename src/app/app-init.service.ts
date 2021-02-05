@@ -20,6 +20,9 @@ export interface IAppConfig {
     localData: string;
     pagingLimit: number;
     startComponent: string;
+    email: string;
+    pwd: string;
+    projectIRI: string;
 }
 
 @Injectable({
@@ -46,15 +49,17 @@ export class AppInitService {
 
             this._knoraService.knoraApiConnection = AppInitService.settings.apiURL;
 
-            this._knoraService.login("root@example.com", "tests")
+            this._knoraService.login(AppInitService.settings.email, AppInitService.settings.pwd)
                 .pipe(
-                    mergeMap(() => this._knoraService.getAllLists("http://rdfh.ch/projects/0826")),
+                    mergeMap(() => this._knoraService.getAllLists(AppInitService.settings.projectIRI)),
                     mergeMap((lists: ListNodeInfo[]) => forkJoin<Observable<List>>(lists.map((list: ListNodeInfo) => this._knoraService.getList(list.id))))
                 )
                 .subscribe((fullList: List[]) => {
+                    // Sets all the list
                     fullList.forEach(list => this._listService.list = list);
                     resolve();
                 }, (error: ApiResponseError) => {
+                    // Creates the error message
                     const errorMsgElement = document.querySelector('.errorMsgElement');
                     let message = "Application initialization failed";
                     if (error) {

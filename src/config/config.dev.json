@@ -5,5 +5,8 @@
   "apiURL": "http://0.0.0.0:3333",
   "iiifURL": "http://0.0.0.0:1024",
   "appURL": "http://localhost:4200",
-  "appName": "wordweb"
+  "appName": "wordweb",
+  "email": "root@example.com",
+  "pwd": "test",
+  "projectIRI": "http://rdfh.ch/projects/0826"
 }
