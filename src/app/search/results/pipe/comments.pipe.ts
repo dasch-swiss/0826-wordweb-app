@@ -50,12 +50,18 @@ export class CommentsPipe implements PipeTransform {
             if (book.performedIn.length === 2) {
                 const ven1Node = listService.getNode(book.performedIn[0].hasPlaceVenue[0].listNode);
                 const ven2Node = listService.getNode(book.performedIn[1].hasPlaceVenue[0].listNode);
-                const ven1 = `${ven1Node.name} in ${listService.getNameOfNode(ven1Node.parentId)}`;
-                const ven2 = `${ven2Node.name} in ${listService.getNameOfNode(ven2Node.parentId)}`;
-                perInVen = `${ven1} or at ${ven2}`;
+                // Checks if nodes are not null
+                if (ven1Node && ven2Node) {
+                    const ven1 = `${ven1Node.name} in ${listService.getNameOfNode(ven1Node.parentNodeId)}`;
+                    const ven2 = `${ven2Node.name} in ${listService.getNameOfNode(ven2Node.parentNodeId)}`;
+                    perInVen = `${ven1} or at ${ven2}`;
+                }
             } else {
                 const venNode = listService.getNode(book.performedIn[0].hasPlaceVenue[0].listNode);
-                perInVen = `${venNode.name} in ${listService.getNameOfNode(venNode.parentId)}`;
+                // Checks if node is not null
+                if (venNode) {
+                    perInVen = `${venNode.name} in ${listService.getNameOfNode(venNode.parentNodeId)}`;
+                }
             }
         }
 

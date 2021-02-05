@@ -1,19 +1,12 @@
 import {Injectable} from "@angular/core";
 import {TreeTableService} from "./tree-table.service";
 import {List} from "@dasch-swiss/dsp-js";
-
-export interface MyListNode {
-    id: string;
-    name: string;
-    rootNodeId: string;
-    parentNodeId: string;
-    nodes: MyListNode[];
-}
+import {IListNode} from "../model/ListModel";
 
 @Injectable()
 
 export class ListService {
-    private _lists: { [key: string]: MyListNode } = {
+    private _lists: { [key: string]: IListNode } = {
         gender: null,
         language: null,
         image: null,
@@ -30,9 +23,9 @@ export class ListService {
     constructor(private _treeTableService: TreeTableService) {
     }
 
-    private getNodes(nodes, parentId) {
+    private getNodes(nodes, parentId): IListNode[] {
         return nodes.map(node => {
-            const customNode: MyListNode = {
+            const customNode: IListNode = {
                 id: node.id,
                 name: node.name,
                 rootNodeId: node.hasRootNode,
@@ -48,11 +41,11 @@ export class ListService {
         });
     }
 
-    getNode(id: string): any {
+    getNode(id: string): IListNode | null {
         return this.getNodeByNodeId(Object.values(this._lists), id);
     }
 
-    private getNodeByNodeId(nodes: MyListNode[], nodeId: string): any {
+    private getNodeByNodeId(nodes: IListNode[], nodeId: string): IListNode | null {
         for (const node of nodes) {
             if (node) {
                 if (node.id === nodeId) {
@@ -72,7 +65,7 @@ export class ListService {
         return this.getNameByNodeId(Object.values(this._lists), id);
     }
 
-    private getNameByNodeId(nodes: MyListNode[], nodeId: string): string {
+    private getNameByNodeId(nodes: IListNode[], nodeId: string): string {
         for (const node of nodes) {
             if (node) {
                 if (node.id === nodeId) {
@@ -92,7 +85,7 @@ export class ListService {
         return this.getIdByNodeName(Object.values(this._lists), nodeName);
     }
 
-    private getIdByNodeName(nodes: MyListNode[], nodeName: string): string {
+    private getIdByNodeName(nodes: IListNode[], nodeName: string): string {
         for (const node of nodes) {
             if (node) {
                 if (node.name === nodeName) {
@@ -108,7 +101,7 @@ export class ListService {
         return "-1";
     }
 
-    getFlattenList(listName: string) :any {
+    getFlattenList(listName: string) :IListNode[] {
         if (this._lists[listName] == undefined) {
             throw new Error(`list ${listName} does not exist`);
         }
