@@ -7,4 +7,9 @@ html, body {
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
+
+    .errorMsgElement {
+        padding: 20% 0;
+        text-align: center;
+    }
 }
