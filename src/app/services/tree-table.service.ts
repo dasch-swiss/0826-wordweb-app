@@ -8,9 +8,33 @@ export class TreeTableService {
     constructor() {
     }
 
-    traverse(root: any, depth: number, f: (node: any, depth: number) => void) {
+    private traverse(root: any, depth: number, f: (node: any, depth: number) => void) {
         f(root, depth++);
         return root.nodes.map(n => this.traverse(n, depth, f));
+    }
+
+    private flatten(acc: any[], root: any) {
+        acc.push(root);
+        root.nodes.map(n => this.flatten(acc, n));
+        return acc;
+    }
+
+    private traverseExpand(treeTable) {
+        treeTable.nodes.map((node) => {
+            node.isVisible = true;
+            if (node.isExpanded && (node.nodes.length > 0)) {
+                this.traverseExpand(node);
+            }
+        });
+    }
+
+    private traverseClose(treeTable) {
+        treeTable.nodes.map((node) => {
+            node.isVisible = false;
+            if (node.nodes.length > 0) {
+                this.traverseClose(node);
+            }
+        });
     }
 
     toTreeTable(root: any): any {
@@ -24,27 +48,7 @@ export class TreeTableService {
     }
 
     flattenTree(acc: any[], root: any) {
-        acc.push(root);
-        root.nodes.map(n => this.flattenTree(acc, n));
-        return acc;
-    }
-
-    traverseExpand(treeTable) {
-        treeTable.nodes.map((node) => {
-            node.isVisible = true;
-            if (node.isExpanded && (node.nodes.length > 0)) {
-                this.traverseExpand(node);
-            }
-        });
-    }
-
-    traverseClose(treeTable) {
-        treeTable.nodes.map((node) => {
-            node.isVisible = false;
-            if (node.nodes.length > 0) {
-                this.traverseClose(node);
-            }
-        });
+        return this.flatten(acc, root);
     }
 
     close(rootNode: any) {

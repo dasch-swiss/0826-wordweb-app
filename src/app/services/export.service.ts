@@ -18,7 +18,7 @@ export class ExportService {
         FileSaver.saveAs(data, fileName);
     }
 
-    public exportToCsv(rows: object[], fileName: string, columns?: string[]): string {
+    exportToCsv(rows: object[], fileName: string, columns?: string[]): string {
         if (!rows || !rows.length) {
             return;
         }

@@ -2,19 +2,18 @@ import {Injectable} from "@angular/core";
 import {TreeTableService} from "./tree-table.service";
 import {List} from "@dasch-swiss/dsp-js";
 
-export interface ListStructure {
+export interface MyListNode {
     id: string;
     name: string;
-    root: boolean;
-    rootNode: string;
-    parentId: string;
-    nodes: ListStructure[];
+    rootNodeId: string;
+    parentNodeId: string;
+    nodes: MyListNode[];
 }
 
 @Injectable()
 
 export class ListService {
-    private _lists: { [key: string]: ListStructure } = {
+    private _lists: { [key: string]: MyListNode } = {
         gender: null,
         language: null,
         image: null,
@@ -33,12 +32,11 @@ export class ListService {
 
     private getNodes(nodes, parentId) {
         return nodes.map(node => {
-            const customNode = {
+            const customNode: MyListNode = {
                 id: node.id,
                 name: node.name,
-                root: false,
-                rootNode: node.hasRootNode,
-                parentId: parentId,
+                rootNodeId: node.hasRootNode,
+                parentNodeId: parentId,
                 nodes: []
             };
 
@@ -54,7 +52,7 @@ export class ListService {
         return this.getNodeByNodeId(Object.values(this._lists), id);
     }
 
-    private getNodeByNodeId(nodes: ListStructure[], nodeId: string): any {
+    private getNodeByNodeId(nodes: MyListNode[], nodeId: string): any {
         for (const node of nodes) {
             if (node) {
                 if (node.id === nodeId) {
@@ -74,7 +72,7 @@ export class ListService {
         return this.getNameByNodeId(Object.values(this._lists), id);
     }
 
-    private getNameByNodeId(nodes: ListStructure[], nodeId: string): string {
+    private getNameByNodeId(nodes: MyListNode[], nodeId: string): string {
         for (const node of nodes) {
             if (node) {
                 if (node.id === nodeId) {
@@ -94,7 +92,7 @@ export class ListService {
         return this.getIdByNodeName(Object.values(this._lists), nodeName);
     }
 
-    private getIdByNodeName(nodes: ListStructure[], nodeName: string): string {
+    private getIdByNodeName(nodes: MyListNode[], nodeName: string): string {
         for (const node of nodes) {
             if (node) {
                 if (node.name === nodeName) {
@@ -129,9 +127,8 @@ export class ListService {
             this._lists[list.listinfo.name] = {
                 id: list.listinfo.id,
                 name: list.listinfo.name,
-                root: true,
-                rootNode: list.listinfo.id,
-                parentId: null,
+                rootNodeId: list.listinfo.id,
+                parentNodeId: null,
                 nodes: this.getNodes(list.children, list.listinfo.id)
             };
         }
