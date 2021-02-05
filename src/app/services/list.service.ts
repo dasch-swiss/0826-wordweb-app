@@ -107,7 +107,7 @@ export class ListService {
         }
 
         return this._lists[listName].nodes
-            .reduce((acc, list) => this._treeTableService.flattenTree(acc, list), []);
+            .reduce((acc, list) => this._treeTableService.flattenTree(acc, list), Array<IListNode>());
     }
 
     printLists() {

@@ -350,7 +350,7 @@ export class SimpleSearchComponent implements OnInit {
             && !this.form.get("lexia").value
             && !this.form.get("date").value)
             && !this.form.get("plays").value) {
-            console.log("empty");
+
             const dialogConfig = new MatDialogConfig();
             dialogConfig.width = "650px";
             dialogConfig.data = {

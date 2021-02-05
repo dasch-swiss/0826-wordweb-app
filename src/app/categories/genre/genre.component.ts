@@ -1,11 +1,12 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {ApiService} from "../../services/api.service";
-import {Genre, Language} from "../../model/model";
+import {Language} from "../../model/model";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {TreeTableService} from "../../services/tree-table.service";
 import {CreateUpdateGenreComponent} from "./create-update-genre/create-update-genre.component";
+import {ListService} from "../../services/list.service";
 
 @Component({
     selector: "app-genre",
@@ -13,7 +14,6 @@ import {CreateUpdateGenreComponent} from "./create-update-genre/create-update-ge
     styleUrls: ["./genre.component.scss"]
 })
 export class GenreComponent implements OnInit {
-    genres: Genre[];
     treeTable: any[];
     dataSource: MatTableDataSource<any>;
     displayedColumns: string[] = ["name", "references", "action"];
@@ -21,9 +21,10 @@ export class GenreComponent implements OnInit {
 
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-    constructor(private apiService: ApiService,
-                private treeTableService: TreeTableService,
-                private createGenreDialog: MatDialog) {
+    constructor(private _apiService: ApiService,
+                private _listService: ListService,
+                private _treeTableService: TreeTableService,
+                private _createGenreDialog: MatDialog) {
         this.value = "";
     }
 
@@ -32,10 +33,12 @@ export class GenreComponent implements OnInit {
     }
 
     resetTable() {
-        this.apiService.getGenre(0, true)
+        this._listService.printLists();
+        // console.log(this._listService.getFlattenList("genre"));
+        // this.dataSource = this._listService.getFlattenList("genre");
+        this._apiService.getGenre(0, true)
             .subscribe((genre) => {
-                this.genres = genre.nodes as Genre[];
-                this.treeTable = this.genres.map((g) => this.treeTableService.toTreeTable(g));
+                this.treeTable = this._treeTableService.toTreeTable(genre).nodes;
                 this.dataSource = this.flattenTree();
             });
     }
@@ -56,7 +59,7 @@ export class GenreComponent implements OnInit {
             resource: resource,
             editMod: editMod,
         };
-        const dialogRef = this.createGenreDialog.open(CreateUpdateGenreComponent, dialogConfig);
+        const dialogRef = this._createGenreDialog.open(CreateUpdateGenreComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
                 this.resetTable();
@@ -78,7 +81,7 @@ export class GenreComponent implements OnInit {
     }
 
     rowCount() {
-        return this.dataSource ? this.dataSource.filteredData.length : 0;
+        // return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
     delete(id: number) {
@@ -86,12 +89,12 @@ export class GenreComponent implements OnInit {
     }
 
     flattenTree(): MatTableDataSource<any> {
-        const flattenTree = this.treeTable.reduce((acc, bla) => this.treeTableService.flattenTree(acc, bla), []);
+        const flattenTree = this.treeTable.reduce((acc, bla) => this._treeTableService.flattenTree(acc, bla), []);
         return new MatTableDataSource(flattenTree.filter(x => x.isVisible));
     }
 
     nodeClick(element: any) {
-        element.isExpanded ? this.treeTableService.close(element) : this.treeTableService.expand(element);
+        element.isExpanded ? this._treeTableService.close(element) : this._treeTableService.expand(element);
         this.dataSource = this.flattenTree();
     }
 
