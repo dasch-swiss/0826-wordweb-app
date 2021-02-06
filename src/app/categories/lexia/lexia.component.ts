@@ -15,7 +15,7 @@ import {ExportService} from "../../services/export.service";
 @Component({
     selector: "app-lexia",
     templateUrl: "./lexia.component.html",
-    styleUrls: ["../category2.scss"]
+    styleUrls: ["../resource.scss"]
 })
 export class LexiaComponent implements OnInit {
     @ViewChild(MatSort, {static: true}) sort: MatSort;

@@ -1,1 +1,57 @@
-<p>research-field works!</p>
+<div class="container">
+
+    <a [routerLink]="['/categories']">< back</a>
+    <h2>List of Research Fields</h2>
+
+    <div class="btn-row-container">
+
+        <div class="btn-container">
+            <button class="create-btn" type="button" mat-raised-button (click)="create()">
+                <mat-icon>add</mat-icon>
+                Create Research Field
+            </button>
+
+            <button class="download-btn" type="button" mat-raised-button [disabled]="!flattenTree || flattenTree.length == 0" (click)="export()">
+                <mat-icon>get_app</mat-icon>
+                Export
+            </button>
+        </div>
+
+        <div class="row-counter">Amount: {{rowCount()}} <span *ngIf="flattenTree">of {{flattenTree.length}}</span></div>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <!-- name -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="list-name-container" *ngIf="element.isVisible">
+                    <div [innerHTML]="formatIndentation(element)"></div>
+                    <button class="expand-btn" [ngStyle]="{'visibility': element.nodes.length ? 'visible' : 'hidden'}" mat-button mat-icon-button color="primary" (click)="nodeClick(element)">
+                        <mat-icon>
+                            {{element.isExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}}
+                        </mat-icon>
+                    </button>
+                    <div>{{element.name}}</div>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- button column -->
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="action-btn-container">
+                    <button class="edit-btn" mat-button mat-icon-button color="primary" (click)="edit(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+</div>

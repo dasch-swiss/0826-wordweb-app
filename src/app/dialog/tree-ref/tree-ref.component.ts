@@ -92,19 +92,19 @@ export class TreeRefComponent implements OnInit {
             }
         }
 
-        tempTree.subscribe(treeCat => {
-            this.tree = treeCat.nodes as TreeCategory[];
-            this.treeTable = this.tree.map(t => this.treeTableService.toTreeTable(t));
-            this.flattenTreeTable = this.flattenTree(this.treeTable);
-        });
-
-        if (this.refInfo.editMode) {
-            this.selectedCat = [...this.refInfo.res];
-            this.closeList();
-        } else {
-            this.selectedCat = this.refInfo.res.length !== 0 ? [...this.refInfo.res] : [];
-            this.openList();
-        }
+        // tempTree.subscribe(treeCat => {
+        //     this.tree = treeCat.nodes as TreeCategory[];
+        //     this.treeTable = this.tree.map(t => this.treeTableService.toTreeTable(t));
+        //     this.flattenTreeTable = this.flattenTree(this.treeTable);
+        // });
+        //
+        // if (this.refInfo.editMode) {
+        //     this.selectedCat = [...this.refInfo.res];
+        //     this.closeList();
+        // } else {
+        //     this.selectedCat = this.refInfo.res.length !== 0 ? [...this.refInfo.res] : [];
+        //     this.openList();
+        // }
     }
 
     openList() {
@@ -115,9 +115,9 @@ export class TreeRefComponent implements OnInit {
         this.listOpen = false;
     }
 
-    flattenTree(treeTable): any {
-        return treeTable.reduce((acc, bla) => this.treeTableService.flattenTree(acc, bla), []);
-    }
+    // flattenTree(treeTable): any {
+    //     return treeTable.reduce((acc, bla) => this.treeTableService.flattenTree(acc, bla), []);
+    // }
 
     addCategory(category: TreeCategory) {
         this.selectedCat.push(category);
@@ -143,7 +143,7 @@ export class TreeRefComponent implements OnInit {
 
     nodeClick(element: any) {
         element.isExpanded ? this.treeTableService.close(element) : this.treeTableService.expand(element);
-        this.flattenTreeTable = this.flattenTree(this.treeTable);
+        // this.flattenTreeTable = this.flattenTree(this.treeTable);
     }
 
     cancel() {

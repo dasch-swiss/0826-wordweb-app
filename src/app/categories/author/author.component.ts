@@ -15,7 +15,7 @@ import {ExportService} from "../../services/export.service";
 @Component({
     selector: "app-author",
     templateUrl: "./author.component.html",
-    styleUrls: ["../category2.scss"]
+    styleUrls: ["../resource.scss"]
 })
 export class AuthorComponent implements OnInit {
     @ViewChild(MatSort, {static: true}) sort: MatSort;

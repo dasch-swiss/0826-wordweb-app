@@ -3,23 +3,26 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {Language} from "../../model/model";
-import {ApiService} from "../../services/api.service";
 import {CreateUpdateStatusComponent} from "./create-update-status/create-update-status.component";
+import {ListService} from "../../services/list.service";
+import {TreeTableService} from "../../services/tree-table.service";
 
 @Component({
     selector: "app-status",
     templateUrl: "./status.component.html",
-    styleUrls: ["../category.scss"]
+    styleUrls: ["../list.scss"]
 })
 export class StatusComponent implements OnInit {
-    displayedColumns: string[] = ["name", "order", "references", "action"];
-    dataSource: MatTableDataSource<Language>;
+    flattenTree: any[];
+    dataSource: MatTableDataSource<any>;
+    displayedColumns: string[] = ["name", "action"];
     value: string;
 
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-    constructor(private apiService: ApiService,
-                private createStatusDialog: MatDialog) {
+    constructor(private _listService: ListService,
+                private _treeTableService: TreeTableService,
+                private _createStatusDialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -27,30 +30,17 @@ export class StatusComponent implements OnInit {
     }
 
     resetTable() {
-        this.apiService.getStatuses().subscribe((statuses) => {
-            this.dataSource = new MatTableDataSource(statuses);
-            this.dataSource.sort = this.sort;
-        });
-    }
-
-    applyFilter(filterValue: string) {
-        this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-
-    clear() {
-        this.dataSource.filter = this.value = "";
-    }
-
-    rowCount() {
-        return this.dataSource ? this.dataSource.filteredData.length : 0;
+        const treeTable = this._treeTableService.toTreeTable(this._listService.getList("status"));
+        this.flattenTree = this._treeTableService.flattenTree(treeTable.nodes);
+        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
     }
 
     create() {
-        this.createOrEditResource(false);
+        // this.createOrEditResource(false);
     }
 
     edit(language: Language) {
-        this.createOrEditResource(true, language);
+        // this.createOrEditResource(true, language);
     }
 
     createOrEditResource(editMod: boolean, resource: Language = null) {
@@ -61,17 +51,29 @@ export class StatusComponent implements OnInit {
             resource: resource,
             editMod: editMod,
         };
-        const dialogRef = this.createStatusDialog.open(CreateUpdateStatusComponent, dialogConfig);
+        const dialogRef = this._createStatusDialog.open(CreateUpdateStatusComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
                 this.resetTable();
-                this.dataSource.sort = this.sort;
             }
         });
     }
 
-    delete(id: number) {
-        console.log(`Status ID: ${id}`);
+    formatIndentation(node: any): string {
+        return "&nbsp;".repeat(node.depth * 5);
+    }
+
+    export() {
+        console.log("export");
+    }
+
+    rowCount() {
+        return this.dataSource ? this.dataSource.filteredData.length : 0;
+    }
+
+    nodeClick(element: any) {
+        element.isExpanded ? this._treeTableService.close(element) : this._treeTableService.expand(element);
+        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
     }
 
 }

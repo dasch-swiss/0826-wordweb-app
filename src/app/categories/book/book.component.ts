@@ -15,7 +15,7 @@ import {ExportService} from "../../services/export.service";
 @Component({
     selector: "app-book",
     templateUrl: "./book.component.html",
-    styleUrls: ["../category2.scss"]
+    styleUrls: ["../resource.scss"]
 })
 export class BookComponent implements OnInit {
     @ViewChild(MatSort, {static: true}) sort: MatSort;

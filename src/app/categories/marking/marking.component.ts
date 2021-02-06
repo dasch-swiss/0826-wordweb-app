@@ -1,23 +1,22 @@
 import {Component, OnInit} from "@angular/core";
-import {Marking} from "../../model/model";
 import {MatTableDataSource} from "@angular/material/table";
-import {ApiService} from "../../services/api.service";
 import {TreeTableService} from "../../services/tree-table.service";
+import {ListService} from "../../services/list.service";
+
 
 @Component({
     selector: "app-marking",
     templateUrl: "./marking.component.html",
-    styleUrls: ["../category.scss"]
+    styleUrls: ["../list.scss"]
 })
 export class MarkingComponent implements OnInit {
-    markings: Marking[];
-    treeTable: any[];
+    flattenTree: any[];
     dataSource: MatTableDataSource<any>;
-    displayedColumns: string[] = ["name", "references", "action"];
+    displayedColumns: string[] = ["name", "action"];
     value: string;
 
-    constructor(private apiService: ApiService,
-                private treeTableService: TreeTableService) {
+    constructor(private _listService: ListService,
+                private _treeTableService: TreeTableService) {
         this.value = "";
     }
 
@@ -26,12 +25,13 @@ export class MarkingComponent implements OnInit {
     }
 
     resetTable() {
-        this.apiService.getMarking(0, true)
-            .subscribe((marking) => {
-                this.markings = marking.nodes as Marking[];
-                this.treeTable = this.markings.map((m) => this.treeTableService.toTreeTable(m));
-                this.dataSource = this.flattenTree();
-            });
+        const treeTable = this._treeTableService.toTreeTable(this._listService.getList("marking"));
+        this.flattenTree = this._treeTableService.flattenTree(treeTable.nodes);
+        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
+    }
+
+    create() {
+        // ToDo
     }
 
     edit(element) {
@@ -42,33 +42,16 @@ export class MarkingComponent implements OnInit {
         return "&nbsp;".repeat(node.depth * 5);
     }
 
-    applyFilter(filterValue: string) {
-        this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-
-    clear() {
-        this.dataSource.filter = this.value = "";
+    export() {
+        console.log("export");
     }
 
     rowCount() {
         return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
-    create() {
-        // ToDo
-    }
-
-    delete(id: number) {
-        console.log(`Marking ID: ${id}`);
-    }
-
-    flattenTree(): MatTableDataSource<any> {
-        const flattenTree = this.treeTable.reduce((acc, bla) => this.treeTableService.flattenTree(acc, bla), []);
-        return new MatTableDataSource(flattenTree.filter(x => x.isVisible));
-    }
-
     nodeClick(element: any) {
-        element.isExpanded ? this.treeTableService.close(element) : this.treeTableService.expand(element);
-        this.dataSource = this.flattenTree();
+        element.isExpanded ? this._treeTableService.close(element) : this._treeTableService.expand(element);
+        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
     }
 }

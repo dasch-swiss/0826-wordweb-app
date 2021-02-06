@@ -1,0 +1,48 @@
+.container {
+    margin: 2rem 12rem;
+
+    .btn-row-container {
+        display: flex;
+        justify-content: space-between;
+        margin: 1rem 0;
+
+        .btn-container {
+
+            .create-btn {
+                background-color: rgb(159, 11, 11);
+                color: white;
+            }
+
+            .download-btn {
+                margin-left: 1rem;
+                font-weight: normal;
+            }
+        }
+
+        .row-counter {
+            color: gray;
+        }
+    }
+
+    table {
+        width: 100%;
+
+        th, td {
+            padding: 0 0.5rem;
+            //border: 1px solid black;
+
+            .list-name-container {
+                display:flex;
+                align-items: center;
+
+                .expand-btn{
+                    color: rgba(159, 11, 11, 1);
+                }
+            }
+
+            .edit-btn {
+                color: rgba(159, 11, 11, 1);
+            }
+        }
+    }
+}

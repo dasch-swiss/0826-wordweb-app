@@ -1,35 +1,36 @@
 import {Component, OnInit} from "@angular/core";
-import {ApiService} from "../../services/api.service";
 import {TreeTableService} from "../../services/tree-table.service";
-import {FormalClass} from "../../model/model";
 import {MatTableDataSource} from "@angular/material/table";
+import {ListService} from "../../services/list.service";
 
 @Component({
     selector: "app-formal-class",
     templateUrl: "./formal-class.component.html",
-    styleUrls: ["../category.scss"]
+    styleUrls: ["../list.scss"]
 })
 export class FormalClassComponent implements OnInit {
-    formalClasses: FormalClass[];
-    treeTable: any[];
+    flattenTree: any[];
     dataSource: MatTableDataSource<any>;
-    displayedColumns: string[] = ["name", "references", "action"];
+    displayedColumns: string[] = ["name", "action"];
     value: string;
 
-    constructor(private apiService: ApiService,
-                private treeService: TreeTableService) {
+    constructor(private _listService: ListService,
+                private _treeTableService: TreeTableService) {
         this.value = "";
     }
 
     ngOnInit() {
-        this.apiService.getFormalClass(0, true)
-            .subscribe((formalClasses) => {
-                this.formalClasses = formalClasses.nodes as FormalClass[];
-                this.treeTable = this.treeService.toTreeTable(this.formalClasses);
-                const newTree = this.treeTable.reduce((acc, element) => this.treeService.flattenTree(acc, element), []);
+        this.resetTable();
+    }
 
-                this.dataSource = new MatTableDataSource(newTree);
-            });
+    resetTable() {
+        const treeTable = this._treeTableService.toTreeTable(this._listService.getList("formalClass"));
+        this.flattenTree = this._treeTableService.flattenTree(treeTable.nodes);
+        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
+    }
+
+    create() {
+        // ToDo
     }
 
     edit(element) {
@@ -44,20 +45,16 @@ export class FormalClassComponent implements OnInit {
         this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 
-    clear() {
-        this.dataSource.filter = this.value = "";
+    export() {
+        console.log("export");
     }
 
     rowCount() {
         return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
-    create() {
-        // ToDo
+    nodeClick(element: any) {
+        element.isExpanded ? this._treeTableService.close(element) : this._treeTableService.expand(element);
+        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
     }
-
-    delete(id: number) {
-        console.log(`Formal Class ID: ${id}`);
-    }
-
 }

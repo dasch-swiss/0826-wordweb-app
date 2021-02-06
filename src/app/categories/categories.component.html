@@ -36,10 +36,6 @@
         <h3>Lists</h3>
 
         <div class="list-btn">
-            <button mat-raised-button color="basic" (click)="showContributors()">
-                <mat-icon>folder_shared</mat-icon>
-                Contributor
-            </button>
             <button mat-raised-button color="basic" (click)="showFormalClasses()">
                 <mat-icon>format_list_numbered</mat-icon>
                 Formal Class
@@ -79,6 +75,17 @@
             <button mat-raised-button color="basic" (click)="showSubjects()">
                 <mat-icon>subject</mat-icon>
                 Subject
+            </button>
+        </div>
+    </div>
+
+    <div class="list">
+        <h3>Undone</h3>
+
+        <div class="list-btn">
+            <button mat-raised-button color="basic" (click)="showContributors()">
+                <mat-icon>folder_shared</mat-icon>
+                Contributor
             </button>
         </div>
     </div>

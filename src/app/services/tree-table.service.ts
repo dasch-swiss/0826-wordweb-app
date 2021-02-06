@@ -1,4 +1,5 @@
 import {Injectable} from "@angular/core";
+import {IListNode, ITreeTableNode} from "../model/ListModel";
 
 @Injectable({
     providedIn: "root"
@@ -13,14 +14,14 @@ export class TreeTableService {
         return root.nodes.map(n => this.traverse(n, depth, f));
     }
 
-    private flatten(acc: any[], root: any) {
+    private flatten(acc: IListNode[], root: IListNode) {
         acc.push(root);
-        root.nodes.map(n => this.flatten(acc, n));
+        root.nodes.forEach(n => this.flatten(acc, n));
         return acc;
     }
 
     private traverseExpand(treeTable) {
-        treeTable.nodes.map((node) => {
+        treeTable.nodes.forEach((node) => {
             node.isVisible = true;
             if (node.isExpanded && (node.nodes.length > 0)) {
                 this.traverseExpand(node);
@@ -29,7 +30,7 @@ export class TreeTableService {
     }
 
     private traverseClose(treeTable) {
-        treeTable.nodes.map((node) => {
+        treeTable.nodes.forEach((node) => {
             node.isVisible = false;
             if (node.nodes.length > 0) {
                 this.traverseClose(node);
@@ -37,7 +38,7 @@ export class TreeTableService {
         });
     }
 
-    toTreeTable(root: any): any {
+    toTreeTable(root: IListNode): ITreeTableNode {
         const cloneRoot = JSON.parse(JSON.stringify(root));
         this.traverse(cloneRoot, 0, (node: any, depth: number) => {
             node.isVisible = true;
@@ -47,8 +48,8 @@ export class TreeTableService {
         return cloneRoot;
     }
 
-    flattenTree(acc: any[], root: any) {
-        return this.flatten(acc, root);
+    flattenTree(rootNodes: IListNode[]): IListNode[] {
+        return rootNodes.reduce((acc, list) => this.flatten(acc, list), Array<IListNode>());
     }
 
     close(rootNode: any) {

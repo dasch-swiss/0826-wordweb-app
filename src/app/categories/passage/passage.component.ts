@@ -15,7 +15,7 @@ import {ExportService} from "../../services/export.service";
 @Component({
   selector: "app-passage",
   templateUrl: "./passage.component.html",
-  styleUrls: ["../category2.scss"]
+  styleUrls: ["../resource.scss"]
 })
 export class PassageComponent implements OnInit {
     @ViewChild(MatSort, { static: true }) sort: MatSort;

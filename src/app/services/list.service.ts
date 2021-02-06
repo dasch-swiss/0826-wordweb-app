@@ -101,13 +101,20 @@ export class ListService {
         return "-1";
     }
 
-    getFlattenList(listName: string) :IListNode[] {
+    getFlattenList(listName: string): IListNode[] {
         if (this._lists[listName] == undefined) {
             throw new Error(`list ${listName} does not exist`);
         }
 
-        return this._lists[listName].nodes
-            .reduce((acc, list) => this._treeTableService.flattenTree(acc, list), Array<IListNode>());
+        return this._treeTableService.flattenTree(this._lists[listName].nodes);
+    }
+
+    getList(listName: string): IListNode {
+        if (this._lists[listName] == undefined) {
+            throw new Error(`list ${listName} does not exist`);
+        }
+
+        return this._lists[listName];
     }
 
     printLists() {

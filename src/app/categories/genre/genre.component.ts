@@ -1,8 +1,6 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {ApiService} from "../../services/api.service";
+import {Component, OnInit} from "@angular/core";
 import {Language} from "../../model/model";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {TreeTableService} from "../../services/tree-table.service";
 import {CreateUpdateGenreComponent} from "./create-update-genre/create-update-genre.component";
@@ -11,18 +9,15 @@ import {ListService} from "../../services/list.service";
 @Component({
     selector: "app-genre",
     templateUrl: "./genre.component.html",
-    styleUrls: ["./genre.component.scss"]
+    styleUrls: ["../list.scss"]
 })
 export class GenreComponent implements OnInit {
-    treeTable: any[];
+    flattenTree: any[];
     dataSource: MatTableDataSource<any>;
-    displayedColumns: string[] = ["name", "references", "action"];
+    displayedColumns: string[] = ["name", "action"];
     value: string;
 
-    @ViewChild(MatSort, {static: true}) sort: MatSort;
-
-    constructor(private _apiService: ApiService,
-                private _listService: ListService,
+    constructor(private _listService: ListService,
                 private _treeTableService: TreeTableService,
                 private _createGenreDialog: MatDialog) {
         this.value = "";
@@ -33,22 +28,17 @@ export class GenreComponent implements OnInit {
     }
 
     resetTable() {
-        this._listService.printLists();
-        // console.log(this._listService.getFlattenList("genre"));
-        // this.dataSource = this._listService.getFlattenList("genre");
-        this._apiService.getGenre(0, true)
-            .subscribe((genre) => {
-                this.treeTable = this._treeTableService.toTreeTable(genre).nodes;
-                this.dataSource = this.flattenTree();
-            });
+        const treeTable = this._treeTableService.toTreeTable(this._listService.getList("genre"));
+        this.flattenTree = this._treeTableService.flattenTree(treeTable.nodes);
+        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
     }
 
     create() {
-        this.createOrEditResource(false);
+        // this.createOrEditResource(false);
     }
 
     edit(language: Language) {
-        this.createOrEditResource(true, language);
+        // this.createOrEditResource(true, language);
     }
 
     createOrEditResource(editMod: boolean, resource: Language = null) {
@@ -63,7 +53,6 @@ export class GenreComponent implements OnInit {
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
                 this.resetTable();
-                this.dataSource.sort = this.sort;
             }
         });
     }
@@ -72,30 +61,17 @@ export class GenreComponent implements OnInit {
         return "&nbsp;".repeat(node.depth * 5);
     }
 
-    applyFilter(filterValue: string) {
-        this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-
-    clear() {
-        this.dataSource.filter = this.value = "";
+    export() {
+        console.log("export");
     }
 
     rowCount() {
-        // return this.dataSource ? this.dataSource.filteredData.length : 0;
-    }
-
-    delete(id: number) {
-        console.log(`Genre ID: ${id}`);
-    }
-
-    flattenTree(): MatTableDataSource<any> {
-        const flattenTree = this.treeTable.reduce((acc, bla) => this._treeTableService.flattenTree(acc, bla), []);
-        return new MatTableDataSource(flattenTree.filter(x => x.isVisible));
+        return this.dataSource ? this.dataSource.filteredData.length : 0;
     }
 
     nodeClick(element: any) {
         element.isExpanded ? this._treeTableService.close(element) : this._treeTableService.expand(element);
-        this.dataSource = this.flattenTree();
+        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
     }
 
 }
