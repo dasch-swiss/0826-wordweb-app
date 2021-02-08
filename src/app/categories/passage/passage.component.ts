@@ -10,6 +10,7 @@ import {ListService} from "../../services/list.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {Observable} from "rxjs";
 import {ExportService} from "../../services/export.service";
+import {IListNode} from "../../model/ListModel";
 
 @Component({
   selector: "app-passage",
@@ -221,10 +222,10 @@ export class PassageComponent implements OnInit {
     dataSource: MatTableDataSource<any>;
     value: string;
     form: FormGroup;
-    researchFields: any[];
-    functionVoices: any[];
-    markings: any[];
-    status: any[];
+    researchFields: IListNode[];
+    functionVoices: IListNode[];
+    markings: IListNode[];
+    status: IListNode[];
 
     static customFilter(item: any, filterValue: string): boolean {
         const containsDispTitle = item.hasDisplayedTitle[0].value.toLowerCase().indexOf(filterValue) > -1;

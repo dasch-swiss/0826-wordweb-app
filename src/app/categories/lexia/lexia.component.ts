@@ -10,6 +10,7 @@ import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
 import {Observable} from "rxjs";
 import {ExportService} from "../../services/export.service";
+import {IListNode} from "../../model/ListModel";
 
 @Component({
     selector: "app-lexia",
@@ -68,8 +69,8 @@ export class LexiaComponent implements OnInit {
     dataSource: MatTableDataSource<any>;
     value: string;
     form: FormGroup;
-    formalClasses: any[];
-    images: any[];
+    formalClasses: IListNode[];
+    images: IListNode[];
 
     constructor(public listService: ListService,
                 private _knoraService: KnoraService,

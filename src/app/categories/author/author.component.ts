@@ -3,7 +3,6 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {Author} from "../../model/model";
-import {ApiService} from "../../services/api.service";
 import {CreateUpdateAuthorComponent} from "./create-update-author/create-update-author.component";
 import {KnoraService} from "../../services/knora.service";
 import {FormControl, FormGroup} from "@angular/forms";
@@ -11,6 +10,7 @@ import {ListService} from "../../services/list.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {Observable} from "rxjs";
 import {ExportService} from "../../services/export.service";
+import {IListNode} from "../../model/ListModel";
 
 @Component({
     selector: "app-author",
@@ -97,10 +97,9 @@ export class AuthorComponent implements OnInit {
     dataSource: MatTableDataSource<any>;
     value: string;
     form: FormGroup;
-    genders: any[];
+    genders: IListNode[];
 
-    constructor(public apiService: ApiService,
-                public listService: ListService,
+    constructor(public listService: ListService,
                 private _knoraService: KnoraService,
                 private _exportService: ExportService,
                 private _createAuthorDialog: MatDialog) {

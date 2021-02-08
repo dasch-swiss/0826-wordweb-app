@@ -10,6 +10,7 @@ import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
 import {Observable} from "rxjs";
 import {ExportService} from "../../services/export.service";
+import {IListNode} from "../../model/ListModel";
 
 @Component({
     selector: "app-venue",
@@ -50,7 +51,7 @@ export class VenueComponent implements OnInit {
     dataSource: MatTableDataSource<Venue>;
     value: string;
     form: FormGroup;
-    placeVenues: any[];
+    placeVenues: IListNode[];
 
     static customFilter(item: any, filterValue: string): boolean {
         return item.hasVenueInternalId[0].value.indexOf(filterValue) > -1;
