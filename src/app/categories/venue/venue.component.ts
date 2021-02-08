@@ -3,7 +3,6 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {Venue} from "../../model/model";
-import {ApiService} from "../../services/api.service";
 import {CreateUpdateVenueComponent} from "./create-update-venue/create-update-venue.component";
 import {FormControl, FormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";

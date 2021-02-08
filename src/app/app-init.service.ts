@@ -49,7 +49,9 @@ export class AppInitService {
 
             this._knoraService.knoraApiConnection = AppInitService.settings.apiURL;
 
-            this._knoraService.login(AppInitService.settings.email, AppInitService.settings.pwd)
+            console.log(AppInitService.settings, AppInitService.settings.email, AppInitService.settings.pwd);
+
+            this._knoraService.login("root@example.com", "test")
                 .pipe(
                     mergeMap(() => this._knoraService.getAllLists(AppInitService.settings.projectIRI)),
                     mergeMap((lists: ListNodeInfo[]) => forkJoin<Observable<List>>(lists.map((list: ListNodeInfo) => this._knoraService.getList(list.id))))

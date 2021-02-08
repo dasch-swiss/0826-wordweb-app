@@ -23,7 +23,7 @@ fetch(`config/config.${environment.name}.json`)
         // Store the response somewhere that your ConfigService can read it.
         window["tempConfigStorage"] = config;
 
-        // console.log("config", config);
+        console.log("config", config);
 
 
         platformBrowserDynamic()
