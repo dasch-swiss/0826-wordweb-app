@@ -101,9 +101,9 @@ export class AuthorComponent implements OnInit {
 
     constructor(public apiService: ApiService,
                 public listService: ListService,
-                private knoraService: KnoraService,
-                private exportService: ExportService,
-                private createAuthorDialog: MatDialog) {
+                private _knoraService: KnoraService,
+                private _exportService: ExportService,
+                private _createAuthorDialog: MatDialog) {
     }
 
     static customFilter(item: any, filterValue: string): boolean {
@@ -225,7 +225,7 @@ export class AuthorComponent implements OnInit {
             resource,
             editMod,
         };
-        const dialogRef = this.createAuthorDialog.open(CreateUpdateAuthorComponent, dialogConfig);
+        const dialogRef = this._createAuthorDialog.open(CreateUpdateAuthorComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
                 // TODO Refresh the table
@@ -251,7 +251,7 @@ export class AuthorComponent implements OnInit {
             author["Gender"] = this.listService.getNameOfNode(a.hasGender[0].listNode);
             return author;
         });
-        this.exportService.exportToCsv(dataToExport, "wordweb_authors");
+        this._exportService.exportToCsv(dataToExport, "wordweb_authors");
     }
 
     getDateFormat(dateStart: string, dateEnd: string): string {
@@ -334,9 +334,9 @@ export class AuthorComponent implements OnInit {
             this.genderRef.searchVal1 = null;
         }
 
-        this.amountResult = this.knoraService.gravsearchQueryCount(this.myAuthor, this.PRIORITY);
+        this.amountResult = this._knoraService.gravsearchQueryCount(this.myAuthor, this.PRIORITY);
 
-        this.knoraService.gravseachQuery(this.myAuthor, this.PRIORITY)
+        this._knoraService.gravseachQuery(this.myAuthor, this.PRIORITY)
             .subscribe(data => {
                 this.searchResults = data;
                 this.dataSource = new MatTableDataSource(data);
@@ -352,7 +352,7 @@ export class AuthorComponent implements OnInit {
 
         const offset = Math.floor(this.searchResults.length / this.MAX_RESOURCE_PER_RESULT);
 
-        this.knoraService.gravseachQuery(this.myAuthor, this.PRIORITY, offset)
+        this._knoraService.gravseachQuery(this.myAuthor, this.PRIORITY, offset)
             .subscribe(data => {
                 this.searchResults.push(...data);
                 this.dataSource = new MatTableDataSource(this.searchResults);

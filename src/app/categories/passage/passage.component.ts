@@ -3,7 +3,6 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {Passage} from "../../model/model";
-import {ApiService} from "../../services/api.service";
 import {CreateUpdatePassageComponent} from "./create-update-passage/create-update-passage.component";
 import {FormControl, FormGroup} from "@angular/forms";
 import {KnoraService} from "../../services/knora.service";
@@ -251,12 +250,11 @@ export class PassageComponent implements OnInit {
         }
     }
 
-    constructor(private apiService: ApiService,
-                private passageDialog: MatDialog,
-                private editionDialog: MatDialog,
-                public listService: ListService,
-                private knoraService: KnoraService,
-                private exportService: ExportService) {
+    constructor(public listService: ListService,
+                private _passageDialog: MatDialog,
+                private _editionDialog: MatDialog,
+                private _knoraService: KnoraService,
+                private _exportService: ExportService) {
     }
 
     ngOnInit() {
@@ -383,7 +381,7 @@ export class PassageComponent implements OnInit {
             resource,
             editMod,
         };
-        const dialogRef = this.passageDialog.open(CreateUpdatePassageComponent, dialogConfig);
+        const dialogRef = this._passageDialog.open(CreateUpdatePassageComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
                 // TODO Refresh the table
@@ -411,7 +409,7 @@ export class PassageComponent implements OnInit {
             passage["Passage Comment"] = p.hasPassageComment ? p.hasPassageComment[0].value : null
             return passage;
         });
-        this.exportService.exportToCsv(dataToExport, "wordweb_passages");
+        this._exportService.exportToCsv(dataToExport, "wordweb_passages");
     }
 
     search() {
@@ -555,9 +553,9 @@ export class PassageComponent implements OnInit {
             }
         }
 
-        this.amountResult = this.knoraService.gravsearchQueryCount(this.myPassage, this.PRIORITY);
+        this.amountResult = this._knoraService.gravsearchQueryCount(this.myPassage, this.PRIORITY);
 
-        this.knoraService.gravseachQuery(this.myPassage, this.PRIORITY)
+        this._knoraService.gravseachQuery(this.myPassage, this.PRIORITY)
             .subscribe(data => {
                 console.log("results", data);
                 this.searchResults = data;
@@ -574,7 +572,7 @@ export class PassageComponent implements OnInit {
 
         const offset = Math.floor(this.searchResults.length / this.MAX_RESOURCE_PER_RESULT);
 
-        this.knoraService.gravseachQuery(this.myPassage, this.PRIORITY, offset)
+        this._knoraService.gravseachQuery(this.myPassage, this.PRIORITY, offset)
             .subscribe(data => {
                 this.searchResults.push(...data);
                 this.dataSource = new MatTableDataSource(this.searchResults);

@@ -66,11 +66,10 @@ export class VenueComponent implements OnInit {
         }
     }
 
-    constructor(private apiService: ApiService,
-                public listService: ListService,
-                private knoraService: KnoraService,
-                private exportService: ExportService,
-                private createVenueDialog: MatDialog) {
+    constructor(public listService: ListService,
+                private _knoraService: KnoraService,
+                private _exportService: ExportService,
+                private _createVenueDialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -125,7 +124,7 @@ export class VenueComponent implements OnInit {
             resource: resource,
             editMod: editMod,
         };
-        const dialogRef = this.createVenueDialog.open(CreateUpdateVenueComponent, dialogConfig);
+        const dialogRef = this._createVenueDialog.open(CreateUpdateVenueComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
                 // TODO Refresh the table
@@ -142,7 +141,7 @@ export class VenueComponent implements OnInit {
             venue["Place Venue"] = this.listService.getNameOfNode(v.hasPlaceVenue[0].listNode);
             return venue;
         });
-        this.exportService.exportToCsv(dataToExport, "wordweb_venues");
+        this._exportService.exportToCsv(dataToExport, "wordweb_venues");
     }
 
     search() {
@@ -161,9 +160,9 @@ export class VenueComponent implements OnInit {
             this.placeVenueRef.searchVal1 = null;
         }
 
-        this.amountResult = this.knoraService.gravsearchQueryCount(this.myVenue, this.PRIORITY);
+        this.amountResult = this._knoraService.gravsearchQueryCount(this.myVenue, this.PRIORITY);
 
-        this.knoraService.gravseachQuery(this.myVenue, this.PRIORITY)
+        this._knoraService.gravseachQuery(this.myVenue, this.PRIORITY)
             .subscribe(data => {
                 console.log("results", data);
                 this.searchResults = data;
@@ -180,7 +179,7 @@ export class VenueComponent implements OnInit {
 
         const offset = Math.floor(this.searchResults.length / this.MAX_RESOURCE_PER_RESULT);
 
-        this.knoraService.gravseachQuery(this.myVenue, this.PRIORITY, offset)
+        this._knoraService.gravseachQuery(this.myVenue, this.PRIORITY, offset)
             .subscribe(data => {
                 this.searchResults.push(...data);
                 this.dataSource = new MatTableDataSource(this.searchResults);

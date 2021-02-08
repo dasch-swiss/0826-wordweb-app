@@ -3,7 +3,6 @@ import {Organisation} from "../../model/model";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
-import {ApiService} from "../../services/api.service";
 import {CreateUpdateOrganisationComponent} from "./create-update-organisation/create-update-organisation.component";
 import {FormControl, FormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
@@ -90,10 +89,9 @@ export class OrganisationComponent implements OnInit {
         }
     }
 
-    constructor(private apiService: ApiService,
-                private knoraService: KnoraService,
-                private exportService: ExportService,
-                private createOrganisationDialog: MatDialog) {
+    constructor(private _knoraService: KnoraService,
+                private _exportService: ExportService,
+                private _createOrganisationDialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -114,14 +112,14 @@ export class OrganisationComponent implements OnInit {
     }
 
     prepareMembers() {
-        this.knoraService.getMembersCount()
+        this._knoraService.getMembersCount()
             .subscribe(amount => {
                 const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
 
                 const requests = [];
 
                 for (let offset = 0; offset < maxOffset; offset++) {
-                    requests.push(this.knoraService.getMembers(offset));
+                    requests.push(this._knoraService.getMembers(offset));
                 }
 
                 forkJoin<any>(requests)
@@ -186,7 +184,7 @@ export class OrganisationComponent implements OnInit {
             resource,
             editMod,
         };
-        const dialogRef = this.createOrganisationDialog.open(CreateUpdateOrganisationComponent, dialogConfig);
+        const dialogRef = this._createOrganisationDialog.open(CreateUpdateOrganisationComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
                 // TODO Refresh the table
@@ -205,7 +203,7 @@ export class OrganisationComponent implements OnInit {
             return company;
         });
         console.log("company", dataToExport);
-        this.exportService.exportToCsv(dataToExport, "wordweb_companies");
+        this._exportService.exportToCsv(dataToExport, "wordweb_companies");
     }
 
     search() {
@@ -236,9 +234,9 @@ export class OrganisationComponent implements OnInit {
             }
         }
 
-        this.amountResult = this.knoraService.gravsearchQueryCount(this.myCompany, this.PRIORITY);
+        this.amountResult = this._knoraService.gravsearchQueryCount(this.myCompany, this.PRIORITY);
 
-        this.knoraService.gravseachQuery(this.myCompany, this.PRIORITY)
+        this._knoraService.gravseachQuery(this.myCompany, this.PRIORITY)
             .subscribe(data => {
                 console.log("results", data);
                 this.searchResults = data;
@@ -255,7 +253,7 @@ export class OrganisationComponent implements OnInit {
 
         const offset = Math.floor(this.searchResults.length / this.MAX_RESOURCE_PER_RESULT);
 
-        this.knoraService.gravseachQuery(this.myCompany, this.PRIORITY, offset)
+        this._knoraService.gravseachQuery(this.myCompany, this.PRIORITY, offset)
             .subscribe(data => {
                 this.searchResults.push(...data);
                 this.dataSource = new MatTableDataSource(this.searchResults);

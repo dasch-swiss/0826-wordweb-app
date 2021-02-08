@@ -3,7 +3,6 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {Lexia} from "../../model/model";
-import {ApiService} from "../../services/api.service";
 import {CreateUpdateLexiaComponent} from "./create-update-lexia/create-update-lexia.component";
 import {FormControl, FormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
@@ -72,11 +71,10 @@ export class LexiaComponent implements OnInit {
     formalClasses: any[];
     images: any[];
 
-    constructor(private apiService: ApiService,
-                public listService: ListService,
-                private knoraService: KnoraService,
-                private exportService: ExportService,
-                private createLexiaDialog: MatDialog) {
+    constructor(public listService: ListService,
+                private _knoraService: KnoraService,
+                private _exportService: ExportService,
+                private _createLexiaDialog: MatDialog) {
     }
 
     static customFilter(item: any, filterValue: string): boolean {
@@ -167,7 +165,7 @@ export class LexiaComponent implements OnInit {
             resource: resource,
             editMod: editMod,
         };
-        const dialogRef = this.createLexiaDialog.open(CreateUpdateLexiaComponent, dialogConfig);
+        const dialogRef = this._createLexiaDialog.open(CreateUpdateLexiaComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
                 // TODO Refresh the table
@@ -187,7 +185,7 @@ export class LexiaComponent implements OnInit {
             lexia["Image"] = l.hasImage ? l.hasImage.map(img => this.listService.getNameOfNode(img.listNode)).join("_") : null;
             return lexia;
         });
-        this.exportService.exportToCsv(dataToExport, "wordweb_lexias");
+        this._exportService.exportToCsv(dataToExport, "wordweb_lexias");
     }
 
     search() {
@@ -236,9 +234,9 @@ export class LexiaComponent implements OnInit {
             }
         }
 
-        this.amountResult = this.knoraService.gravsearchQueryCount(this.myLexia, this.PRIORITY);
+        this.amountResult = this._knoraService.gravsearchQueryCount(this.myLexia, this.PRIORITY);
 
-        this.knoraService.gravseachQuery(this.myLexia, this.PRIORITY)
+        this._knoraService.gravseachQuery(this.myLexia, this.PRIORITY)
             .subscribe(data => {
                 console.log("results", data);
                 this.searchResults = data;
@@ -255,7 +253,7 @@ export class LexiaComponent implements OnInit {
 
         const offset = Math.floor(this.searchResults.length / this.MAX_RESOURCE_PER_RESULT);
 
-        this.knoraService.gravseachQuery(this.myLexia, this.PRIORITY, offset)
+        this._knoraService.gravseachQuery(this.myLexia, this.PRIORITY, offset)
             .subscribe(data => {
                 this.searchResults.push(...data);
                 this.dataSource = new MatTableDataSource(this.searchResults);

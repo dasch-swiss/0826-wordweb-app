@@ -3,7 +3,6 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {Book} from "../../model/model";
-import {ApiService} from "../../services/api.service";
 import {CreateUpdateBookComponent} from "./create-update-book/create-update-book.component";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ListService} from "../../services/list.service";
@@ -192,14 +191,13 @@ export class BookComponent implements OnInit {
     venues: any[];
     actors: any[];
 
-    constructor(private apiService: ApiService,
-                public listService: ListService,
-                private knoraService: KnoraService,
-                private authorDialog: MatDialog,
-                private venueDialog: MatDialog,
-                private exportService: ExportService,
-                private organisationDialog: MatDialog,
-                private createBookDialog: MatDialog) {
+    constructor(public listService: ListService,
+                private _knoraService: KnoraService,
+                private _authorDialog: MatDialog,
+                private _venueDialog: MatDialog,
+                private _exportService: ExportService,
+                private _organisationDialog: MatDialog,
+                private _createBookDialog: MatDialog) {
     }
 
     static customFilter(item: any, filterValue: string): boolean {
@@ -295,14 +293,14 @@ export class BookComponent implements OnInit {
     }
 
     prepareCompanies() {
-        this.knoraService.getCompaniesCount()
+        this._knoraService.getCompaniesCount()
             .subscribe(amount => {
                 const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
 
                 const requests = [];
 
                 for (let offset = 0; offset < maxOffset; offset++) {
-                    requests.push(this.knoraService.getCompanies(offset));
+                    requests.push(this._knoraService.getCompanies(offset));
                 }
 
                 forkJoin<any>(requests)
@@ -323,14 +321,14 @@ export class BookComponent implements OnInit {
     }
 
     prepareVenues() {
-        this.knoraService.getVenuesCount()
+        this._knoraService.getVenuesCount()
             .subscribe(amount => {
                 const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
 
                 const requests = [];
 
                 for (let offset = 0; offset < maxOffset; offset++) {
-                    requests.push(this.knoraService.getVenues(offset));
+                    requests.push(this._knoraService.getVenues(offset));
                 }
 
                 forkJoin<any>(requests)
@@ -352,14 +350,14 @@ export class BookComponent implements OnInit {
     }
 
     prepareActors() {
-        this.knoraService.getActorsCount()
+        this._knoraService.getActorsCount()
             .subscribe(amount => {
                 const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
 
                 const requests = [];
 
                 for (let offset = 0; offset < maxOffset; offset++) {
-                    requests.push(this.knoraService.getActors(offset));
+                    requests.push(this._knoraService.getActors(offset));
                 }
 
                 forkJoin<any>(requests)
@@ -454,7 +452,7 @@ export class BookComponent implements OnInit {
             resource,
             editMod,
         };
-        const dialogRef = this.createBookDialog.open(CreateUpdateBookComponent, dialogConfig);
+        const dialogRef = this._createBookDialog.open(CreateUpdateBookComponent, dialogConfig);
         dialogRef.afterClosed().subscribe((data) => {
             if (data.refresh) {
                 // TODO Refresh the table
@@ -488,7 +486,7 @@ export class BookComponent implements OnInit {
             // book["Performed In"] = b.performedIn ? b.performedIn.map(v => this.listService.getNameOfNode(v.hasPlaceVenue[0].listNode)).join("_") : null;
             return book;
         });
-        this.exportService.exportToCsv(dataToExport, "wordweb_books");
+        this._exportService.exportToCsv(dataToExport, "wordweb_books");
     }
 
     getDateFormat(dateStart: string, dateEnd: string): string {
@@ -658,9 +656,9 @@ export class BookComponent implements OnInit {
             }
         }
 
-        this.amountResult = this.knoraService.gravsearchQueryCount(this.myBook, this.PRIORITY);
+        this.amountResult = this._knoraService.gravsearchQueryCount(this.myBook, this.PRIORITY);
 
-        this.knoraService.gravseachQuery(this.myBook, this.PRIORITY)
+        this._knoraService.gravseachQuery(this.myBook, this.PRIORITY)
             .subscribe(data => {
                 console.log(data);
                 this.searchResults = data;
@@ -677,7 +675,7 @@ export class BookComponent implements OnInit {
 
         const offset = Math.floor(this.searchResults.length / this.MAX_RESOURCE_PER_RESULT);
 
-        this.knoraService.gravseachQuery(this.myBook, this.PRIORITY, offset)
+        this._knoraService.gravseachQuery(this.myBook, this.PRIORITY, offset)
             .subscribe(data => {
                 this.searchResults.push(...data);
                 this.dataSource = new MatTableDataSource(this.searchResults);
