@@ -3,6 +3,8 @@ import {MatTableDataSource} from "@angular/material/table";
 import {TreeTableService} from "../../services/tree-table.service";
 import {ListService} from "../../services/list.service";
 import {MatDialog} from "@angular/material/dialog";
+import {ITreeTableNode} from "../../model/ListModel";
+import {ExportService} from "../../services/export.service";
 
 @Component({
     selector: "app-image",
@@ -10,12 +12,13 @@ import {MatDialog} from "@angular/material/dialog";
     styleUrls: ["../list.scss"]
 })
 export class ImageComponent implements OnInit {
-    flattenTree: any[];
-    dataSource: MatTableDataSource<any>;
+    flattenTreeTable: ITreeTableNode[];
+    dataSource: MatTableDataSource<ITreeTableNode>;
     displayedColumns: string[] = ["name", "action"];
     value: string;
 
     constructor(private _listService: ListService,
+                private _exportService: ExportService,
                 private _treeTableService: TreeTableService,
                 private _createGenreDialog: MatDialog) {
         this.value = "";
@@ -26,9 +29,8 @@ export class ImageComponent implements OnInit {
     }
 
     resetTable() {
-        const treeTable = this._treeTableService.toTreeTable(this._listService.getList("image"));
-        this.flattenTree = this._treeTableService.flattenTree(treeTable.nodes);
-        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
+        this.flattenTreeTable = this._treeTableService.toTreeTableFlatten(this._listService.getList("image"));
+        this.dataSource = new MatTableDataSource(this.flattenTreeTable.filter(x => x.isVisible));
     }
 
     create() {
@@ -44,7 +46,8 @@ export class ImageComponent implements OnInit {
     }
 
     export() {
-        console.log("export");
+        const dataToExport = this.flattenTreeTable.map(fc => this._listService.getMinNodeInfo(fc));
+        this._exportService.exportToCsv(dataToExport, "wordweb_image");
     }
 
     rowCount() {
@@ -53,7 +56,7 @@ export class ImageComponent implements OnInit {
 
     nodeClick(element: any) {
         element.isExpanded ? this._treeTableService.close(element) : this._treeTableService.expand(element);
-        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
+        this.dataSource = new MatTableDataSource(this.flattenTreeTable.filter(x => x.isVisible));
     }
 
 }

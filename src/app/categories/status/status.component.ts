@@ -6,6 +6,8 @@ import {Language} from "../../model/model";
 import {CreateUpdateStatusComponent} from "./create-update-status/create-update-status.component";
 import {ListService} from "../../services/list.service";
 import {TreeTableService} from "../../services/tree-table.service";
+import {ITreeTableNode} from "../../model/ListModel";
+import {ExportService} from "../../services/export.service";
 
 @Component({
     selector: "app-status",
@@ -13,14 +15,15 @@ import {TreeTableService} from "../../services/tree-table.service";
     styleUrls: ["../list.scss"]
 })
 export class StatusComponent implements OnInit {
-    flattenTree: any[];
-    dataSource: MatTableDataSource<any>;
+    flattenTreeTable: ITreeTableNode[];
+    dataSource: MatTableDataSource<ITreeTableNode>;
     displayedColumns: string[] = ["name", "action"];
     value: string;
 
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     constructor(private _listService: ListService,
+                private _exportService: ExportService,
                 private _treeTableService: TreeTableService,
                 private _createStatusDialog: MatDialog) {
     }
@@ -30,9 +33,8 @@ export class StatusComponent implements OnInit {
     }
 
     resetTable() {
-        const treeTable = this._treeTableService.toTreeTable(this._listService.getList("status"));
-        this.flattenTree = this._treeTableService.flattenTree(treeTable.nodes);
-        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
+        this.flattenTreeTable = this._treeTableService.toTreeTableFlatten(this._listService.getList("status"));
+        this.dataSource = new MatTableDataSource(this.flattenTreeTable.filter(x => x.isVisible));
     }
 
     create() {
@@ -64,7 +66,8 @@ export class StatusComponent implements OnInit {
     }
 
     export() {
-        console.log("export");
+        const dataToExport = this.flattenTreeTable.map(fc => this._listService.getMinNodeInfo(fc));
+        this._exportService.exportToCsv(dataToExport, "wordweb_status");
     }
 
     rowCount() {
@@ -73,7 +76,7 @@ export class StatusComponent implements OnInit {
 
     nodeClick(element: any) {
         element.isExpanded ? this._treeTableService.close(element) : this._treeTableService.expand(element);
-        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
+        this.dataSource = new MatTableDataSource(this.flattenTreeTable.filter(x => x.isVisible));
     }
 
 }

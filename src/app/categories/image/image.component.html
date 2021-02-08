@@ -11,13 +11,13 @@
                 Create Image
             </button>
 
-            <button class="download-btn" type="button" mat-raised-button [disabled]="!flattenTree || flattenTree.length == 0" (click)="export()">
+            <button class="download-btn" type="button" mat-raised-button [disabled]="!flattenTreeTable || flattenTreeTable.length == 0" (click)="export()">
                 <mat-icon>get_app</mat-icon>
                 Export
             </button>
         </div>
 
-        <div class="row-counter">Amount: {{rowCount()}} <span *ngIf="flattenTree">of {{flattenTree.length}}</span></div>
+        <div class="row-counter">Amount: {{rowCount()}} <span *ngIf="flattenTreeTable">of {{flattenTreeTable.length}}</span></div>
     </div>
 
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">

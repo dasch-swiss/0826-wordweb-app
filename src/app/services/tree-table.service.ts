@@ -38,14 +38,14 @@ export class TreeTableService {
         });
     }
 
-    toTreeTable(root: IListNode): ITreeTableNode {
+    toTreeTableFlatten(root: IListNode): ITreeTableNode[] {
         const cloneRoot = JSON.parse(JSON.stringify(root));
         this.traverse(cloneRoot, 0, (node: any, depth: number) => {
             node.isVisible = true;
             node.isExpanded = true;
             node.depth = depth;
         });
-        return cloneRoot;
+        return cloneRoot.nodes.reduce((acc, list) => this.flatten(acc, list), Array<IListNode>());
     }
 
     flattenTree(rootNodes: IListNode[]): IListNode[] {

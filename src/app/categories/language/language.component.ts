@@ -5,6 +5,8 @@ import {Language} from "../../model/model";
 import {CreateUpdateLanguageComponent} from "./create-update-language/create-update-language.component";
 import {ListService} from "../../services/list.service";
 import {TreeTableService} from "../../services/tree-table.service";
+import {ITreeTableNode} from "../../model/ListModel";
+import {ExportService} from "../../services/export.service";
 
 @Component({
     selector: "app-language",
@@ -12,12 +14,13 @@ import {TreeTableService} from "../../services/tree-table.service";
     styleUrls: ["../list.scss"]
 })
 export class LanguageComponent implements OnInit {
-    flattenTree: any[];
-    dataSource: MatTableDataSource<any>;
+    flattenTreeTable: ITreeTableNode[];
+    dataSource: MatTableDataSource<ITreeTableNode>;
     displayedColumns: string[] = ["name", "action"];
     value: string;
 
     constructor(private _listService: ListService,
+                private _exportService: ExportService,
                 private _treeTableService: TreeTableService,
                 private _createLanguageDialog: MatDialog) {
         this.value = "";
@@ -28,9 +31,8 @@ export class LanguageComponent implements OnInit {
     }
 
     resetTable() {
-        const treeTable = this._treeTableService.toTreeTable(this._listService.getList("language"));
-        this.flattenTree = this._treeTableService.flattenTree(treeTable.nodes);
-        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
+        this.flattenTreeTable = this._treeTableService.toTreeTableFlatten(this._listService.getList("language"));
+        this.dataSource = new MatTableDataSource(this.flattenTreeTable.filter(x => x.isVisible));
     }
 
     create() {
@@ -62,7 +64,8 @@ export class LanguageComponent implements OnInit {
     }
 
     export() {
-        console.log("export");
+        const dataToExport = this.flattenTreeTable.map(fc => this._listService.getMinNodeInfo(fc));
+        this._exportService.exportToCsv(dataToExport, "wordweb_language");
     }
 
     rowCount() {
@@ -71,7 +74,7 @@ export class LanguageComponent implements OnInit {
 
     nodeClick(element: any) {
         element.isExpanded ? this._treeTableService.close(element) : this._treeTableService.expand(element);
-        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
+        this.dataSource = new MatTableDataSource(this.flattenTreeTable.filter(x => x.isVisible));
     }
 }
 

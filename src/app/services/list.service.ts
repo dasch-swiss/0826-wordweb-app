@@ -117,6 +117,20 @@ export class ListService {
         return this._lists[listName];
     }
 
+    getMinNodeInfo(node: IListNode) {
+        let newNode = {};
+        newNode["id"] = node.id;
+        newNode["name"] = node.name;
+        if (node.rootNodeId !== node.parentNodeId) {
+            newNode["parent id"] = node.parentNodeId;
+            newNode["parent name"] = this.getNameOfNode(node.parentNodeId);
+        } else {
+            newNode["parent id"] = null;
+            newNode["parent name"] = null;
+        }
+        return newNode;
+    }
+
     printLists() {
         console.log(this._lists);
     }

@@ -5,6 +5,8 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {CreateUpdateGenderComponent} from "./create-update-gender/create-update-gender.component";
 import {ListService} from "../../services/list.service";
 import {TreeTableService} from "../../services/tree-table.service";
+import {ITreeTableNode} from "../../model/ListModel";
+import {ExportService} from "../../services/export.service";
 
 @Component({
     selector: "app-gender",
@@ -12,12 +14,13 @@ import {TreeTableService} from "../../services/tree-table.service";
     styleUrls: ["../list.scss"]
 })
 export class GenderComponent implements OnInit {
-    flattenTree: any[];
-    dataSource: MatTableDataSource<any>;
+    flattenTreeTable: ITreeTableNode[];
+    dataSource: MatTableDataSource<ITreeTableNode>;
     displayedColumns: string[] = ["name", "action"];
     value: string;
 
     constructor(private _listService: ListService,
+                private _exportService: ExportService,
                 private _treeTableService: TreeTableService,
                 private _createGenderDialog: MatDialog) {
     }
@@ -27,9 +30,8 @@ export class GenderComponent implements OnInit {
     }
 
     resetTable() {
-        const treeTable = this._treeTableService.toTreeTable(this._listService.getList("gender"));
-        this.flattenTree = this._treeTableService.flattenTree(treeTable.nodes);
-        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
+        this.flattenTreeTable = this._treeTableService.toTreeTableFlatten(this._listService.getList("gender"));
+        this.dataSource = new MatTableDataSource(this.flattenTreeTable.filter(x => x.isVisible));
     }
 
     create() {
@@ -61,7 +63,8 @@ export class GenderComponent implements OnInit {
     }
 
     export() {
-        console.log("export");
+        const dataToExport = this.flattenTreeTable.map(fc => this._listService.getMinNodeInfo(fc));
+        this._exportService.exportToCsv(dataToExport, "wordweb_gender");
     }
 
     rowCount() {
@@ -70,7 +73,7 @@ export class GenderComponent implements OnInit {
 
     nodeClick(element: any) {
         element.isExpanded ? this._treeTableService.close(element) : this._treeTableService.expand(element);
-        this.dataSource = new MatTableDataSource(this.flattenTree.filter(x => x.isVisible));
+        this.dataSource = new MatTableDataSource(this.flattenTreeTable.filter(x => x.isVisible));
     }
 
 }
