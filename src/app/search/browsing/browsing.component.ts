@@ -14,6 +14,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class BrowsingComponent implements OnInit, AfterViewInit {
     @ViewChild("results") resultBox: ResultsComponent;
 
+    readonly MAX_RESOURCE_PER_RESULT = 25;
+
     myPassage: IMainClass = {
         name: "passage",
         mainClass: {name: "passage", variable: "passage"},
@@ -325,12 +327,11 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
     charSelected: string;
     listElSelected: string;
 
-    constructor(
-        private knoraService: KnoraService,
-        private spinner: NgxSpinnerService,
-        private router: Router,
-        private route: ActivatedRoute,
-        private cdr: ChangeDetectorRef) {
+    constructor(private _knoraService: KnoraService,
+                private _spinner: NgxSpinnerService,
+                private _router: Router,
+                private _route: ActivatedRoute,
+                private _cdr: ChangeDetectorRef) {
     }
 
     static getCharacterRange() {
@@ -364,7 +365,7 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this.route.queryParams
+        this._route.queryParams
             .subscribe(data => {
                 if (data.res && BrowsingComponent.checkResType(data.res)) {
                     this.resTypeSelected = data.res;
@@ -379,20 +380,20 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
                         }
 
                     } else {
-                        this.router.navigate(["search/browsing"], {queryParams: {res: this.resTypeSelected}});
+                        this._router.navigate(["search/browsing"], {queryParams: {res: this.resTypeSelected}});
                     }
 
                 } else {
-                    this.router.navigate(["search/browsing"], {queryParams: {res: "book"}});
+                    this._router.navigate(["search/browsing"], {queryParams: {res: "book"}});
                 }
             });
 
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
     }
 
     requestResources() {
         this.alphabeticSearchStarted = true;
-        this.spinner.show(`spinner-${this.charSelected}`, {
+        this._spinner.show(`spinner-${this.charSelected}`, {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
@@ -413,27 +414,27 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
 
     requestBooks() {
         if (!this.books[this.charSelected]) {
-            this.knoraService.getPrimaryBooksCount(this.charSelected)
+            this._knoraService.getPrimaryBooksCount(this.charSelected)
                 .subscribe(amount => {
                     this.alphabeticResAmount = amount;
                     this.books[this.charSelected] = {amount};
 
                     if (amount === 0) {
-                        this.spinner.hide(`spinner-${this.charSelected}`);
+                        this._spinner.hide(`spinner-${this.charSelected}`);
                         this.alphabeticSearchStarted = false;
                         return;
                     }
 
-                    const maxOffset = Math.ceil(this.alphabeticResAmount / 25);
+                    const maxOffset = Math.ceil(this.alphabeticResAmount / this.MAX_RESOURCE_PER_RESULT);
                     const requests = [];
 
                     for (let offset = 0; offset < maxOffset; offset++) {
-                        requests.push(this.knoraService.getPrimaryBooks(this.charSelected, offset));
+                        requests.push(this._knoraService.getPrimaryBooks(this.charSelected, offset));
                     }
 
                     forkJoin<any>(...requests)
                         .subscribe((res: Array<Array<any>>) => {
-                            this.spinner.hide(`spinner-${this.charSelected}`);
+                            this._spinner.hide(`spinner-${this.charSelected}`);
                             this.alphabeticSearchStarted = false;
                             this.alphabeticResources = []
                                 .concat(...res)
@@ -441,13 +442,13 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
                             // Saves data in cache
                             this.books[this.charSelected].data = this.alphabeticResources;
                         }, error => {
-                            this.spinner.hide(`spinner-${this.charSelected}`);
+                            this._spinner.hide(`spinner-${this.charSelected}`);
                         });
                 }, error => {
-                    this.spinner.hide(`spinner-${this.charSelected}`);
+                    this._spinner.hide(`spinner-${this.charSelected}`);
                 });
         } else {
-            this.spinner.hide(`spinner-${this.charSelected}`);
+            this._spinner.hide(`spinner-${this.charSelected}`);
             this.alphabeticSearchStarted = false;
             // Gets data from cache
             this.alphabeticResources = this.books[this.charSelected].data;
@@ -457,27 +458,27 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
 
     requestAuthors() {
         if (!this.authors[this.charSelected]) {
-            this.knoraService.getPrimaryAuthorsCount(this.charSelected)
+            this._knoraService.getPrimaryAuthorsCount(this.charSelected)
                 .subscribe(amount => {
                     this.alphabeticResAmount = amount;
                     this.authors[this.charSelected] = {amount};
 
                     if (amount === 0) {
-                        this.spinner.hide(`spinner-${this.charSelected}`);
+                        this._spinner.hide(`spinner-${this.charSelected}`);
                         this.alphabeticSearchStarted = false;
                         return;
                     }
 
-                    const maxOffset = Math.ceil(this.alphabeticResAmount / 25);
+                    const maxOffset = Math.ceil(this.alphabeticResAmount / this.MAX_RESOURCE_PER_RESULT);
                     const requests = [];
 
                     for (let offset = 0; offset < maxOffset; offset++) {
-                        requests.push(this.knoraService.getPrimaryAuthors(this.charSelected, offset));
+                        requests.push(this._knoraService.getPrimaryAuthors(this.charSelected, offset));
                     }
 
                     forkJoin<any>(...requests)
                         .subscribe((res: Array<Array<any>>) => {
-                            this.spinner.hide(`spinner-${this.charSelected}`);
+                            this._spinner.hide(`spinner-${this.charSelected}`);
                             this.alphabeticSearchStarted = false;
                             this.alphabeticResources = []
                                 .concat(...res)
@@ -485,13 +486,13 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
                             // Saves data in cache
                             this.authors[this.charSelected].data = this.alphabeticResources;
                         }, error => {
-                            this.spinner.hide(`spinner-${this.charSelected}`);
+                            this._spinner.hide(`spinner-${this.charSelected}`);
                         });
                 }, error => {
-                    this.spinner.hide(`spinner-${this.charSelected}`);
+                    this._spinner.hide(`spinner-${this.charSelected}`);
                 });
         } else {
-            this.spinner.hide(`spinner-${this.charSelected}`);
+            this._spinner.hide(`spinner-${this.charSelected}`);
             this.alphabeticSearchStarted = false;
             // Gets data from cache
             this.alphabeticResources = this.authors[this.charSelected].data;
@@ -501,27 +502,27 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
 
     requestLexias() {
         if (!this.lexias[this.charSelected]) {
-            this.knoraService.getLexiasCount(this.charSelected)
+            this._knoraService.getLexiasCount(this.charSelected)
                 .subscribe(amount => {
                     this.alphabeticResAmount = amount;
                     this.lexias[this.charSelected] = {amount};
 
                     if (amount === 0) {
-                        this.spinner.hide(`spinner-${this.charSelected}`);
+                        this._spinner.hide(`spinner-${this.charSelected}`);
                         this.alphabeticSearchStarted = false;
                         return;
                     }
 
-                    const maxOffset = Math.ceil(this.alphabeticResAmount / 25);
+                    const maxOffset = Math.ceil(this.alphabeticResAmount / this.MAX_RESOURCE_PER_RESULT);
                     const requests = [];
 
                     for (let offset = 0; offset < maxOffset; offset++) {
-                        requests.push(this.knoraService.getLexias(this.charSelected, offset));
+                        requests.push(this._knoraService.getLexias(this.charSelected, offset));
                     }
 
                     forkJoin<any>(...requests)
                         .subscribe((res: Array<Array<any>>) => {
-                            this.spinner.hide(`spinner-${this.charSelected}`);
+                            this._spinner.hide(`spinner-${this.charSelected}`);
                             this.alphabeticSearchStarted = false;
                             this.alphabeticResources = []
                                 .concat(...res)
@@ -529,13 +530,13 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
                             // Saves data in cache
                             this.lexias[this.charSelected].data = this.alphabeticResources;
                         }, error => {
-                            this.spinner.hide(`spinner-${this.charSelected}`);
+                            this._spinner.hide(`spinner-${this.charSelected}`);
                         });
                 }, error => {
-                    this.spinner.hide(`spinner-${this.charSelected}`);
+                    this._spinner.hide(`spinner-${this.charSelected}`);
                 });
         } else {
-            this.spinner.hide(`spinner-${this.charSelected}`);
+            this._spinner.hide(`spinner-${this.charSelected}`);
             this.alphabeticSearchStarted = false;
             // Gets data from cache
             this.alphabeticResources = this.lexias[this.charSelected].data;
@@ -575,13 +576,13 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
             this.charSelected = null;
             this.alphabeticResources = null;
             this.resultBox.reset();
-            this.router.navigate(["search/browsing"], { queryParams: {res: name}});
+            this._router.navigate(["search/browsing"], { queryParams: {res: name}});
         }
     }
 
     selectChar(event) {
         this.resultBox.reset();
-        this.router.navigate(["search/browsing"], { queryParams: {letter: event, res: this.resTypeSelected}});
+        this._router.navigate(["search/browsing"], { queryParams: {letter: event, res: this.resTypeSelected}});
     }
 
     getListName(alphaRes: any): string {
@@ -600,7 +601,7 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
     }
 
     selectFromList(resID: any) {
-        this.router.navigate(["search/browsing"], { queryParams: {id: resID}, queryParamsHandling : "merge"});
+        this._router.navigate(["search/browsing"], { queryParams: {id: resID}, queryParamsHandling : "merge"});
     }
 
     selectDetail() {

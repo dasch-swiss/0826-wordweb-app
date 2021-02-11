@@ -10,6 +10,7 @@ import {KnoraService} from "../../services/knora.service";
 import {forkJoin, Observable} from "rxjs";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {ExportService} from "../../services/export.service";
+import {IListNode} from "../../model/ListModel";
 
 @Component({
     selector: "app-book",
@@ -184,9 +185,9 @@ export class BookComponent implements OnInit {
 
     value: string;
     form: FormGroup;
-    languages: any[];
-    genres: any[];
-    subjects: any[];
+    languages: IListNode[];
+    genres: IListNode[];
+    subjects: IListNode[];
     companies: any[];
     venues: any[];
     actors: any[];

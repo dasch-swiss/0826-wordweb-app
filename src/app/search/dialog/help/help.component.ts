@@ -10,7 +10,7 @@ export class HelpComponent implements OnInit {
     title: string;
     text: string;
 
-    constructor(private dialogRef: MatDialogRef<HelpComponent>,
+    constructor(private _dialogRef: MatDialogRef<HelpComponent>,
                 @Inject(MAT_DIALOG_DATA) data) {
         this.title = data.title;
         this.text = data.text;
@@ -20,7 +20,7 @@ export class HelpComponent implements OnInit {
     }
 
     close() {
-        this.dialogRef.close();
+        this._dialogRef.close();
     }
 
 }

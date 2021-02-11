@@ -7,13 +7,13 @@ import {Component, Input, OnInit} from "@angular/core";
 })
 export class CitationComponent implements OnInit {
     @Input() set original(value: boolean) {
-        this.showOriginal = value;
+        this._showOriginal = value;
         if (this.passage) {
             this.bibliography = this.buildBibliography();
         }
     }
     @Input() passage: any;
-    private showOriginal: boolean;
+    private _showOriginal: boolean;
     bibliography: string;
 
     constructor() {
@@ -63,7 +63,7 @@ export class CitationComponent implements OnInit {
         const pageHist = this.passage.hasPageHist ? this.passage.hasPageHist[0].value : "";
         const editionHistPageHist = editionHist ? `${editionHist} ${pageHist}` : `No Edition Hist found`;
 
-        const bibliography = this.showOriginal ? editionHistPageHist : editionPage;
+        const bibliography = this._showOriginal ? editionHistPageHist : editionPage;
 
         return `<div class="indent">${authorString} ${bibliography}</div>`;
     }

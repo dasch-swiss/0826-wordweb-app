@@ -10,7 +10,7 @@ export class FillInComponent implements OnInit {
     title: string;
     text: string;
 
-    constructor(private dialogRef: MatDialogRef<FillInComponent>,
+    constructor(private _dialogRef: MatDialogRef<FillInComponent>,
                 @Inject(MAT_DIALOG_DATA) data) {
         console.log(data);
         this.title = data.title;
@@ -21,7 +21,7 @@ export class FillInComponent implements OnInit {
     }
 
     close() {
-        this.dialogRef.close();
+        this._dialogRef.close();
     }
 
 }

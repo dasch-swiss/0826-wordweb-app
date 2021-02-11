@@ -15,6 +15,9 @@ import {FormControl, FormGroup} from "@angular/forms";
     styleUrls: ["./results.component.scss"]
 })
 export class ResultsComponent implements OnInit {
+    readonly PRIORITY = 0;
+    readonly MAX_RESOURCE_PER_RESULT = 25;
+
     structure: IMainClass;
     form: FormGroup;
 
@@ -26,7 +29,6 @@ export class ResultsComponent implements OnInit {
     searchStarted = false;
     detailStarted = false;
     errorObject = null;
-    priority = 0;
 
     static sortTitleAZ(passage1, passage2): number {
         const bookTitle1 = passage1.hasDisplayedTitle[0].value.toUpperCase();
@@ -138,10 +140,10 @@ export class ResultsComponent implements OnInit {
 
     constructor(
         public listService: ListService,
-        private spinner: NgxSpinnerService,
-        private knoraService: KnoraService,
-        private clipBoard: Clipboard,
-        private snackBar: MatSnackBar) {
+        private _spinner: NgxSpinnerService,
+        private _knoraService: KnoraService,
+        private _clipBoard: Clipboard,
+        private _snackBar: MatSnackBar) {
     }
 
     ngOnInit() {
@@ -178,11 +180,11 @@ export class ResultsComponent implements OnInit {
         });
     }
 
-    public search(structure, priority = this.priority) {
+    public search(structure, priority = this.PRIORITY) {
         this.structure = structure;
         this.passages = null;
 
-        this.spinner.show("spinner-big", {
+        this._spinner.show("spinner-big", {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
@@ -193,9 +195,9 @@ export class ResultsComponent implements OnInit {
         this.errorObject = null;
         this.searchStarted = true;
 
-        this.nPassages = this.knoraService.gravsearchQueryCount(this.structure, priority);
+        this.nPassages = this._knoraService.gravsearchQueryCount(this.structure, priority);
 
-        this.knoraService.gravseachQuery(this.structure, priority)
+        this._knoraService.gravseachQuery(this.structure, priority)
             .subscribe(data => {
                 this.passages = data.map(passage => {
                     passage.expanded = false;
@@ -205,11 +207,11 @@ export class ResultsComponent implements OnInit {
                     return passage;
                 });
                 this.sortResults(this.form.get("sorting").value);
-                this.spinner.hide("spinner-big");
+                this._spinner.hide("spinner-big");
                 this.searchStarted = false;
             }, error => {
                 this.errorObject = error;
-                this.spinner.hide("spinner-big");
+                this._spinner.hide("spinner-big");
                 this.searchStarted = false;
             });
     }
@@ -224,7 +226,7 @@ export class ResultsComponent implements OnInit {
     }
 
     loadMoreResults() {
-        this.spinner.show("spinner-small", {
+        this._spinner.show("spinner-small", {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
@@ -235,9 +237,9 @@ export class ResultsComponent implements OnInit {
         this.errorObject = null;
         this.searchStarted = true;
 
-        const offset = Math.floor(this.passages.length / 25);
+        const offset = Math.floor(this.passages.length / this.MAX_RESOURCE_PER_RESULT);
 
-        this.knoraService.gravseachQuery(this.structure, this.priority, offset)
+        this._knoraService.gravseachQuery(this.structure, this.PRIORITY, offset)
             .subscribe(data => {
                 const passageData = data.map(passage => {
                     passage.expanded = false;
@@ -248,11 +250,11 @@ export class ResultsComponent implements OnInit {
                 });
                 this.passages.push(...passageData);
                 this.sortResults(this.form.get("sorting").value);
-                this.spinner.hide("spinner-small");
+                this._spinner.hide("spinner-small");
                 this.searchStarted = false;
             }, error => {
                 this.errorObject = error;
-                this.spinner.hide("spinner-small");
+                this._spinner.hide("spinner-small");
                 this.searchStarted = false;
             });
     }
@@ -273,7 +275,7 @@ export class ResultsComponent implements OnInit {
         this.detailStarted = true;
         passage.expanded = !passage.expanded;
 
-        this.spinner.show(`spinner-${passage.id}`, {
+        this._spinner.show(`spinner-${passage.id}`, {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
@@ -286,32 +288,32 @@ export class ResultsComponent implements OnInit {
 
         if (!this.detailPassages[passage.id]) {
 
-            this.knoraService.getPassageRes(passage.id)
+            this._knoraService.getPassageRes(passage.id)
                 .pipe(
                     // Requests the contributor
                     mergeMap((pass: any) => forkJoin([of(pass), from(pass.wasContributedBy)
                             .pipe(
-                                mergeMap((contributor: any) => this.knoraService.getPassageRes(contributor.id)),
+                                mergeMap((contributor: any) => this._knoraService.getPassageRes(contributor.id)),
                                 toArray())]
                         )
                     ),
                     // Requests all the lexias contained in the passage
                     mergeMap(([pass, contributors]) => forkJoin([of(pass), of(contributors), from(pass.contains)
                         .pipe(
-                            mergeMap((lexia: any) => this.knoraService.getPassageRes(lexia.id)),
+                            mergeMap((lexia: any) => this._knoraService.getPassageRes(lexia.id)),
                             toArray()
                         )])
                     ),
                     // Requests the book in which the passage occurs in
                     mergeMap(([pass, contributors, lexias]) => forkJoin([of(pass), of(contributors), of(lexias), from(pass.occursIn)
                         .pipe(
-                            mergeMap((book: any) => this.knoraService.getPassageRes(book.id)),
+                            mergeMap((book: any) => this._knoraService.getPassageRes(book.id)),
                             // Check if book has performedIn and requests the venues
                             mergeMap((book: any) => {
                                 if (book.performedIn) {
                                     return forkJoin([of(book), from(book.performedIn)
                                         .pipe(
-                                            mergeMap((venue: any) => this.knoraService.getPassageRes(venue.id)),
+                                            mergeMap((venue: any) => this._knoraService.getPassageRes(venue.id)),
                                             toArray()
                                         )]);
                                 } else {
@@ -328,7 +330,7 @@ export class ResultsComponent implements OnInit {
                             mergeMap((book: any) => {
                                 if (book.performedBy) {
                                     return forkJoin([of(book), from(book.performedBy)
-                                        .pipe(mergeMap((company: any) => this.knoraService.getPassageRes(company.id)), toArray())]);
+                                        .pipe(mergeMap((company: any) => this._knoraService.getPassageRes(company.id)), toArray())]);
                                 } else {
                                     return forkJoin([of(book), of("empty")]);
                                 }
@@ -343,7 +345,7 @@ export class ResultsComponent implements OnInit {
                             mergeMap((book: any) => {
                                 if (book.performedByActor) {
                                     return forkJoin([of(book), from(book.performedByActor)
-                                        .pipe(mergeMap((actor: any) => this.knoraService.getPassageRes(actor.id)), toArray())]);
+                                        .pipe(mergeMap((actor: any) => this._knoraService.getPassageRes(actor.id)), toArray())]);
                                 } else {
                                     return forkJoin([of(book), of("empty")]);
                                 }
@@ -357,7 +359,7 @@ export class ResultsComponent implements OnInit {
                             // Requests the authors of the book
                             mergeMap((book: any) => forkJoin([of(book), from(book.isWrittenBy)
                                 .pipe(
-                                    mergeMap((author: any) => this.knoraService.getPassageRes(author.id)),
+                                    mergeMap((author: any) => this._knoraService.getPassageRes(author.id)),
                                     toArray()
                                 )])
                             ),
@@ -380,13 +382,13 @@ export class ResultsComponent implements OnInit {
                     if (data.isMentionedIn) {
                         from(data.isMentionedIn)
                             .pipe(
-                                mergeMap((sPassage: any) => this.knoraService.getPassageRes(sPassage.id)),
+                                mergeMap((sPassage: any) => this._knoraService.getPassageRes(sPassage.id)),
                                 mergeMap((sPassage: any) => forkJoin([of(sPassage), from(sPassage.occursIn)
                                     .pipe(
-                                        mergeMap((sBook: any) => this.knoraService.getPassageRes(sBook.id)),
+                                        mergeMap((sBook: any) => this._knoraService.getPassageRes(sBook.id)),
                                         mergeMap((sBook: any) => forkJoin([of(sBook), from(sBook.isWrittenBy)
                                             .pipe(
-                                                mergeMap((author: any) => this.knoraService.getPassageRes(author.id)),
+                                                mergeMap((author: any) => this._knoraService.getPassageRes(author.id)),
                                                 toArray()
                                             )
                                         ])),
@@ -408,19 +410,19 @@ export class ResultsComponent implements OnInit {
                                 console.log("All details: ", data);
                                 this.detailPassages[passage.id] = data;
                                 this.detailStarted = false;
-                                this.spinner.hide(`spinner-${passage.id}`);
+                                this._spinner.hide(`spinner-${passage.id}`);
                             });
                     } else {
                         console.log("All details: ", data);
                         this.detailPassages[passage.id] = data;
                         this.detailStarted = false;
-                        this.spinner.hide(`spinner-${passage.id}`);
+                        this._spinner.hide(`spinner-${passage.id}`);
                     }
 
                 }, error => {
                     // TODO Different error concept reporting
                     this.detailStarted = false;
-                    this.spinner.hide(`spinner-${passage.id}`);
+                    this._spinner.hide(`spinner-${passage.id}`);
                 });
 
         }
@@ -449,8 +451,8 @@ export class ResultsComponent implements OnInit {
     }
 
     copyClipboard(ark: string) {
-        this.clipBoard.copy(ark);
-        this.snackBar.open("ARK was copied to clipboard");
+        this._clipBoard.copy(ark);
+        this._snackBar.open("ARK was copied to clipboard");
     }
 
     openArk(arkUrl: string) {
