@@ -1,12 +1,10 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
-import {ApiService} from "../../services/api.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {HelpComponent} from "../dialog/help/help.component";
 import {StringService} from "../../services/string.service";
 import {ListService} from "../../services/list.service";
-import {NgxSpinnerService} from "ngx-spinner";
 import {ResultsComponent} from "../results/results.component";
 import {CustomValidators} from "../../customValidators";
 import {FillInComponent} from "../dialog/fill-in/fill-in.component";
@@ -18,6 +16,9 @@ import {FillInComponent} from "../dialog/fill-in/fill-in.component";
 })
 export class SimpleSearchComponent implements OnInit {
     @ViewChild("results") resultBox: ResultsComponent;
+
+    private readonly _DIALOG_WIDTH = "650px";
+    private readonly _ALL_DRAMA = "ALL DRAMA";
 
     myPassage: IMainClass = {
         name: "passage",
@@ -323,13 +324,10 @@ export class SimpleSearchComponent implements OnInit {
 
     form: FormGroup;
 
-    constructor(
-        private apiService: ApiService,
-        private listService: ListService,
-        private stringService: StringService,
-        private spinner: NgxSpinnerService,
-        private helpDialog: MatDialog,
-        private fillInDialog: MatDialog) {
+    constructor(private _listService: ListService,
+                private _stringService: StringService,
+                private _helpDialog: MatDialog,
+                private _fillInDialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -344,43 +342,56 @@ export class SimpleSearchComponent implements OnInit {
     }
 
     search() {
-        if ((!this.form.get("text").value
-            && !this.form.get("author").value
-            && !this.form.get("bookTitle").value
-            && !this.form.get("lexia").value
-            && !this.form.get("date").value)
-            && !this.form.get("plays").value) {
+        const text = this.form.get("text").value.trim();
+        const authorName = this.form.get("author").value.trim();
+        const bookTitle = this.form.get("bookTitle").value.trim();
+        const lexia = this.form.get("lexia").value.trim();
+        const dateEmpty = this.form.get("date").value.length == 0;
 
-            const dialogConfig = new MatDialogConfig();
-            dialogConfig.width = "650px";
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.width = this._DIALOG_WIDTH;
+
+        if (this.form.get("date").invalid) {
             dialogConfig.data = {
                 title: "Please note",
-                text: this.stringService.getString("text_not_filled")
+                text: this._stringService.getString("date_invalid")
             };
-            this.fillInDialog.open(FillInComponent, dialogConfig);
+
+            this._fillInDialog.open(FillInComponent, dialogConfig);
             return;
         }
 
-        if (this.form.get("text").value) {
-            this.textRef.searchVal1 = this.form.get("text").value;
+        if ((!text && !authorName && !bookTitle && !lexia && dateEmpty)) {
+            dialogConfig.data = {
+                title: "Please note",
+                text: this._stringService.getString("text_not_filled")
+            };
+
+            this._fillInDialog.open(FillInComponent, dialogConfig);
+            return;
+        }
+
+        if (text) {
+            this.textRef.searchVal1 = text;
         } else {
             this.textRef.searchVal1 = null;
         }
 
-        if (this.form.get("author").value) {
-            this.authorLastNameRef.searchVal1 = this.form.get("author").value;
+        if (authorName) {
+            this.authorLastNameRef.searchVal1 = authorName;
         } else {
             this.authorLastNameRef.searchVal1 = null;
         }
 
-        if (this.form.get("bookTitle").value) {
-            this.bookTitleRef.searchVal1 = this.form.get("bookTitle").value;
+        if (bookTitle) {
+            const REGEX = /^(the\s)?(a\s)?(an\s)?(.*)$/;
+            this.bookTitleRef.searchVal1 = bookTitle.toLowerCase().match(REGEX)[4];
         } else {
             this.bookTitleRef.searchVal1 = null;
         }
 
-        if (this.form.get("lexia").value) {
-            this.lexiaRef.searchVal1 = this.form.get("lexia").value;
+        if (lexia) {
+            this.lexiaRef.searchVal1 = lexia;
         } else {
             this.lexiaRef.searchVal1 = null;
         }
@@ -402,8 +413,7 @@ export class SimpleSearchComponent implements OnInit {
         }
 
         if (this.form.get("plays").value) {
-            // Only plays means if genre is "Drama (Theatre)"
-            this.genreRef.searchVal1 = this.listService.getIdOfNode("ALL DRAMA");
+            this.genreRef.searchVal1 = this._listService.getIdOfNode(this._ALL_DRAMA);
         } else {
             this.genreRef.searchVal1 = null;
         }
@@ -414,27 +424,27 @@ export class SimpleSearchComponent implements OnInit {
     getHelpText(property: string) {
         switch (property) {
             case ("text"): {
-                this.openHelpDialog(this.stringService.getString("text_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("text_help"), this._stringService.getString("default_title"));
                 break;
             }
             case ("author"): {
-                this.openHelpDialog(this.stringService.getString("author_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("author_help"), this._stringService.getString("default_title"));
                 break;
             }
             case ("title"): {
-                this.openHelpDialog(this.stringService.getString("title_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("title_help"), this._stringService.getString("default_title"));
                 break;
             }
             case ("lexia"): {
-                this.openHelpDialog(this.stringService.getString("lexia_help"), "What is quoted?");
+                this.openHelpDialog(this._stringService.getString("lexia_help"), "What is quoted?");
                 break;
             }
             case ("date"): {
-                this.openHelpDialog(this.stringService.getString("date_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("date_help"), this._stringService.getString("default_title"));
                 break;
             }
             case ("plays"): {
-                this.openHelpDialog(this.stringService.getString("plays_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("plays_help"), this._stringService.getString("default_title"));
                 break;
             }
         }
@@ -455,11 +465,11 @@ export class SimpleSearchComponent implements OnInit {
 
     openHelpDialog(text: string, title: string) {
         const dialogConfig = new MatDialogConfig();
-        dialogConfig.width = "650px";
+        dialogConfig.width = this._DIALOG_WIDTH;
         dialogConfig.data = {
             title,
             text
         };
-        this.helpDialog.open(HelpComponent, dialogConfig);
+        this._helpDialog.open(HelpComponent, dialogConfig);
     }
 }

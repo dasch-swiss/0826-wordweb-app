@@ -24,14 +24,13 @@ export class CustomValidators {
         const REGEX = /^(\d{1,4})(-(\d{1,4}))?$/;
         const arr = controlName.value.match(REGEX);
 
-        if (arr || controlName.value.length === 0) {
+        if (arr) {
+            if (arr[3]) {
+                return Number(arr[3]) > Number(arr[1]) ? null : {validateDate: {valid: false} };
+            }
             return null;
         } else {
-            return {
-                validateDate: {
-                    valid: false
-                }
-            };
+            return controlName.value.length === 0 ? null : { validateDate: { valid: false } };
         }
 
     }

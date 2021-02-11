@@ -30,6 +30,8 @@ export class StringService {
             "where applicable. Wiggins' \"Best guess\" is used where there is no precise information.<br>" +
             "For technical reasons, all Classical texts (Latin and Greek) are currently coded for the year 1000 " +
             "rather than for the correct date.",
+        date_invalid: "Date is invalid. The date should have the following format: <i>YYYY</i> or <i>YYYY-YYYY</i><br>" +
+            "If a year span is tipped in, the second year is expected to be later.",
         plays_help: "We focus on plays but include some passages from nondramatic works that were written or " +
             "referenced by Renaissance dramatists.<br>" +
             "Use this switch to include or exclude poems, treatises, letters, the Bible etc. from your searches.",

@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
-import {ApiService} from "../../services/api.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {KnoraService} from "../../services/knora.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
@@ -11,6 +10,7 @@ import {ResultsComponent} from "../results/results.component";
 import {ListService} from "../../services/list.service";
 import {FillInComponent} from "../dialog/fill-in/fill-in.component";
 import {forkJoin} from "rxjs";
+import {IListNode} from "../../model/ListModel";
 
 @Component({
     selector: "app-advanced-search",
@@ -19,6 +19,10 @@ import {forkJoin} from "rxjs";
 })
 export class AdvancedSearchComponent implements OnInit {
     @ViewChild("results") resultBox: ResultsComponent;
+
+    private readonly _DIALOG_WIDTH = "650px";
+    private readonly _ALL_DRAMA = "ALL DRAMA";
+    readonly MAX_RESOURCE_PER_RESULT = 25;
 
     myPassage: IMainClass = {
         name: "passage",
@@ -366,22 +370,21 @@ export class AdvancedSearchComponent implements OnInit {
     performedVenueRef: IDisplayedProperty = this.myPassage.props[12].res.props[13];
     performedActorRef: IDisplayedProperty = this.myPassage.props[12].res.props[14];
 
-    genres: any[];
-    languages: any[];
-    functionVoices: any[];
-    markings: any[];
+    genres: IListNode[];
+    languages: IListNode[];
+    functionVoices: IListNode[];
+    markings: IListNode[];
     companies: any[];
     venues: any[];
     actors: any[];
 
     form: FormGroup;
 
-    constructor(
-        private apiService: ApiService,
-        private stringService: StringService,
-        private knoraService: KnoraService,
-        private listService: ListService,
-        private helpDialog: MatDialog) {
+    constructor(private _knoraService: KnoraService,
+                private _listService: ListService,
+                private _stringService: StringService,
+                private _helpDialog: MatDialog,
+                private _fillInDialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -389,10 +392,10 @@ export class AdvancedSearchComponent implements OnInit {
         this.prepareVenues();
         this.prepareActors();
 
-        this.genres = this.listService.getFlattenList("genre");
-        this.languages = this.listService.getFlattenList("language");
-        this.functionVoices = this.listService.getFlattenList("functionVoice");
-        this.markings = this.listService.getFlattenList("marking");
+        this.genres = this._listService.getFlattenList("genre");
+        this.languages = this._listService.getFlattenList("language");
+        this.functionVoices = this._listService.getFlattenList("functionVoice");
+        this.markings = this._listService.getFlattenList("marking");
 
         this.form = new FormGroup({
             text: new FormControl("", []),
@@ -412,14 +415,14 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     prepareCompanies() {
-        this.knoraService.getCompaniesCount()
+        this._knoraService.getCompaniesCount()
             .subscribe(amount => {
-                const maxOffset = Math.ceil(amount / 25);
+                const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
 
                 const requests = [];
 
                 for (let offset = 0; offset < maxOffset; offset++) {
-                    requests.push(this.knoraService.getCompanies(offset));
+                    requests.push(this._knoraService.getCompanies(offset));
                 }
 
                 forkJoin<any>(requests)
@@ -441,14 +444,14 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     prepareVenues() {
-        this.knoraService.getVenuesCount()
+        this._knoraService.getVenuesCount()
             .subscribe(amount => {
-                const maxOffset = Math.ceil(amount / 25);
+                const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
 
                 const requests = [];
 
                 for (let offset = 0; offset < maxOffset; offset++) {
-                    requests.push(this.knoraService.getVenues(offset));
+                    requests.push(this._knoraService.getVenues(offset));
                 }
 
                 forkJoin<any>(requests)
@@ -457,7 +460,7 @@ export class AdvancedSearchComponent implements OnInit {
                             .concat(...res)
                             .map(venue => {
                                 if (venue.hasPlaceVenue.length === 1) {
-                                    venue.value = this.listService.getNameOfNode(venue.hasPlaceVenue[0].listNode);
+                                    venue.value = this._listService.getNameOfNode(venue.hasPlaceVenue[0].listNode);
                                     venue.hasPlaceVenue = venue.hasPlaceVenue[0].listNode;
                                     return venue;
                                 }
@@ -470,14 +473,14 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     prepareActors() {
-        this.knoraService.getActorsCount()
+        this._knoraService.getActorsCount()
             .subscribe(amount => {
-                const maxOffset = Math.ceil(amount / 25);
+                const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
 
                 const requests = [];
 
                 for (let offset = 0; offset < maxOffset; offset++) {
-                    requests.push(this.knoraService.getActors(offset));
+                    requests.push(this._knoraService.getActors(offset));
                 }
 
                 forkJoin<any>(requests)
@@ -501,53 +504,63 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     search() {
-        if (!this.form.get("text").value
-            && !this.form.get("author").value
-            && !this.form.get("bookTitle").value
-            && !this.form.get("lexia").value
+        const text = this.form.get("text").value.trim();
+        const authorName = this.form.get("author").value.trim();
+        const bookTitle = this.form.get("bookTitle").value.trim();
+        const lexia = this.form.get("lexia").value.trim();
+        const createdDateEmpty = this.form.get("createdDate").value.length == 0;
+
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.width = this._DIALOG_WIDTH;
+
+        if (this.form.get("createdDate").invalid) {
+            dialogConfig.data = {
+                title: "Please note",
+                text: this._stringService.getString("date_invalid")
+            };
+
+            this._fillInDialog.open(FillInComponent, dialogConfig);
+            return;
+        }
+
+        if (!text && !authorName && !bookTitle && !lexia && createdDateEmpty
             && !this.form.get("language").value
             && !this.form.get("function").value
             && !this.form.get("marking").value
-            && !this.form.get("createdDate").value
             && !this.form.get("performedCompany").value
             && !this.form.get("performedVenue").value
             && !this.form.get("performedActor").value
             && (!this.form.get("plays").value && !this.form.get("genre").value)) {
 
-            const dialogConfig = new MatDialogConfig();
-            dialogConfig.width = "650px";
             dialogConfig.data = {
-                title: this.stringService.getString("default_title"),
-                text: this.stringService.getString("text_not_filled")
+                title: this._stringService.getString("default_title"),
+                text: this._stringService.getString("text_not_filled")
             };
-            this.helpDialog.open(FillInComponent, dialogConfig);
+            this._helpDialog.open(FillInComponent, dialogConfig);
             return;
         }
-        this.prepareStructure();
-        this.resultBox.search(this.myPassage);
-    }
 
-    prepareStructure() {
-        if (this.form.get("text").value) {
-            this.textRef.searchVal1 = this.form.get("text").value;
+        if (text) {
+            this.textRef.searchVal1 = text;
         } else {
             this.textRef.searchVal1 = null;
         }
 
-        if (this.form.get("author").value) {
-            this.authorLastNameRef.searchVal1 = this.form.get("author").value;
+        if (authorName) {
+            this.authorLastNameRef.searchVal1 = authorName;
         } else {
             this.authorLastNameRef.searchVal1 = null;
         }
 
-        if (this.form.get("bookTitle").value) {
-            this.bookTitleRef.searchVal1 = this.form.get("bookTitle").value;
+        if (bookTitle) {
+            const REGEX = /^(the\s)?(a\s)?(an\s)?(.*)$/;
+            this.bookTitleRef.searchVal1 = bookTitle.toLowerCase().match(REGEX)[4];
         } else {
             this.bookTitleRef.searchVal1 = null;
         }
 
-        if (this.form.get("lexia").value) {
-            this.lexiaRef.searchVal1 = this.form.get("lexia").value;
+        if (lexia) {
+            this.lexiaRef.searchVal1 = lexia;
         } else {
             this.lexiaRef.searchVal1 = null;
         }
@@ -617,8 +630,7 @@ export class AdvancedSearchComponent implements OnInit {
         }
 
         if (this.form.get("plays").value) {
-            // Only plays means if genre is "Drama (Theatre)"
-            this.genreRef.searchVal1 = this.listService.getIdOfNode("ALL DRAMA");
+            this.genreRef.searchVal1 = this._listService.getIdOfNode(this._ALL_DRAMA);
         } else {
             if (this.form.get("genre").value) {
                 this.genreRef.searchVal1 = this.form.get("genre").value;
@@ -628,60 +640,62 @@ export class AdvancedSearchComponent implements OnInit {
                 this.genreRef.priority = 1;
             }
         }
+
+        this.resultBox.search(this.myPassage);
     }
 
     getHelpText(formControlName: string) {
         switch (formControlName) {
             case ("text"): {
-                this.openHelpDialog(this.stringService.getString("text_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("text_help"), this._stringService.getString("default_title"));
                 break;
             }
             case ("author"): {
-                this.openHelpDialog(this.stringService.getString("author_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("author_help"), this._stringService.getString("default_title"));
                 break;
             }
             case ("bookTitle"): {
-                this.openHelpDialog(this.stringService.getString("title_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("title_help"), this._stringService.getString("default_title"));
                 break;
             }
             case ("lexia"): {
-                this.openHelpDialog(this.stringService.getString("lexia_help"), "What is quoted?");
+                this.openHelpDialog(this._stringService.getString("lexia_help"), "What is quoted?");
                 break;
             }
             case ("createdDate"): {
-                this.openHelpDialog(this.stringService.getString("date_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("date_help"), this._stringService.getString("default_title"));
                 break;
             }
             case ("marking"): {
-                this.openHelpDialog(this.stringService.getString("marking_help"), "\"Marking\"");
+                this.openHelpDialog(this._stringService.getString("marking_help"), "\"Marking\"");
                 break;
             }
             case ("function"): {
-                this.openHelpDialog(this.stringService.getString("function_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("function_help"), this._stringService.getString("default_title"));
                 break;
             }
             case ("performedCompany"): {
-                this.openHelpDialog(this.stringService.getString("per_company_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("per_company_help"), this._stringService.getString("default_title"));
                 break;
             }
             case ("performedVenue"): {
-                this.openHelpDialog(this.stringService.getString("per_venue_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("per_venue_help"), this._stringService.getString("default_title"));
                 break;
             }
             case ("performedActor"): {
-                this.openHelpDialog(this.stringService.getString("per_actor_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("per_actor_help"), this._stringService.getString("default_title"));
                 break;
             }
             case ("language"): {
-                this.openHelpDialog(this.stringService.getString("language_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("language_help"), this._stringService.getString("default_title"));
                 break;
             }
             case ("genre"): {
-                this.openHelpDialog(this.stringService.getString("genre_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("genre_help"), this._stringService.getString("default_title"));
                 break;
             }
             case ("plays"): {
-                this.openHelpDialog(this.stringService.getString("plays_help"), this.stringService.getString("default_title"));
+                this.openHelpDialog(this._stringService.getString("plays_help"), this._stringService.getString("default_title"));
                 break;
             }
         }
@@ -713,16 +727,12 @@ export class AdvancedSearchComponent implements OnInit {
 
     openHelpDialog(text: string, title: string) {
         const dialogConfig = new MatDialogConfig();
-        dialogConfig.width = "650px";
+        dialogConfig.width = this._DIALOG_WIDTH;
         dialogConfig.data = {
             text,
             title
         };
-        this.helpDialog.open(HelpComponent, dialogConfig);
-    }
-
-    selectCompany() {
-        console.log("select company");
+        this._helpDialog.open(HelpComponent, dialogConfig);
     }
 
     sortCompanies(comp1: any, comp2: any) {
