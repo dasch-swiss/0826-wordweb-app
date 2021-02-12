@@ -181,6 +181,11 @@ export class ResultsComponent implements OnInit {
     }
 
     public search(structure, priority = this.PRIORITY) {
+        // Returns if a search is already going oin
+        if (this.searchStarted) {
+            return;
+        }
+
         this.structure = structure;
         this.passages = null;
 
