@@ -11,6 +11,7 @@ import {forkJoin, Observable} from "rxjs";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {ExportService} from "../../services/export.service";
 import {IListNode} from "../../model/ListModel";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
     selector: "app-book",
@@ -193,6 +194,7 @@ export class BookComponent implements OnInit {
     actors: any[];
 
     constructor(public listService: ListService,
+                private _spinner: NgxSpinnerService,
                 private _knoraService: KnoraService,
                 private _authorDialog: MatDialog,
                 private _venueDialog: MatDialog,
@@ -495,6 +497,16 @@ export class BookComponent implements OnInit {
     }
 
     search() {
+        this.dataSource = null;
+
+        this._spinner.show("spinner-big", {
+            fullScreen: false,
+            bdColor: "rgba(255, 255, 255, 0)",
+            color: "rgb(159, 11, 11)",
+            type: "ball-spin-clockwise",
+            size: "medium"
+        });
+
         this.searchStarted = true;
 
         // Sets internal ID property
@@ -666,12 +678,23 @@ export class BookComponent implements OnInit {
                 this.dataSource = new MatTableDataSource(data);
                 this.dataSource.sort = this.sort;
                 this.dataSource.sortingDataAccessor = BookComponent.customSorting;
+                this._spinner.hide("spinner-big");
+                this.searchStarted = false;
+            }, error => {
+                this._spinner.hide("spinner-big");
                 this.searchStarted = false;
             });
     }
 
     loadMoreResults() {
         this.clearFilter();
+        this._spinner.show("spinner-big", {
+            fullScreen: false,
+            bdColor: "rgba(255, 255, 255, 0)",
+            color: "rgb(159, 11, 11)",
+            type: "ball-spin-clockwise",
+            size: "medium"
+        });
         this.searchStarted = true;
 
         const offset = Math.floor(this.searchResults.length / this.MAX_RESOURCE_PER_RESULT);
@@ -682,6 +705,10 @@ export class BookComponent implements OnInit {
                 this.dataSource = new MatTableDataSource(this.searchResults);
                 this.dataSource.sort = this.sort;
                 this.dataSource.sortingDataAccessor = BookComponent.customSorting;
+                this._spinner.hide("spinner-big");
+                this.searchStarted = false;
+            }, error => {
+                this._spinner.hide("spinner-big");
                 this.searchStarted = false;
             });
     }

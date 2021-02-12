@@ -81,10 +81,20 @@
                     //width: 800px;
                     width: 100%;
 
+                    th, td {
+                        padding: 0.5rem 1rem;
+                    }
+
                     .edit-btn {
                         color: rgba(159, 11, 11, 1);
                     }
                 }
+            }
+
+            .spinner-big {
+                height: 8rem;
+                // Necessary to display the spinner within the div container (-> ngx spinner)
+                position: relative
             }
 
         }
@@ -98,12 +108,6 @@
             button {
                 width: 100%;
             }
-        }
-
-        .spinner-small {
-            height: 4rem;
-            // Necessary to display the spinner within the div container (-> ngx spinner)
-            position: relative;
         }
     }
 
