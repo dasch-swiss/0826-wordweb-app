@@ -423,6 +423,23 @@ a.white-text:hover {
   color: #fff;
 }
 
+.section-container {
+  margin-top: 2rem;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+
+.section-item {
+  font-weight: bold;
+  margin: 1rem;
+}
+
+.section-item:hover {
+  color: #9f0b0b;
+  cursor: pointer;
+}
+
 /* PAGES
 ================================================== */
 

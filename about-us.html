@@ -94,8 +94,14 @@
 </div>
 
 <main id="main" class="site-main">
+    <section class="container section-container">
+        <div class="section-item" onclick="myFunction('section-who-we-are')">The Project</div>
+        <div class="section-item" onclick="myFunction('section-team')">The Team</div>
+        <div class="section-item" onclick="myFunction('section-project-history')">Project History</div>
+        <div class="section-item" onclick="myFunction('section-sister-projects')">Sister Projects</div>
+    </section>
 
-    <section class="site-section-small section-who-we-are">
+    <section id="section-who-we-are" class="site-section-small">
         <div class="container">
             <h2 class="section-title text-center pb-40">The Project</h2>
             <div style="text-align: justify">
@@ -210,9 +216,9 @@
                 </div>
             </div>
         </div>
-    </section><!-- /.section-we-are-creative -->
+    </section>
 
-    <section class="site-section-small section-team">
+    <section id="section-team" class="site-section-small" style="display: none;">
         <div class="container">
             <div class="text-center">
                 <h2 class="section-title">The Team</h2>
@@ -376,7 +382,7 @@
         </div>
     </section>
 
-    <section>
+    <section id="section-project-history" class="site-section-small" style="display: none;">
         <div class="container">
             <h2 class="section-title text-center pb-40">Project History</h2>
             <div style="text-align: justify">
@@ -395,7 +401,7 @@
                 teaches a class based on <i>WordWeb/IDEM</i> in her seminar on early modern plays in Zurich and Regula
                 Hohl Trillini presents the database in <a
                     href="https://english.philhist.unibas.ch/en/persons/ina-habermann/" target="_blank">Ina
-                Habermann's</i></a> survey lecture.<br><br>
+                Habermann's</a> survey lecture.<br><br>
                 <b>2019</b><br>
                 Regula Hohl Trillini, the editor and instigator of <i>WordWeb/IDEM</i>, is joined by developer Vijeinath
                 Tissaveerasingham and student assistants Stefanie Heeg and Elliot Reitzer.<br><br>
@@ -414,7 +420,7 @@
         </div>
     </section>
 
-    <section>
+    <section id="section-sister-projects" class="site-section-small" style="display: none;">
         <div class="container">
             <h2 class="section-title text-center pb-40">Sister projects</h2>
 
@@ -436,7 +442,18 @@
         </div>
     </section>
 
-</main><!-- /.site-main -->
+    <script>
+        function myFunction(section) {
+            document.getElementById("section-who-we-are").style.display = "none";
+            document.getElementById("section-team").style.display = "none";
+            document.getElementById("section-project-history").style.display = "none";
+            document.getElementById("section-sister-projects").style.display = "none";
+
+            document.getElementById(section).style.display = "block";
+        }
+    </script>
+
+</main>
 
 <footer id="colophon" class="site-footer">
 
