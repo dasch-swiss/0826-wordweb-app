@@ -8,7 +8,7 @@ export class CommentsPipe implements PipeTransform {
 
     transform(passage: any, listService: ListService): any {
         const passComment = passage.hasPassageComment ? passage.hasPassageComment[0].value : null;
-        const bookComment = passage.occursIn[0].hasBookComment ? passage.occursIn[0].hasBookComment[0].value : this.generateBookComment(passage.occursIn[0], listService);
+        const bookComment = passage.occursIn[0].hasBookComment ? `${passage.occursIn[0].hasBookComment[0].value}<br>${this.generateBookComment(passage.occursIn[0], listService)}` : this.generateBookComment(passage.occursIn[0], listService);
 
         const comment = passComment ? `${passComment} <br>${bookComment}` : `${bookComment}`;
 
