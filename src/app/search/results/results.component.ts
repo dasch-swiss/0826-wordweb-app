@@ -180,7 +180,7 @@ export class ResultsComponent implements OnInit {
         });
     }
 
-    public search(structure, priority = this.PRIORITY) {
+    search(structure, priority = this.PRIORITY) {
         // Returns if a search is already going oin
         if (this.searchStarted) {
             return;
@@ -221,7 +221,7 @@ export class ResultsComponent implements OnInit {
             });
     }
 
-    public reset() {
+    reset() {
         this.passages = null;
         this.structure = null;
         this.errorObject = null;
