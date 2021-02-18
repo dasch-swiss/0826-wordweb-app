@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {TreeTableService} from "./tree-table.service";
 import {List} from "@dasch-swiss/dsp-js";
-import {IListNode} from "../model/ListModel";
+import {IListNode} from "../model/listModel";
 
 @Injectable()
 

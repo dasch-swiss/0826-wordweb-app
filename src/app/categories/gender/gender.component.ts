@@ -5,7 +5,7 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {CreateUpdateGenderComponent} from "./create-update-gender/create-update-gender.component";
 import {ListService} from "../../services/list.service";
 import {TreeTableService} from "../../services/tree-table.service";
-import {ITreeTableNode} from "../../model/ListModel";
+import {ITreeTableNode} from "../../model/listModel";
 import {ExportService} from "../../services/export.service";
 
 @Component({

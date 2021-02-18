@@ -7,7 +7,7 @@ import {CreateUpdateContributorComponent} from "./create-update-contributor/crea
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {Observable} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
-import {IListNode} from "../../model/ListModel";
+import {IListNode} from "../../model/listModel";
 import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
 import {ExportService} from "../../services/export.service";

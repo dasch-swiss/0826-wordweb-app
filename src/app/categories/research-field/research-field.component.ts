@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {MatTableDataSource} from "@angular/material/table";
 import {ListService} from "../../services/list.service";
 import {TreeTableService} from "../../services/tree-table.service";
-import {ITreeTableNode} from "../../model/ListModel";
+import {ITreeTableNode} from "../../model/listModel";
 import {ExportService} from "../../services/export.service";
 
 @Component({

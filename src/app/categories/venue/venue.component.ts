@@ -10,7 +10,7 @@ import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
 import {Observable} from "rxjs";
 import {ExportService} from "../../services/export.service";
-import {IListNode} from "../../model/ListModel";
+import {IListNode} from "../../model/listModel";
 import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({

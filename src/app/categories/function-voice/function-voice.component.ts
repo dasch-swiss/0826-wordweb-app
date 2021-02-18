@@ -3,7 +3,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {TreeTableService} from "../../services/tree-table.service";
 import {ListService} from "../../services/list.service";
 import {ExportService} from "../../services/export.service";
-import {ITreeTableNode} from "../../model/ListModel";
+import {ITreeTableNode} from "../../model/listModel";
 
 @Component({
     selector: "app-function-voice",

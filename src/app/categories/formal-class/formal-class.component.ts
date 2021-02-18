@@ -3,7 +3,7 @@ import {TreeTableService} from "../../services/tree-table.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {ListService} from "../../services/list.service";
 import {ExportService} from "../../services/export.service";
-import {ITreeTableNode} from "../../model/ListModel";
+import {ITreeTableNode} from "../../model/listModel";
 
 @Component({
     selector: "app-formal-class",

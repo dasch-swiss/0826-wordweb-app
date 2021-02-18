@@ -5,7 +5,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {TreeTableService} from "../../services/tree-table.service";
 import {CreateUpdateGenreComponent} from "./create-update-genre/create-update-genre.component";
 import {ListService} from "../../services/list.service";
-import {ITreeTableNode} from "../../model/ListModel";
+import {ITreeTableNode} from "../../model/listModel";
 import {ExportService} from "../../services/export.service";
 
 @Component({

@@ -10,7 +10,7 @@ import {KnoraService} from "../../services/knora.service";
 import {forkJoin, Observable} from "rxjs";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {ExportService} from "../../services/export.service";
-import {IListNode} from "../../model/ListModel";
+import {IListNode} from "../../model/listModel";
 import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({

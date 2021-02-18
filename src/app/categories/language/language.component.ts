@@ -5,7 +5,7 @@ import {Language} from "../../model/model";
 import {CreateUpdateLanguageComponent} from "./create-update-language/create-update-language.component";
 import {ListService} from "../../services/list.service";
 import {TreeTableService} from "../../services/tree-table.service";
-import {ITreeTableNode} from "../../model/ListModel";
+import {ITreeTableNode} from "../../model/listModel";
 import {ExportService} from "../../services/export.service";
 
 @Component({

@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {IListNode, ITreeTableNode} from "../model/ListModel";
+import {IListNode, ITreeTableNode} from "../model/listModel";
 
 @Injectable({
     providedIn: "root"
