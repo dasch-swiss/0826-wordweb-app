@@ -10,7 +10,7 @@ import {ResultsComponent} from "../results/results.component";
 import {ListService} from "../../services/list.service";
 import {FillInComponent} from "../dialog/fill-in/fill-in.component";
 import {forkJoin} from "rxjs";
-import {IListNode} from "../../model/ListModel";
+import {IListNode} from "../../model/listModel";
 
 @Component({
     selector: "app-advanced-search",
@@ -719,6 +719,8 @@ export class AdvancedSearchComponent implements OnInit {
         this.form.get("performedVenue").reset("");
         this.form.get("performedActor").reset("");
         this.form.get("plays").setValue(false);
+
+        this.resultBox.reset();
     }
 
     onChange(toggled) {

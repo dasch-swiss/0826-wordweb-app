@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
@@ -8,13 +8,14 @@ import {ListService} from "../../services/list.service";
 import {ResultsComponent} from "../results/results.component";
 import {CustomValidators} from "../../customValidators";
 import {FillInComponent} from "../dialog/fill-in/fill-in.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: "app-simple-search",
     templateUrl: "./simple-search.component.html",
     styleUrls: ["./simple-search.component.scss"]
 })
-export class SimpleSearchComponent implements OnInit {
+export class SimpleSearchComponent implements OnInit, AfterViewInit {
     @ViewChild("results") resultBox: ResultsComponent;
 
     private readonly _DIALOG_WIDTH = "650px";
@@ -324,7 +325,10 @@ export class SimpleSearchComponent implements OnInit {
 
     form: FormGroup;
 
-    constructor(private _listService: ListService,
+    constructor(private _route: ActivatedRoute,
+                private _router: Router,
+                private _cdr: ChangeDetectorRef,
+                private _listService: ListService,
                 private _stringService: StringService,
                 private _helpDialog: MatDialog,
                 private _fillInDialog: MatDialog) {
@@ -341,6 +345,72 @@ export class SimpleSearchComponent implements OnInit {
         });
     }
 
+    ngAfterViewInit() {
+        this._route.queryParams
+            .subscribe(data => {
+                let startSearch = false;
+                this.resetAll();
+
+                if (data.text) {
+                    this.form.get("text").setValue(data.text);
+                    this.textRef.searchVal1 = data.text;
+                    startSearch = true;
+                }
+
+                if (data.title) {
+                    const REGEX = /^(the\s)?(a\s)?(an\s)?(.*)$/;
+                    const bt = data.title.toLowerCase().match(REGEX)[4];
+                    this.form.get("bookTitle").setValue(bt);
+                    this.bookTitleRef.searchVal1 = bt;
+                    startSearch = true;
+                }
+
+                if (data.author) {
+                    this.form.get("author").setValue(data.author);
+                    this.authorLastNameRef.searchVal1 = data.author;
+                    startSearch = true;
+                }
+
+                if (data.lexia) {
+                    this.form.get("lexia").setValue(data.lexia);
+                    this.lexiaRef.searchVal1 = data.lexia;
+                    startSearch = true;
+                }
+
+                if (data.plays === "true") {
+                    this.form.get("plays").setValue(true);
+                    this.genreRef.searchVal1 = this._listService.getIdOfNode(this._ALL_DRAMA);
+                    startSearch = true;
+                }
+
+                if (data.date) {
+                    const REGEX = /^(\d{1,4})(-(\d{1,4}))?$/;
+                    const arr = data.date.match(REGEX);
+
+                    if (arr && arr[1]) {
+                        if (!arr[3]) {
+                            this.form.get("date").setValue(data.date);
+                            this.dateRef.searchVal1 = arr[1];
+                            startSearch = true;
+                        }
+
+                        if (arr[3] && (Number(arr[3]) > Number(arr[1]))) {
+                            this.form.get("date").setValue(data.date);
+                            this.dateRef.searchVal1 = arr[1];
+                            this.dateRef.searchVal2 = arr[3];
+                            startSearch = true;
+                        }
+                    }
+                }
+
+                if (startSearch) {
+                    this.resultBox.search(this.myPassage);
+                }
+            });
+
+        this._cdr.detectChanges();
+    }
+
     search() {
         const text = this.form.get("text").value.trim();
         const authorName = this.form.get("author").value.trim();
@@ -350,6 +420,8 @@ export class SimpleSearchComponent implements OnInit {
 
         const dialogConfig = new MatDialogConfig();
         dialogConfig.width = this._DIALOG_WIDTH;
+
+        const params = {};
 
         if (this.form.get("date").invalid) {
             dialogConfig.data = {
@@ -373,12 +445,14 @@ export class SimpleSearchComponent implements OnInit {
 
         if (text) {
             this.textRef.searchVal1 = text;
+            params["text"] = text;
         } else {
             this.textRef.searchVal1 = null;
         }
 
         if (authorName) {
             this.authorLastNameRef.searchVal1 = authorName;
+            params["author"] = authorName;
         } else {
             this.authorLastNameRef.searchVal1 = null;
         }
@@ -386,12 +460,14 @@ export class SimpleSearchComponent implements OnInit {
         if (bookTitle) {
             const REGEX = /^(the\s)?(a\s)?(an\s)?(.*)$/;
             this.bookTitleRef.searchVal1 = bookTitle.toLowerCase().match(REGEX)[4];
+            params["title"] = bookTitle;
         } else {
             this.bookTitleRef.searchVal1 = null;
         }
 
         if (lexia) {
             this.lexiaRef.searchVal1 = lexia;
+            params["lexia"] = lexia;
         } else {
             this.lexiaRef.searchVal1 = null;
         }
@@ -407,6 +483,8 @@ export class SimpleSearchComponent implements OnInit {
             if (arr[3]) {
                 this.dateRef.searchVal2 = arr[3];
             }
+
+            params["date"] = this.form.get("date").value;
         } else {
             this.dateRef.searchVal1 = null;
             this.dateRef.searchVal2 = null;
@@ -414,11 +492,14 @@ export class SimpleSearchComponent implements OnInit {
 
         if (this.form.get("plays").value) {
             this.genreRef.searchVal1 = this._listService.getIdOfNode(this._ALL_DRAMA);
+            params["plays"] = "true";
         } else {
             this.genreRef.searchVal1 = null;
         }
 
-        this.resultBox.search(this.myPassage);
+        if (params) {
+            this._router.navigate(["search/simple"], { queryParams: params});
+        }
     }
 
     getHelpText(property: string) {
@@ -455,12 +536,22 @@ export class SimpleSearchComponent implements OnInit {
     }
 
     resetAll() {
+        // Resets all form control
         this.form.get("text").reset("");
         this.form.get("author").reset("");
         this.form.get("bookTitle").reset("");
         this.form.get("lexia").reset("");
         this.form.get("date").reset("");
         this.form.get("plays").setValue(false);
+        // Resets all the values in the structure
+        this.textRef.searchVal1 = null;
+        this.bookTitleRef.searchVal1 = null;
+        this.authorLastNameRef.searchVal1 = null;
+        this.lexiaRef.searchVal1 = null;
+        this.dateRef.searchVal1 = null;
+        this.dateRef.searchVal2 = null;
+        // Resets the result box
+        this.resultBox.reset();
     }
 
     openHelpDialog(text: string, title: string) {
