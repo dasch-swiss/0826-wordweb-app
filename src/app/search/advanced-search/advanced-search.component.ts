@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {KnoraService} from "../../services/knora.service";
@@ -11,13 +11,14 @@ import {ListService} from "../../services/list.service";
 import {FillInComponent} from "../dialog/fill-in/fill-in.component";
 import {forkJoin} from "rxjs";
 import {IListNode} from "../../model/listModel";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: "app-advanced-search",
     templateUrl: "./advanced-search.component.html",
     styleUrls: ["./advanced-search.component.scss"]
 })
-export class AdvancedSearchComponent implements OnInit {
+export class AdvancedSearchComponent implements OnInit, AfterViewInit {
     @ViewChild("results") resultBox: ResultsComponent;
 
     private readonly _DIALOG_WIDTH = "650px";
@@ -379,8 +380,12 @@ export class AdvancedSearchComponent implements OnInit {
     actors: any[];
 
     form: FormGroup;
+    searchStarted = false;
 
-    constructor(private _knoraService: KnoraService,
+    constructor(private _route: ActivatedRoute,
+                private _router: Router,
+                private _cdr: ChangeDetectorRef,
+                private _knoraService: KnoraService,
                 private _listService: ListService,
                 private _stringService: StringService,
                 private _helpDialog: MatDialog,
@@ -503,6 +508,98 @@ export class AdvancedSearchComponent implements OnInit {
             });
     }
 
+    ngAfterViewInit() {
+        this._route.queryParams
+            .subscribe(data => {
+                let queryParamAdded = false;
+                this.resetAll();
+
+                if (data.text) {
+                    this.form.get("text").setValue(data.text);
+                    this.textRef.searchVal1 = data.text;
+                    queryParamAdded = true;
+                }
+
+                if (data.title) {
+                    const REGEX = /^(the\s)?(a\s)?(an\s)?(.*)$/;
+                    const bt = data.title.toLowerCase().match(REGEX)[4];
+                    this.form.get("bookTitle").setValue(bt);
+                    this.bookTitleRef.searchVal1 = bt;
+                    queryParamAdded = true;
+                }
+
+                if (data.author) {
+                    this.form.get("author").setValue(data.author);
+                    this.authorLastNameRef.searchVal1 = data.author;
+                    queryParamAdded = true;
+                }
+
+                if (data.lexia) {
+                    this.form.get("lexia").setValue(data.lexia);
+                    this.lexiaRef.searchVal1 = data.lexia;
+                    queryParamAdded = true;
+                }
+
+                if (data.plays === "true") {
+                    this.form.get("plays").setValue(true);
+                    this.genreRef.searchVal1 = this._listService.getIdOfNode(this._ALL_DRAMA);
+                    queryParamAdded = true;
+                } else if (data.genre && this._listService.getIdOfNode(data.genre) !== "-1") {
+                    const genre_id = this._listService.getIdOfNode(data.genre);
+                    this.form.get("genre").setValue(genre_id);
+                    this.genreRef.searchVal1 = genre_id;
+                    queryParamAdded = true;
+                }
+
+                if (data.date) {
+                    const REGEX = /^(\d{1,4})(-(\d{1,4}))?$/;
+                    const arr = data.date.match(REGEX);
+
+                    if (arr && arr[1]) {
+                        if (!arr[3]) {
+                            this.form.get("date").setValue(data.date);
+                            this.createdDateRef.searchVal1 = arr[1];
+                            queryParamAdded = true;
+                        }
+
+                        if (arr[3] && (Number(arr[3]) > Number(arr[1]))) {
+                            this.form.get("date").setValue(data.date);
+                            this.createdDateRef.searchVal1 = arr[1];
+                            this.createdDateRef.searchVal2 = arr[3];
+                            queryParamAdded = true;
+                        }
+                    }
+                }
+
+                if (data.marking && this._listService.getIdOfNode(data.marking) !== "-1") {
+                    const mark_id = this._listService.getIdOfNode(data.marking);
+                    this.form.get("marking").setValue(mark_id);
+                    this.markingRef.searchVal1 = mark_id;
+                    queryParamAdded = true;
+                }
+
+                if (data.function && this._listService.getIdOfNode(data.function) !== "-1") {
+                    const func_id = this._listService.getIdOfNode(data.function);
+                    this.form.get("function").setValue(func_id);
+                    this.functionRef.searchVal1 = func_id;
+                    queryParamAdded = true;
+                }
+
+                if (data.language && this._listService.getIdOfNode(data.language) !== "-1") {
+                    const lang_id = this._listService.getIdOfNode(data.language);
+                    this.form.get("language").setValue(lang_id);
+                    this.languageRef.searchVal1 = lang_id;
+                    queryParamAdded = true;
+                }
+
+                if (queryParamAdded) {
+                    this.resultBox.search(this.myPassage);
+                }
+            });
+
+        this._cdr.detectChanges();
+    }
+
     search() {
         const text = this.form.get("text").value.trim();
         const authorName = this.form.get("author").value.trim();
@@ -512,6 +609,8 @@ export class AdvancedSearchComponent implements OnInit {
 
         const dialogConfig = new MatDialogConfig();
         dialogConfig.width = this._DIALOG_WIDTH;
+
+        const params = {};
 
         if (this.form.get("createdDate").invalid) {
             dialogConfig.data = {
@@ -542,12 +641,14 @@ export class AdvancedSearchComponent implements OnInit {
 
         if (text) {
             this.textRef.searchVal1 = text;
+            params["text"] = text;
         } else {
             this.textRef.searchVal1 = null;
         }
 
         if (authorName) {
             this.authorLastNameRef.searchVal1 = authorName;
+            params["author"] = authorName;
         } else {
             this.authorLastNameRef.searchVal1 = null;
         }
@@ -555,35 +656,43 @@ export class AdvancedSearchComponent implements OnInit {
         if (bookTitle) {
             const REGEX = /^(the\s)?(a\s)?(an\s)?(.*)$/;
             this.bookTitleRef.searchVal1 = bookTitle.toLowerCase().match(REGEX)[4];
+            params["title"] = bookTitle;
         } else {
             this.bookTitleRef.searchVal1 = null;
         }
 
         if (lexia) {
             this.lexiaRef.searchVal1 = lexia;
+            params["lexia"] = lexia;
         } else {
             this.lexiaRef.searchVal1 = null;
         }
 
         if (this.form.get("language").value) {
-            this.languageRef.searchVal1 = this.form.get("language").value;
+            const lang_id = this.form.get("language").value;
+            this.languageRef.searchVal1 = lang_id;
             this.languageRef.priority = 0;
+            params["language"] = this._listService.getNameOfNode(lang_id);
         } else {
             this.languageRef.searchVal1 = null;
             this.languageRef.priority = 1;
         }
 
         if (this.form.get("function").value) {
-            this.functionRef.searchVal1 = this.form.get("function").value;
+            const func_id = this.form.get("function").value;
+            this.functionRef.searchVal1 = func_id;
             this.functionRef.priority = 0;
+            params["function"] = this._listService.getNameOfNode(func_id);
         } else {
             this.functionRef.searchVal1 = null;
             this.functionRef.priority = 1;
         }
 
         if (this.form.get("marking").value) {
-            this.markingRef.searchVal1 = this.form.get("marking").value;
+            const mark_id = this.form.get("marking").value;
+            this.markingRef.searchVal1 = mark_id;
             this.markingRef.priority = 0;
+            params["marking"] = this._listService.getNameOfNode(mark_id);
         } else {
             this.markingRef.searchVal1 = null;
             this.markingRef.priority = 1;
@@ -600,6 +709,8 @@ export class AdvancedSearchComponent implements OnInit {
             if (arr[3]) {
                 this.createdDateRef.searchVal2 = arr[3];
             }
+
+            params["date"] = this.form.get("createdDate").value;
         } else {
             this.createdDateRef.searchVal1 = null;
             this.createdDateRef.searchVal2 = null;
@@ -631,17 +742,21 @@ export class AdvancedSearchComponent implements OnInit {
 
         if (this.form.get("plays").value) {
             this.genreRef.searchVal1 = this._listService.getIdOfNode(this._ALL_DRAMA);
+            params["plays"] = "true";
         } else {
             if (this.form.get("genre").value) {
                 this.genreRef.searchVal1 = this.form.get("genre").value;
                 this.genreRef.priority = 0;
+                params["genre"] = this._listService.getNameOfNode(this.form.get("genre").value);
             } else {
                 this.genreRef.searchVal1 = null;
                 this.genreRef.priority = 1;
             }
         }
 
-        this.resultBox.search(this.myPassage);
+        if (params) {
+            this._router.navigate(["search/advanced"], { queryParams: params});
+        }
     }
 
     getHelpText(formControlName: string) {
@@ -706,6 +821,7 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     resetAll() {
+        // Resets all form controls
         this.form.get("text").reset("");
         this.form.get("author").reset("");
         this.form.get("bookTitle").reset("");
@@ -719,7 +835,20 @@ export class AdvancedSearchComponent implements OnInit {
         this.form.get("performedVenue").reset("");
         this.form.get("performedActor").reset("");
         this.form.get("plays").setValue(false);
-
+        // Resets all the values in the structure
+        this.textRef.searchVal1 = null;
+        this.authorLastNameRef.searchVal1 = null;
+        this.bookTitleRef.searchVal1 = null;
+        this.genreRef.searchVal1 = null;
+        this.lexiaRef.searchVal1 = null;
+        this.languageRef.searchVal1 = null;
+        this.functionRef.searchVal1 = null;
+        this.markingRef.searchVal1 = null;
+        this.createdDateRef.searchVal1 = null;
+        this.performedCompanyRef.searchVal1 = null;
+        this.performedVenueRef.searchVal1 = null;
+        this.performedActorRef.searchVal1 = null;
+        // Resets the result box
         this.resultBox.reset();
     }
 

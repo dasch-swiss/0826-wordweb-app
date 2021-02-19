@@ -536,7 +536,7 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
     }
 
     resetAll() {
-        // Resets all form control
+        // Resets all form controls
         this.form.get("text").reset("");
         this.form.get("author").reset("");
         this.form.get("bookTitle").reset("");
