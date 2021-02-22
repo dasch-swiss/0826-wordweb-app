@@ -607,6 +607,33 @@ export class AdvancedSearchComponent implements OnInit, AfterViewInit {
                     queryParamAdded = true;
                 }
 
+                if (data.company) {
+                    // TODO Set Form Control
+                    this.performedCompanyRef.searchVal1 = data.company;
+                    this.performedCompanyRef.priority = 0;
+                    queryParamAdded = true;
+                } else {
+                    this.performedCompanyRef.priority = 1;
+                }
+
+                if (data.venue) {
+                    // TODO Set Form Control
+                    this.performedVenueRef.searchVal1 = data.venue;
+                    this.performedVenueRef.priority = 0;
+                    queryParamAdded = true;
+                } else {
+                    this.performedVenueRef.priority = 1;
+                }
+
+                if (data.actor) {
+                    // TODO Set Form Control
+                    this.performedActorRef.searchVal1 = data.actor;
+                    this.performedActorRef.priority = 0;
+                    queryParamAdded = true;
+                } else {
+                    this.performedActorRef.priority = 1;
+                }
+
                 if (queryParamAdded) {
                     this.resultBox.search(this.myPassage);
                 }
@@ -734,6 +761,7 @@ export class AdvancedSearchComponent implements OnInit, AfterViewInit {
         if (this.form.get("performedCompany").value) {
             this.performedCompanyRef.searchVal1 = this.form.get("performedCompany").value;
             this.performedCompanyRef.priority = 0;
+            params["company"] = this.form.get("performedCompany").value;
         } else {
             this.performedCompanyRef.searchVal1 = null;
             this.performedCompanyRef.priority = 1;
@@ -742,6 +770,7 @@ export class AdvancedSearchComponent implements OnInit, AfterViewInit {
         if (this.form.get("performedVenue").value) {
             this.performedVenueRef.searchVal1 = this.form.get("performedVenue").value;
             this.performedVenueRef.priority = 0;
+            params["venue"] = this.form.get("performedVenue").value;
         } else {
             this.performedVenueRef.searchVal1 = null;
             this.performedVenueRef.priority = 1;
@@ -750,6 +779,7 @@ export class AdvancedSearchComponent implements OnInit, AfterViewInit {
         if (this.form.get("performedActor").value) {
             this.performedActorRef.searchVal1 = this.form.get("performedActor").value;
             this.performedActorRef.priority = 0;
+            params["actor"] = this.form.get("performedActor").value;
         } else {
             this.performedActorRef.searchVal1 = null;
             this.performedActorRef.priority = 1;
