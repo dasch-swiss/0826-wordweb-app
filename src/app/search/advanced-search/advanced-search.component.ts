@@ -9,7 +9,8 @@ import {CustomValidators} from "../../customValidators";
 import {ResultsComponent} from "../results/results.component";
 import {ListService} from "../../services/list.service";
 import {FillInComponent} from "../dialog/fill-in/fill-in.component";
-import {forkJoin} from "rxjs";
+import {forkJoin, of} from "rxjs";
+import {mergeMap} from "rxjs/operators";
 import {IListNode} from "../../model/listModel";
 import {ActivatedRoute, Router} from "@angular/router";
 
@@ -421,91 +422,105 @@ export class AdvancedSearchComponent implements OnInit, AfterViewInit {
 
     prepareCompanies() {
         this._knoraService.getCompaniesCount()
-            .subscribe(amount => {
-                const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
+            .pipe(
+               mergeMap(amount => {
+                   if (amount === 0) {
+                       return forkJoin([of(0)]);
+                   }
 
-                const requests = [];
+                   const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
+                   const requests = [];
 
-                for (let offset = 0; offset < maxOffset; offset++) {
-                    requests.push(this._knoraService.getCompanies(offset));
+                   for (let offset = 0; offset < maxOffset; offset++) {
+                       requests.push(this._knoraService.getCompanies(offset));
+                   }
+
+                   return forkJoin([of(amount), forkJoin(requests)])
+               })
+            )
+            .subscribe(result => {
+                if (result[1]) {
+                    this.companies = []
+                        .concat(...result[1])
+                        .map(company => {
+                            if (company.hasCompanyTitle.length === 1) {
+                                company.hasCompanyTitle = company.hasCompanyTitle[0].value;
+                                return company;
+                            }
+                        })
+                        .sort((res1, res2) => this.sortCompanies(res1, res2));
                 }
-
-                forkJoin<any>(requests)
-                    .subscribe((res: Array<Array<any>>) => {
-                        this.companies = []
-                            .concat(...res)
-                            .map(company => {
-                                if (company.hasCompanyTitle.length === 1) {
-                                    company.hasCompanyTitle = company.hasCompanyTitle[0].value;
-                                    return company;
-                                }
-                            })
-                            .sort((res1, res2) => this.sortCompanies(res1, res2));
-                    }, error => {
-                        requests.map(a => a.unsubscribe());
-                    });
-            });
-
+            })
     }
 
     prepareVenues() {
         this._knoraService.getVenuesCount()
-            .subscribe(amount => {
-                const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
+            .pipe(
+                mergeMap(amount => {
+                    if (amount === 0) {
+                        return forkJoin([of(0)]);
+                    }
 
-                const requests = [];
+                    const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
+                    const requests = [];
 
-                for (let offset = 0; offset < maxOffset; offset++) {
-                    requests.push(this._knoraService.getVenues(offset));
+                    for (let offset = 0; offset < maxOffset; offset++) {
+                        requests.push(this._knoraService.getVenues(offset));
+                    }
+
+                    return forkJoin([of(amount), forkJoin(requests)])
+                })
+            )
+            .subscribe(result => {
+                if (result[1]) {
+                    this.venues = []
+                        .concat(...result[1])
+                        .map(venue => {
+                            if (venue.hasPlaceVenue.length === 1) {
+                                venue.value = this._listService.getNameOfNode(venue.hasPlaceVenue[0].listNode);
+                                venue.hasPlaceVenue = venue.hasPlaceVenue[0].listNode;
+                                return venue;
+                            }
+                        })
+                        .sort((res1, res2) => this.sortVenues(res1, res2));
                 }
-
-                forkJoin<any>(requests)
-                    .subscribe((res: Array<Array<any>>) => {
-                        this.venues = []
-                            .concat(...res)
-                            .map(venue => {
-                                if (venue.hasPlaceVenue.length === 1) {
-                                    venue.value = this._listService.getNameOfNode(venue.hasPlaceVenue[0].listNode);
-                                    venue.hasPlaceVenue = venue.hasPlaceVenue[0].listNode;
-                                    return venue;
-                                }
-                            })
-                            .sort((res1, res2) => this.sortVenues(res1, res2));
-                    }, error => {
-                        requests.map(a => a.unsubscribe());
-                    });
-            });
+            })
     }
 
     prepareActors() {
         this._knoraService.getActorsCount()
-            .subscribe(amount => {
-                const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
+            .pipe(
+                mergeMap(amount => {
+                    if (amount === 0) {
+                        return forkJoin([of(0)]);
+                    }
 
-                const requests = [];
+                    const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
+                    const requests = [];
 
-                for (let offset = 0; offset < maxOffset; offset++) {
-                    requests.push(this._knoraService.getActors(offset));
+                    for (let offset = 0; offset < maxOffset; offset++) {
+                        requests.push(this._knoraService.getActors(offset));
+                    }
+
+                    return forkJoin([of(amount), forkJoin(requests)])
+                })
+            )
+            .subscribe(result => {
+                if (result[1]) {
+                    this.actors = []
+                        .concat(...result[1])
+                        .map(actor => {
+                            if (actor.hasLastName.length === 1) {
+                                actor.hasLastName = actor.hasLastName[0].value;
+                            }
+                            if (actor.hasFirstName.length === 1) {
+                                actor.hasFirstName = actor.hasFirstName[0].value;
+                            }
+                            return actor;
+                        })
+                        .sort((res1, res2) => this.sortActors(res1, res2));
                 }
-
-                forkJoin<any>(requests)
-                    .subscribe((res: Array<Array<any>>) => {
-                        this.actors = []
-                            .concat(...res)
-                            .map(actor => {
-                                if (actor.hasLastName.length === 1) {
-                                    actor.hasLastName = actor.hasLastName[0].value;
-                                }
-                                if (actor.hasFirstName.length === 1) {
-                                    actor.hasFirstName = actor.hasFirstName[0].value;
-                                }
-                                return actor;
-                            })
-                            .sort((res1, res2) => this.sortActors(res1, res2));
-                    }, error => {
-                        requests.map(a => a.unsubscribe());
-                    });
-            });
+            })
     }
 
     ngAfterViewInit() {
