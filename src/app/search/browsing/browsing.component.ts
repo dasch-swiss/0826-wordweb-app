@@ -2,7 +2,8 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from "@a
 import {KnoraService} from "../../services/knora.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {ResultsComponent} from "../results/results.component";
-import {forkJoin} from "rxjs";
+import {forkJoin, of} from "rxjs";
+import {mergeMap} from "rxjs/operators";
 import {NgxSpinnerService} from "ngx-spinner";
 import {ActivatedRoute, Router} from "@angular/router";
 
@@ -378,9 +379,6 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
                             this.listElSelected = data.id;
                             this.selectDetail();
                         }
-
-                    } else {
-                        this._router.navigate(["search/browsing"], {queryParams: {res: this.resTypeSelected}});
                     }
 
                 } else {
@@ -415,35 +413,34 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
     requestBooks() {
         if (!this.books[this.charSelected]) {
             this._knoraService.getPrimaryBooksCount(this.charSelected)
-                .subscribe(amount => {
-                    this.alphabeticResAmount = amount;
-                    this.books[this.charSelected] = {amount};
+                .pipe(
+                    mergeMap(amount => {
+                        if (amount === 0) {
+                            return forkJoin([of(0)]);
+                        }
 
-                    if (amount === 0) {
-                        this._spinner.hide(`spinner-${this.charSelected}`);
-                        this.alphabeticSearchStarted = false;
-                        return;
+                        const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
+                        const requests = [];
+
+                        for (let offset = 0; offset < maxOffset; offset++) {
+                            requests.push(this._knoraService.getPrimaryBooks(this.charSelected, offset));
+                        }
+
+                        return forkJoin([of(amount), forkJoin(requests)]);
+                    })
+                )
+                .subscribe(result => {
+                    this.alphabeticResAmount = result[0];
+                    this.books[this.charSelected] = {amount: result[0]};
+                    this._spinner.hide(`spinner-${this.charSelected}`);
+                    this.alphabeticSearchStarted = false;
+
+                    if (result[1]) {
+                        this.alphabeticResources = []
+                            .concat(...result[1])
+                            .sort((book1, book2) => this.sortBook(book1, book2));
+                        this.books[this.charSelected].data = this.alphabeticResources;
                     }
-
-                    const maxOffset = Math.ceil(this.alphabeticResAmount / this.MAX_RESOURCE_PER_RESULT);
-                    const requests = [];
-
-                    for (let offset = 0; offset < maxOffset; offset++) {
-                        requests.push(this._knoraService.getPrimaryBooks(this.charSelected, offset));
-                    }
-
-                    forkJoin<any>(...requests)
-                        .subscribe((res: Array<Array<any>>) => {
-                            this._spinner.hide(`spinner-${this.charSelected}`);
-                            this.alphabeticSearchStarted = false;
-                            this.alphabeticResources = []
-                                .concat(...res)
-                                .sort((res1, res2) => this.sortBook(res1, res2));
-                            // Saves data in cache
-                            this.books[this.charSelected].data = this.alphabeticResources;
-                        }, error => {
-                            this._spinner.hide(`spinner-${this.charSelected}`);
-                        });
                 }, error => {
                     this._spinner.hide(`spinner-${this.charSelected}`);
                 });
@@ -459,35 +456,34 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
     requestAuthors() {
         if (!this.authors[this.charSelected]) {
             this._knoraService.getPrimaryAuthorsCount(this.charSelected)
-                .subscribe(amount => {
-                    this.alphabeticResAmount = amount;
-                    this.authors[this.charSelected] = {amount};
+                .pipe(
+                    mergeMap(amount => {
+                        if (amount === 0) {
+                            return forkJoin([of(0)]);
+                        }
 
-                    if (amount === 0) {
-                        this._spinner.hide(`spinner-${this.charSelected}`);
-                        this.alphabeticSearchStarted = false;
-                        return;
+                        const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
+                        const requests = [];
+
+                        for (let offset = 0; offset < maxOffset; offset++) {
+                            requests.push(this._knoraService.getPrimaryAuthors(this.charSelected, offset));
+                        }
+
+                        return forkJoin([of(amount), forkJoin(requests)]);
+                    })
+                )
+                .subscribe(result => {
+                    this.alphabeticResAmount = result[0];
+                    this.authors[this.charSelected] = {amount: result[0]};
+                    this._spinner.hide(`spinner-${this.charSelected}`);
+                    this.alphabeticSearchStarted = false;
+
+                    if (result[1]) {
+                        this.alphabeticResources = []
+                            .concat(...result[1])
+                            .sort((author1, author2) => this.sortAuthor(author1, author2));
+                        this.authors[this.charSelected].data = this.alphabeticResources;
                     }
-
-                    const maxOffset = Math.ceil(this.alphabeticResAmount / this.MAX_RESOURCE_PER_RESULT);
-                    const requests = [];
-
-                    for (let offset = 0; offset < maxOffset; offset++) {
-                        requests.push(this._knoraService.getPrimaryAuthors(this.charSelected, offset));
-                    }
-
-                    forkJoin<any>(...requests)
-                        .subscribe((res: Array<Array<any>>) => {
-                            this._spinner.hide(`spinner-${this.charSelected}`);
-                            this.alphabeticSearchStarted = false;
-                            this.alphabeticResources = []
-                                .concat(...res)
-                                .sort((res1, res2) => this.sortAuthor(res1, res2));
-                            // Saves data in cache
-                            this.authors[this.charSelected].data = this.alphabeticResources;
-                        }, error => {
-                            this._spinner.hide(`spinner-${this.charSelected}`);
-                        });
                 }, error => {
                     this._spinner.hide(`spinner-${this.charSelected}`);
                 });
@@ -503,35 +499,34 @@ export class BrowsingComponent implements OnInit, AfterViewInit {
     requestLexias() {
         if (!this.lexias[this.charSelected]) {
             this._knoraService.getLexiasCount(this.charSelected)
-                .subscribe(amount => {
-                    this.alphabeticResAmount = amount;
-                    this.lexias[this.charSelected] = {amount};
+                .pipe(
+                    mergeMap(amount => {
+                        if (amount === 0) {
+                            return forkJoin([of(0)]);
+                        }
 
-                    if (amount === 0) {
-                        this._spinner.hide(`spinner-${this.charSelected}`);
-                        this.alphabeticSearchStarted = false;
-                        return;
+                        const maxOffset = Math.ceil(amount / this.MAX_RESOURCE_PER_RESULT);
+                        const requests = [];
+
+                        for (let offset = 0; offset < maxOffset; offset++) {
+                            requests.push(this._knoraService.getLexias(this.charSelected, offset));
+                        }
+
+                        return forkJoin([of(amount), forkJoin(requests)]);
+                    })
+                )
+                .subscribe(result => {
+                    this.alphabeticResAmount = result[0];
+                    this.lexias[this.charSelected] = {amount: result[0]};
+                    this._spinner.hide(`spinner-${this.charSelected}`);
+                    this.alphabeticSearchStarted = false;
+
+                    if (result[1]) {
+                        this.alphabeticResources = []
+                            .concat(...result[1])
+                            .sort((lexia1, lexia2) => this.sortLexia(lexia1, lexia2));
+                        this.lexias[this.charSelected].data = this.alphabeticResources;
                     }
-
-                    const maxOffset = Math.ceil(this.alphabeticResAmount / this.MAX_RESOURCE_PER_RESULT);
-                    const requests = [];
-
-                    for (let offset = 0; offset < maxOffset; offset++) {
-                        requests.push(this._knoraService.getLexias(this.charSelected, offset));
-                    }
-
-                    forkJoin<any>(...requests)
-                        .subscribe((res: Array<Array<any>>) => {
-                            this._spinner.hide(`spinner-${this.charSelected}`);
-                            this.alphabeticSearchStarted = false;
-                            this.alphabeticResources = []
-                                .concat(...res)
-                                .sort((res1, res2) => this.sortLexia(res1, res2));
-                            // Saves data in cache
-                            this.lexias[this.charSelected].data = this.alphabeticResources;
-                        }, error => {
-                            this._spinner.hide(`spinner-${this.charSelected}`);
-                        });
                 }, error => {
                     this._spinner.hide(`spinner-${this.charSelected}`);
                 });
