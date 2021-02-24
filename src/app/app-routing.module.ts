@@ -40,24 +40,30 @@ const routes: Routes = [
     ]
   },
   {path: "resource/:id", component: ResourceComponent},
-  {path: "categories", component: CategoriesComponent},
-  {path: "author", component: AuthorComponent},
-  {path: "book", component: BookComponent},
-  {path: "contributor", component: ContributorComponent},
-  {path: "formal", component: FormalClassComponent},
-  {path: "function", component: FunctionVoiceComponent},
-  {path: "gender", component: GenderComponent},
-  {path: "genre", component: GenreComponent},
-  {path: "image", component: ImageComponent},
-  {path: "language", component: LanguageComponent},
-  {path: "lexia", component: LexiaComponent},
-  {path: "marking", component: MarkingComponent},
-  {path: "organisation", component: OrganisationComponent},
-  {path: "passage", component: PassageComponent},
-  {path: "research", component: ResearchFieldComponent},
-  {path: "status", component: StatusComponent},
-  {path: "subject", component: SubjectComponent},
-  {path: "venue", component: VenueComponent},
+  {
+    path: "categories",
+    children: [
+      {path: "", component: CategoriesComponent},
+      {path: "author", component: AuthorComponent},
+      {path: "book", component: BookComponent},
+      {path: "contributor", component: ContributorComponent},
+      {path: "formal", component: FormalClassComponent},
+      {path: "function", component: FunctionVoiceComponent},
+      {path: "gender", component: GenderComponent},
+      {path: "genre", component: GenreComponent},
+      {path: "image", component: ImageComponent},
+      {path: "language", component: LanguageComponent},
+      {path: "lexia", component: LexiaComponent},
+      {path: "marking", component: MarkingComponent},
+      {path: "organisation", component: OrganisationComponent},
+      {path: "passage", component: PassageComponent},
+      {path: "research", component: ResearchFieldComponent},
+      {path: "status", component: StatusComponent},
+      {path: "subject", component: SubjectComponent},
+      {path: "venue", component: VenueComponent},
+      {path: "", component: PageNotFoundComponent}
+    ]
+  },
   {path: "**", component: PageNotFoundComponent}
 ];
 

@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: "app-categories",
@@ -8,79 +8,78 @@ import {Router} from "@angular/router";
 })
 export class CategoriesComponent implements OnInit {
 
-    constructor(
-        private router: Router
+    constructor(private router: Router, private route: ActivatedRoute
     ) {
     }
 
     ngOnInit() {}
 
     showAuthors() {
-        this.router.navigate(["author"]);
+        this.router.navigate(["author"], {relativeTo: this.route});
     }
 
     showBooks() {
-        this.router.navigate(["book"]);
+        this.router.navigate(["book"], {relativeTo: this.route});
     }
 
     showContributors() {
-        this.router.navigate(["contributor"]);
+        this.router.navigate(["contributor"], {relativeTo: this.route});
     }
 
     showFormalClasses() {
-        this.router.navigate(["formal"]);
+        this.router.navigate(["formal"], {relativeTo: this.route});
     }
 
     showFunctionVoices() {
-        this.router.navigate(["function"]);
+        this.router.navigate(["function"], {relativeTo: this.route});
     }
 
     showGenders() {
-        this.router.navigate(["gender"]);
+        this.router.navigate(["gender"], {relativeTo: this.route});
     }
 
     showGenres() {
-        this.router.navigate(["genre"]);
+        this.router.navigate(["genre"], {relativeTo: this.route});
     }
 
     showImages() {
-        this.router.navigate(["image"]);
+        this.router.navigate(["image"], {relativeTo: this.route});
     }
 
     showLanguages() {
-        this.router.navigate(["language"]);
+        this.router.navigate(["language"], {relativeTo: this.route});
     }
 
     showLexias() {
-        this.router.navigate(["lexia"]);
+        this.router.navigate(["lexia"], {relativeTo: this.route});
     }
 
     showMarkings() {
-        this.router.navigate(["marking"]);
+        this.router.navigate(["marking"], {relativeTo: this.route});
     }
 
     showOrganisations() {
-        this.router.navigate(["organisation"]);
+        this.router.navigate(["organisation"], {relativeTo: this.route});
     }
 
     showPassages() {
-        this.router.navigate(["passage"]);
+        this.router.navigate(["passage"], {relativeTo: this.route});
     }
 
     showResearchFields() {
-        this.router.navigate(["research"]);
+        this.router.navigate(["research"], {relativeTo: this.route});
     }
 
     showStatus() {
-        this.router.navigate(["status"]);
+        this.router.navigate(["status"], {relativeTo: this.route});
     }
 
     showSubjects() {
-        this.router.navigate(["subject"]);
+        this.router.navigate(["subject"], {relativeTo: this.route});
     }
 
     showVenues() {
-        this.router.navigate(["venue"]);
+        this.router.navigate(["venue"], {relativeTo: this.route});
     }
 
 }
