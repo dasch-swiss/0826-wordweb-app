@@ -13,7 +13,7 @@ build-app-image: ## build and publish APP image locally
 
 .PHONY: publish-app-image
 publish-app-image: build-app-image ## publish APP Docker image to Docker-Hub
-	docker push $(APP_REPO)
+	docker image push --all-tags $(APP_REPO)
 
 .PHONY: help
 help: ## this help
