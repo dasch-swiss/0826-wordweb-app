@@ -572,13 +572,13 @@ export class AdvancedSearchComponent implements OnInit, AfterViewInit {
 
                     if (arr && arr[1]) {
                         if (!arr[3]) {
-                            this.form.get("date").setValue(data.date);
+                            this.form.get("createdDate").setValue(data.date);
                             this.createdDateRef.searchVal1 = arr[1];
                             queryParamAdded = true;
                         }
 
                         if (arr[3] && (Number(arr[3]) > Number(arr[1]))) {
-                            this.form.get("date").setValue(data.date);
+                            this.form.get("createdDate").setValue(data.date);
                             this.createdDateRef.searchVal1 = arr[1];
                             this.createdDateRef.searchVal2 = arr[3];
                             queryParamAdded = true;
