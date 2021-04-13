@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
 import {TreeRefComponent} from "./tree-ref.component";
 
@@ -6,7 +6,7 @@ describe("LanguageRefComponent", () => {
     let component: TreeRefComponent;
     let fixture: ComponentFixture<TreeRefComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [TreeRefComponent]
         })

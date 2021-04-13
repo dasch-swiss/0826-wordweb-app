@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
 import {FunctionVoiceComponent} from "./function-voice.component";
 
@@ -6,7 +6,7 @@ describe("FunctionVoiceComponent", () => {
     let component: FunctionVoiceComponent;
     let fixture: ComponentFixture<FunctionVoiceComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [FunctionVoiceComponent]
         })

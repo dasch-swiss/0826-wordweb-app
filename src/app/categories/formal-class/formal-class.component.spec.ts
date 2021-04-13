@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
 import {FormalClassComponent} from "./formal-class.component";
 
@@ -6,7 +6,7 @@ describe("FormalClassComponent", () => {
     let component: FormalClassComponent;
     let fixture: ComponentFixture<FormalClassComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [FormalClassComponent]
         })

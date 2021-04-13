@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
 import {PassageRefComponent} from "./passage-ref.component";
 
@@ -6,7 +6,7 @@ describe("PassageRefComponent", () => {
     let component: PassageRefComponent;
     let fixture: ComponentFixture<PassageRefComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [PassageRefComponent]
         })
