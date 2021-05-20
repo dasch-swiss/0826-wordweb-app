@@ -49,7 +49,7 @@ export class AppInitService {
 
             this._knoraService.knoraApiConnection = AppInitService.settings.apiURL;
 
-            console.log(AppInitService.settings, AppInitService.settings.email, AppInitService.settings.pwd);
+            // console.log(AppInitService.settings, AppInitService.settings.email, AppInitService.settings.pwd);
 
             this._knoraService.login("root@example.com", "test")
                 .pipe(

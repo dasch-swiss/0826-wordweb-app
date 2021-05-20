@@ -43,12 +43,12 @@ export class StringService {
             "<li>names: \"Ovid says\" or \"Hamlet, revenge!\"</li>" +
             "</ul>",
         function_help: "<p><b>\"Function\"</b> is our term for the part of a text which contains a quotation. A " +
-            "quotation may occur in the title of a play, in a chapter epigraph or in a stage direction. It may also " +
-            "be simply the name of a character. A character called Romeo after 1595 is probably a reference to " +
-            "<i>Romeo and Juliet</i>, and Shakespeare's most famous stage direction \"Exit pursued by a bear\" " +
-            "has become a quotation in its own right.<br></p>" +
-            "<p><b>\"Voice\"</b>: Most quotations occur in the body of a play, novel or poem. Find out if they are spoken by " +
-            "a character on stage or in a novel, by a narrator or if they occur in.</p>",
+            "quotation may appear in the title of a play, in a chapter epigraph or in a stage direction. It may " +
+            "also be simply the name of a character. Any character called Romeo after 1595 is probably a reference " +
+            "to <i>Romeo and Juliet</i>, and Shakespeare's most famous stage direction \"Exit pursued by a bear\" " +
+            "may have been borrowed from an earlier play!<br></p>" +
+            "<p><b>\"Voice\"</b>: Most quotations occur in the body of a play, novel or poem. Find out if a famous " +
+            "line is re-spoken by a character (on stage or in a novel) or by a first- or third-person narrator.</p>",
         per_company_help: "Find plays that were premiered by a certain troupe like The King's Men or " +
             "The Children of Paul's.",
         per_venue_help: "Find plays that were premiered in a certain venue like Blackfriars or The Globe " +
