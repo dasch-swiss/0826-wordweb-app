@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {version} from "../../package.json";
+import packageInfo from "../../package.json";
 
 @Component({
     selector: "app-root",
@@ -7,7 +7,7 @@ import {version} from "../../package.json";
     styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
-    public version: string = version;
+    public version: string = packageInfo.version;
 
     constructor() {
     }
