@@ -1,6 +1,6 @@
 {
   "name": "0826-wordweb-app",
-  "version": "2.10.10",
+  "version": "2.10.11",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -23,7 +23,7 @@
     "@angular/platform-browser": "~12.1.0",
     "@angular/platform-browser-dynamic": "~12.1.0",
     "@angular/router": "~12.1.0",
-    "@dasch-swiss/dsp-js": "~1.2.0",
+    "@dasch-swiss/dsp-js": "2.1.0",
     "file-saver-es": "^2.0.5",
     "json2typescript": "^1.4.1",
     "jsonld": "^1.8.1",
