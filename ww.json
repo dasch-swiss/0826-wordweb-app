@@ -1,0 +1,2850 @@
+{
+   "prefixes": {
+      "teimww": "http://api.0826-test-server.dasch.swiss/ontology/0826/teimww/v2"
+   },
+   "project": {
+      "shortcode": "0826",
+      "shortname": "ww",
+      "longname": "WordWeb",
+      "descriptions": {
+         "de": "Dies ist eine Testversion von WordWeb",
+         "en": "This is a test version of the WordWeb"
+      },
+      "keywords": [
+         "shakespeare",
+         "wordweb",
+         "intertextuality"
+      ],
+      "lists": [
+         {
+            "name": "researchField",
+            "labels": {
+               "de": "Research field",
+               "en": "Research field"
+            },
+            "nodes": [
+               {
+                  "name": "Reading",
+                  "labels": {
+                     "de": "???",
+                     "en": "Reading"
+                  }
+               },
+               {
+                  "name": "Electronic Search",
+                  "labels": {
+                     "de": "???",
+                     "en": "Electronic Search"
+                  }
+               },
+               {
+                  "name": "Previous Research",
+                  "labels": {
+                     "de": "???",
+                     "en": "Previous Research"
+                  }
+               }
+            ]
+         },
+         {
+            "name": "marking",
+            "labels": {
+               "de": "Markierung",
+               "en": "Marking"
+            },
+            "nodes": [
+               {
+                  "name": "Unmarked",
+                  "labels": {
+                     "en": "Unmarked",
+                     "de": "Unmarkiert"
+                  }
+               },
+               {
+                  "name": "Marked",
+                  "labels": {
+                     "en": "Marked",
+                     "de": "Markiert"
+                  },
+                  "nodes": [
+                     {
+                        "name": "VERBAL",
+                        "labels": {
+                           "de": "???",
+                           "en": "Verbal"
+                        },
+                        "nodes": [
+                           {
+                              "name": "Say",
+                              "labels": {
+                                 "de": "???",
+                                 "en": "Say"
+                              }
+                           },
+                           {
+                              "name": "Others",
+                              "labels": {
+                                 "de": "Anderes",
+                                 "en": "Others"
+                              }
+                           },
+                           {
+                              "name": "Noun",
+                              "labels": {
+                                 "de": "Nomen",
+                                 "en": "Noun"
+                              }
+                           },
+                           {
+                              "name": "Verb",
+                              "labels": {
+                                 "de": "Anderes Verb",
+                                 "en": "Verb"
+                              }
+                           },
+                           {
+                              "name": "Generalization",
+                              "labels": {
+                                 "en": "Generalization",
+                                 "de": "Verallgemeinerung"
+                              }
+                           },
+                           {
+                              "name": "likeas",
+                              "labels": {
+                                 "de": "???",
+                                 "en": "likeas"
+                              }
+                           }
+                        ]
+                     },
+                     {
+                        "name": "TYPOGRAPHY",
+                        "labels": {
+                           "de": "Typographie",
+                           "en": "Typographie"
+                        },
+                        "nodes": [
+                           {
+                              "name": "Quotemarks",
+                              "labels": {
+                                 "de": "Anführungszeichen",
+                                 "en": "Quotemarks"
+                              }
+                           },
+                           {
+                              "name": "Setoff",
+                              "labels": {
+                                 "de": "Abgesetzt",
+                                 "en": "Setoff"
+                              }
+                           },
+                           {
+                              "name": "Other",
+                              "labels": {
+                                 "de": "Anderes",
+                                 "en": "Other"
+                              }
+                           },
+                           {
+                              "name": "Italics",
+                              "labels": {
+                                 "en": "Italics",
+                                 "de": "Kursiv"
+                              }
+                           },
+                           {
+                              "name": "Commonplace",
+                              "labels": {
+                                 "en": "Commonplace",
+                                 "de": "Sententia-Zeichen"
+                              }
+                           },
+                           {
+                              "name": "Heading",
+                              "labels": {
+                                 "en": "Heading",
+                                 "de": "Überschrift"
+                              }
+                           }
+                        ]
+                     },
+                     {
+                        "name": "ANOMALY",
+                        "labels": {
+                           "de": "Anomalie",
+                           "en": "Anomaly"
+                        },
+                        "nodes": [
+                           {
+                              "name": "Languageswitch",
+                              "labels": {
+                                 "en": "Languageswitch",
+                                 "de": "Sprachwechsel"
+                              }
+                           },
+                           {
+                              "name": "Poetryswitch",
+                              "labels": {
+                                 "en": "Poetryswitch",
+                                 "de": "Prosa-Vers-Wechsel"
+                              }
+                           },
+                           {
+                              "name": "Nominalization",
+                              "labels": {
+                                 "de": "Nominalisierung",
+                                 "en": "Nominalization"
+                              }
+                           },
+                           {
+                              "name": "Grammar",
+                              "labels": {
+                                 "de": "???",
+                                 "en": "Grammar"
+                              }
+                           },
+                           {
+                              "name": "Other thing",
+                              "labels": {
+                                 "de": "Anderes",
+                                 "en": "Other thing"
+                              }
+                           }
+                        ]
+                     },
+                     {
+                        "name": "GENRE",
+                        "labels": {
+                           "en": "GENRE",
+                           "de": "Genre"
+                        }
+                     },
+                     {
+                        "name": "CONTEXT",
+                        "labels": {
+                           "en": "CONTEXT",
+                           "de": "Context"
+                        }
+                     },
+                     {
+                        "name": "NAME",
+                        "labels": {
+                           "de": "Name",
+                           "en": "Name"
+                        },
+                        "nodes": [
+                           {
+                              "name": "Work unmarked",
+                              "labels": {
+                                 "de": "???",
+                                 "en": "Work unmarked"
+                              }
+                           },
+                           {
+                              "name": "Work title",
+                              "labels": {
+                                 "de": "Buchtitel",
+                                 "en": "Work title"
+                              }
+                           },
+                           {
+                              "name": "Work by character",
+                              "labels": {
+                                 "de": "Figurenname",
+                                 "en": "Work by character"
+                              }
+                           },
+                           {
+                              "name": "Work character by epithet",
+                              "labels": {
+                                 "de": "Figuren-Epithet",
+                                 "en": "Work character by epithet"
+                              }
+                           },
+                           {
+                              "name": "Work secondary character",
+                              "labels": {
+                                 "de": "???",
+                                 "en": "Work secondary character"
+                              }
+                           },
+                           {
+                              "name": "Work by context",
+                              "labels": {
+                                 "de": "???",
+                                 "en": "Work by context"
+                              }
+                           },
+                           {
+                              "name": "Work genre or epithet",
+                              "labels": {
+                                 "de": "Anderes",
+                                 "en": "Work genre or epithet"
+                              }
+                           },
+                           {
+                              "name": "Work bibliographical information",
+                              "labels": {
+                                 "de": "Bibliographische Angaben",
+                                 "en": "Work bibliographical information"
+                              }
+                           },
+                           {
+                              "name": "Work by venue",
+                              "labels": {
+                                 "de": "???",
+                                 "en": "Work by venue"
+                              }
+                           },
+                           {
+                              "name": "Author unmarked",
+                              "labels": {
+                                 "de": "???",
+                                 "en": "Author unmarked"
+                              }
+                           },
+                           {
+                              "name": "Author name",
+                              "labels": {
+                                 "en": "Author name",
+                                 "de": "Autorenname"
+                              }
+                           },
+                           {
+                              "name": "Author epithet",
+                              "labels": {
+                                 "en": "Author epithet",
+                                 "de": "Autoren-Epithet"
+                              }
+                           },
+                           {
+                              "name": "Author by context",
+                              "labels": {
+                                 "de": "???",
+                                 "en": "Author by context"
+                              }
+                           },
+                           {
+                              "name": "Author anonymous",
+                              "labels": {
+                                 "de": "???",
+                                 "en": "Author anonymous"
+                              }
+                           }
+                        ]
+                     }
+                  ]
+               }
+            ]
+         },
+         {
+            "name": "language",
+            "labels": {
+               "de": "Sprache",
+               "en": "Language"
+            },
+            "nodes": [
+               {
+                  "name": "English",
+                  "labels": {
+                     "de": "Englisch",
+                     "en": "English"
+                  }
+               },
+               {
+                  "name": "German",
+                  "labels": {
+                     "de": "Deutsch",
+                     "en": "German"
+                  }
+               },
+               {
+                  "name": "French",
+                  "labels": {
+                     "de": "Französisch",
+                     "en": "French"
+                  }
+               },
+               {
+                  "name": "Latin",
+                  "labels": {
+                     "de": "Latein",
+                     "en": "Latin"
+                  }
+               },
+               {
+                  "name": "Classical Greek",
+                  "labels": {
+                     "en": "Classical Greek",
+                     "de": "Griechisch ???"
+                  }
+               },
+               {
+                  "name": "Italian",
+                  "labels": {
+                     "en": "Italian",
+                     "de": "Italienisch"
+                  }
+               },
+               {
+                  "name": "Portuguese",
+                  "labels": {
+                     "de": "Portugisisch",
+                     "en": "Portuguese"
+                  }
+               },
+               {
+                  "name": "Spanish",
+                  "labels": {
+                     "de": "Spanisch",
+                     "en": "Spanish"
+                  }
+               }
+            ]
+         },
+         {
+            "name": "formalClass",
+            "labels": {
+               "de": "Formale Klasse",
+               "en": "Formal class"
+            },
+            "nodes": [
+               {
+                  "name": "Verbal",
+                  "labels": {
+                     "de": "Verbal",
+                     "en": "Verbal"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Word",
+                        "labels": {
+                           "en": "Word",
+                           "de": "Wort"
+                        }
+                     },
+                     {
+                        "name": "Two-word item",
+                        "labels": {
+                           "en": "Two-word item",
+                           "de": "Zwei Wörter"
+                        }
+                     },
+                     {
+                        "name": "Phrase",
+                        "labels": {
+                           "de": "Phrase",
+                           "en": "Phrase"
+                        }
+                     },
+                     {
+                        "name": "Passage",
+                        "labels": {
+                           "de": "Passage",
+                           "en": "Passage"
+                        }
+                     },
+                     {
+                        "name": "Pun",
+                        "labels": {
+                           "en": "Pun",
+                           "de": "Wortspiel"
+                        }
+                     },
+                     {
+                        "name": "Snowclone",
+                        "labels": {
+                           "de": "Snowclone",
+                           "en": "Snowclone"
+                        }
+                     },
+                     {
+                        "name": "Keywords",
+                        "labels": {
+                           "en": "Keywords",
+                           "de": "Mehrere Wörter"
+                        }
+                     },
+                     {
+                        "name": "Setpiece",
+                        "labels": {
+                           "en": "Setpiece",
+                           "de": "Versatzstück"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Name",
+                  "labels": {
+                     "de": "Name",
+                     "en": "Name"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Motif with name",
+                        "labels": {
+                           "en": "Motif with name",
+                           "de": "Motive mit Name"
+                        }
+                     },
+                     {
+                        "name": "Name of real person",
+                        "labels": {
+                           "en": "Name of real person",
+                           "de": "Personenname"
+                        }
+                     },
+                     {
+                        "name": "Epithet for real person",
+                        "labels": {
+                           "en": "Epithet for real person",
+                           "de": "Epitheton"
+                        }
+                     },
+                     {
+                        "name": "Name of fictional character",
+                        "labels": {
+                           "de": "Figurenname",
+                           "en": "Name of fictional character"
+                        }
+                     },
+                     {
+                        "name": "Venue or place",
+                        "labels": {
+                           "de": "Ort",
+                           "en": "Venue or place"
+                        }
+                     },
+                     {
+                        "name": "Book title",
+                        "labels": {
+                           "en": "Book title",
+                           "de": "Buchtitel"
+                        }
+                     },
+                     {
+                        "name": "Company",
+                        "labels": {
+                           "en": "Company",
+                           "de": "Theatergruppe"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Paraphrased",
+                  "labels": {
+                     "en": "Paraphrased",
+                     "de": "Umschrieben"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Idea",
+                        "labels": {
+                           "en": "Idea",
+                           "de": "Idee"
+                        }
+                     },
+                     {
+                        "name": "Plot element",
+                        "labels": {
+                           "de": "Handlungselement ",
+                           "en": "Plot element"
+                        }
+                     },
+                     {
+                        "name": "Visual motif",
+                        "labels": {
+                           "de": "Bild",
+                           "en": "Visual motif"
+                        }
+                     },
+                     {
+                        "name": "Complete plot",
+                        "labels": {
+                           "en": "Complete plot",
+                           "de": "Vollständige Handlung"
+                        }
+                     },
+                     {
+                        "name": "Scene",
+                        "labels": {
+                           "en": "Scene",
+                           "de": "Szene"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Cluster",
+                  "labels": {
+                     "de": "Cluster",
+                     "en": "Cluster"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Tiger cluster",
+                        "labels": {
+                           "en": "Tiger cluster",
+                           "de": "Tiger-Cluster"
+                        }
+                     },
+                     {
+                        "name": "Dog cluster",
+                        "labels": {
+                           "en": "Dog cluster",
+                           "de": "Hund-Cluster"
+                        }
+                     },
+                     {
+                        "name": "Pillow cluster",
+                        "labels": {
+                           "de": "Kissen-Cluster",
+                           "en": "Pillow cluster"
+                        }
+                     },
+                     {
+                        "name": "Blot cluster",
+                        "labels": {
+                           "en": "Blot cluster",
+                           "de": "Fleck-Cluster"
+                        }
+                     },
+                     {
+                        "name": "Kite cluster",
+                        "labels": {
+                           "de": "Geier-Cluster",
+                           "en": "Kite cluster"
+                        }
+                     },
+                     {
+                        "name": "Wax cluster",
+                        "labels": {
+                           "de": "Wachs-Cluster",
+                           "en": "Wax cluster"
+                        }
+                     }
+                  ]
+               }
+            ]
+         },
+         {
+            "name": "placeVenue",
+            "labels": {
+               "de": "Theater Ort",
+               "en": "Venue place"
+            },
+            "nodes": [
+               {
+                  "name": "London",
+                  "labels": {
+                     "de": "London",
+                     "en": "London"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Globe Theatre",
+                        "labels": {
+                           "de": "Globe Theatre",
+                           "en": "Globe Theatre"
+                        }
+                     },
+                     {
+                        "name": "Blackfriars",
+                        "labels": {
+                           "de": "Blackfriars",
+                           "en": "Blackfriars"
+                        }
+                     },
+                     {
+                        "name": "The Theatre",
+                        "labels": {
+                           "de": "The Theatre",
+                           "en": "The Theatre"
+                        }
+                     },
+                     {
+                        "name": "Cockpit",
+                        "labels": {
+                           "de": "Cockpit",
+                           "en": "Cockpit"
+                        }
+                     },
+                     {
+                        "name": "Curtain Theatre",
+                        "labels": {
+                           "de": "Curtain Theatre",
+                           "en": "Curtain Theatre"
+                        }
+                     },
+                     {
+                        "name": "Whitefriars",
+                        "labels": {
+                           "de": "Whitefriars",
+                           "en": "Whitefriars"
+                        }
+                     },
+                     {
+                        "name": "Red Bull",
+                        "labels": {
+                           "de": "Red Bull",
+                           "en": "Red Bull"
+                        }
+                     },
+                     {
+                        "name": "unknown venue",
+                        "labels": {
+                           "de": "Unbekanntes Theater",
+                           "en": "unknown venue"
+                        }
+                     },
+                     {
+                        "name": "Rose Theatre",
+                        "labels": {
+                           "de": "Rose Theatre",
+                           "en": "Rose Theatre"
+                        }
+                     },
+                     {
+                        "name": "Fortune Playhouse",
+                        "labels": {
+                           "de": "Fortune Playhouse",
+                           "en": "Fortune Playhouse"
+                        }
+                     },
+                     {
+                        "name": "Salisbury Court",
+                        "labels": {
+                           "de": "Salisbury Court",
+                           "en": "Salisbury Court"
+                        }
+                     },
+                     {
+                        "name": "Inner Temple",
+                        "labels": {
+                           "de": "Inner Temple",
+                           "en": "Inner Temple"
+                        }
+                     },
+                     {
+                        "name": "Banqueting House",
+                        "labels": {
+                           "de": "Banqueting House",
+                           "en": "Banqueting House"
+                        }
+                     },
+                     {
+                        "name": "Archbishop's Palace",
+                        "labels": {
+                           "de": "Archbishop's Palace",
+                           "en": "Archbishop's Palace"
+                        }
+                     },
+                     {
+                        "name": "Boar's Head",
+                        "labels": {
+                           "de": "Boar's Head",
+                           "en": "Boar's Head"
+                        }
+                     },
+                     {
+                        "name": "Swan Theatre",
+                        "labels": {
+                           "de": "Swan Theatre",
+                           "en": "Swan Theatre"
+                        }
+                     },
+                     {
+                        "name": "Hope Theatre",
+                        "labels": {
+                           "de": "Hope Theatre",
+                           "en": "Hope Theatre"
+                        }
+                     },
+                     {
+                        "name": "Moorfield",
+                        "labels": {
+                           "de": "Moorfield",
+                           "en": "Moorfield"
+                        }
+                     },
+                     {
+                        "name": "Hyde Park",
+                        "labels": {
+                           "de": "Hyde Park",
+                           "en": "Hyde Park"
+                        }
+                     },
+                     {
+                        "name": "Somerset House",
+                        "labels": {
+                           "de": "Somerset House",
+                           "en": "Somerset House"
+                        }
+                     },
+                     {
+                        "name": "Greenwich Palace",
+                        "labels": {
+                           "de": "Greenwich Palace",
+                           "en": "Greenwich Palace"
+                        }
+                     },
+                     {
+                        "name": "Whitehall Palace",
+                        "labels": {
+                           "de": "Whitehall Palace",
+                           "en": "Whitehall Palace"
+                        }
+                     },
+                     {
+                        "name": "Middle Temple",
+                        "labels": {
+                           "de": "Middle Temple",
+                           "en": "Middle Temple"
+                        }
+                     },
+                     {
+                        "name": "Isle of Dogs",
+                        "labels": {
+                           "de": "Isle of Dogs",
+                           "en": "Isle of Dogs"
+                        }
+                     },
+                     {
+                        "name": "Cuckold's Haven",
+                        "labels": {
+                           "de": "Cuckold's Haven",
+                           "en": "Cuckold's Haven"
+                        }
+                     },
+                     {
+                        "name": "Theatre Royal",
+                        "labels": {
+                           "de": "Theatre Royal",
+                           "en": "Theatre Royal"
+                        }
+                     },
+                     {
+                        "name": "Dorset Garden Theatre",
+                        "labels": {
+                           "de": "Dorset Garden Theatre",
+                           "en": "Dorset Garden Theatre"
+                        }
+                     },
+                     {
+                        "name": "Thomas Cranmer's House",
+                        "labels": {
+                           "de": "Thomas Cranmer's House",
+                           "en": "Thomas Cranmer's House"
+                        }
+                     },
+                     {
+                        "name": "Aldgate",
+                        "labels": {
+                           "de": "Aldgate",
+                           "en": "Aldgate"
+                        }
+                     },
+                     {
+                        "name": "Islington",
+                        "labels": {
+                           "de": "Islington",
+                           "en": "Islington"
+                        }
+                     },
+                     {
+                        "name": "St. Paul's Playhouse",
+                        "labels": {
+                           "de": "St. Paul's Playhouse",
+                           "en": "St. Paul's Playhouse"
+                        }
+                     },
+                     {
+                        "name": "Rotten Row",
+                        "labels": {
+                           "de": "Rotten Row",
+                           "en": "Rotten Row"
+                        }
+                     },
+                     {
+                        "name": "Newgate Prison",
+                        "labels": {
+                           "de": "Newgate Prison",
+                           "en": "Newgate Prison"
+                        }
+                     },
+                     {
+                        "name": "Hoxton",
+                        "labels": {
+                           "de": "Hoxton",
+                           "en": "Hoxton"
+                        }
+                     },
+                     {
+                        "name": "London Bridge",
+                        "labels": {
+                           "de": "London Bridge",
+                           "en": "London Bridge"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Cambridge",
+                  "labels": {
+                     "de": "Cambridge",
+                     "en": "Cambridge"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Trinity College",
+                        "labels": {
+                           "de": "Trinity College",
+                           "en": "Trinity College"
+                        }
+                     },
+                     {
+                        "name": "St. John's  College",
+                        "labels": {
+                           "de": "St. John's College",
+                           "en": "St. John's College"
+                        }
+                     },
+                     {
+                        "name": "King's College ",
+                        "labels": {
+                           "de": "King's College ",
+                           "en": "King's College "
+                        }
+                     },
+                     {
+                        "name": "Christ's College",
+                        "labels": {
+                           "de": "Christ's College",
+                           "en": "Christ's College"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Oxford",
+                  "labels": {
+                     "de": "Oxford",
+                     "en": "Oxford"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Trinity College ",
+                        "labels": {
+                           "de": "Trinity College ",
+                           "en": "Trinity College "
+                        }
+                     },
+                     {
+                        "name": "Christ Church College",
+                        "labels": {
+                           "de": "Christ Church College",
+                           "en": "Christ Church College"
+                        }
+                     },
+                     {
+                        "name": "St Johns College",
+                        "labels": {
+                           "de": "St Johns College",
+                           "en": "St Johns College"
+                        }
+                     },
+                     {
+                        "name": "unknown location",
+                        "labels": {
+                           "de": "unknown location",
+                           "en": "unknown location"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Dublin",
+                  "labels": {
+                     "de": "Dublin",
+                     "en": "Dublin"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Werburgh Street Theatre",
+                        "labels": {
+                           "de": "Werburgh Street Theatre",
+                           "en": "Werburgh Street Theatre"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Essex",
+                  "labels": {
+                     "de": "Essex",
+                     "en": "Essex"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Wanstead Manor",
+                        "labels": {
+                           "de": "Wanstead Manor",
+                           "en": "Wanstead Manor"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Rutland",
+                  "labels": {
+                     "de": "Rutland",
+                     "en": "Rutland"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Burley-on-the-Hill",
+                        "labels": {
+                           "de": "Burley-on-the-Hill",
+                           "en": "Burley-on-the-Hill"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Shropshire",
+                  "labels": {
+                     "de": "Shropshire",
+                     "en": "Shropshire"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Ludlow Castle",
+                        "labels": {
+                           "de": "Ludlow Castle",
+                           "en": "Ludlow Castle"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Rome",
+                  "labels": {
+                     "de": "Rome",
+                     "en": "Rome"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Aventine Hill",
+                        "labels": {
+                           "de": "Aventine Hill",
+                           "en": "Aventine Hill"
+                        }
+                     },
+                     {
+                        "name": "Capitol",
+                        "labels": {
+                           "de": "Capitol",
+                           "en": "Capitol"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Leicestershire",
+                  "labels": {
+                     "de": "Leicestershire",
+                     "en": "Leicestershire"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Ashby de la Zouch Castle",
+                        "labels": {
+                           "de": "Ashby de la Zouch Castle",
+                           "en": "Ashby de la Zouch Castle"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Greece",
+                  "labels": {
+                     "en": "Greece",
+                     "de": "Griechenland"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Mount Ossa",
+                        "labels": {
+                           "de": "Mount Ossa",
+                           "en": "Mount Ossa"
+                        }
+                     },
+                     {
+                        "name": "Philippi",
+                        "labels": {
+                           "de": "Philippi",
+                           "en": "Philippi"
+                        }
+                     },
+                     {
+                        "name": "Hellespont",
+                        "labels": {
+                           "de": "Hellespont",
+                           "en": "Hellespont"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Turkey",
+                  "labels": {
+                     "en": "Turkey",
+                     "de": "Türkei"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Callipolis",
+                        "labels": {
+                           "de": "Callipolis",
+                           "en": "Callipolis"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Syria",
+                  "labels": {
+                     "en": "Syria",
+                     "de": "Syrien"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Aleppo",
+                        "labels": {
+                           "de": "Aleppo",
+                           "en": "Aleppo"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Italy",
+                  "labels": {
+                     "de": "Italien",
+                     "en": "Italy"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Florence",
+                        "labels": {
+                           "en": "Florence",
+                           "de": "Florenz"
+                        }
+                     }
+                  ]
+               }
+            ]
+         },
+         {
+            "name": "genre",
+            "labels": {
+               "de": "Genre",
+               "en": "Genre"
+            },
+            "nodes": [
+               {
+                  "name": "Fiction",
+                  "labels": {
+                     "en": "Fiction",
+                     "de": "Literatur"
+                  },
+                  "nodes": [
+                     {
+                        "name": "ALL DRAMA",
+                        "labels": {
+                           "de": "ALL DRAMA",
+                           "en": "ALL DRAMA"
+                        },
+                        "nodes": [
+                           {
+                              "name": "Tragedy",
+                              "labels": {
+                                 "en": "Tragedy",
+                                 "de": "Tragödie"
+                              }
+                           },
+                           {
+                              "name": "Comedy",
+                              "labels": {
+                                 "en": "Comedy",
+                                 "de": "Komödie"
+                              }
+                           },
+                           {
+                              "name": "History play",
+                              "labels": {
+                                 "de": "History play",
+                                 "en": "History play"
+                              }
+                           },
+                           {
+                              "name": "Tragicomedy",
+                              "labels": {
+                                 "en": "Tragicomedy",
+                                 "de": "Tragikomödie"
+                              }
+                           },
+                           {
+                              "name": "Romance",
+                              "labels": {
+                                 "en": "Romance",
+                                 "de": "Romanze"
+                              }
+                           },
+                           {
+                              "name": "Masque or other",
+                              "labels": {
+                                 "de": "Maskenspiel oder anderes",
+                                 "en": "Masque or other"
+                              }
+                           }
+                        ]
+                     },
+                     {
+                        "name": "ALL PROSE FICTION",
+                        "labels": {
+                           "de": "ALL PROSE FICTION",
+                           "en": "ALL PROSE FICTION"
+                        },
+                        "nodes": [
+                           {
+                              "name": "Prose unspecified",
+                              "labels": {
+                                 "de": "Allgemein",
+                                 "en": "Prose unspecified"
+                              }
+                           }
+                        ]
+                     },
+                     {
+                        "name": "ALL POETRY",
+                        "labels": {
+                           "de": "ALL POETRY",
+                           "en": "ALL POETRY"
+                        },
+                        "nodes": [
+                           {
+                              "name": "Song or ballad",
+                              "labels": {
+                                 "de": "Lied oder Ballade",
+                                 "en": "Song or ballad"
+                              }
+                           },
+                           {
+                              "name": "Epic and verse narrative",
+                              "labels": {
+                                 "en": "Epic and verse narrative",
+                                 "de": "Versepos"
+                              }
+                           },
+                           {
+                              "name": "Verse satire",
+                              "labels": {
+                                 "de": "Satire",
+                                 "en": "Verse satire"
+                              }
+                           },
+                           {
+                              "name": "Poetry unspecified",
+                              "labels": {
+                                 "de": "Allgemein",
+                                 "en": "Poetry unspecified"
+                              }
+                           }
+                        ]
+                     }
+                  ]
+               },
+               {
+                  "name": "NONFICTION",
+                  "labels": {
+                     "de": "NONFICTION",
+                     "en": "NONFICTION"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Journalism",
+                        "labels": {
+                           "en": "Journalism",
+                           "de": "Journalismus"
+                        }
+                     },
+                     {
+                        "name": "Academic",
+                        "labels": {
+                           "en": "Academic",
+                           "de": "Akademisch"
+                        }
+                     },
+                     {
+                        "name": "Anthology",
+                        "labels": {
+                           "de": "Anthologie",
+                           "en": "Anthology"
+                        }
+                     },
+                     {
+                        "name": "Diary",
+                        "labels": {
+                           "en": "Diary",
+                           "de": "Tagebuch"
+                        }
+                     },
+                     {
+                        "name": "Essay",
+                        "labels": {
+                           "de": "Essay",
+                           "en": "Essay"
+                        }
+                     },
+                     {
+                        "name": "Letter",
+                        "labels": {
+                           "de": "Brief",
+                           "en": "Letter"
+                        }
+                     },
+                     {
+                        "name": "Speech or sermon",
+                        "labels": {
+                           "de": "Rede, Predigt",
+                           "en": "Speech or sermon"
+                        }
+                     },
+                     {
+                        "name": "Pamphlet or liturgical text",
+                        "labels": {
+                           "en": "Pamphlet or liturgical text",
+                           "de": "Traktat oder liturgischer Text"
+                        }
+                     },
+                     {
+                        "name": "Other nonfiction",
+                        "labels": {
+                           "de": "Other nonfiction",
+                           "en": "Other nonfiction"
+                        }
+                     },
+                     {
+                        "name": "Annotated edition",
+                        "labels": {
+                           "de": "Allgemein",
+                           "en": "Annotated edition"
+                        }
+                     },
+                     {
+                        "name": "Educational",
+                        "labels": {
+                           "de": "Allgemein",
+                           "en": "Bildung"
+                        }
+                     },
+                     {
+                        "name": "Scholarly database",
+                        "labels": {
+                           "en": "Scholarly database",
+                           "de": "Wissenschaftliche Datenbank"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "OTHER GENRES",
+                  "labels": {
+                     "de": "OTHER GENRES",
+                     "en": "OTHER GENRES"
+                  },
+                  "nodes": [
+                     {
+                        "name": "The Bible",
+                        "labels": {
+                           "de": "Die Bibel",
+                           "en": "The Bible"
+                        }
+                     },
+                     {
+                        "name": "Manuscript miscellany",
+                        "labels": {
+                           "de": "Manuscript miscellany",
+                           "en": "Manuscript miscellany"
+                        }
+                     },
+                     {
+                        "name": "Music",
+                        "labels": {
+                           "en": "Music",
+                           "de": "Musik"
+                        }
+                     },
+                     {
+                        "name": "Conversation",
+                        "labels": {
+                           "en": "Conversation",
+                           "de": "Gespräch"
+                        }
+                     },
+                     {
+                        "name": "Fulltext database",
+                        "labels": {
+                           "en": "Fulltext Database",
+                           "de": "Volltext Datenbank"
+                        }
+                     }
+                  ]
+               }
+            ]
+         },
+         {
+            "name": "gender",
+            "labels": {
+               "de": "Geschlecht",
+               "en": "Gender"
+            },
+            "nodes": [
+               {
+                  "name": "male",
+                  "labels": {
+                     "en": "Male",
+                     "de": "Männlich"
+                  }
+               },
+               {
+                  "name": "female",
+                  "labels": {
+                     "en": "Female",
+                     "de": "Weiblich"
+                  }
+               },
+               {
+                  "name": "not specified",
+                  "labels": {
+                     "de": "Nicht spezifiziert",
+                     "en": "not specified"
+                  }
+               }
+            ]
+         },
+         {
+            "name": "subject",
+            "labels": {
+               "de": "Thema",
+               "en": "Subject"
+            },
+            "nodes": [
+               {
+                  "name": "Art, architecture, music",
+                  "labels": {
+                     "en": "Art, architecture, music",
+                     "de": "Kunst, Architektur, Musik"
+                  }
+               },
+               {
+                  "name": "Literature and theatre",
+                  "labels": {
+                     "de": "Literatur und Theater",
+                     "en": "Literature and theatre"
+                  }
+               },
+               {
+                  "name": "History, (auto-)biography",
+                  "labels": {
+                     "de": "???",
+                     "en": "History, (auto-)biography"
+                  }
+               },
+               {
+                  "name": "Linguistics",
+                  "labels": {
+                     "de": "???",
+                     "en": "Linguistics"
+                  }
+               },
+               {
+                  "name": "Politics, law, economics",
+                  "labels": {
+                     "en": "Politics, law, economics",
+                     "de": "Politik, Gesetz, Wirtschaft"
+                  }
+               },
+               {
+                  "name": "Sciences, engineering, IT",
+                  "labels": {
+                     "de": "???",
+                     "en": "Sciences, engineering, IT"
+                  }
+               },
+               {
+                  "name": "Philosophy, religion",
+                  "labels": {
+                     "de": "Philosophie, Religion",
+                     "en": "Philosophy, religion"
+                  }
+               },
+               {
+                  "name": "Sociology, lifestyle, travel",
+                  "labels": {
+                     "en": "Sociology, lifestyle, travel",
+                     "de": "Soziologie, Lifestyle, Reisen"
+                  }
+               },
+               {
+                  "name": "Psychology, medicine, health",
+                  "labels": {
+                     "de": "Psychologie, Medizin, Gesundheit",
+                     "en": "Psychology, medicine, health"
+                  }
+               },
+               {
+                  "name": "Shakespeare",
+                  "labels": {
+                     "de": "Shakespeare",
+                     "en": "Shakespeare"
+                  }
+               },
+               {
+                  "name": "Classical Studies",
+                  "labels": {
+                     "de": "Classical Studies",
+                     "en": "Classical Studies"
+                  }
+               }
+            ]
+         },
+         {
+            "name": "image",
+            "labels": {
+               "de": "Bild",
+               "en": "Image"
+            },
+            "nodes": [
+               {
+                  "name": "Nature",
+                  "labels": {
+                     "de": "Natur",
+                     "en": "Nature"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Plants",
+                        "labels": {
+                           "de": "Pflanzen",
+                           "en": "Plants"
+                        }
+                     },
+                     {
+                        "name": "Birds",
+                        "labels": {
+                           "en": "Birds",
+                           "de": "Vögel"
+                        }
+                     },
+                     {
+                        "name": "Animals",
+                        "labels": {
+                           "en": "Animals",
+                           "de": "Tiere"
+                        }
+                     },
+                     {
+                        "name": "Landscape",
+                        "labels": {
+                           "en": "Landscape",
+                           "de": "Landschaft"
+                        }
+                     },
+                     {
+                        "name": "Sky and wether",
+                        "labels": {
+                           "de": "Himmel und Wetter",
+                           "en": "Sky and wether"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Daily reality",
+                  "labels": {
+                     "en": "Daily reality",
+                     "de": "Tägliche Realität"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Food",
+                        "labels": {
+                           "de": "Essen",
+                           "en": "Food"
+                        }
+                     },
+                     {
+                        "name": "clothes, hair, cosmetics",
+                        "labels": {
+                           "en": "Clothes, hair, cosmetics",
+                           "de": "Kleider, Haare, Kosmetik"
+                        }
+                     },
+                     {
+                        "name": "medicine",
+                        "labels": {
+                           "en": "Medicine",
+                           "de": "Medizin"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Gender",
+                  "labels": {
+                     "en": "Gender",
+                     "de": "Geschlecht"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Women",
+                        "labels": {
+                           "de": "Frauen",
+                           "en": "Women"
+                        }
+                     },
+                     {
+                        "name": "Men",
+                        "labels": {
+                           "en": "Men",
+                           "de": "Männer"
+                        }
+                     },
+                     {
+                        "name": "Marriage",
+                        "labels": {
+                           "de": "Heirat",
+                           "en": "Marriage"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "News",
+                  "labels": {
+                     "de": "Neugikeiten",
+                     "en": "News"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Other Current events",
+                        "labels": {
+                           "de": "Andere aktuellen Geschehnisse",
+                           "en": "Other Current events"
+                        }
+                     },
+                     {
+                        "name": "Persons",
+                        "labels": {
+                           "de": "Personen",
+                           "en": "Persons"
+                        }
+                     },
+                     {
+                        "name": "Venues",
+                        "labels": {
+                           "de": "???",
+                           "en": "Venues"
+                        }
+                     },
+                     {
+                        "name": "companies",
+                        "labels": {
+                           "de": "???",
+                           "en": "Companies"
+                        }
+                     },
+                     {
+                        "name": "War of the Theatres",
+                        "labels": {
+                           "de": "???",
+                           "en": "War of the Theatres"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Culture",
+                  "labels": {
+                     "en": "Culture",
+                     "de": "Kultur"
+                  },
+                  "nodes": [
+                     {
+                        "name": "war, combat",
+                        "labels": {
+                           "de": "???",
+                           "en": "War, combat"
+                        }
+                     },
+                     {
+                        "name": "Court, monarchy",
+                        "labels": {
+                           "de": "???",
+                           "en": "Court, monarchy"
+                        }
+                     },
+                     {
+                        "name": "Music, dance, song",
+                        "labels": {
+                           "de": "???",
+                           "en": "Music, dance song"
+                        }
+                     },
+                     {
+                        "name": "religion",
+                        "labels": {
+                           "de": "Religion",
+                           "en": "Religion"
+                        }
+                     },
+                     {
+                        "name": "Theatre",
+                        "labels": {
+                           "de": "Theater",
+                           "en": "Theatre"
+                        }
+                     },
+                     {
+                        "name": "education",
+                        "labels": {
+                           "de": "Ausbildung",
+                           "en": "Education"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "Abstract ideas",
+                  "labels": {
+                     "en": "Abstract ideas",
+                     "de": "Abstrakte Ideen"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Time",
+                        "labels": {
+                           "en": "Time",
+                           "de": "Zeit"
+                        }
+                     },
+                     {
+                        "name": "Death",
+                        "labels": {
+                           "en": "Death",
+                           "de": "Tod"
+                        }
+                     },
+                     {
+                        "name": "Love",
+                        "labels": {
+                           "de": "Liebe",
+                           "en": "Love"
+                        }
+                     }
+                  ]
+               }
+            ]
+         },
+         {
+            "name": "status",
+            "labels": {
+               "de": "Status",
+               "en": "Status"
+            },
+            "nodes": [
+               {
+                  "name": "unedited",
+                  "labels": {
+                     "en": "unedited",
+                     "de": "uneditiert"
+                  }
+               },
+               {
+                  "name": "public",
+                  "labels": {
+                     "en": "public",
+                     "de": "öffentlich"
+                  }
+               }
+            ]
+         },
+         {
+            "name": "functionVoice",
+            "labels": {
+               "de": "Funktion",
+               "en": "Function voice"
+            },
+            "nodes": [
+               {
+                  "name": "BODY OF TEXT",
+                  "labels": {
+                     "de": "???",
+                     "en": "Body of text"
+                  },
+                  "nodes": [
+                     {
+                        "name": "Dialogue",
+                        "labels": {
+                           "de": "Dialog",
+                           "en": "Dialogue"
+                        }
+                     },
+                     {
+                        "name": "Narrator",
+                        "labels": {
+                           "de": "???",
+                           "en": "Narrator"
+                        }
+                     },
+                     {
+                        "name": "First-person narrator",
+                        "labels": {
+                           "de": "???",
+                           "en": "First-person narrator"
+                        }
+                     },
+                     {
+                        "name": "Fictional letter or diary",
+                        "labels": {
+                           "de": "???",
+                           "en": "Fictional letter or diary"
+                        }
+                     },
+                     {
+                        "name": "Not defined",
+                        "labels": {
+                           "de": "Nicht definiert",
+                           "en": "Not defined"
+                        }
+                     }
+                  ]
+               },
+               {
+                  "name": "CHARACTERNAME",
+                  "labels": {
+                     "en": "Charactername",
+                     "de": "Charaktername"
+                  }
+               },
+               {
+                  "name": "TITLE",
+                  "labels": {
+                     "de": "Titel",
+                     "en": "Title"
+                  }
+               },
+               {
+                  "name": "ANTHOLOGY ENTRY",
+                  "labels": {
+                     "de": "???",
+                     "en": "Anthology entry"
+                  }
+               },
+               {
+                  "name": "COMPLETE TEXT",
+                  "labels": {
+                     "de": "???",
+                     "en": "Complete text"
+                  }
+               },
+               {
+                  "name": "STAGE DIRECTION",
+                  "labels": {
+                     "de": "???",
+                     "en": "Stage direction"
+                  }
+               },
+               {
+                  "name": "PREFACE OR DEDICATION",
+                  "labels": {
+                     "de": "???",
+                     "en": "PREFACE OR DEDICATION"
+                  }
+               }
+            ]
+         }
+      ],
+      "ontologies": [
+         {
+            "name": "teimww",
+            "label": "Test Import WordWeb",
+            "properties": [
+               {
+                  "name": "contains",
+                  "super": [
+                     "hasLinkTo"
+                  ],
+                  "object": ":lexia",
+                  "labels": "contains",
+                  "gui_element": "Searchbox"
+               },
+               {
+                  "name": "hasActiveDate",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "DateValue",
+                  "labels": "Active date",
+                  "gui_element": "Date"
+               },
+               {
+                  "name": "hasBirthDate",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "DateValue",
+                  "labels": "Birth date",
+                  "gui_element": "Date"
+               },
+               {
+                  "name": "hasBookComment",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Book comment",
+                  "gui_element": "Textarea"
+               },
+               {
+                  "name": "hasBookExtraInfo",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Extra info for book",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "128",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasBookInternalId",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Internal Id",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "64",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasBookTitle",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Book title",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "64",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasCompanyExtraInfo",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Extra info for company",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "128",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasCompanyInternalId",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Internal Id",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "64",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasCompanyTitle",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Company title",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "64",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasCreationDate",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "DateValue",
+                  "labels": "Creation date",
+                  "gui_element": "Date"
+               },
+               {
+                  "name": "hasDeathDate",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "DateValue",
+                  "labels": "Death date",
+                  "gui_element": "Date"
+               },
+               {
+                  "name": "hasDescription",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Description",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "128",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasDisplayedTitle",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Displayed title",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "64",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasEdition",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Edition (normalized)",
+                  "gui_element": "Textarea"
+               },
+               {
+                  "name": "hasEditionHist",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Edition (historical)",
+                  "gui_element": "Textarea"
+               },
+               {
+                  "name": "hasFirstName",
+                  "super": [
+                     "hasValue",
+                     "http://xmlns.com/foaf/0.1/givenName"
+                  ],
+                  "object": "TextValue",
+                  "labels": "First name",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "64",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasFirstPerformanceDate",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "DateValue",
+                  "labels": "First performance date",
+                  "gui_element": "Date"
+               },
+               {
+                  "name": "hasFormalClass",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "ListValue",
+                  "labels": "Formal class",
+                  "gui_element": "Pulldown",
+                  "gui_attributes": {
+                     "hlist": "formalClass"
+                  }
+               },
+               {
+                  "name": "hasFunctionVoice",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "ListValue",
+                  "labels": "Function voice",
+                  "gui_element": "Pulldown",
+                  "gui_attributes": {
+                     "hlist": "functionVoice"
+                  }
+               },
+               {
+                  "name": "hasGender",
+                  "super": [
+                     "hasValue",
+                     "http://xmlns.com/foaf/0.1/gender"
+                  ],
+                  "object": "ListValue",
+                  "labels": "Gender",
+                  "gui_element": "Pulldown",
+                  "gui_attributes": {
+                     "hlist": "gender"
+                  }
+               },
+               {
+                  "name": "hasGenre",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "ListValue",
+                  "labels": "Genre",
+                  "gui_element": "Pulldown",
+                  "gui_attributes": {
+                     "hlist": "genre"
+                  }
+               },
+               {
+                  "name": "hasImage",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "ListValue",
+                  "labels": "Image",
+                  "gui_element": "Pulldown",
+                  "gui_attributes": {
+                     "hlist": "image"
+                  }
+               },
+               {
+                  "name": "hasInternalComment",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Internal comment",
+                  "gui_element": "Textarea"
+               },
+               {
+                  "name": "hasLanguage",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "ListValue",
+                  "labels": "Language",
+                  "gui_element": "Pulldown",
+                  "gui_attributes": {
+                     "hlist": "language"
+                  }
+               },
+               {
+                  "name": "hasLastName",
+                  "super": [
+                     "hasValue",
+                     "http://xmlns.com/foaf/0.1/familyName"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Last name",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "64",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasLexiaDisplayedTitle",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Displayed lexia title",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "64",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasLexiaExtraInfo",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Extra info for lexia",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "128",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasLexiaInternalId",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Internal Id",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "64",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasLexiaTitle",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Lexia title",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "64",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasMarking",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "ListValue",
+                  "labels": "Marking",
+                  "gui_element": "Pulldown",
+                  "gui_attributes": {
+                     "hlist": "marking"
+                  }
+               },
+               {
+                  "name": "hasMember",
+                  "super": [
+                     "hasLinkTo"
+                  ],
+                  "object": ":person",
+                  "labels": "Member",
+                  "gui_element": "Searchbox"
+               },
+               {
+                  "name": "hasPage",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Page",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "64",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasPageHist",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Page (historical)",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "64",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasPassageComment",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Passage comment",
+                  "gui_element": "Textarea"
+               },
+               {
+                  "name": "hasPassageExtraInfo",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Extra info for passage",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "128",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasPersonExtraInfo",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Extra info for person",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "128",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasPersonInternalId",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Internal ID",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "64",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasPlaceVenue",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "ListValue",
+                  "labels": "Place Venue",
+                  "gui_element": "Pulldown",
+                  "gui_attributes": {
+                     "hlist": "placeVenue"
+                  }
+               },
+               {
+                  "name": "hasPrefixBookTitle",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Prefix book title",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "32",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasPrefixDisplayedTitle",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Prefix displayed title",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "32",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasPublicationDate",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "DateValue",
+                  "labels": "Publication date",
+                  "gui_element": "Date"
+               },
+               {
+                  "name": "hasResearchField",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "ListValue",
+                  "labels": "Research field",
+                  "gui_element": "Pulldown",
+                  "gui_attributes": {
+                     "hlist": "researchField"
+                  }
+               },
+               {
+                  "name": "hasStatus",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "ListValue",
+                  "labels": "Status",
+                  "gui_element": "Pulldown",
+                  "gui_attributes": {
+                     "hlist": "status"
+                  }
+               },
+               {
+                  "name": "hasSubject",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "ListValue",
+                  "labels": "Subject",
+                  "gui_element": "Pulldown",
+                  "gui_attributes": {
+                     "hlist": "subject"
+                  }
+               },
+               {
+                  "name": "hasText",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Text",
+                  "gui_element": "Textarea"
+               },
+               {
+                  "name": "hasTextHist",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Historical text",
+                  "gui_element": "Textarea"
+               },
+               {
+                  "name": "hasVenueExtraInfo",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Extra info for venue",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "128",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "hasVenueInternalId",
+                  "super": [
+                     "hasValue"
+                  ],
+                  "object": "TextValue",
+                  "labels": "Internal Id",
+                  "gui_element": "SimpleText",
+                  "gui_attributes": {
+                     "maxlength": "64",
+                     "size": 24
+                  }
+               },
+               {
+                  "name": "isLexiaBook",
+                  "super": [
+                     "hasLinkTo"
+                  ],
+                  "object": ":lexia",
+                  "labels": "lexia book",
+                  "gui_element": "Searchbox"
+               },
+               {
+                  "name": "isLexiaCompany",
+                  "super": [
+                     "hasLinkTo"
+                  ],
+                  "object": ":lexia",
+                  "labels": "Lexia company",
+                  "gui_element": "Searchbox"
+               },
+               {
+                  "name": "isLexiaPerson",
+                  "super": [
+                     "hasLinkTo"
+                  ],
+                  "object": ":lexia",
+                  "labels": "is Lexia person",
+                  "gui_element": "Searchbox"
+               },
+               {
+                  "name": "isLexiaVenue",
+                  "super": [
+                     "hasLinkTo"
+                  ],
+                  "object": ":lexia",
+                  "labels": "Lexia venue",
+                  "gui_element": "Searchbox"
+               },
+               {
+                  "name": "isMentionedIn",
+                  "super": [
+                     "hasLinkTo"
+                  ],
+                  "object": ":passage",
+                  "labels": "mentioned in",
+                  "gui_element": "Searchbox"
+               },
+               {
+                  "name": "isWrittenBy",
+                  "super": [
+                     "hasLinkTo"
+                  ],
+                  "object": ":person",
+                  "labels": "is written by",
+                  "gui_element": "Searchbox"
+               },
+               {
+                  "name": "occursIn",
+                  "super": [
+                     "hasLinkTo"
+                  ],
+                  "object": ":book",
+                  "labels": "occurs in",
+                  "gui_element": "Searchbox"
+               },
+               {
+                  "name": "performedBy",
+                  "super": [
+                     "hasLinkTo"
+                  ],
+                  "object": ":company",
+                  "labels": "performed by",
+                  "gui_element": "Searchbox"
+               },
+               {
+                  "name": "performedByActor",
+                  "super": [
+                     "hasLinkTo"
+                  ],
+                  "object": ":person",
+                  "labels": "performed by actor",
+                  "gui_element": "Searchbox"
+               },
+               {
+                  "name": "performedIn",
+                  "super": [
+                     "hasLinkTo"
+                  ],
+                  "object": ":venue",
+                  "labels": "performed in",
+                  "gui_element": "Searchbox"
+               },
+               {
+                  "name": "wasContributedBy",
+                  "super": [
+                     "hasLinkTo"
+                  ],
+                  "object": ":person",
+                  "labels": "was contributed by",
+                  "gui_element": "Searchbox"
+               }
+            ],
+            "resources": [
+               {
+                  "name": "book",
+                  "labels": "Book",
+                  "comments": "none",
+                  "super": "Resource",
+                  "cardinalities": [
+                     {
+                        "propname": ":hasBookComment",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasBookExtraInfo",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasBookInternalId",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasBookTitle",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasCreationDate",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasEdition",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasEditionHist",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasFirstPerformanceDate",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasGenre",
+                        "cardinality": "1-n"
+                     },
+                     {
+                        "propname": ":hasLanguage",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasPrefixBookTitle",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasPublicationDate",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasSubject",
+                        "cardinality": "0-n"
+                     },
+                     {
+                        "propname": ":isLexiaBook",
+                        "cardinality": "0-n"
+                     },
+                     {
+                        "propname": ":isWrittenBy",
+                        "cardinality": "1-n"
+                     },
+                     {
+                        "propname": ":performedBy",
+                        "cardinality": "0-n"
+                     },
+                     {
+                        "propname": ":performedByActor",
+                        "cardinality": "0-n"
+                     },
+                     {
+                        "propname": ":performedIn",
+                        "cardinality": "0-n"
+                     }
+                  ]
+               },
+               {
+                  "name": "company",
+                  "labels": "Company",
+                  "comments": "none",
+                  "super": "Resource",
+                  "cardinalities": [
+                     {
+                        "propname": ":hasCompanyExtraInfo",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasCompanyInternalId",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasCompanyTitle",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasMember",
+                        "cardinality": "0-n"
+                     },
+                     {
+                        "propname": ":isLexiaCompany",
+                        "cardinality": "0-n"
+                     }
+                  ]
+               },
+               {
+                  "name": "lexia",
+                  "labels": "Lexia",
+                  "comments": "none",
+                  "super": "Resource",
+                  "cardinalities": [
+                     {
+                        "propname": ":hasFormalClass",
+                        "cardinality": "1-n"
+                     },
+                     {
+                        "propname": ":hasImage",
+                        "cardinality": "0-n"
+                     },
+                     {
+                        "propname": ":hasLexiaDisplayedTitle",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasLexiaExtraInfo",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasLexiaInternalId",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasLexiaTitle",
+                        "cardinality": "1"
+                     }
+                  ]
+               },
+               {
+                  "name": "passage",
+                  "labels": "Passage",
+                  "comments": "none",
+                  "super": "Resource",
+                  "cardinalities": [
+                     {
+                        "propname": ":contains",
+                        "cardinality": "0-n"
+                     },
+                     {
+                        "propname": ":hasDisplayedTitle",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasFunctionVoice",
+                        "cardinality": "1-n"
+                     },
+                     {
+                        "propname": ":hasInternalComment",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasMarking",
+                        "cardinality": "1-n"
+                     },
+                     {
+                        "propname": ":hasPage",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasPageHist",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasPassageComment",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasPassageExtraInfo",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasPrefixDisplayedTitle",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasResearchField",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasStatus",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasText",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasTextHist",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":isMentionedIn",
+                        "cardinality": "0-n"
+                     },
+                     {
+                        "propname": ":occursIn",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":wasContributedBy",
+                        "cardinality": "1"
+                     }
+                  ]
+               },
+               {
+                  "name": "person",
+                  "labels": "Person",
+                  "comments": "none",
+                  "super": "Resource",
+                  "cardinalities": [
+                     {
+                        "propname": ":hasActiveDate",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasBirthDate",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasDeathDate",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasDescription",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasFirstName",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasGender",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasLastName",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasPersonExtraInfo",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasPersonInternalId",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":isLexiaPerson",
+                        "cardinality": "0-n"
+                     }
+                  ]
+               },
+               {
+                  "name": "venue",
+                  "labels": "Venue",
+                  "comments": "none",
+                  "super": "Resource",
+                  "cardinalities": [
+                     {
+                        "propname": ":hasPlaceVenue",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":hasVenueExtraInfo",
+                        "cardinality": "0-1"
+                     },
+                     {
+                        "propname": ":hasVenueInternalId",
+                        "cardinality": "1"
+                     },
+                     {
+                        "propname": ":isLexiaVenue",
+                        "cardinality": "0-n"
+                     }
+                  ]
+               }
+            ]
+         }
+      ]
+   }
+}
