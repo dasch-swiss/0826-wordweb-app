@@ -14,18 +14,31 @@ import {
     ListsResponse,
     KnoraPeriod,
     ListNodeInfo,
-    List
+    List, ILabelSearchParams, ApiResponseError
 } from "@dasch-swiss/dsp-js";
 import {GravsearchBuilderService} from "./gravsearch-builder.service";
 import {IMainClass} from "../model/displayModel";
 import {map, tap} from "rxjs/operators";
 import {Observable, throwError} from "rxjs";
+import {AppInitService} from "../app-init.service";
+
+export class CompanyData {
+    constructor(
+        public label: string,
+        public title: string,
+        public internalId: string,
+        public extraInfo?: string,
+        public member?: string,
+        public memberIri?: string,
+    ) {}
+}
 
 @Injectable({
     providedIn: "root"
 })
 export class KnoraService {
     private _knoraApiConnection: KnoraApiConnection;
+    wwOntology: string;
 
     constructor(private _gsBuilder: GravsearchBuilderService) {
     }
@@ -39,6 +52,7 @@ export class KnoraService {
         // @ts-ignore
         const config = new KnoraApiConfig(settings[0], host);
         this._knoraApiConnection = new KnoraApiConnection(config);
+        this.wwOntology = url.replace('https', 'http') + '/ontology/0826/teimww/v2#';
     }
 
     login(email: string, password: string): any {
@@ -343,5 +357,30 @@ export class KnoraService {
                 })
             );
     }
+
+
+    // EDITING BY LUKAS
+
+    getResourcesByLabel(val: string, restype?: string): Observable<Array<{ id: string; label: string }>> {
+        let params: ILabelSearchParams | undefined;
+        if (restype !== undefined) {
+            params = {
+                limitToResourceClass: restype
+            };
+        }
+        return this._knoraApiConnection.v2.search.doSearchByLabel(val, 0, params).pipe(
+            map((data: ReadResourceSequence | ApiResponseError) => {
+                if (data instanceof ApiResponseError) {
+                    return [];
+                } else {
+                    const items: Array<{id: string, label: string}> = data.resources.map((item: ReadResource) => {
+                        return {id: item.id, label: item.label};
+                    });
+                    return items;
+                }
+            }),
+        );
+    }
+
 
 }

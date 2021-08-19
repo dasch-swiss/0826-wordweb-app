@@ -68,6 +68,7 @@ const routes: Routes = [
   },
   {path: "edit",
     children: [
+      {path: "company/:iri", component: EditCompanyComponent},
       {path: "company", component: EditCompanyComponent}
     ]
   },

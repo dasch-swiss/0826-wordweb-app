@@ -96,6 +96,8 @@ import {KnoraService} from "./services/knora.service";
 import {ListService} from "./services/list.service";
 import {GravsearchBuilderService} from "./services/gravsearch-builder.service";
 import { EditCompanyComponent } from './edit/edit-company/edit-company.component';
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -189,7 +191,9 @@ export function initializeApp(appInitService: AppInitService) {
         MatTabsModule,
         MatButtonToggleModule,
         MatDialogModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        MatProgressBarModule,
+        MatAutocompleteModule
     ],
     providers: [
         AppInitService,
