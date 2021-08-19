@@ -26,6 +26,8 @@ import {ExpertSearchComponent} from "./search/expert-search/expert-search.compon
 import {BrowsingComponent} from "./search/browsing/browsing.component";
 import {ResourceComponent} from "./resource/resource.component";
 
+import {EditCompanyComponent} from "./edit/edit-company/edit-company.component";
+
 const routes: Routes = [
   {path: "", redirectTo: "search", pathMatch: "full"},
   {
@@ -62,6 +64,11 @@ const routes: Routes = [
       {path: "subject", component: SubjectComponent},
       {path: "venue", component: VenueComponent},
       {path: "", component: PageNotFoundComponent}
+    ]
+  },
+  {path: "edit",
+    children: [
+      {path: "company", component: EditCompanyComponent}
     ]
   },
   {path: "**", component: PageNotFoundComponent}

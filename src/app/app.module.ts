@@ -95,6 +95,7 @@ import {AppInitService} from "./app-init.service";
 import {KnoraService} from "./services/knora.service";
 import {ListService} from "./services/list.service";
 import {GravsearchBuilderService} from "./services/gravsearch-builder.service";
+import { EditCompanyComponent } from './edit/edit-company/edit-company.component';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -157,6 +158,7 @@ export function initializeApp(appInitService: AppInitService) {
         LexiasPipe,
         AuthorsPipe,
         YearPipe,
+        EditCompanyComponent,
     ],
     imports: [
         BrowserModule,
