@@ -28,8 +28,7 @@ export class CompanyData {
         public title: string,
         public internalId: string,
         public extraInfo?: string,
-        public member?: string,
-        public memberIri?: string,
+        public member?: [{name; iri}]
     ) {}
 }
 
