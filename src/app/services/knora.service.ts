@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable} from '@angular/core';
 import {
     KnoraApiConfig,
     KnoraApiConnection,
@@ -15,12 +15,12 @@ import {
     KnoraPeriod,
     ListNodeInfo,
     List, ILabelSearchParams, ApiResponseError
-} from "@dasch-swiss/dsp-js";
-import {GravsearchBuilderService} from "./gravsearch-builder.service";
-import {IMainClass} from "../model/displayModel";
-import {map, tap} from "rxjs/operators";
-import {Observable, throwError} from "rxjs";
-import {AppInitService} from "../app-init.service";
+} from '@dasch-swiss/dsp-js';
+import {GravsearchBuilderService} from './gravsearch-builder.service';
+import {IMainClass} from '../model/displayModel';
+import {map, tap} from 'rxjs/operators';
+import {Observable, throwError} from 'rxjs';
+import {AppInitService} from '../app-init.service';
 
 export class CompanyData {
     constructor(
@@ -28,12 +28,12 @@ export class CompanyData {
         public title: string,
         public internalId: string,
         public extraInfo?: string,
-        public member?: [{name; iri}]
+        public members?: {memberName: string; memberIri: string}[]
     ) {}
 }
 
 @Injectable({
-    providedIn: "root"
+    providedIn: 'root'
 })
 export class KnoraService {
     private _knoraApiConnection: KnoraApiConnection;
@@ -43,9 +43,9 @@ export class KnoraService {
     }
 
     set knoraApiConnection(url: string) {
-        const settings = url.split("://");
-        if (settings[0] !== "http" && settings[0] !== "https") {
-            throwError("Expected 'http' or 'https' in the url");
+        const settings = url.split('://');
+        if (settings[0] !== 'http' && settings[0] !== 'https') {
+            throwError('Expected "http" or "https" in the url');
         }
         const host = `${settings[1]}`;
         // @ts-ignore
@@ -55,7 +55,7 @@ export class KnoraService {
     }
 
     login(email: string, password: string): any {
-        return this._knoraApiConnection.v2.auth.login("email", email, password);
+        return this._knoraApiConnection.v2.auth.login('email', email, password);
     }
 
     gravseachQuery(structure: IMainClass, priority: number, offset?: number): Observable<any> {
@@ -67,8 +67,8 @@ export class KnoraService {
                 map((sequence: ReadResourceSequence) => {
                     // Error found in person res without last names
                     // resources.map(resource => {
-                    //     if (!Object.keys(resource.properties).includes("http://0.0.0.0:3333/ontology/0826/teimww/v2#hasLastName")) {
-                    //         console.log("knora", resource);
+                    //     if (!Object.keys(resource.properties).includes('http://0.0.0.0:3333/ontology/0826/teimww/v2#hasLastName')) {
+                    //         console.log('knora', resource);
                     //     }
                     // });
                     return sequence.resources.map(resource => this.processRes(resource));
@@ -80,13 +80,13 @@ export class KnoraService {
         const newResource = {
             id: resource.id,
             arkUrl: resource.arkUrl,
-            type: resource.type.split("#")[1]
+            type: resource.type.split('#')[1]
         };
 
         for (const property of Object.entries(resource.properties)) {
             // Extracts the name of the property (may it be a text, date, list or link value)
-            // if it's a link value the string "Value" at the end must be replaced
-            const newPropertyKey = property[0].split("#").pop().replace("Value", "");
+            // if it's a link value the string 'Value' at the end must be replaced
+            const newPropertyKey = property[0].split('#').pop().replace('Value', '');
 
             newResource[newPropertyKey] = property[1].map((propValue: any) => {
 

@@ -7,10 +7,10 @@ import {
   FormGroup,
   NgControl,
   Validators
-} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
-import {combineLatest} from "rxjs";
-import {CompanyData, KnoraService} from "../../services/knora.service";
+} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {combineLatest} from 'rxjs';
+import {CompanyData, KnoraService} from '../../services/knora.service';
 
 interface ValInfo {
   id?: string;
@@ -23,14 +23,14 @@ class CompanyIds {
   public title: ValInfo;
   public internalId: ValInfo;
   public extraInfo: ValInfo;
-  public member: [ValInfo];
+  public members: [ValInfo];
 
   constructor() {
     this.label = {id: undefined, changed: false, toBeDeleted: false};
     this.title = {id: undefined, changed: false, toBeDeleted: false};
     this.internalId = {id: undefined, changed: false, toBeDeleted: false};
     this.extraInfo = {id: undefined, changed: false, toBeDeleted: false};
-    this.member = [{id: undefined, changed: false, toBeDeleted: false}];
+    this.members = [{id: undefined, changed: false, toBeDeleted: false}];
   }
 }
 
@@ -39,55 +39,48 @@ class CompanyIds {
   template: `
     <mat-card>
       <mat-card-title>Company Editor</mat-card-title>
-      <mat-card-content>
-        <div [formGroup]="labelForm">
+      <mat-card-content [formGroup]="form">
           <mat-form-field [style.width.px]=400>
             <input matInput
                    class="full-width"
                    placeholder="Label"
                    formControlName="label"
                    (input)="_handleInput('label')">
-            <mat-error *ngIf="labelForm.controls.label.errors?.required">Label erforderlich!</mat-error>
-            <mat-error *ngIf="labelForm.controls.label.errors?.minlength">Label muss mindestens aus 5 Buchstaben bestehen!</mat-error>
+            <mat-error *ngIf="form.controls.label.errors?.required">Label erforderlich!</mat-error>
+            <mat-error *ngIf="form.controls.label.errors?.minlength">Label muss mindestens aus 5 Buchstaben bestehen!</mat-error>
           </mat-form-field>
           <button *ngIf="valIds.label.changed" mat-mini-fab (click)="_handleUndo('label')">
             <mat-icon color="warn">cached</mat-icon>
           </button>
           <br/>
-        </div>
-
-        <div  [formGroup]="titleForm">
+      
           <mat-form-field [style.width.px]=400>
             <input matInput
                    class="full-width"
                    placeholder="Title"
                    formControlName="title"
                    (input)="_handleInput('title')">
-            <mat-error *ngIf="titleForm.controls.title.errors?.required">Title required!</mat-error>
-            <mat-error *ngIf="titleForm.controls.title.errors?.minlength">Title must have at least 5 characters!</mat-error>
+            <mat-error *ngIf="form.controls.title.errors?.required">Title required!</mat-error>
+            <mat-error *ngIf="form.controls.title.errors?.minlength">Title must have at least 5 characters!</mat-error>
           </mat-form-field>
           <button *ngIf="valIds.title.changed" mat-mini-fab (click)="_handleUndo('title')">
             <mat-icon color="warn">cached</mat-icon>
           </button>
           <br/>
-        </div>
-
-        <div [formGroup]="internalIdForm">
+      
           <mat-form-field [style.width.px]=400>
             <input matInput
                    class="full-width"
                    placeholder="Internald id"
                    formControlName="internalId"
                    (input)="_handleInput('internalId')">
-            <mat-error *ngIf="internalIdForm.controls.internalId.errors?.required">Internal id required!</mat-error>
+            <mat-error *ngIf="form.controls.internalId.errors?.required">Internal id required!</mat-error>
           </mat-form-field>
           <button *ngIf="valIds.internalId.changed" mat-mini-fab (click)="_handleUndo('internalId')">
             <mat-icon color="warn">cached</mat-icon>
           </button>
           <br/>
-        </div>
-
-        <div [formGroup]="extraInfoForm">
+      
           <mat-form-field [style.width.px]=400>
             <input matInput
                    class="full-width"
@@ -103,11 +96,40 @@ class CompanyIds {
             <mat-icon *ngIf="valIds.extraInfo.toBeDeleted" color="warn">delete</mat-icon>
           </button>
           <br/>
-        </div>
 
-        <div [formGroup]="memberForm">
-          <mat-form-field *ngIf="inData.member === undefined" [style.width.px]=400>
-            <input matInput [matAutocomplete]="auto"
+          <div formArrayName="members">
+            <div *ngFor="let memberItem of getMembers().controls; let i=index">
+              <mat-form-field [formGroup]="memberItem">
+                <input matInput [matAutocomplete]="auto"
+                       formControlName="memberName"
+                       class="knora-link-input-element klnkie-val full-width"
+                       placeholder="Has member"
+                       aria-label="Value"
+                       (change)="_handleInput('members', i)"
+                       (input)="_handleLinkInput('members', i)">
+                <input matInput formControlName="memberIri" [hidden]="true" ><br/>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="_optionSelected($event.option.value, 'members', i)">
+                  <mat-option *ngFor="let option of options" [value]="option.label">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+
+              <button *ngIf="valIds.members[i].changed" mat-mini-fab (click)="_handleUndo('members', i)">
+                <mat-icon color="warn">cached</mat-icon>
+              </button>
+              <button *ngIf="valIds.members[i].id !== undefined" mat-mini-fab (click)="_handleDelete('members', i)">
+                <mat-icon *ngIf="!valIds.members[i].toBeDeleted">delete</mat-icon>
+                <mat-icon *ngIf="valIds.members[i].toBeDeleted" color="warn">delete</mat-icon>
+              </button>
+
+            </div>
+            <button mat-mini-fab (click)="addMember()">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <!--<mat-form-field *ngIf="inData.member === undefined" [style.width.px]=400>
+            <input matInput 
                    class="knora-link-input-element klnkie-val"
                    placeholder="Has member"
                    formControlName="member"
@@ -140,7 +162,7 @@ class CompanyIds {
             <mat-icon>add</mat-icon>
           </button>
           <br/>
-        </div>
+        </div>-->
       </mat-card-content>
 
       <mat-card-actions>
@@ -161,18 +183,12 @@ class CompanyIds {
 export class EditCompanyComponent implements OnInit {
   controlType = 'EditCompany';
   inData: any;
-  // form: FormGroup;
-  labelForm: FormGroup;
-  titleForm: FormGroup;
-  internalIdForm: FormGroup;
-  extraInfoForm: FormGroup;
-  memberForm: FormGroup;
-  memberItems: FormArray;
+  form: FormGroup;
+  //member: FormArray;
 
+  options: Array<{id: string; label: string}> = [];
 
-  options: Array<{id: string, label: string}> = [];
-
-  data: CompanyData = new CompanyData('', '', '', '');
+  data: CompanyData = new CompanyData('', '', '', '', [{memberName: '', memberIri: ''}]);
   working: boolean;
   public valIds: CompanyIds = new CompanyIds();
 
@@ -188,43 +204,24 @@ export class EditCompanyComponent implements OnInit {
   get value(): CompanyData | null {
     //const {value: {label, title, internalId, extraInfo, member, memberIri}} = this.form;
     //return new CompanyData(label, title, internalId, extraInfo, member, memberIri);
+    const members: FormArray = this.getMembers();
+    const memberValues: {memberName: string; memberIri: string}[] = [];
+    for (const x of members.controls) {
+      memberValues.push(x.value);
+    }
     return new CompanyData(
-        this.labelForm.controls.label.value,
-        this.titleForm.controls.title.value,
-        this.internalIdForm.controls.internalId.value,
-        this.extraInfoForm.controls.extraInfo.value,
-        this.memberForm.controls.member.value,
-        this.memberForm.controls.memberIri.value
+        this.form.controls.label.value,
+        this.form.controls.title.value,
+        this.form.controls.internalId.value,
+        this.form.controls.extraInfo.value,
+        memberValues
     );
   }
+
   set value(knoraVal: CompanyData | null) {
-    const {label, title, internalId, extraInfo, member, memberIri}
-        = knoraVal || new CompanyData('', '', '', '');
-    //this.form.setValue({label, title, internalId, extraInfo, member, memberIri});
-    this.labelForm.setValue({label});
-    this.titleForm.setValue({title});
-    this.internalIdForm.setValue({internalId});
-    this.extraInfoForm.setValue({extraInfo});
-    this.memberForm.setValue({member, memberIri});
-  }
-
-  createMemberItem(value?: {name; iri}): FormGroup {
-    if (value === undefined) {
-      return this.fb.group({
-        name: ['', []],
-        iri: ['', []]
-      });
-    } else {
-      return this.fb.group({
-        name: [value.name, []],
-        iri: [value.iri, []]
-      });
-    }
-  }
-
-  addMemberItem(): void {
-    this.memberItems = this.memberForm.get('items') as FormArray;
-    this.memberItems.push(this.createMemberItem());
+    const {label, title, internalId, extraInfo, members}
+        = knoraVal || new CompanyData('', '', '', '', [{memberName: '', memberIri: ''}]);
+    this.form.setValue({label, title, internalId, extraInfo, members});
   }
 
   ngOnInit(): void {
@@ -236,114 +233,126 @@ export class EditCompanyComponent implements OnInit {
       if (this.inData.companyIri !== undefined) {
 
       }
-      /*
+      //this.memberItems = this.fb.array([this.fb.group({memberName: '', memberIri: ''})]);
       this.form = this.fb.group({
         label: [this.data.label, [Validators.required, Validators.minLength(5)]],
         title: [this.data.title, [Validators.required, Validators.minLength(5)]],
         internalId: [this.data.internalId, [Validators.required]],
-        extraInfo: [this.data.extraInfo, []],
-        member: [this.data.member, []],
-        memberIri: [this.data.memberIri, []],
+        extraInfo: this.data.extraInfo,
+        members: this.fb.array([
+            this.fb.group({memberName: '', memberIri: ''}),
+        ]),
       });
-       */
-      this.labelForm = this.fb.group({ label: [this.data.label, [Validators.required, Validators.minLength(5)]]});
-      this.titleForm = this.fb.group({title: [this.data.title, [Validators.required, Validators.minLength(5)]]});
-      this.internalIdForm = this.fb.group({internalId: [this.data.internalId, [Validators.required]]});
-      this.extraInfoForm = this.fb.group({extraInfo: [this.data.extraInfo, []]});
-      this.memberForm = this.fb.group({memberItems: this.fb.array([this.createMemberItem()])});
+      console.log(this.form);
     });
+  }
+
+  getMembers() {
+    return this.form.controls.members as FormArray;
+  }
+
+  addMember() {
+    const members = this.getMembers();
+    members.push(this.fb.group({memberName: '', memberIri: ''}));
+    this.data.members.push({memberName: '', memberIri: ''});
+    this.valIds.members.push({id: undefined, changed: false, toBeDeleted: false});
   }
 
   onChange = (_: any) => {};
 
   onTouched = () => {};
 
-  _handleLinkInput(what: string): void {
-    console.log('_handleLinkInput: ', this.memberForm.value.member);
-    this.valIds.member.changed = true;
-    this.knoraService.getResourcesByLabel(this.memberForm.value.member, this.knoraService.wwOntology + 'person').subscribe(
-        res => {
-          this.options = res;
-          this.memberForm.value.member = res[0].label;
-          this.memberForm.value.memberIri = res[0].id;
-          this.onChange(this.memberForm.value);
-        }
-    );
+  _handleLinkInput(what: string, index?: number): void {
+    switch(what) {
+      case 'members':
+        const members = this.getMembers();
+        const memberName = members.value[index].memberName;
+
+        this.valIds.members[index].changed = true;
+        this.knoraService.getResourcesByLabel(memberName, this.knoraService.wwOntology + 'person').subscribe(
+            res => {
+              this.options = res;
+              this.form.value.members[index].memberName = res[0].label;
+              this.form.value.members[index].memberIri =  res[0].id;
+            }
+        );
+        break;
+    }
   }
 
-  _optionSelected(val): void {
+  _optionSelected(val: any, what: string, index?: number): void {
     const res = this.options.filter(tmp => tmp.label === val);
     if (res.length !== 1) {
       console.log('BIG ERROR...');
     }
-    this.value = new CompanyData(
-        this.labelForm.value.label,
-        this.titleForm.value.title,
-        this.internalIdForm.value.internalId,
-        this.extraInfoForm.value.extraInfo,
-        res[0].label, // member
-        res[0].id,    // memberIri
-    );
-  }
-
-  _handleInput(what: string): void {
-    switch (what) {
-      case 'label':
-        this.onChange(this.labelForm.value);
-        this.valIds.label.changed = true;
-        break;
-      case 'title':
-        this.onChange(this.titleForm.value);
-        this.valIds.title.changed = true;
-        break;
-      case 'internalId':
-        this.onChange(this.internalIdForm.value);
-        this.valIds.internalId.changed = true;
-        break;
-      case 'extraInfo':
-        this.onChange(this.extraInfoForm.value);
-        this.valIds.extraInfo.changed = true;
-        break;
-      case 'member':
-        this.onChange(this.memberForm.value);
-        this.valIds.member.changed = true;
+    switch(what) {
+      case 'members':
+        this.form.value.members[index].memberName = res[0].label;
+        this.form.value.members[index].memberIri =  res[0].id;
+        this.value = new CompanyData(
+            this.form.value.label,
+            this.form.value.title,
+            this.form.value.internalId,
+            this.form.value.extraInfo,
+            this.form.value.members
+        );
         break;
     }
   }
 
-  _handleDelete(what: string): void {
+  _handleInput(what: string, index?: number): void {
+    this.onChange(this.form.value);
+    switch (what) {
+      case 'label':
+        this.valIds.label.changed = true;
+        break;
+      case 'title':
+        this.valIds.title.changed = true;
+        break;
+      case 'internalId':
+        this.valIds.internalId.changed = true;
+        break;
+      case 'extraInfo':
+        this.valIds.extraInfo.changed = true;
+        break;
+      case 'member':
+        this.valIds.members[index].changed = true;
+        break;
+    }
+  }
+
+  _handleDelete(what: string, index?: number): void {
     switch (what) {
       case 'extraInfo':
         this.valIds.extraInfo.toBeDeleted = !this.valIds.extraInfo.toBeDeleted;
         break;
-      case 'member':
-        this.valIds.member.toBeDeleted = !this.valIds.member.toBeDeleted;
+      case 'members':
+        this.valIds.members[index].toBeDeleted = !this.valIds.members[index].toBeDeleted;
         break;
     }
   }
 
-  _handleUndo(what: string): void {
+  _handleUndo(what: string, index?: number): void {
     switch (what) {
       case 'label':
-        this.labelForm.controls.label.setValue(this.data.label);
+        this.form.controls.label.setValue(this.data.label);
         this.valIds.label.changed = false;
         break;
       case 'title':
-        this.titleForm.controls.title.setValue(this.data.title);
+        this.form.controls.title.setValue(this.data.title);
         this.valIds.title.changed = false;
         break;
       case 'internalId':
-        this.internalIdForm.controls.internalId.setValue(this.data.internalId);
+        this.form.controls.internalId.setValue(this.data.internalId);
         this.valIds.internalId.changed = false;
         break;
       case 'extraInfo':
-        this.extraInfoForm.controls.extraInfo.setValue(this.data.extraInfo);
+        this.form.controls.extraInfo.setValue(this.data.extraInfo);
         this.valIds.extraInfo.changed = false;
         break;
-      case 'member':
-        this.memberForm.controls.member.setValue(this.data.member);
-        this.memberForm.controls.memberIri.setValue(this.data.memberIri);
-        this.valIds.member.changed = false;
+      case 'members':
+        this.getMembers().controls[index].setValue(this.data.members[index]);
+        this.valIds.members[index].changed = false;
         break;
     }
   }
