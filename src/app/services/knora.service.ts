@@ -21,12 +21,12 @@ import {
     StringLiteral,
     ReadIntValue,
     ReadUriValue,
-    Constants
-} from '@dasch-swiss/dsp-js';
+    Constants, CreateResource, CreateTextValueAsString
+} from "@dasch-swiss/dsp-js";
 import {GravsearchBuilderService} from './gravsearch-builder.service';
 import {IMainClass} from '../model/displayModel';
-import {map, tap} from 'rxjs/operators';
-import {Observable, throwError} from 'rxjs';
+import {catchError, map, tap} from "rxjs/operators";
+import {Observable, of, throwError} from "rxjs";
 import {AppInitService} from '../app-init.service';
 
 //---- BEGIN LUKAS ---------------------------------------------------------------------------------------------------
@@ -37,7 +37,8 @@ export class CompanyData {
         public title: string,
         public internalId: string,
         public extraInfo?: string,
-        public members?: {memberName: string; memberIri: string}[]
+        public members?: {memberName: string; memberIri: string}[],
+        public lexias?: {lexiaName: string; lexiaIri: string}[],
     ) {}
 }
 
@@ -514,6 +515,62 @@ export class KnoraService {
         );
     }
 
+    getResource(iri: string): Observable<ResourceData> {
+        return this._knoraApiConnection.v2.res.getResource(iri).pipe(
+            map((data: ReadResource) => {
+                    console.log(':::::::::', data);
+                    return {
+                        id: data.id,
+                        label: data.label,
+                        arkUrl: data.arkUrl,
+                        permission: data.userHasPermission,
+                        lastmod: data.lastModificationDate || '',
+                        properties: this.processResourceProperties(data)};
+                }
+            ));
+    }
+
+    createCompany(data: CompanyData): Observable<string> {
+        const createResource = new CreateResource();
+        createResource.label = data.label;
+        createResource.type = this.wwOntology + 'Lexicon';
+        createResource.attachedToProject = 'http://rdfh.ch/projects/0826';
+
+        const props = {};
+
+        if (data.title !== null && data.title !== undefined && data.title !== '') {
+            const titleVal = new CreateTextValueAsString();
+            titleVal.text = data.title;
+            props[this.wwOntology + 'hasCompanyTitle'] = [
+                titleVal
+            ];
+        }
+
+        if (data.internalId !== null && data.internalId !== undefined && data.internalId !== '') {
+            const internalIdVal = new CreateTextValueAsString();
+            internalIdVal.text = data.internalId;
+            props[this.wwOntology + 'hasCompanyInternalId'] = [
+                internalIdVal
+            ];
+        }
+
+        if (data.extraInfo !== null && data.extraInfo !== undefined && data.extraInfo !== '') {
+            const extraInfoIdVal = new CreateTextValueAsString();
+            extraInfoIdVal.text = data.extraInfo;
+            props[this.wwOntology + 'hasCompanyExtraInfo'] = [
+                extraInfoIdVal
+            ];
+        }
+
+        createResource.properties = props;
+
+        return this._knoraApiConnection.v2.res.createResource(createResource).pipe(
+            map((res: ReadResource) => res.id),
+            catchError((error: ApiResponseError) => of('error'))
+        );
+
+    }
+
     private processResourceProperties(data: ReadResource): Array<PropertyData> {
         const propdata: Array<PropertyData> = [];
         for (const prop in data.properties) {
@@ -610,21 +667,6 @@ export class KnoraService {
             }
         }
         return propdata;
-    }
-
-    getResource(iri: string): Observable<ResourceData> {
-        return this._knoraApiConnection.v2.res.getResource(iri).pipe(
-            map((data: ReadResource) => {
-                    console.log(':::::::::', data);
-                    return {
-                        id: data.id,
-                        label: data.label,
-                        arkUrl: data.arkUrl,
-                        permission: data.userHasPermission,
-                        lastmod: data.lastModificationDate || '',
-                        properties: this.processResourceProperties(data)};
-                }
-            ));
     }
 
 }

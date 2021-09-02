@@ -24,6 +24,7 @@ class CompanyIds {
   public internalId: ValInfo;
   public extraInfo: ValInfo;
   public members: [ValInfo];
+  public lexias: [ValInfo];
 
   constructor() {
     this.label = {id: undefined, changed: false, toBeDeleted: false};
@@ -31,6 +32,7 @@ class CompanyIds {
     this.internalId = {id: undefined, changed: false, toBeDeleted: false};
     this.extraInfo = {id: undefined, changed: false, toBeDeleted: false};
     this.members = [{id: undefined, changed: false, toBeDeleted: false}];
+    this.lexias = [{id: undefined, changed: false, toBeDeleted: false}];
   }
 }
 
@@ -98,9 +100,10 @@ class CompanyIds {
           <br/>
 
           <div formArrayName="members">
+            <mat-label>Members</mat-label>
             <div *ngFor="let memberItem of getMembers().controls; let i=index">
               <mat-form-field [formGroup]="memberItem">
-                <input matInput [matAutocomplete]="auto"
+                <input matInput [matAutocomplete]="autoMember"
                        formControlName="memberName"
                        class="knora-link-input-element klnkie-val full-width"
                        placeholder="Has member"
@@ -108,7 +111,7 @@ class CompanyIds {
                        (change)="_handleInput('members', i)"
                        (input)="_handleLinkInput('members', i)">
                 <input matInput formControlName="memberIri" [hidden]="true" ><br/>
-                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="_optionSelected($event.option.value, 'members', i)">
+                <mat-autocomplete #autoMember="matAutocomplete" (optionSelected)="_optionSelected($event.option.value, 'members', i)">
                   <mat-option *ngFor="let option of options" [value]="option.label">
                     {{ option.label }}
                   </mat-option>
@@ -128,41 +131,39 @@ class CompanyIds {
               <mat-icon>add</mat-icon>
             </button>
           </div>
-          <!--<mat-form-field *ngIf="inData.member === undefined" [style.width.px]=400>
-            <input matInput 
-                   class="knora-link-input-element klnkie-val"
-                   placeholder="Has member"
-                   formControlName="member"
-                   aria-label="Value"
-                   (change)="_handleInput('member')"
-                   (input)="_handleLinkInput('member')">
-            <input matInput style="width: 100%" [hidden]="true" formControlName="memberIri">
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="_optionSelected($event.option.value)">
-              <mat-option *ngFor="let option of options" [value]="option.label">
-                {{ option.label }}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-          <mat-form-field *ngIf="inData.memberIri !== undefined" [style.width.px]=400>
-            <input matInput
-                   placeholder="Has member"
-                   formControlName="member"
-                   aria-label="Value">
-          </mat-form-field>
-          &nbsp;
-          <button *ngIf="valIds.member.changed" mat-mini-fab (click)="_handleUndo('member')">
-            <mat-icon color="warn">cached</mat-icon>
-          </button>
-          &nbsp;
-          <button *ngIf="valIds.member.id !== undefined" mat-mini-fab (click)="_handleDelete('member')">
-            <mat-icon *ngIf="!valIds.member.toBeDeleted">delete</mat-icon>
-            <mat-icon *ngIf="valIds.member.toBeDeleted" color="warn">delete</mat-icon>
-          </button>
-          <button mat-mini-fab>
+
+        <div formArrayName="lexias">
+          <mat-label>Lexias</mat-label>
+          <div *ngFor="let lexiaItem of getLexias().controls; let i=index">
+            <mat-form-field [formGroup]="lexiaItem">
+              <input matInput [matAutocomplete]="autoLexia"
+                     formControlName="lexiaName"
+                     class="knora-link-input-element klnkie-val full-width"
+                     placeholder="Has lexia"
+                     aria-label="Value"
+                     (change)="_handleInput('lexias', i)"
+                     (input)="_handleLinkInput('lexias', i)">
+              <input matInput formControlName="lexiaIri" [hidden]="true" ><br/>
+              <mat-autocomplete #autoLexia="matAutocomplete" (optionSelected)="_optionSelected($event.option.value, 'lexias', i)">
+                <mat-option *ngFor="let option of options" [value]="option.label">
+                  {{ option.label }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <button *ngIf="valIds.lexias[i].changed" mat-mini-fab (click)="_handleUndo('lexias', i)">
+              <mat-icon color="warn">cached</mat-icon>
+            </button>
+            <button *ngIf="valIds.lexias[i].id !== undefined" mat-mini-fab (click)="_handleDelete('lexias', i)">
+              <mat-icon *ngIf="!valIds.lexias[i].toBeDeleted">delete</mat-icon>
+              <mat-icon *ngIf="valIds.lexias[i].toBeDeleted" color="warn">delete</mat-icon>
+            </button>
+
+          </div>
+          <button mat-mini-fab (click)="addLexia()">
             <mat-icon>add</mat-icon>
           </button>
-          <br/>
-        </div>-->
+        </div>
       </mat-card-content>
 
       <mat-card-actions>
@@ -170,7 +171,6 @@ class CompanyIds {
         <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Save</button>
         <mat-progress-bar *ngIf="working" mode="indeterminate"></mat-progress-bar>
       </mat-card-actions>
-      
     </mat-card>
   `,
   styles: [
@@ -180,6 +180,7 @@ class CompanyIds {
     '.full-width { width: 100%; }'
   ]
 })
+
 export class EditCompanyComponent implements OnInit {
   controlType = 'EditCompany';
   inData: any;
@@ -187,7 +188,8 @@ export class EditCompanyComponent implements OnInit {
   options: Array<{id: string; label: string}> = [];
   resId: string;
   lastmod: string;
-  data: CompanyData = new CompanyData('', '', '', '', [{memberName: '', memberIri: ''}]);
+  data: CompanyData = new CompanyData('', '', '', '',
+      [], []);
   working: boolean;
   public valIds: CompanyIds = new CompanyIds();
 
@@ -201,26 +203,31 @@ export class EditCompanyComponent implements OnInit {
 
   @Input()
   get value(): CompanyData | null {
-    //const {value: {label, title, internalId, extraInfo, member, memberIri}} = this.form;
-    //return new CompanyData(label, title, internalId, extraInfo, member, memberIri);
     const members: FormArray = this.getMembers();
     const memberValues: {memberName: string; memberIri: string}[] = [];
     for (const x of members.controls) {
       memberValues.push(x.value);
+    }
+    const lexias: FormArray = this.getLexias();
+    const lexiaValues: {lexiaName: string; lexiaIri: string}[] = [];
+    for (const x of lexias.controls) {
+      lexiaValues.push(x.value);
     }
     return new CompanyData(
         this.form.controls.label.value,
         this.form.controls.title.value,
         this.form.controls.internalId.value,
         this.form.controls.extraInfo.value,
-        memberValues
+        memberValues,
+        lexiaValues,
     );
   }
 
   set value(knoraVal: CompanyData | null) {
-    const {label, title, internalId, extraInfo, members}
-        = knoraVal || new CompanyData('', '', '', '', [{memberName: '', memberIri: ''}]);
-    this.form.setValue({label, title, internalId, extraInfo, members});
+    const {label, title, internalId, extraInfo, members, lexias}
+        = knoraVal || new CompanyData('', '', '', '',
+        [{memberName: '', memberIri: ''}], [{lexiaName: '', lexiaIri: ''}]);
+    this.form.setValue({label, title, internalId, extraInfo, members, lexias});
   }
 
   ngOnInit(): void {
@@ -228,16 +235,56 @@ export class EditCompanyComponent implements OnInit {
     combineLatest([this.route.params, this.route.queryParams]).subscribe(arr  => {
       if (arr[0].iri !== undefined) {
         this.inData.companyIri = arr[0].iri;
-        console.log("****************", this.inData.companyIri);
       }
       if (this.inData.companyIri !== undefined) {
         this.knoraService.getResource(this.inData.companyIri).subscribe((data) => {
           if (this.inData.companyIri !== undefined) {
+            console.log('DATA: ', data);
             this.resId = data.id;
             this.lastmod = data.lastmod;
             this.form.controls.label.setValue(data.label);
             this.valIds.label = {id: data.label, changed: false, toBeDeleted: false};
             this.data.label = data.label;
+            for (const ele of data.properties) {
+              switch (ele.propname) {
+                case this.knoraService.wwOntology + 'hasCompanyTitle': {
+                  this.form.controls.title.setValue(ele.values[0]);
+                  this.valIds.title = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.title = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasCompanyInternalId': {
+                  this.form.controls.internalId.setValue(ele.values[0]);
+                  this.valIds.internalId = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.internalId = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasCompanyInternalId': {
+                  this.form.controls.internalId.setValue(ele.values[0]);
+                  this.valIds.internalId = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.internalId = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasCompanyExtraInfo': {
+                  this.form.controls.extraInfo.setValue(ele.values[0]);
+                  this.valIds.extraInfo = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.extraInfo = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasMemberValue': {
+                  for (let i = 0; i < ele.values.length; i++) {
+                    this.addMember({memberName: ele.values[i], memberIri: ele.ids[i]});
+                  }
+                  break;
+                }
+                case this.knoraService.wwOntology + 'isLexiaCompanyValue': {
+                  for (let i = 0; i < ele.values.length; i++) {
+                    this.addLexia({lexiaName: ele.values[i], lexiaIri: ele.ids[i]});
+                  }
+                  break;
+                }
+              }
+            }
           }
         });
       }
@@ -248,7 +295,10 @@ export class EditCompanyComponent implements OnInit {
         internalId: [this.data.internalId, [Validators.required]],
         extraInfo: this.data.extraInfo,
         members: this.fb.array([
-            this.fb.group({memberName: '', memberIri: ''}),
+            /*this.fb.group({memberName: '', memberIri: ''}),*/
+        ]),
+        lexias: this.fb.array([
+          /*this.fb.group({lexiaName: '', lexiaIri: ''}),*/
         ]),
       });
       console.log(this.form);
@@ -259,12 +309,37 @@ export class EditCompanyComponent implements OnInit {
     return this.form.controls.members as FormArray;
   }
 
-  addMember() {
+  addMember(member?: {memberName: string; memberIri: string}) {
     const members = this.getMembers();
-    members.push(this.fb.group({memberName: '', memberIri: ''}));
-    this.data.members.push({memberName: '', memberIri: ''});
+    if (member === undefined) {
+      members.push(this.fb.group({memberName: '', memberIri: ''}));
+      this.data.members.push({memberName: '', memberIri: ''});
+    }
+    else {
+      members.push(this.fb.group({memberName: member.memberName, memberIri: member.memberIri}));
+      this.data.members.push({memberName: member.memberName, memberIri: member.memberIri});
+    }
     this.valIds.members.push({id: undefined, changed: false, toBeDeleted: false});
+    console.log('addMember::', this.data.members);
   }
+
+  getLexias() {
+    return this.form.controls.lexias as FormArray;
+  }
+
+  addLexia(lexia?: {lexiaName: string; lexiaIri: string}) {
+    const lexias = this.getLexias();
+    if (lexia === undefined) {
+      lexias.push(this.fb.group({lexiaName: '', lexiaIri: ''}));
+      this.data.lexias.push({lexiaName: '', lexiaIri: ''});
+    }
+    else {
+      lexias.push(this.fb.group({lexiaName: lexia.lexiaName, lexiaIri: lexia.lexiaIri}));
+      this.data.lexias.push({lexiaName: lexia.lexiaName, lexiaIri: lexia.lexiaIri});
+    }
+    this.valIds.lexias.push({id: undefined, changed: false, toBeDeleted: false});
+  }
+
 
   onChange = (_: any) => {};
 
@@ -285,6 +360,19 @@ export class EditCompanyComponent implements OnInit {
             }
         );
         break;
+      case 'lexias':
+        const lexias = this.getLexias();
+        const lexiaName = lexias.value[index].lexiaName;
+
+        this.valIds.lexias[index].changed = true;
+        this.knoraService.getResourcesByLabel(lexiaName, this.knoraService.wwOntology + 'lexia').subscribe(
+            res => {
+              this.options = res;
+              this.form.value.lexias[index].lexiaName = res[0].label;
+              this.form.value.lexias[index].lexiaIri =  res[0].id;
+            }
+        );
+        break;
     }
   }
 
@@ -302,7 +390,20 @@ export class EditCompanyComponent implements OnInit {
             this.form.value.title,
             this.form.value.internalId,
             this.form.value.extraInfo,
-            this.form.value.members
+            this.form.value.members,
+            this.form.value.lexias,
+        );
+        break;
+      case 'lexias':
+        this.form.value.lexias[index].lexiaName = res[0].label;
+        this.form.value.lexias[index].lexiaIri =  res[0].id;
+        this.value = new CompanyData(
+            this.form.value.label,
+            this.form.value.title,
+            this.form.value.internalId,
+            this.form.value.extraInfo,
+            this.form.value.lexias,
+            this.form.value.lexias,
         );
         break;
     }
@@ -323,8 +424,11 @@ export class EditCompanyComponent implements OnInit {
       case 'extraInfo':
         this.valIds.extraInfo.changed = true;
         break;
-      case 'member':
+      case 'members':
         this.valIds.members[index].changed = true;
+        break;
+      case 'lexias':
+        this.valIds.lexias[index].changed = true;
         break;
     }
   }
@@ -336,6 +440,9 @@ export class EditCompanyComponent implements OnInit {
         break;
       case 'members':
         this.valIds.members[index].toBeDeleted = !this.valIds.members[index].toBeDeleted;
+        break;
+      case 'lexias':
+        this.valIds.lexias[index].toBeDeleted = !this.valIds.lexias[index].toBeDeleted;
         break;
     }
   }
@@ -359,8 +466,16 @@ export class EditCompanyComponent implements OnInit {
         this.valIds.extraInfo.changed = false;
         break;
       case 'members':
+        console.log(this.data.members);
+        console.log('== index:', index);
         this.getMembers().controls[index].setValue(this.data.members[index]);
         this.valIds.members[index].changed = false;
+        break;
+      case 'lexias':
+        console.log(this.data.lexias);
+        console.log('== index:', index);
+        this.getLexias().controls[index].setValue(this.data.lexias[index]);
+        this.valIds.lexias[index].changed = false;
         break;
     }
   }
