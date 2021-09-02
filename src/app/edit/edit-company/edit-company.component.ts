@@ -11,6 +11,9 @@ import {
 import {ActivatedRoute} from '@angular/router';
 import {combineLatest} from 'rxjs';
 import {CompanyData, KnoraService} from '../../services/knora.service';
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Location} from '@angular/common';
+
 
 interface ValInfo {
   id?: string;
@@ -196,6 +199,8 @@ export class EditCompanyComponent implements OnInit {
   constructor(public knoraService: KnoraService,
               private fb: FormBuilder,
               public route: ActivatedRoute,
+              private location: Location,
+              private snackBar: MatSnackBar,
               @Optional() @Self() public ngControl: NgControl) {
     this.inData = {};
     this.working = false;
@@ -483,6 +488,21 @@ export class EditCompanyComponent implements OnInit {
   save() {
     //this.working = true;
     console.log('this.value:', this.value);
+    if (this.inData.companyIri === undefined) {
+      this.knoraService.createCompany(this.value).subscribe(
+          res => {
+            console.log('CREATE_RESULT:', res);
+            this.working = false;
+            //this.location.back();
+          },
+          error => {
+            this.snackBar.open('Error storing the company object!', 'OK');
+            console.log('EditCompany.save(): ERROR', error);
+            this.working = false;
+            //this.location.back();
+          }
+      );
+    }
   }
 
 }

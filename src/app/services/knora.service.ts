@@ -21,7 +21,7 @@ import {
     StringLiteral,
     ReadIntValue,
     ReadUriValue,
-    Constants, CreateResource, CreateTextValueAsString
+    Constants, CreateResource, CreateTextValueAsString, CreateLinkValue
 } from "@dasch-swiss/dsp-js";
 import {GravsearchBuilderService} from './gravsearch-builder.service';
 import {IMainClass} from '../model/displayModel';
@@ -533,7 +533,7 @@ export class KnoraService {
     createCompany(data: CompanyData): Observable<string> {
         const createResource = new CreateResource();
         createResource.label = data.label;
-        createResource.type = this.wwOntology + 'Lexicon';
+        createResource.type = this.wwOntology + 'company';
         createResource.attachedToProject = 'http://rdfh.ch/projects/0826';
 
         const props = {};
@@ -560,6 +560,34 @@ export class KnoraService {
             props[this.wwOntology + 'hasCompanyExtraInfo'] = [
                 extraInfoIdVal
             ];
+        }
+
+        if (data.members !== null && data.members !== undefined && data.members.length > 0) {
+            const v: CreateLinkValue[] = [];
+            for (const member of data.members) {
+                if (member.memberIri !== '') {
+                    const memberVal = new CreateLinkValue();
+                    memberVal.linkedResourceIri = member.memberIri;
+                    v.push(memberVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'hasMemberValue'] = v;
+            }
+        }
+
+        if (data.lexias !== null && data.lexias !== undefined && data.lexias.length > 0) {
+            const v: CreateLinkValue[] = [];
+            for (const lexia of data.lexias) {
+                if (lexia.lexiaIri !== '') {
+                    const lexiaVal = new CreateLinkValue();
+                    lexiaVal.linkedResourceIri = lexia.lexiaIri;
+                    v.push(lexiaVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'isLexiaCompanyValue'] = v;
+            }
         }
 
         createResource.properties = props;
