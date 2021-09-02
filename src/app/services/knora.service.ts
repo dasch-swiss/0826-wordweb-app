@@ -14,13 +14,22 @@ import {
     ListsResponse,
     KnoraPeriod,
     ListNodeInfo,
-    List, ILabelSearchParams, ApiResponseError
+    List,
+    ILabelSearchParams,
+    ApiResponseError,
+    ReadStillImageFileValue,
+    StringLiteral,
+    ReadIntValue,
+    ReadUriValue,
+    Constants
 } from '@dasch-swiss/dsp-js';
 import {GravsearchBuilderService} from './gravsearch-builder.service';
 import {IMainClass} from '../model/displayModel';
 import {map, tap} from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
 import {AppInitService} from '../app-init.service';
+
+//---- BEGIN LUKAS ---------------------------------------------------------------------------------------------------
 
 export class CompanyData {
     constructor(
@@ -31,6 +40,130 @@ export class CompanyData {
         public members?: {memberName: string; memberIri: string}[]
     ) {}
 }
+
+export class LangString {
+    data: {[index: string]: string};
+
+    constructor(langstr: Array<StringLiteral>) {
+        this.data = {};
+        for (const p of langstr) {
+            this.data[p.language || 'de'] = p.value || 'GAGA';
+        }
+    }
+
+    get(lang: string): string {
+        if (lang in this.data) {
+            return this.data[lang];
+        } else {
+            for (const l in this.data) {
+                if (this.data.hasOwnProperty(l)) {
+                    return this.data[l];
+                }
+            }
+        }
+        return '-';
+    }
+}
+
+export class ListData {
+    constructor(public listid: string,
+                public labels: LangString,
+                public name?: string) {
+    }
+}
+
+export class PropertyData {
+    constructor(public propname: string,
+                public label: string,
+                public values: Array<string>,
+                public ids: Array<string>,
+                public comments: Array<string | undefined>,
+                public permissions: Array<string>) {}
+}
+
+export class IntPropertyData extends PropertyData {
+    public ivalues: Array<number>;
+
+    constructor(propname: string,
+                label: string,
+                ivalues: Array<number>,
+                ids: Array<string>,
+                comments: Array<string | undefined>,
+                permissions: Array<string>) {
+        const values = ivalues.map(x => x.toString(10));
+        super(propname, label, values, ids, comments, permissions);
+        this.ivalues = ivalues;
+    }
+}
+
+export class ListPropertyData extends PropertyData {
+    public nodeIris: Array<string>;
+
+    constructor(propname: string,
+                label: string,
+                nodeIris: Array<string>,
+                values: Array<string>,
+                ids: Array<string>,
+                comments: Array<string | undefined>,
+                permissions: Array<string>) {
+        super(propname, label, values, ids, comments, permissions);
+        this.nodeIris = nodeIris;
+    }
+}
+
+export class LinkPropertyData extends PropertyData {
+    public resourceIris: Array<string>;
+    public resourceLabels: Array<string>;
+
+    constructor(propname: string,
+                label: string,
+                resourceIris: Array<string>,
+                values: Array<string>,
+                ids: Array<string>,
+                comments: Array<string | undefined>,
+                permissions: Array<string>) {
+        super(propname, label, values, ids, comments, permissions);
+        this.resourceIris = resourceIris;
+    }
+}
+
+export class StillImagePropertyData extends PropertyData {
+    public dimX: number;
+    public dimY: number;
+    filename: string;
+    fileUrl: string;
+    iiifBase: string;
+
+    constructor(propname: string,
+                label: string,
+                dimX: number,
+                dimY: number,
+                filename: string,
+                fileUrl: string,
+                iiifBase: string,
+                values: Array<string>,
+                ids: Array<string>,
+                comments: Array<string | undefined>,
+                permissions: Array<string>) {
+        super(propname, label, values, ids, comments, permissions);
+        this.dimX = dimX;
+        this.dimY = dimY;
+        this.filename = filename;
+        this.fileUrl = fileUrl;
+        this.iiifBase = iiifBase;
+    }
+}
+
+export interface ResourceData {
+    id: string; /** Id (iri) of the resource */
+    label: string; /** Label of the resource */
+    arkUrl?: string;
+    permission: string; /** permission of the current user */
+    lastmod: string; /** last modification date of resource */
+    properties: Array<PropertyData>; /** Array of properties with associated value(s) */
+}
+
+//---- END LUKAS  -----------------------------------------------------------------------------------------------------
 
 @Injectable({
     providedIn: 'root'
@@ -358,7 +491,7 @@ export class KnoraService {
     }
 
 
-    // EDITING BY LUKAS
+    // EDITING BY LUKAS //----------------------------------------------------------------------------------------------
 
     getResourcesByLabel(val: string, restype?: string): Observable<Array<{ id: string; label: string }>> {
         let params: ILabelSearchParams | undefined;
@@ -381,5 +514,117 @@ export class KnoraService {
         );
     }
 
+    private processResourceProperties(data: ReadResource): Array<PropertyData> {
+        const propdata: Array<PropertyData> = [];
+        for (const prop in data.properties) {
+            if (data.properties.hasOwnProperty(prop)) {
+                switch (data.getValues(prop)[0].type) {
+                    case Constants.StillImageFileValue: {
+                        const val = data.getValuesAs(prop, ReadStillImageFileValue)[0];
+                        const label: string = val.propertyLabel || '?';
+                        const dimX: number = val.dimX;
+                        const dimY: number = val.dimY;
+                        const filename: string = val.filename;
+                        const fileUrl: string = val.fileUrl;
+                        const iiifBase = val.iiifBaseUrl;
+                        const values: Array<string> = [];
+                        const ids: Array<string> = [val.id];
+                        const comments: Array<string | undefined> = [val.valueHasComment];
+                        const permissions: Array<string> = [val.userHasPermission];
+                        propdata.push(new StillImagePropertyData(prop, label, dimX, dimY, filename,
+                            fileUrl, iiifBase, values, ids, comments, permissions));
+                        break;
+                    }
+                    case Constants.DateValue: {
+                        const vals = data.getValuesAs(prop, ReadDateValue);
+                        const label: string = vals[0].propertyLabel || '?';
+                        const values: Array<string> = vals.map(v => v.strval || '?');
+                        const ids: Array<string> = vals.map(v => v.id);
+                        const comments: Array<string | undefined> = vals.map(v => v.valueHasComment);
+                        const permissions: Array<string> = vals.map(v => v.userHasPermission);
+                        propdata.push(new PropertyData(prop, label, values, ids, comments, permissions));
+                        break;
+                    }
+                    case Constants.UriValue: {
+                        const vals = data.getValuesAs(prop, ReadUriValue);
+                        const label: string = vals[0].propertyLabel || '?';
+                        const values: Array<string> = vals.map(v => v.uri);
+                        const ids: Array<string> = vals.map(v => v.id);
+                        const comments: Array<string | undefined> = vals.map(v => v.valueHasComment);
+                        const permissions: Array<string> = vals.map(v => v.userHasPermission);
+                        propdata.push(new PropertyData(prop, label, values, ids, comments, permissions));
+                        break;
+                    }
+                    case Constants.TextValue: {
+                        const vals = data.getValuesAs(prop, ReadTextValueAsString);
+                        const label: string = vals[0].propertyLabel || '?';
+                        const values: Array<string> = vals.map(v => v.text);
+                        const ids: Array<string> = vals.map(v => v.id);
+                        const comments: Array<string | undefined> = vals.map(v => v.valueHasComment);
+                        const permissions: Array<string> = vals.map(v => v.userHasPermission);
+                        propdata.push(new PropertyData(prop, label, values, ids, comments, permissions));
+                        break;
+                    }
+                    case Constants.ListValue: {
+                        const vals = data.getValuesAs(prop, ReadListValue);
+                        const label: string = vals[0].propertyLabel || '?';
+                        const values: Array<string> = vals.map(v => v.listNodeLabel);
+                        const nodeIris: Array<string> = vals.map(v => v.listNode);
+                        const ids: Array<string> = vals.map(v => v.id);
+                        const comments: Array<string | undefined> = vals.map(v => v.valueHasComment);
+                        const permissions: Array<string> = vals.map(v => v.userHasPermission);
+                        propdata.push(new ListPropertyData(prop, label, nodeIris, values, ids, comments, permissions));
+                        break;
+                    }
+                    case Constants.LinkValue: {
+                        const vals = data.getValuesAs(prop, ReadLinkValue);
+                        const label: string = vals[0].propertyLabel || '?';
+                        const values: Array<string> = vals.map(v => v.linkedResource && v.linkedResource.label || '?');
+                        const resourceIris: Array<string> = vals.map(v => v.linkedResourceIri);
+                        const ids: Array<string> = vals.map(v => v.id);
+                        const comments: Array<string | undefined> = vals.map(v => v.valueHasComment);
+                        const permissions: Array<string> = vals.map(v => v.userHasPermission);
+                        propdata.push(new LinkPropertyData(prop, label, resourceIris, values, ids, comments, permissions));
+                        break;
+                    }
+                    case Constants.IntValue: {
+                        const vals = data.getValuesAs(prop, ReadIntValue);
+                        const label: string = vals[0].propertyLabel || '?';
+                        const values: Array<number> = vals.map(v => v.int);
+                        const ids: Array<string> = vals.map(v => v.id);
+                        const comments: Array<string | undefined> = vals.map(v => v.valueHasComment);
+                        const permissions: Array<string> = vals.map(v => v.userHasPermission);
+                        propdata.push(new IntPropertyData(prop, label, values, ids, comments, permissions));
+                        break;
+                    }
+                    default: {
+                        const vals = data.getValuesAs(prop, ReadTextValueAsString);
+                        const label: string = vals[0].propertyLabel || '?';
+                        const values: Array<string> = vals.map(v => v.text);
+                        const ids: Array<string> = vals.map(v => v.id);
+                        const comments: Array<string | undefined> = vals.map(v => v.valueHasComment);
+                        const permissions: Array<string> = vals.map(v => v.userHasPermission);
+                        propdata.push(new PropertyData(prop, label, values, ids, comments, permissions));
+                    }
+                }
+            }
+        }
+        return propdata;
+    }
+
+    getResource(iri: string): Observable<ResourceData> {
+        return this._knoraApiConnection.v2.res.getResource(iri).pipe(
+            map((data: ReadResource) => {
+                    console.log(':::::::::', data);
+                    return {
+                        id: data.id,
+                        label: data.label,
+                        arkUrl: data.arkUrl,
+                        permission: data.userHasPermission,
+                        lastmod: data.lastModificationDate || '',
+                        properties: this.processResourceProperties(data)};
+                }
+            ));
+    }
 
 }

@@ -184,10 +184,9 @@ export class EditCompanyComponent implements OnInit {
   controlType = 'EditCompany';
   inData: any;
   form: FormGroup;
-  //member: FormArray;
-
   options: Array<{id: string; label: string}> = [];
-
+  resId: string;
+  lastmod: string;
   data: CompanyData = new CompanyData('', '', '', '', [{memberName: '', memberIri: ''}]);
   working: boolean;
   public valIds: CompanyIds = new CompanyIds();
@@ -229,9 +228,18 @@ export class EditCompanyComponent implements OnInit {
     combineLatest([this.route.params, this.route.queryParams]).subscribe(arr  => {
       if (arr[0].iri !== undefined) {
         this.inData.companyIri = arr[0].iri;
+        console.log("****************", this.inData.companyIri);
       }
       if (this.inData.companyIri !== undefined) {
-
+        this.knoraService.getResource(this.inData.companyIri).subscribe((data) => {
+          if (this.inData.companyIri !== undefined) {
+            this.resId = data.id;
+            this.lastmod = data.lastmod;
+            this.form.controls.label.setValue(data.label);
+            this.valIds.label = {id: data.label, changed: false, toBeDeleted: false};
+            this.data.label = data.label;
+          }
+        });
       }
       //this.memberItems = this.fb.array([this.fb.group({memberName: '', memberIri: ''})]);
       this.form = this.fb.group({
