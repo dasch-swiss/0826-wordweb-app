@@ -9,7 +9,7 @@ import {
   Validators
 } from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
-import {combineLatest} from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 import {CompanyData, KnoraService} from '../../services/knora.service';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Location} from '@angular/common';
@@ -264,12 +264,6 @@ export class EditCompanyComponent implements OnInit {
                   this.data.internalId = ele.values[0];
                   break;
                 }
-                case this.knoraService.wwOntology + 'hasCompanyInternalId': {
-                  this.form.controls.internalId.setValue(ele.values[0]);
-                  this.valIds.internalId = {id: ele.ids[0], changed: false, toBeDeleted: false};
-                  this.data.internalId = ele.values[0];
-                  break;
-                }
                 case this.knoraService.wwOntology + 'hasCompanyExtraInfo': {
                   this.form.controls.extraInfo.setValue(ele.values[0]);
                   this.valIds.extraInfo = {id: ele.ids[0], changed: false, toBeDeleted: false};
@@ -502,6 +496,125 @@ export class EditCompanyComponent implements OnInit {
             //this.location.back();
           }
       );
+    }
+    else {
+      const obs: Array<Observable<string>> = [];
+
+      if (this.valIds.label.changed) {
+        const gaga: Observable<string> = this.knoraService.updateLabel(
+            this.resId,
+            this.knoraService.wwOntology + 'company',
+            this.form.value.label);
+        obs.push(gaga);
+      }
+
+      if (this.valIds.title.toBeDeleted && this.valIds.title.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'company',
+            this.valIds.title.id as string,
+            this.knoraService.wwOntology + 'hasCompanyTitle');
+        obs.push(gaga);
+      } else if (this.valIds.title.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.title.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'company',
+              this.knoraService.wwOntology + 'hasCompanyTitle',
+              this.value.title);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'company',
+              this.valIds.title.id as string,
+              this.knoraService.wwOntology + 'hasCompanyTitle',
+              this.value.title);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.internalId.toBeDeleted && this.valIds.internalId.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'company',
+            this.valIds.internalId.id as string,
+            this.knoraService.wwOntology + 'hasCompanyInternalId');
+        obs.push(gaga);
+      } else if (this.valIds.internalId.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.internalId.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'company',
+              this.knoraService.wwOntology + 'hasCompanyInternalId',
+              this.value.internalId);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'company',
+              this.valIds.internalId.id as string,
+              this.knoraService.wwOntology + 'hasCompanyInternalId',
+              this.value.internalId);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.extraInfo.toBeDeleted && this.valIds.extraInfo.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'company',
+            this.valIds.extraInfo.id as string,
+            this.knoraService.wwOntology + 'hasCompanyExtraInfo');
+        obs.push(gaga);
+      } else if (this.valIds.extraInfo.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.extraInfo.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'company',
+              this.knoraService.wwOntology + 'hasCompanyExtraInfo',
+              this.value.extraInfo);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'company',
+              this.valIds.extraInfo.id as string,
+              this.knoraService.wwOntology + 'hasCompanyExtraInfo',
+              this.value.extraInfo);
+        }
+        obs.push(gaga);
+      }
+
+      let index = 0;
+      for (const valId of this.valIds.members) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteLinkValue(
+              this.resId,
+              this.knoraService.wwOntology + 'company',
+              valId.id as string,
+              this.knoraService.wwOntology + 'hasMemberValue');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'company',
+                this.knoraService.wwOntology + 'hasMemberValue',
+                this.value.members[index].memberIri);
+          } else {
+            gaga = this.knoraService.updateLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'company',
+                valId.id as string,
+                this.knoraService.wwOntology + 'hasMemberValue',
+                this.value.members[index].memberIri);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
     }
   }
 
