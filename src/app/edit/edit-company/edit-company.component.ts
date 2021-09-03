@@ -9,7 +9,7 @@ import {
   Validators
 } from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatest, forkJoin, Observable} from "rxjs";
 import {CompanyData, KnoraService} from '../../services/knora.service';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Location} from '@angular/common';
@@ -26,16 +26,16 @@ class CompanyIds {
   public title: ValInfo;
   public internalId: ValInfo;
   public extraInfo: ValInfo;
-  public members: [ValInfo];
-  public lexias: [ValInfo];
+  public members: ValInfo[];
+  public lexias: ValInfo[];
 
   constructor() {
     this.label = {id: undefined, changed: false, toBeDeleted: false};
     this.title = {id: undefined, changed: false, toBeDeleted: false};
     this.internalId = {id: undefined, changed: false, toBeDeleted: false};
     this.extraInfo = {id: undefined, changed: false, toBeDeleted: false};
-    this.members = [{id: undefined, changed: false, toBeDeleted: false}];
-    this.lexias = [{id: undefined, changed: false, toBeDeleted: false}];
+    this.members = [];
+    this.lexias = [];
   }
 }
 
@@ -313,12 +313,13 @@ export class EditCompanyComponent implements OnInit {
     if (member === undefined) {
       members.push(this.fb.group({memberName: '', memberIri: ''}));
       this.data.members.push({memberName: '', memberIri: ''});
+      this.valIds.members.push({id: undefined, changed: false, toBeDeleted: false});
     }
     else {
       members.push(this.fb.group({memberName: member.memberName, memberIri: member.memberIri}));
       this.data.members.push({memberName: member.memberName, memberIri: member.memberIri});
+      this.valIds.members.push({id: member.memberIri, changed: false, toBeDeleted: false});
     }
-    this.valIds.members.push({id: undefined, changed: false, toBeDeleted: false});
     console.log('addMember::', this.data.members);
   }
 
@@ -331,12 +332,13 @@ export class EditCompanyComponent implements OnInit {
     if (lexia === undefined) {
       lexias.push(this.fb.group({lexiaName: '', lexiaIri: ''}));
       this.data.lexias.push({lexiaName: '', lexiaIri: ''});
+      this.valIds.lexias.push({id: undefined, changed: false, toBeDeleted: false});
     }
     else {
       lexias.push(this.fb.group({lexiaName: lexia.lexiaName, lexiaIri: lexia.lexiaIri}));
       this.data.lexias.push({lexiaName: lexia.lexiaName, lexiaIri: lexia.lexiaIri});
+      this.valIds.lexias.push({id: lexia.lexiaIri, changed: false, toBeDeleted: false});
     }
-    this.valIds.lexias.push({id: undefined, changed: false, toBeDeleted: false});
   }
 
 
@@ -436,6 +438,7 @@ export class EditCompanyComponent implements OnInit {
     switch (what) {
       case 'extraInfo':
         this.valIds.extraInfo.toBeDeleted = !this.valIds.extraInfo.toBeDeleted;
+        console.log('_handleDelete("extraInfo")');
         break;
       case 'members':
         this.valIds.members[index].toBeDeleted = !this.valIds.members[index].toBeDeleted;
@@ -560,6 +563,7 @@ export class EditCompanyComponent implements OnInit {
         obs.push(gaga);
       }
 
+      console.log('this.valIds.extraInfo:', this.valIds.extraInfo);
       if (this.valIds.extraInfo.toBeDeleted && this.valIds.extraInfo.id !== undefined) {
         const gaga: Observable<string> = this.knoraService.deleteTextValue(
             this.resId,
@@ -615,6 +619,47 @@ export class EditCompanyComponent implements OnInit {
         }
         index++;
       }
+
+      index = 0;
+      for (const valId of this.valIds.lexias) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteLinkValue(
+              this.resId,
+              this.knoraService.wwOntology + 'company',
+              valId.id as string,
+              this.knoraService.wwOntology + 'isLexiaCompanyValue');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'company',
+                this.knoraService.wwOntology + 'isLexiaCompanyValue',
+                this.value.lexias[index].lexiaIri);
+          } else {
+            gaga = this.knoraService.updateLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'company',
+                valId.id as string,
+                this.knoraService.wwOntology + 'isLexiaCompanyValue',
+                this.value.lexias[index].lexiaIri);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
+
+      forkJoin(obs).subscribe(res => {
+            this.working = false;
+            this.location.back();
+          },
+          error => {
+            this.snackBar.open('Fehler beim Speichern der Daten des company-Eintrags!', 'OK');
+            this.working = false;
+            //this.location.back();
+          });
+
     }
   }
 

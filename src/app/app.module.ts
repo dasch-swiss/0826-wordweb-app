@@ -98,6 +98,7 @@ import {GravsearchBuilderService} from "./services/gravsearch-builder.service";
 import { EditCompanyComponent } from './edit/edit-company/edit-company.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { EditComponent } from './edit/edit.component';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -161,6 +162,7 @@ export function initializeApp(appInitService: AppInitService) {
         AuthorsPipe,
         YearPipe,
         EditCompanyComponent,
+        EditComponent,
     ],
     imports: [
         BrowserModule,
