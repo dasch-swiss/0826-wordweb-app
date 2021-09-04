@@ -94,7 +94,7 @@ class CompanyIds {
                    (input)="_handleInput('extraInfo')">
           </mat-form-field>
           <button *ngIf="valIds.extraInfo.changed" mat-mini-fab (click)="_handleUndo('extraInfo')">
-            <mat-icon color="warn">cached</mat-icon>
+            <mat-icon>cached</mat-icon>
           </button>
           <button *ngIf="valIds.extraInfo.id !== undefined" mat-mini-fab (click)="_handleDelete('extraInfo')">
             <mat-icon *ngIf="!valIds.extraInfo.toBeDeleted">delete</mat-icon>
@@ -125,7 +125,7 @@ class CompanyIds {
                 <mat-icon color="warn">cached</mat-icon>
               </button>
               <button *ngIf="valIds.members[i].id !== undefined" mat-mini-fab (click)="_handleDelete('members', i)">
-                <mat-icon *ngIf="!valIds.members[i].toBeDeleted">delete</mat-icon>
+                <mat-icon *ngIf="!valIds.members[i].toBeDeleted" color="basic">delete</mat-icon>
                 <mat-icon *ngIf="valIds.members[i].toBeDeleted" color="warn">delete</mat-icon>
               </button>
 
@@ -158,7 +158,7 @@ class CompanyIds {
               <mat-icon color="warn">cached</mat-icon>
             </button>
             <button *ngIf="valIds.lexias[i].id !== undefined" mat-mini-fab (click)="_handleDelete('lexias', i)">
-              <mat-icon *ngIf="!valIds.lexias[i].toBeDeleted">delete</mat-icon>
+              <mat-icon *ngIf="!valIds.lexias[i].toBeDeleted" color="basic">delete</mat-icon>
               <mat-icon *ngIf="valIds.lexias[i].toBeDeleted" color="warn">delete</mat-icon>
             </button>
 
@@ -170,7 +170,7 @@ class CompanyIds {
       </mat-card-content>
 
       <mat-card-actions>
-        <button appBackButton class="mat-raised-button" matTooltip="Zurück ohne zu sichern">Cancel</button>
+        <button appBackButton class="mat-raised-button" matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
         <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Save</button>
         <mat-progress-bar *ngIf="working" mode="indeterminate"></mat-progress-bar>
       </mat-card-actions>
@@ -199,7 +199,7 @@ export class EditCompanyComponent implements OnInit {
   constructor(public knoraService: KnoraService,
               private fb: FormBuilder,
               public route: ActivatedRoute,
-              private location: Location,
+              public location: Location,
               private snackBar: MatSnackBar,
               @Optional() @Self() public ngControl: NgControl) {
     this.inData = {};
@@ -490,13 +490,13 @@ export class EditCompanyComponent implements OnInit {
           res => {
             console.log('CREATE_RESULT:', res);
             this.working = false;
-            //this.location.back();
+            this.location.back();
           },
           error => {
             this.snackBar.open('Error storing the company object!', 'OK');
             console.log('EditCompany.save(): ERROR', error);
             this.working = false;
-            //this.location.back();
+            this.location.back();
           }
       );
     }
@@ -657,7 +657,7 @@ export class EditCompanyComponent implements OnInit {
           error => {
             this.snackBar.open('Fehler beim Speichern der Daten des company-Eintrags!', 'OK');
             this.working = false;
-            //this.location.back();
+            this.location.back();
           });
 
     }

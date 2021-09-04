@@ -67,11 +67,13 @@ const routes: Routes = [
       {path: "", component: PageNotFoundComponent}
     ]
   },
-  {path: "edit", component: EditComponent,
+  {path: "edit", component: EditComponent},
+  {
+    path: "edit",
     children: [
       {path: "company/:iri", component: EditCompanyComponent},
       {path: "company", component: EditCompanyComponent}
-    ]
+    ],
   },
   {path: "**", component: PageNotFoundComponent}
 ];
