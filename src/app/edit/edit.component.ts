@@ -17,7 +17,7 @@ import {Router} from "@angular/router";
     <mat-card>
       <mat-card-title>Company</mat-card-title>
       <mat-card-content>
-        <button mat-raised-button>New</button><br><br>
+        <button mat-raised-button (click)="createCompany()">New</button><br><br>
         <mat-form-field>
           <input matInput
                  placeholder="Select company"
@@ -89,7 +89,7 @@ export class EditComponent implements OnInit {
     }
   }
 
-  _optionSelected(val: any, what: string) {
+  _optionSelected(val: any, what: string): void {
     const res = this.options.filter(tmp => tmp.label === val);
     this.company = res[0].label;
     this.companyIri = res[0].id;
@@ -97,8 +97,12 @@ export class EditComponent implements OnInit {
     console.log('_optionSelected:res', res);
   }
 
-  editCompany() {
+  editCompany(): void {
     this.router.navigate(['/edit/company', this.companyIri]);
+  }
+
+  createCompany(): void {
+    this.router.navigate(['/edit/company']);
   }
 
 

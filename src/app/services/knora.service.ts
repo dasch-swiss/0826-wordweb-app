@@ -724,10 +724,10 @@ export class KnoraService {
         );
     }
 
-    deleteResource(resId: string, type: string, lastmod: string, delcomment?: string): Observable<string> {
+    deleteResource(resId: string, resType: string, lastmod: string, delcomment?: string): Observable<string> {
         const deleteResource = new DeleteResource();
         deleteResource.id = resId;
-        deleteResource.type = this.wwOntology + 'type';
+        deleteResource.type = this.wwOntology + resType;
         deleteResource.lastModificationDate = lastmod;
         deleteResource.deleteComment = delcomment || undefined;
         return this._knoraApiConnection.v2.res.deleteResource(deleteResource).pipe(

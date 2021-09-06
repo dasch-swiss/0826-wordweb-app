@@ -7,7 +7,7 @@ export interface ConfirmationData {
   text: string;
 }
 
-export interface ConformationResult {
+export interface ConfirmationResult {
   status: boolean;
   comment?: string;
 }
@@ -55,12 +55,12 @@ export class ConfirmationComponent implements OnInit {
   }
 
   yes(): void {
-    const result: ConformationResult = {status: true, comment: this.form.value.comment};
+    const result: ConfirmationResult = {status: true, comment: this.form.value.comment};
     this.dialogRef.close(result);
   }
 
   no(): void {
-    const result: ConformationResult = {status: false};
+    const result: ConfirmationResult = {status: false};
     this.dialogRef.close(result);
   }
 

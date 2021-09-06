@@ -14,7 +14,7 @@ import {CompanyData, KnoraService} from '../../services/knora.service';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Location} from '@angular/common';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {ConfirmationComponent} from "../confirmation/confirmation.component";
+import {ConfirmationComponent, ConfirmationResult} from "../confirmation/confirmation.component";
 
 
 interface ValInfo {
@@ -353,6 +353,7 @@ export class EditCompanyComponent implements OnInit {
   _handleLinkInput(what: string, index?: number): void {
     switch(what) {
       case 'members':
+
         const members = this.getMembers();
         const memberName = members.value[index].memberName;
 
@@ -487,7 +488,7 @@ export class EditCompanyComponent implements OnInit {
   }
 
   save() {
-    //this.working = true;
+    this.working = true;
     console.log('this.value:', this.value);
     if (this.inData.companyIri === undefined) {
       this.knoraService.createCompany(this.value).subscribe(
@@ -677,8 +678,20 @@ export class EditCompanyComponent implements OnInit {
     };
 
     const dialogRef = this.dialog.open(ConfirmationComponent, confirmationConfig);
-    dialogRef.afterClosed().subscribe(data => {
-      console.log('Dialogdata:', data);
+    this.working = true;
+    dialogRef.afterClosed().subscribe((data: ConfirmationResult) => {
+      if (data.status) {
+        this.knoraService.deleteResource(this.resId, 'company', this.lastmod, data.comment).subscribe(
+            res => {
+              this.working = false;
+              this.location.back();
+            },
+            error => {
+              this.snackBar.open('Error while deleting the company entry!', 'OK');
+              this.working = false;
+              this.location.back();
+            });
+      }
     });
   }
 
