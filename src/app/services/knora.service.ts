@@ -32,7 +32,7 @@ import {
     UpdateResource,
     CreateValue,
     WriteValueResponse,
-    UpdateTextValueAsString, UpdateValue, UpdateLinkValue
+    UpdateTextValueAsString, UpdateValue, UpdateLinkValue, DeleteResource
 } from "@dasch-swiss/dsp-js";
 import {GravsearchBuilderService} from './gravsearch-builder.service';
 import {IMainClass} from '../model/displayModel';
@@ -720,6 +720,18 @@ export class KnoraService {
 
         return this._knoraApiConnection.v2.values.deleteValue(updateResource).pipe(
             map((res: DeleteValueResponse) => 'OK'),
+            catchError((error: ApiResponseError) => of('ERROR'))
+        );
+    }
+
+    deleteResource(resId: string, type: string, lastmod: string, delcomment?: string): Observable<string> {
+        const deleteResource = new DeleteResource();
+        deleteResource.id = resId;
+        deleteResource.type = this.wwOntology + 'type';
+        deleteResource.lastModificationDate = lastmod;
+        deleteResource.deleteComment = delcomment || undefined;
+        return this._knoraApiConnection.v2.res.deleteResource(deleteResource).pipe(
+            map( (res: DeleteValueResponse) => 'OK'),
             catchError((error: ApiResponseError) => of('ERROR'))
         );
     }
