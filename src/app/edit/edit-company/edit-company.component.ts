@@ -13,6 +13,8 @@ import {combineLatest, forkJoin, Observable} from "rxjs";
 import {CompanyData, KnoraService} from '../../services/knora.service';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Location} from '@angular/common';
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {ConfirmationComponent} from "../confirmation/confirmation.component";
 
 
 interface ValInfo {
@@ -172,7 +174,7 @@ class CompanyIds {
       <mat-card-actions>
         <button appBackButton class="mat-raised-button" matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
         <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Save</button>
-        <button type="submit" class="mat-raised-button" >Delete</button>
+        <button type="submit" class="mat-raised-button" (click)="delete()">Delete</button>
         <mat-progress-bar *ngIf="working" mode="indeterminate"></mat-progress-bar>
       </mat-card-actions>
     </mat-card>
@@ -202,6 +204,7 @@ export class EditCompanyComponent implements OnInit {
               public route: ActivatedRoute,
               public location: Location,
               private snackBar: MatSnackBar,
+              public dialog: MatDialog,
               @Optional() @Self() public ngControl: NgControl) {
     this.inData = {};
     this.working = false;
@@ -665,7 +668,18 @@ export class EditCompanyComponent implements OnInit {
   }
 
   delete() {
+    const confirmationConfig = new MatDialogConfig();
+    confirmationConfig.autoFocus = true;
+    confirmationConfig.disableClose = true;
+    confirmationConfig.data = {
+      title: 'Delete company',
+      text: 'Do You really want to delete this comapany?'
+    };
 
+    const dialogRef = this.dialog.open(ConfirmationComponent, confirmationConfig);
+    dialogRef.afterClosed().subscribe(data => {
+      console.log('Dialogdata:', data);
+    });
   }
 
 }

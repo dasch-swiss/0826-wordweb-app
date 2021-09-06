@@ -99,6 +99,7 @@ import { EditCompanyComponent } from './edit/edit-company/edit-company.component
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { EditComponent } from './edit/edit.component';
+import { ConfirmationComponent } from './edit/confirmation/confirmation.component';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -163,6 +164,7 @@ export function initializeApp(appInitService: AppInitService) {
         YearPipe,
         EditCompanyComponent,
         EditComponent,
+        ConfirmationComponent,
     ],
     imports: [
         BrowserModule,
