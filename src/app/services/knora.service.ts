@@ -53,6 +53,23 @@ export class CompanyData {
     ) {}
 }
 
+export class PersonData {
+    constructor(
+        public label: string,
+        public internalId: string, // hasPersonInternalId
+        public firstName: string, // hasFirstName
+        public lastName: string, // hasLastName
+        public gender: {gender: string; genderIri: string}, // hasGender
+        public description: string, // hasDescription
+        public birthDateStart?: Date, // hasBirthDate
+        public birthDateEnd?: Date, // hasBirthDate
+        public deathDateStart?: Date, // hasDeathDate
+        public deathDateEnd?: Date, // hasDeathDate
+        public extraInfo?: string, // hasPersonExtraInfo
+        public lexias?: {lexiaName: string; lexiaIri: string}[], // isLexiaPersonValue
+    ) {}
+}
+
 export class LangString {
     data: {[index: string]: string};
 
