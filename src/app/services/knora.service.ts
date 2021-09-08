@@ -222,9 +222,11 @@ export class KnoraService {
     }
 
     processRes(resource: ReadResource) {
+        console.log('>>>>>>>>>ReadResource:', resource);
         const newResource = {
             id: resource.id,
             arkUrl: resource.arkUrl,
+            lastmod: resource.lastModificationDate,
             type: resource.type.split('#')[1]
         };
 
@@ -730,6 +732,7 @@ export class KnoraService {
         deleteResource.type = this.wwOntology + resType;
         deleteResource.lastModificationDate = lastmod;
         deleteResource.deleteComment = delcomment || undefined;
+        console.log(deleteResource);
         return this._knoraApiConnection.v2.res.deleteResource(deleteResource).pipe(
             map( (res: DeleteValueResponse) => 'OK'),
             catchError((error: ApiResponseError) => of('ERROR'))

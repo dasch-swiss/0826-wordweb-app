@@ -174,7 +174,7 @@ class CompanyIds {
       <mat-card-actions>
         <button appBackButton class="mat-raised-button" matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
         <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Save</button>
-        <button type="submit" class="mat-raised-button" (click)="delete()">Delete</button>
+        <button *ngIf="inData.companyIri" type="submit" class="mat-raised-button" (click)="delete()">Delete</button>
         <mat-progress-bar *ngIf="working" mode="indeterminate"></mat-progress-bar>
       </mat-card-actions>
     </mat-card>
@@ -681,6 +681,7 @@ export class EditCompanyComponent implements OnInit {
     this.working = true;
     dialogRef.afterClosed().subscribe((data: ConfirmationResult) => {
       if (data.status) {
+        console.log('lastmod', this.lastmod);
         this.knoraService.deleteResource(this.resId, 'company', this.lastmod, data.comment).subscribe(
             res => {
               this.working = false;
@@ -688,6 +689,7 @@ export class EditCompanyComponent implements OnInit {
             },
             error => {
               this.snackBar.open('Error while deleting the company entry!', 'OK');
+              console.log('deleteResource:ERROR:: ', error);
               this.working = false;
               this.location.back();
             });
