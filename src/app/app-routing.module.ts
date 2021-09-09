@@ -28,6 +28,7 @@ import {ResourceComponent} from "./resource/resource.component";
 
 import {EditCompanyComponent} from "./edit/edit-company/edit-company.component";
 import {EditComponent} from "./edit/edit.component";
+import {EditPersonComponent} from "./edit/edit-person/edit-person.component";
 
 const routes: Routes = [
   {path: "", redirectTo: "search", pathMatch: "full"},
@@ -72,7 +73,9 @@ const routes: Routes = [
     path: "edit",
     children: [
       {path: "company/:iri", component: EditCompanyComponent},
-      {path: "company", component: EditCompanyComponent}
+      {path: "company", component: EditCompanyComponent},
+      {path: "person/:iri", component: EditPersonComponent},
+      {path: "person", component: EditPersonComponent}
     ],
   },
   {path: "**", component: PageNotFoundComponent}

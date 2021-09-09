@@ -32,7 +32,7 @@ import {
     UpdateResource,
     CreateValue,
     WriteValueResponse,
-    UpdateTextValueAsString, UpdateValue, UpdateLinkValue, DeleteResource
+    UpdateTextValueAsString, UpdateValue, UpdateLinkValue, DeleteResource, ListAdminCache
 } from "@dasch-swiss/dsp-js";
 import {GravsearchBuilderService} from './gravsearch-builder.service';
 import {IMainClass} from '../model/displayModel';
@@ -41,6 +41,11 @@ import {Observable, of, throwError} from "rxjs";
 import {AppInitService} from '../app-init.service';
 
 //---- BEGIN LUKAS ---------------------------------------------------------------------------------------------------
+
+export interface OptionType {
+    iri: string;
+    name: string;
+}
 
 export class CompanyData {
     constructor(
@@ -56,17 +61,17 @@ export class CompanyData {
 export class PersonData {
     constructor(
         public label: string,
-        public internalId: string, // hasPersonInternalId
-        public firstName: string, // hasFirstName
-        public lastName: string, // hasLastName
-        public gender: {gender: string; genderIri: string}, // hasGender
-        public description: string, // hasDescription
-        public birthDateStart?: Date, // hasBirthDate
-        public birthDateEnd?: Date, // hasBirthDate
-        public deathDateStart?: Date, // hasDeathDate
-        public deathDateEnd?: Date, // hasDeathDate
-        public extraInfo?: string, // hasPersonExtraInfo
-        public lexias?: {lexiaName: string; lexiaIri: string}[], // isLexiaPersonValue
+        public internalId: string, // hasPersonInternalId (1)
+        public firstName: string, // hasFirstName (0-1)
+        public lastName: string, // hasLastName (1)
+        public gender: {gender: string; genderIri: string}, // hasGender (1)
+        public description: string, // hasDescription (1)
+        public birthDateStart?: Date, // hasBirthDate (0-1)
+        public birthDateEnd?: Date, // hasBirthDate (0-1)
+        public deathDateStart?: Date, // hasDeathDate (0-1)
+        public deathDateEnd?: Date, // hasDeathDate (0-1)
+        public extraInfo?: string, // hasPersonExtraInfo (0-1)
+        public lexias?: {lexiaName: string; lexiaIri: string}[], // isLexiaPersonValue (0-n)
     ) {}
 }
 
@@ -198,8 +203,33 @@ export interface ResourceData {
     providedIn: 'root'
 })
 export class KnoraService {
-    private _knoraApiConnection: KnoraApiConnection;
+    public _knoraApiConnection: KnoraApiConnection;
     wwOntology: string;
+    listAdminCache: ListAdminCache;
+
+    researchFieldListIri: string;
+    public researchFieldTypes: Array<OptionType> = [];
+    markingTypeListIri: string;
+    public markingTypes: Array<OptionType> = [];
+    languageListIri: string;
+    public languageTypes: Array<OptionType> = [];
+    formalClassListIri: string;
+    public formalClassTypes: Array<OptionType> = [];
+    venuePlaceListIri: string;
+    public venuePlaceTypes: Array<OptionType> = [];
+    genreListIri: string;
+    public genreTypes: Array<OptionType> = [];
+    genderListIri: string;
+    public genderTypes: Array<OptionType> = [];
+    subjectListIri: string;
+    public subjectTypes: Array<OptionType> = [];
+    imageListIri: string;
+    public imageTypes: Array<OptionType> = [];
+    statusListIri: string;
+    public statusTypes: Array<OptionType> = [];
+    functionVoiceListIri: string;
+    public functionVoiceTypes: Array<OptionType> = [];
+
 
     constructor(private _gsBuilder: GravsearchBuilderService) {
     }
@@ -214,6 +244,8 @@ export class KnoraService {
         const config = new KnoraApiConfig(settings[0], host);
         this._knoraApiConnection = new KnoraApiConnection(config);
         this.wwOntology = url.replace('https', 'http') + '/ontology/0826/teimww/v2#';
+        this.listAdminCache = new ListAdminCache(this._knoraApiConnection.admin);
+        this.getListTypes();
     }
 
     login(email: string, password: string): any {
@@ -523,6 +555,150 @@ export class KnoraService {
 
 
     // EDITING BY LUKAS //----------------------------------------------------------------------------------------------
+
+    getAllLists2(): Observable<Array<ListData>> {
+        return this._knoraApiConnection.admin.listsEndpoint.getListsInProject('http://rdfh.ch/projects/0826').pipe(
+            map((res: ApiResponseData<ListsResponse>) => {
+                const result: Array<ListData> = [];
+                for (const list of res.body.lists) {
+                    result.push(new ListData(list.id, new LangString(list.labels)));
+                }
+                return result;
+            })
+        );
+    }
+
+    getFlatList(listIri: string): Observable<Array<ListData>> {
+        return this.listAdminCache.getList(listIri).pipe(
+            map( (res: ListResponse) => {
+                const flatList: Array<ListData> = [];
+                for (const child of res.list.children) {
+                    flatList.push(new ListData(child.id, new LangString(child.labels), child.name));
+                }
+                return flatList;
+            })
+        );
+    }
+
+    getListTypes() {
+        this.getAllLists2().subscribe(
+            lists => {
+                for (const list of lists) {
+                    if (list.labels.get('en') === 'Research field') {
+                        this.researchFieldListIri = list.listid;
+                        this.getFlatList(list.listid).subscribe(
+                            (res: Array<ListData>) => {
+                                for (const lt of res) {
+                                    this.researchFieldTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                }
+                            }
+                        );
+                    }
+                    if (list.labels.get('en') === 'Marking') {
+                        this.markingTypeListIri = list.listid;
+                        this.getFlatList(list.listid).subscribe(
+                            (res: Array<ListData>) => {
+                                for (const lt of res) {
+                                    this.markingTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                }
+                            }
+                        );
+                    }
+                    if (list.labels.get('en') === 'Language') {
+                        this.languageListIri = list.listid;
+                        this.getFlatList(list.listid).subscribe(
+                            (res: Array<ListData>) => {
+                                for (const lt of res) {
+                                    this.languageTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                }
+                            }
+                        );
+                    }
+                    if (list.labels.get('en') === 'Formal class') {
+                        this.formalClassListIri = list.listid;
+                        this.getFlatList(list.listid).subscribe(
+                            (res: Array<ListData>) => {
+                                for (const lt of res) {
+                                    this.formalClassTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                }
+                            }
+                        );
+                    }
+                    if (list.labels.get('en') === 'Venue place') {
+                        this.venuePlaceListIri = list.listid;
+                        this.getFlatList(list.listid).subscribe(
+                            (res: Array<ListData>) => {
+                                for (const lt of res) {
+                                    this.venuePlaceTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                }
+                            }
+                        );
+                    }
+                    if (list.labels.get('en') === 'Genre') {
+                        this.genreListIri = list.listid;
+                        this.getFlatList(list.listid).subscribe(
+                            (res: Array<ListData>) => {
+                                for (const lt of res) {
+                                    this.genreTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                }
+                            }
+                        );
+                    }
+                    if (list.labels.get('en') === 'Gender') {
+                        this.genderListIri = list.listid;
+                        this.getFlatList(list.listid).subscribe(
+                            (res: Array<ListData>) => {
+                                for (const lt of res) {
+                                    this.genreTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                }
+                            }
+                        );
+                    }
+                    if (list.labels.get('en') === 'Subject') {
+                        this.subjectListIri = list.listid;
+                        this.getFlatList(list.listid).subscribe(
+                            (res: Array<ListData>) => {
+                                for (const lt of res) {
+                                    this.subjectTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                }
+                            }
+                        );
+                    }
+                    if (list.labels.get('en') === 'Image') {
+                        this.imageListIri = list.listid;
+                        this.getFlatList(list.listid).subscribe(
+                            (res: Array<ListData>) => {
+                                for (const lt of res) {
+                                    this.imageTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                }
+                            }
+                        );
+                    }
+                    if (list.labels.get('en') === 'Status') {
+                        this.statusListIri = list.listid;
+                        this.getFlatList(list.listid).subscribe(
+                            (res: Array<ListData>) => {
+                                for (const lt of res) {
+                                    this.statusTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                }
+                            }
+                        );
+                    }
+                    if (list.labels.get('en') === 'Function voice') {
+                        this.functionVoiceListIri = list.listid;
+                        this.getFlatList(list.listid).subscribe(
+                            (res: Array<ListData>) => {
+                                for (const lt of res) {
+                                    this.functionVoiceTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                }
+                            }
+                        );
+                    }
+                }
+            }
+        );
+    }
+
 
     getResourcesByLabel(val: string, restype?: string): Observable<Array<{ id: string; label: string }>> {
         let params: ILabelSearchParams | undefined;

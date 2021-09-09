@@ -408,7 +408,7 @@ export class EditCompanyComponent implements OnInit {
             this.form.value.title,
             this.form.value.internalId,
             this.form.value.extraInfo,
-            this.form.value.lexias,
+            this.form.value.members,
             this.form.value.lexias,
         );
         break;
@@ -487,7 +487,7 @@ export class EditCompanyComponent implements OnInit {
     }
   }
 
-  save() {
+  save(): void {
     this.working = true;
     console.log('this.value:', this.value);
     if (this.inData.companyIri === undefined) {
@@ -668,7 +668,7 @@ export class EditCompanyComponent implements OnInit {
     }
   }
 
-  delete() {
+  delete(): void {
     const confirmationConfig = new MatDialogConfig();
     confirmationConfig.autoFocus = true;
     confirmationConfig.disableClose = true;

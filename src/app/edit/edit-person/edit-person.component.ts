@@ -1,12 +1,13 @@
-import {Component, Input, OnInit, Optional, Self} from "@angular/core";
-import {FormArray, FormBuilder, FormGroup, NgControl, Validators} from "@angular/forms";
-import {CompanyData, KnoraService, ListPropertyData, PersonData} from "../../services/knora.service";
-import {ActivatedRoute} from "@angular/router";
-import {Location} from "@angular/common";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {MatDialog} from "@angular/material/dialog";
-import {DateAdapter} from "@angular/material/core";
-import {combineLatest} from "rxjs";
+import {Component, Input, OnInit, Optional, Self} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, NgControl, Validators} from '@angular/forms';
+import {CompanyData, KnoraService, ListPropertyData, OptionType, PersonData} from '../../services/knora.service';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {DateAdapter} from '@angular/material/core';
+import {combineLatest} from 'rxjs';
+import {ConfirmationComponent, ConfirmationResult} from '../confirmation/confirmation.component';
 
 interface ValInfo {
   id?: string;
@@ -44,9 +45,207 @@ class PersonIds {
 @Component({
   selector: 'app-edit-person',
   template: `
-    <p>
-      edit-person works!
-    </p>
+    <mat-card>
+      <mat-card-title>Person Editor</mat-card-title>
+      <mat-card-content [formGroup]="form">
+        <mat-form-field [style.width.px]=400>
+          <input matInput
+                 class="full-width"
+                 placeholder="Label"
+                 formControlName="label"
+                 (input)="_handleInput('label')">
+          <mat-error *ngIf="form.controls.label.errors?.required">Label erforderlich!</mat-error>
+          <mat-error *ngIf="form.controls.label.errors?.minlength">Label muss mindestens aus 5 Buchstaben bestehen!</mat-error>
+        </mat-form-field>
+        <button *ngIf="valIds.label.changed" mat-mini-fab (click)="_handleUndo('label')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=400>
+          <input matInput
+                 class="full-width"
+                 placeholder="Internal ID"
+                 formControlName="internalId"
+                 (input)="_handleInput('internalId')">
+          <mat-error *ngIf="form.controls.internalId.errors?.required">Internal ID required!</mat-error>
+        </mat-form-field>
+        <button *ngIf="valIds.internalId.changed" mat-mini-fab (click)="_handleUndo('internalId')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=400>
+          <input matInput
+                 class="full-width"
+                 placeholder="Firstname"
+                 formControlName="firstName"
+                 (input)="_handleInput('firstName')">
+        </mat-form-field>
+        <button *ngIf="valIds.firstName.changed" mat-mini-fab (click)="_handleUndo('firstName')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <button *ngIf="valIds.firstName.id !== undefined" mat-mini-fab (click)="_handleDelete('firstName')">
+          <mat-icon *ngIf="!valIds.firstName.toBeDeleted" color="basic">delete</mat-icon>
+          <mat-icon *ngIf="valIds.firstName.toBeDeleted" color="warn">delete</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=400>
+          <input matInput
+                 class="full-width"
+                 placeholder="Lastname"
+                 formControlName="lastName"
+                 (input)="_handleInput('lastName')">
+          <mat-error *ngIf="form.controls.lastName.errors?.required">Lastname required!</mat-error>
+        </mat-form-field>
+        <button *ngIf="valIds.lastName.changed" mat-mini-fab (click)="_handleUndo('lastName')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=400>
+          <mat-select matInput required
+                      placeholder="Geschlecht"
+                      formControlName="genderIri"
+                      (selectionChange)="_handleInput('gender')">
+            <mat-option *ngFor="let lt of genderTypes" [value]="lt.iri">
+              {{lt.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button *ngIf="valIds.gender.changed" mat-mini-fab (click)="_handleUndo('gender')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=400>
+          <input matInput
+                 class="full-width"
+                 placeholder="Description"
+                 formControlName="description"
+                 (input)="_handleInput('description')">
+          <mat-error *ngIf="form.controls.description.errors?.required">Description required!</mat-error>
+        </mat-form-field>
+        <button *ngIf="valIds.description.changed" mat-mini-fab (click)="_handleUndo('description')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field appearance="fill" [style.width.px]=400>
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker" (change)="_handleInput('birthDate')" required>
+            <input matStartDate
+                   class="full-width"
+                   placeholder="Birthdate (period start)"
+                   formControlName="birthDateStart"
+                   (dateChange)="_handleInput('birthDate')">
+            <input matEndDate
+                   class="full-width"
+                   placeholder="Birthdate (period end)"
+                   formControlName="birthDateEnd"
+                   (dateChange)="_handleInput('birthDate')">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+          <mat-error *ngIf="form.controls.birthDateStart.errors?.required">Ungültiges Startdatum</mat-error>
+          <mat-error *ngIf="form.controls.birthDateEnd.errors?.required">Ungültiges Enddatum</mat-error>
+        </mat-form-field>
+        &nbsp;
+        <button *ngIf="valIds.birthDate.changed" mat-mini-fab (click)="_handleUndo('birthDate')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <button *ngIf="valIds.birthDate.id !== undefined" mat-mini-fab (click)="_handleDelete('birthDate')">
+          <mat-icon *ngIf="!valIds.birthDate.toBeDeleted">delete</mat-icon>
+          <mat-icon *ngIf="valIds.birthDate.toBeDeleted" color="warn">delete</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field appearance="fill" [style.width.px]=400>
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker" (change)="_handleInput('deathDate')" required>
+            <input matStartDate
+                   class="full-width"
+                   placeholder="Deathdate (period start)"
+                   formControlName="deathDateStart"
+                   (dateChange)="_handleInput('deathDate')">
+            <input matEndDate
+                   class="full-width"
+                   placeholder="Deathdate (period end)"
+                   formControlName="deathDateEnd"
+                   (dateChange)="_handleInput('deathDate')">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+          <mat-error *ngIf="form.controls.deathDateStart.errors?.required">Invalid start date</mat-error>
+          <mat-error *ngIf="form.controls.deathDateEnd.errors?.required">Invalid end date</mat-error>
+        </mat-form-field>
+        &nbsp;
+        <button *ngIf="valIds.deathDate.changed" mat-mini-fab (click)="_handleUndo('deathDate')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <button *ngIf="valIds.deathDate.id !== undefined" mat-mini-fab (click)="_handleDelete('deathDate')">
+          <mat-icon *ngIf="!valIds.deathDate.toBeDeleted">delete</mat-icon>
+          <mat-icon *ngIf="valIds.deathDate.toBeDeleted" color="warn">delete</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=400>
+          <input matInput
+                 class="full-width"
+                 placeholder="Extra info"
+                 formControlName="extraInfo"
+                 (input)="_handleInput('extraInfo')">
+        </mat-form-field>
+        <button *ngIf="valIds.extraInfo.changed" mat-mini-fab (click)="_handleUndo('extraInfo')">
+          <mat-icon>cached</mat-icon>
+        </button>
+        <button *ngIf="valIds.extraInfo.id !== undefined" mat-mini-fab (click)="_handleDelete('extraInfo')">
+          <mat-icon *ngIf="!valIds.extraInfo.toBeDeleted">delete</mat-icon>
+          <mat-icon *ngIf="valIds.extraInfo.toBeDeleted" color="warn">delete</mat-icon>
+        </button>
+        <br/>
+
+        <div formArrayName="lexias">
+          <mat-label>Lexias</mat-label>
+          <div *ngFor="let lexiaItem of getLexias().controls; let i=index">
+            <mat-form-field [formGroup]="lexiaItem">
+              <input matInput [matAutocomplete]="autoLexia"
+                     formControlName="lexiaName"
+                     class="knora-link-input-element klnkie-val full-width"
+                     placeholder="Has lexia"
+                     aria-label="Value"
+                     (change)="_handleInput('lexias', i)"
+                     (input)="_handleLinkInput('lexias', i)">
+              <input matInput formControlName="lexiaIri" [hidden]="true" ><br/>
+              <mat-autocomplete #autoLexia="matAutocomplete" (optionSelected)="_optionSelected($event.option.value, 'lexias', i)">
+                <mat-option *ngFor="let option of options" [value]="option.label">
+                  {{ option.label }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <button *ngIf="valIds.lexias[i].changed" mat-mini-fab (click)="_handleUndo('lexias', i)">
+              <mat-icon color="warn">cached</mat-icon>
+            </button>
+            <button *ngIf="valIds.lexias[i].id !== undefined" mat-mini-fab (click)="_handleDelete('lexias', i)">
+              <mat-icon *ngIf="!valIds.lexias[i].toBeDeleted" color="basic">delete</mat-icon>
+              <mat-icon *ngIf="valIds.lexias[i].toBeDeleted" color="warn">delete</mat-icon>
+            </button>
+
+          </div>
+          <button mat-mini-fab (click)="addLexia()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button appBackButton class="mat-raised-button" matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
+        <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Save</button>
+        <button *ngIf="inData.companyIri" type="submit" class="mat-raised-button" (click)="delete()">Delete</button>
+        <mat-progress-bar *ngIf="working" mode="indeterminate"></mat-progress-bar>
+      </mat-card-actions>
+    </mat-card>
   `,
   styles: [
   ]
@@ -54,13 +253,15 @@ class PersonIds {
 export class EditPersonComponent implements OnInit {
   inData: any;
   form: FormGroup;
-  options: Array<{id: string; label: string}> = [];
+  options: Array<{ id: string; label: string }> = [];
   resId: string;
   lastmod: string;
   data: PersonData = new PersonData('', '', '', '', {gender: '', genderIri: ''},
-      '', new Date(), new Date(), new Date(), new Date(), []);
+      '', new Date(), new Date(), new Date(), new Date(), '', []);
   working: boolean;
   public valIds: PersonIds = new PersonIds();
+  public genderTypes: Array<OptionType>;
+
 
   constructor(public knoraService: KnoraService,
               private fb: FormBuilder,
@@ -73,12 +274,14 @@ export class EditPersonComponent implements OnInit {
     this.dateAdapter.setLocale('de'); // dd/MM/yyyy
     this.inData = {};
     this.working = false;
+    this.genderTypes = knoraService.genderTypes;
+
   }
 
   @Input()
   get value(): PersonData | null {
     const lexias: FormArray = this.getLexias();
-    const lexiaValues: {lexiaName: string; lexiaIri: string}[] = [];
+    const lexiaValues: { lexiaName: string; lexiaIri: string }[] = [];
     for (const x of lexias.controls) {
       lexiaValues.push(x.value);
     }
@@ -99,17 +302,21 @@ export class EditPersonComponent implements OnInit {
   }
 
   set value(knoraVal: PersonData | null) {
-    const {label, internalId, firstName, lastName, gender, description, birthDateStart, birthDateEnd,
-      deathDateStart, deathDateEnd, extraInfo, lexias}
+    const {
+      label, internalId, firstName, lastName, gender, description, birthDateStart, birthDateEnd,
+      deathDateStart, deathDateEnd, extraInfo, lexias
+    }
         = knoraVal || new PersonData('', '', '', '', {gender: '', genderIri: ''},
-        '', new Date(), new Date(),new Date(), new Date(),'', [{lexiaName: '', lexiaIri: ''}]);
-    this.form.setValue({label, internalId, firstName, lastName, gender, description,
-      birthDateStart, birthDateEnd, deathDateStart, deathDateEnd, extraInfo, lexias});
+        '', new Date(), new Date(), new Date(), new Date(), '', [{lexiaName: '', lexiaIri: ''}]);
+    this.form.setValue({
+      label, internalId, firstName, lastName, gender, description,
+      birthDateStart, birthDateEnd, deathDateStart, deathDateEnd, extraInfo, lexias
+    });
   }
 
   ngOnInit(): void {
     this.working = false;
-    combineLatest([this.route.params, this.route.queryParams]).subscribe(arr  => {
+    combineLatest([this.route.params, this.route.queryParams]).subscribe(arr => {
       if (arr[0].iri !== undefined) {
         this.inData.personIri = arr[0].iri;
       }
@@ -221,8 +428,8 @@ export class EditPersonComponent implements OnInit {
       //this.memberItems = this.fb.array([this.fb.group({memberName: '', memberIri: ''})]);
       this.form = this.fb.group({
         label: [this.data.label, [Validators.required, Validators.minLength(5)]],
-        firstName: [this.data.firstName, [Validators.required, Validators.minLength(5)]],
-        lastName: [this.data.lastName, [Validators.required, Validators.minLength(5)]],
+        firstName: [this.data.firstName, []],
+        lastName: [this.data.lastName, [Validators.required]],
         genderIri: [this.data.gender.genderIri, [Validators.required]],
         description: [this.data.description, [Validators.required]],
         birthDateStart: [this.data.birthDateStart, []],
@@ -243,22 +450,210 @@ export class EditPersonComponent implements OnInit {
     return this.form.controls.lexias as FormArray;
   }
 
-  addLexia(lexia?: {lexiaName: string; lexiaIri: string}) {
+  addLexia(lexia?: { lexiaName: string; lexiaIri: string }) {
     const lexias = this.getLexias();
     if (lexia === undefined) {
       lexias.push(this.fb.group({lexiaName: '', lexiaIri: ''}));
       this.data.lexias.push({lexiaName: '', lexiaIri: ''});
       this.valIds.lexias.push({id: undefined, changed: false, toBeDeleted: false});
-    }
-    else {
+    } else {
       lexias.push(this.fb.group({lexiaName: lexia.lexiaName, lexiaIri: lexia.lexiaIri}));
       this.data.lexias.push({lexiaName: lexia.lexiaName, lexiaIri: lexia.lexiaIri});
       this.valIds.lexias.push({id: lexia.lexiaIri, changed: false, toBeDeleted: false});
     }
   }
 
-  onChange = (_: any) => {};
+  onChange = (_: any) => {
+  };
 
-  
+  _handleLinkInput(what: string, index?: number): void {
+    switch(what) {
+      case 'lexias':
+        const lexias = this.getLexias();
+        const lexiaName = lexias.value[index].lexiaName;
 
+        this.valIds.lexias[index].changed = true;
+        this.knoraService.getResourcesByLabel(lexiaName, this.knoraService.wwOntology + 'lexia').subscribe(
+            res => {
+              this.options = res;
+              this.form.value.lexias[index].lexiaName = res[0].label;
+              this.form.value.lexias[index].lexiaIri =  res[0].id;
+            }
+        );
+        break;
+    }
+  }
+
+  _optionSelected(val: any, what: string, index?: number): void {
+    const res = this.options.filter(tmp => tmp.label === val);
+    if (res.length !== 1) {
+      console.log('BIG ERROR...');
+    }
+    switch(what) {
+      case 'lexias':
+        this.form.value.lexias[index].lexiaName = res[0].label;
+        this.form.value.lexias[index].lexiaIri =  res[0].id;
+        this.value = new PersonData(
+            this.form.value.label,
+            this.form.value.internalId,
+            this.form.value.firstName,
+            this.form.value.lastName,
+            this.form.value.gender,
+            this.form.value.description,
+            this.form.value.birthDateStart,
+            this.form.value.birthDateEnd,
+            this.form.value.deathDateStart,
+            this.form.value.deathDateEnd,
+            this.form.value.extraInfo,
+            this.form.value.lexias,
+        );
+        break;
+    }
+  }
+
+  _handleInput(what: string, index?: number): void {
+    this.onChange(this.form.value);
+    switch (what) {
+      case 'label':
+        this.valIds.label.changed = true;
+        break;
+      case 'internalId':
+        this.valIds.internalId.changed = true;
+        break;
+      case 'firstName':
+        this.valIds.firstName.changed = true;
+        break;
+      case 'lastName':
+        this.valIds.lastName.changed = true;
+        break;
+      case 'gender':
+        this.valIds.gender.changed = true;
+        break;
+      case 'description':
+        this.valIds.description.changed = true;
+        break;
+      case 'birthDate':
+        this.valIds.birthDate.changed = true;
+        break;
+      case 'deathDate':
+        this.valIds.deathDate.changed = true;
+        break;
+      case 'extraInfo':
+        this.valIds.extraInfo.changed = true;
+        break;
+      case 'lexias':
+        this.valIds.lexias[index].changed = true;
+        break;
+    }
+  }
+
+  _handleDelete(what: string, index?: number): void {
+    switch (what) {
+      case 'firstName':
+        this.valIds.firstName.toBeDeleted = !this.valIds.firstName.toBeDeleted;
+        console.log('_handleDelete("firstName")');
+        break;
+      case 'birthDate':
+        this.valIds.birthDate.toBeDeleted = !this.valIds.birthDate.toBeDeleted;
+        console.log('_handleDelete("birthDate")');
+        break;
+      case 'deathDate':
+        this.valIds.deathDate.toBeDeleted = !this.valIds.deathDate.toBeDeleted;
+        console.log('_handleDelete("deathDate")');
+        break;
+      case 'extraInfo':
+        this.valIds.extraInfo.toBeDeleted = !this.valIds.extraInfo.toBeDeleted;
+        console.log('_handleDelete("extraInfo")');
+        break;
+      case 'lexias':
+        this.valIds.lexias[index].toBeDeleted = !this.valIds.lexias[index].toBeDeleted;
+        break;
+    }
+
+  }
+
+  _handleUndo(what: string, index?: number): void {
+    switch (what) {
+      case 'label':
+        this.form.controls.label.setValue(this.data.label);
+        this.valIds.label.changed = false;
+        break;
+      case 'internalId':
+        this.form.controls.internalId.setValue(this.data.internalId);
+        this.valIds.internalId.changed = false;
+        break;
+      case 'firstName':
+        this.form.controls.firstName.setValue(this.data.firstName);
+        this.valIds.firstName.changed = false;
+        break;
+      case 'lastName':
+        this.form.controls.lastName.setValue(this.data.lastName);
+        this.valIds.lastName.changed = false;
+        break;
+      case 'gender':
+        this.form.controls.gender.setValue(this.data.gender);
+        this.valIds.gender.changed = false;
+        break;
+      case 'description':
+        this.form.controls.description.setValue(this.data.description);
+        this.valIds.description.changed = false;
+        break;
+      case 'birthDate':
+        this.form.controls.birthDateStart.setValue(this.data.birthDateStart);
+        this.form.controls.birthDateEnd.setValue(this.data.birthDateEnd);
+        this.valIds.birthDate.changed = false;
+        break;
+      case 'deathDate':
+        this.form.controls.deathDateStart.setValue(this.data.deathDateStart);
+        this.form.controls.deathDateEnd.setValue(this.data.deathDateEnd);
+        this.valIds.deathDate.changed = false;
+        break;
+      case 'extraInfo':
+        this.form.controls.extraInfo.setValue(this.data.extraInfo);
+        this.valIds.extraInfo.changed = false;
+        break;
+      case 'lexias':
+        console.log(this.data.lexias);
+        console.log('== index:', index);
+        this.getLexias().controls[index].setValue(this.data.lexias[index]);
+        this.valIds.lexias[index].changed = false;
+        break;
+    }
+
+  }
+
+  save(): void {
+    console.log('this.value:', this.value);
+
+  }
+
+  delete(): void {
+    const confirmationConfig = new MatDialogConfig();
+    confirmationConfig.autoFocus = true;
+    confirmationConfig.disableClose = true;
+    confirmationConfig.data = {
+      title: 'Delete company',
+      text: 'Do You really want to delete this comapany?'
+    };
+
+    const dialogRef = this.dialog.open(ConfirmationComponent, confirmationConfig);
+    this.working = true;
+    dialogRef.afterClosed().subscribe((data: ConfirmationResult) => {
+      if (data.status) {
+        console.log('lastmod', this.lastmod);
+        this.knoraService.deleteResource(this.resId, 'person', this.lastmod, data.comment).subscribe(
+            res => {
+              this.working = false;
+              this.location.back();
+            },
+            error => {
+              this.snackBar.open('Error while deleting the company entry!', 'OK');
+              console.log('deleteResource:ERROR:: ', error);
+              this.working = false;
+              this.location.back();
+            });
+      }
+    });
+
+  }
 }

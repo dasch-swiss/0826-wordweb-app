@@ -101,6 +101,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { EditComponent } from './edit/edit.component';
 import { ConfirmationComponent } from './edit/confirmation/confirmation.component';
 import { EditPersonComponent } from './edit/edit-person/edit-person.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -199,7 +200,8 @@ export function initializeApp(appInitService: AppInitService) {
         MatDialogModule,
         NgxSpinnerModule,
         MatProgressBarModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatDatepickerModule
     ],
     providers: [
         AppInitService,
