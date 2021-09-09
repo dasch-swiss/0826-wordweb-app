@@ -250,6 +250,7 @@ class PersonIds {
   styles: [
   ]
 })
+
 export class EditPersonComponent implements OnInit {
   inData: any;
   form: FormGroup;
