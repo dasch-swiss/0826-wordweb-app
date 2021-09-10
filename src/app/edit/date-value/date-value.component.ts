@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {MatFormFieldControl} from "@angular/material/form-field";
+import {ControlValueAccessor, FormGroup} from "@angular/forms";
+import {coerceBooleanProperty} from "@angular/cdk/coercion";
+import {Subject} from "rxjs";
 
 // https://material.angular.io/guide/creating-a-custom-form-field-control
 export enum DateCalendar {
@@ -28,10 +32,12 @@ export enum DateMonth {
   july,
   august,
   september,
-  octobre,
+  october,
   november,
   december
 }
+
+
 
 class DateValue {
   constructor(public calendar: DateCalendar,
@@ -56,8 +62,8 @@ class DateValue {
         default: throw TypeError('Invalid calendar string: ' + found[1]);
       }
       const yearStart = parseInt(found[2], 10);
-      const monthStart = DateMonth[parseInt(found[3], 10)];
-      const dayStart = parseInt(found[4], 10);
+      const monthStart = parseInt(found[3], 10);
+      const dayStart = parseInt(found[4], 10) as DayRange;
       let periodStart: DatePeriod;
       switch(found[5]) {
         case DatePeriod.BCE: periodStart = DatePeriod.BCE; break;
@@ -65,8 +71,8 @@ class DateValue {
         default: throw TypeError('Invalid period string: ' + found[5]);
       }
       const yearEnd = parseInt(found[6], 10);
-      const monthEnd = DateMonth[parseInt(found[7], 10)];
-      const dayEnd = parseInt(found[8], 10);
+      const monthEnd = parseInt(found[7], 10);
+      const dayEnd = parseInt(found[8], 10) as DayRange;
       let periodEnd: DatePeriod;
       switch(found[9]) {
         case DatePeriod.BCE: periodStart = DatePeriod.BCE; break;
@@ -79,16 +85,91 @@ class DateValue {
 }
 
 @Component({
-  selector: 'app-date-value',
+  selector: 'knora-date-value',
   template: `
-    <p>
-      date-value works!
-    </p>
+    <div [formGroup]="parts" class="knora-string-input-container">
+      <mat-select formControlName="calendar"
+                  aria-label="Value"
+                  (selectionChange)="_handleInput()">
+        <mat-option *ngFor="let dispNode in DateCalendar" [value]="dispNode">{{dispNode}}</mat-option>
+      </mat-select>
+      
+    </div>
   `,
+  providers: [{provide: MatFormFieldControl, useExisting: DateValueComponent}],
   styles: [
   ]
 })
-export class DateValueComponent implements OnInit {
+
+export class DateValueComponent
+    implements ControlValueAccessor, MatFormFieldControl<DateValue>, OnDestroy, OnInit {
+  @Input()
+  valueLabel: string;
+  static nextId = 0;
+
+  parts: FormGroup;
+  stateChanges = new Subject<void>();
+  focused = false;
+  errorState = false;
+  controlType = 'knora-date-value';
+  id = `knora-date-value-${DateValueComponent.nextId++}`;
+  describedBy = '';
+
+  private _placeholder: string;
+  private _required = false;
+  private _disabled = false;
+
+  onChange = (_: any) => {};
+  onTouched = () => {};
+
+  get empty() {
+    const {value: {value, comment}} = this.parts;
+    return !value && !comment;
+  }
+
+  get shouldLabelFloat() {
+    return this.focused || !this.empty;
+  }
+
+  @Input()
+  get placeholder(): string {
+    return this._placeholder;
+  }
+  set placeholder(value: string) {
+    this._placeholder = value;
+    this.stateChanges.next();
+  }
+
+  @Input()
+  get required(): boolean {
+    return this._required;
+  }
+  set required(value: boolean) {
+    this._required = coerceBooleanProperty(value);
+    this.stateChanges.next();
+  }
+
+  @Input()
+  get disabled(): boolean {
+    return this._disabled;
+  }
+  set disabled(value: boolean) {
+    this._disabled = coerceBooleanProperty(value);
+    this._disabled ? this.parts.disable() : this.parts.enable();
+    this.stateChanges.next();
+  }
+
+  @Input()
+  get value(): KnoraStringVal | null {
+    const {value: {value, comment}} = this.parts;
+    return new KnoraStringVal(value, comment);
+  }
+  set value(knoraVal: KnoraStringVal | null) {
+    const {value, comment} = knoraVal || new KnoraStringVal('', '');
+    this.parts.setValue({value, comment});
+    this.stateChanges.next();
+  }
+
 
   constructor() { }
 
