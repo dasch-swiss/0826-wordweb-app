@@ -104,6 +104,7 @@ import { EditPersonComponent } from './edit/edit-person/edit-person.component';
 import {DatePipe} from '@angular/common';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from '@angular/material/core';
+import { DateValueComponent } from './edit/date-value/date-value.component';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -170,6 +171,7 @@ export function initializeApp(appInitService: AppInitService) {
         EditComponent,
         ConfirmationComponent,
         EditPersonComponent,
+        DateValueComponent,
     ],
     imports: [
         BrowserModule,
