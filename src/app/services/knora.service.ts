@@ -271,7 +271,6 @@ export class KnoraService {
     }
 
     processRes(resource: ReadResource) {
-        console.log('>>>>>>>>>ReadResource:', resource);
         const newResource = {
             id: resource.id,
             arkUrl: resource.arkUrl,
@@ -584,6 +583,7 @@ export class KnoraService {
         this.getAllLists2().subscribe(
             lists => {
                 for (const list of lists) {
+                    console.log('List processing: ', list);
                     if (list.labels.get('en') === 'Research field') {
                         this.researchFieldListIri = list.listid;
                         this.getFlatList(list.listid).subscribe(
@@ -649,7 +649,7 @@ export class KnoraService {
                         this.getFlatList(list.listid).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
-                                    this.genreTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                    this.genderTypes.push({iri: lt.listid, name: lt.labels.get('en')});
                                 }
                             }
                         );

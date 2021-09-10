@@ -27,8 +27,8 @@ import {BrowsingComponent} from "./search/browsing/browsing.component";
 import {ResourceComponent} from "./resource/resource.component";
 
 import {EditCompanyComponent} from "./edit/edit-company/edit-company.component";
-import {EditComponent} from "./edit/edit.component";
 import {EditPersonComponent} from "./edit/edit-person/edit-person.component";
+import {EditComponent} from "./edit/edit.component";
 
 const routes: Routes = [
   {path: "", redirectTo: "search", pathMatch: "full"},

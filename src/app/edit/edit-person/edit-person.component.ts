@@ -6,7 +6,7 @@ import {Location} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {DateAdapter} from '@angular/material/core';
-import {combineLatest} from 'rxjs';
+import {combineLatest, forkJoin} from 'rxjs';
 import {ConfirmationComponent, ConfirmationResult} from '../confirmation/confirmation.component';
 
 interface ValInfo {
@@ -242,7 +242,7 @@ class PersonIds {
       <mat-card-actions>
         <button appBackButton class="mat-raised-button" matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
         <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Save</button>
-        <button *ngIf="inData.companyIri" type="submit" class="mat-raised-button" (click)="delete()">Delete</button>
+        <button *ngIf="inData.personIri" type="submit" class="mat-raised-button" (click)="delete()">Delete</button>
         <mat-progress-bar *ngIf="working" mode="indeterminate"></mat-progress-bar>
       </mat-card-actions>
     </mat-card>
@@ -252,6 +252,7 @@ class PersonIds {
 })
 
 export class EditPersonComponent implements OnInit {
+  controlType = 'EditPerson';
   inData: any;
   form: FormGroup;
   options: Array<{ id: string; label: string }> = [];
@@ -272,11 +273,11 @@ export class EditPersonComponent implements OnInit {
               private snackBar: MatSnackBar,
               public dialog: MatDialog,
               @Optional() @Self() public ngControl: NgControl) {
+    console.log('EditPersonComponent.constructor');
     this.dateAdapter.setLocale('de'); // dd/MM/yyyy
     this.inData = {};
     this.working = false;
     this.genderTypes = knoraService.genderTypes;
-
   }
 
   @Input()
@@ -316,14 +317,16 @@ export class EditPersonComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('EditPersonComponent.ngOnInit');
     this.working = false;
     combineLatest([this.route.params, this.route.queryParams]).subscribe(arr => {
       if (arr[0].iri !== undefined) {
         this.inData.personIri = arr[0].iri;
       }
+
       if (this.inData.personIri !== undefined) {
-        this.knoraService.getResource(this.inData.companyIri).subscribe((data) => {
-          if (this.inData.companyIri !== undefined) {
+        this.knoraService.getResource(this.inData.personIri).subscribe((data) => {
+          if (this.inData.personIri !== undefined) {
             console.log('DATA: ', data);
             this.resId = data.id;
             this.lastmod = data.lastmod;
@@ -426,6 +429,7 @@ export class EditPersonComponent implements OnInit {
           }
         });
       }
+
       //this.memberItems = this.fb.array([this.fb.group({memberName: '', memberIri: ''})]);
       this.form = this.fb.group({
         label: [this.data.label, [Validators.required, Validators.minLength(5)]],
@@ -464,8 +468,7 @@ export class EditPersonComponent implements OnInit {
     }
   }
 
-  onChange = (_: any) => {
-  };
+  onChange = (_: any) => {};
 
   _handleLinkInput(what: string, index?: number): void {
     switch(what) {
@@ -620,7 +623,6 @@ export class EditPersonComponent implements OnInit {
         this.valIds.lexias[index].changed = false;
         break;
     }
-
   }
 
   save(): void {
