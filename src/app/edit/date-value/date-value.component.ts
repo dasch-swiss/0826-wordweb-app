@@ -1,8 +1,9 @@
-import {Component, Input, OnDestroy, OnInit} from "@angular/core";
-import {MatFormFieldControl} from "@angular/material/form-field";
-import {ControlValueAccessor, FormGroup} from "@angular/forms";
-import {coerceBooleanProperty} from "@angular/cdk/coercion";
-import {Subject} from "rxjs";
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {MatFormFieldControl} from '@angular/material/form-field';
+import {ControlValueAccessor, FormGroup} from '@angular/forms';
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import {Subject} from 'rxjs';
+import {calendars} from "../../classes/calender-helper";
 
 // https://material.angular.io/guide/creating-a-custom-form-field-control
 export enum DateCalendar {
@@ -89,11 +90,27 @@ class DateValue {
   template: `
     <div [formGroup]="parts" class="knora-string-input-container">
       <mat-select formControlName="calendar"
-                  aria-label="Value"
+                  aria-label="Calendar"
                   (selectionChange)="_handleInput()">
-        <mat-option *ngFor="let dispNode in DateCalendar" [value]="dispNode">{{dispNode}}</mat-option>
+        <mat-option *ngFor="let dispNode in calendarNames" [value]="dispNode">{{dispNode}}</mat-option>
       </mat-select>
-      
+      <mat-select formControlName="startPeriod"
+                  aria-label="Period"
+                  (selectionChange)="_handleInput()">
+        <mat-option value="CE">BC</mat-option>
+        <mat-option value="BCE">BCE</mat-option>
+      </mat-select>
+      <mat-select formControlName="startDay"
+                  aria-label="Start day"
+                  (selectionChange)="_handleInput()">
+        <mat-option *ngFor="let d in days" [value]="d">d</mat-option>
+      </mat-select>
+      <mat-select formControlName="startMonth"
+                  aria-label="Start day"
+                  (selectionChange)="_handleInput()">
+        <mat-option *ngFor="let d in months" [value]="d">d</mat-option>
+      </mat-select>
+      <input formControlName="startYear" aria-label="Start year" (input)="_handleInput()">
     </div>
   `,
   providers: [{provide: MatFormFieldControl, useExisting: DateValueComponent}],
@@ -105,6 +122,12 @@ export class DateValueComponent
     implements ControlValueAccessor, MatFormFieldControl<DateValue>, OnDestroy, OnInit {
   @Input()
   valueLabel: string;
+  calendarNames = ['GREGORIAN', 'JULIAN', 'JEWISH'];
+  days = ['-', '1','2','3','4','5','6','7','8','9','10','11','12','13','14','15',
+    '16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
+  months = ['-', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+
+
   static nextId = 0;
 
   parts: FormGroup;
@@ -171,9 +194,56 @@ export class DateValueComponent
   }
 
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy() {
+    this.stateChanges.complete();
+    this._focusMonitor.stopMonitoring(this._elementRef);
+  }
+
+  setDescribedByIds(ids: string[]) {
+    this.describedBy = ids.join(' ');
+  }
+
+  onContainerClick(event: MouseEvent) {
+    if ((event.target as Element).tagName.toLowerCase() !== 'input') {
+      // tslint:disable-next-line:no-non-null-assertion
+      this._elementRef.nativeElement.querySelector('input')!.focus();
+    }
+  }
+
+  writeValue(knoraVal: KnoraListVal | null): void {
+    this.value = knoraVal;
+  }
+
+  registerOnChange(fn: any): void {
+    console.log('registerOnChange', fn);
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+    if (isDisabled) {
+      // tslint:disable-next-line:no-non-null-assertion
+      this._elementRef.nativeElement.querySelector('.klie-val')!.classList.remove('bg');
+      this._elementRef.nativeElement.querySelector('.klie-com')!.classList.remove('bg');
+    } else {
+      // tslint:disable-next-line:no-non-null-assertion
+      this._elementRef.nativeElement.querySelector('.klie-val')!.classList.add('bg');
+      this._elementRef.nativeElement.querySelector('.klie-com')!.classList.add('bg');
+    }
+  }
+
+  _handleInput(): void {
+    this.onChange(this.parts.value);
   }
 
 }

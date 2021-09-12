@@ -24,9 +24,6 @@ const GREGORIAN_EPOCH = 1721425.5;
 const JULIAN_EPOCH = 1721423.5;
 const HEBREW_EPOCH = 347995.5;
 
-const NormLeap = new Array('Normal year', 'Leap year');
-
-
 
 export class CalenderHelper {
     calendarnames: string[]  = [];
@@ -44,10 +41,12 @@ export class CalenderHelper {
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     gregorian_to_jd(year: number | string, month: number | string, day: number | string) {
-        year = typeof(year) === 'number' ? Math.floor(year) : parseInt(year);
-        month = typeof(month) === 'number' ? Math.floor(month) : parseInt(month);
-        day = typeof(day) === 'number' ? Math.floor(day) : parseInt(day);
-        if (year < 0) year++; // correction for PHP
+        year = typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
+        month = typeof(month) === 'number' ? Math.floor(month) : parseInt(month, 10);
+        day = typeof(day) === 'number' ? Math.floor(day) : parseInt(day, 10);
+        if (year < 0) {
+            year++;
+        } // correction for PHP
         return (GREGORIAN_EPOCH - 1) +
             (365 * (year - 1)) +
             Math.floor((year - 1) / 4) +
@@ -61,9 +60,7 @@ export class CalenderHelper {
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     jd_to_gregorian(jd: number | string): number[] {
-        var dyindex;
-
-        const jsd = typeof(jd) === 'number' ? Math.floor(jd) : parseInt(jd);
+        const jsd = typeof(jd) === 'number' ? Math.floor(jd) : parseInt(jd, 10);
         const wjd = Math.floor(jsd - 0.5) + 0.5;
         const depoch = wjd - GREGORIAN_EPOCH;
         const quadricent = Math.floor(depoch / 146097);
@@ -85,7 +82,9 @@ export class CalenderHelper {
         const month = Math.floor((((yearday + leapadj) * 12) + 373) / 367);
         const day = (wjd - this.gregorian_to_jd(year, month, 1)) + 1;
 
-        if (year <= 0) year--; // correction for PHPvar JULIAN_EPOCH = 1721423.5;
+        if (year <= 0) {
+            year--;
+        } // correction for PHPvar JULIAN_EPOCH = 1721423.5;
 
         return new Array(Math.round(year), Math.round(month), Math.round(day));
     }
@@ -146,7 +145,7 @@ export class CalenderHelper {
             year--;
         }
 
-        return new Array(Math.round(year), Math.round(month), Math.round(day));
+        return [Math.round(year), Math.round(month), Math.round(day)];
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -231,6 +230,7 @@ export class CalenderHelper {
                           the inverse function, and is this very
                           slow.  */
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     jd_to_hebrew(jd: number |string): number[] {
         jd = typeof(jd) === 'number' ? Math.floor(jd) : parseInt(jd, 10);
 
@@ -249,6 +249,7 @@ export class CalenderHelper {
         return new Array(Math.round(year), Math.round(month), Math.round(day));
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     daycnt(cal: string, year: number | string, month: number | string): {days: number; weekday_first: number} {
         year = typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
         month = typeof(month) === 'number' ? Math.floor(month) : parseInt(month, 10);
@@ -304,11 +305,13 @@ export class CalenderHelper {
                 throw TypeError('Unkown calendar: ' + cal);
         }
         return {
-            days: days,
+            days,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             weekday_first: this.jwday(dc1)
-        }
+        };
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     jdc_to_date(jdc: number | string, cal: string): {year: number; month: number; day: number; weekday: number} {
         jdc = typeof(jdc) === 'number' ? Math.floor(jdc) : parseInt(jdc, 10);
         let tmparr: number[];
@@ -332,10 +335,11 @@ export class CalenderHelper {
                 throw TypeError('Unkown calendar: ' + cal);
         }
 
-        return {year: tmparr[0], month: tmparr[1], day:tmparr[2], weekday: this.jwday(jdc)}
+        return {year: tmparr[0], month: tmparr[1], day:tmparr[2], weekday: this.jwday(jdc)};
     }
 
-    date_to_jdc(day, month, year, cal, periodpart) {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    date_to_jdc(day: number | string, month: number | string, year: number | string, cal: string, periodpart: string) {
         let jdc = 0;
 
         year = typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
@@ -343,15 +347,21 @@ export class CalenderHelper {
         day = typeof(day) === 'number' ? Math.floor(day) : parseInt(day, 10);
 
         if (periodpart === 'END') {
-            if (month === 0) month = calendars[cal].n_months;
+            if (month === 0) {
+                month = calendars[cal].n_months;
+            }
             if (day === 0) {
                 const tmp = this.daycnt(cal, year, month);
                 day = tmp.days;
             }
         }
         else {
-            if (month === 0) month = 1;
-            if (day === 0) day = 1;
+            if (month === 0) {
+                month = 1;
+            }
+            if (day === 0) {
+                day = 1;
+            }
         }
 
         switch (cal) {
@@ -380,7 +390,7 @@ export class CalenderHelper {
 // ----- private -----
 
     private mod(a: number, b: number): number {
-        return a - (b * Math.floor(a / b))
+        return a - (b * Math.floor(a / b));
     };
 
     private jwday(j: number | string): number {
