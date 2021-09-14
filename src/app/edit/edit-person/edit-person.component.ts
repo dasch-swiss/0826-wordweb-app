@@ -135,7 +135,7 @@ class PersonIds {
         &nbsp;
         <mat-form-field appearance="fill"  [style.width.px]=600>
           <mat-label>Birthdate</mat-label>
-          <knora-date-value formControlName="deathDate"></knora-date-value>
+          <knora-date-value formControlName="birthDate"></knora-date-value>
         </mat-form-field>
         <button *ngIf="valIds.birthDate.changed" mat-mini-fab (click)="_handleUndo('birthDate')">
           <mat-icon color="warn">cached</mat-icon>

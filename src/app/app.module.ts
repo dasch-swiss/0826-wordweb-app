@@ -104,6 +104,7 @@ import { EditPersonComponent } from './edit/edit-person/edit-person.component';
 import {DatePipe} from '@angular/common';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from '@angular/material/core';
+import {CalenderHelper} from "./classes/calender-helper";
 import { DateValueComponent } from './edit/date-value/date-value.component';
 
 export function initializeApp(appInitService: AppInitService) {
@@ -213,6 +214,7 @@ export function initializeApp(appInitService: AppInitService) {
         ListService,
         GravsearchBuilderService,
         DatePipe,
+        CalenderHelper,
         {
             provide: APP_INITIALIZER,
             useFactory: initializeApp,
