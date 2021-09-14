@@ -41,6 +41,7 @@ export enum DateMonth {
 
 export class DateValue {
   calendar: string;
+  timeSpan: boolean;
   startDay: string;
   startMonth: string;
   startYear: string;
@@ -51,6 +52,7 @@ export class DateValue {
   endEra: string;
 
   constructor(calendar?: string | undefined,
+              timeSpan?: boolean | undefined,
               startDay?: number | string | undefined,
               startMonth?: number | string | undefined,
               startYear?: number | string | undefined,
@@ -69,6 +71,7 @@ export class DateValue {
         default: throw TypeError('Invalid calendar: ' + calendar);
       }
     }
+    this.timeSpan = timeSpan || false;
     this.startDay = DateValue.getRange(startDay, 1, 31);
     this.startMonth = DateValue.getRange(startMonth, 1, 12);
     let sY = typeof startYear === 'string' ? parseInt(startYear, 10) : startYear;
@@ -102,6 +105,7 @@ export class DateValue {
         case undefined: calendar = DateCalendar.GREGORIAN; break;
         default: throw TypeError('Invalid calendar string: ' + found[1]);
       }
+      const timeSpan = found[6] ? true : false;
       const startYear = typeof found[2] === 'string' ? parseInt(found[2], 10) : undefined;
       const startMonth = DateValue.getRange(found[3], 1, 12);
       const startDay = DateValue.getRange(found[4], 1, 31);
@@ -112,7 +116,7 @@ export class DateValue {
       const endDay = DateValue.getRange(found[8], 1, 31);
       const endEra = DateValue.getEra(found[9]);
 
-      return new DateValue(calendar, startYear, startMonth, startDay, startEra, endYear, endMonth, endDay, endEra);
+      return new DateValue(calendar, timeSpan, startYear, startMonth, startDay, startEra, endYear, endMonth, endDay, endEra);
     }
   }
 
@@ -159,60 +163,87 @@ export class DateValue {
 @Component({
   selector: 'knora-date-value',
   template: `
-    <div [formGroup]="parts" class="knora-string-input-container">
-      <mat-select matNativeControl
-                  formControlName="calendar"
-                  aria-label="Calendar"
-                  (selectionChange)="_handleInput()">
-        <mat-option *ngFor="let dispNode of calendarNames" [value]="dispNode">{{dispNode}}</mat-option>
-      </mat-select>
+    <div [formGroup]="parts" class="datecontainer">
+      <mat-form-field class="calsel">
+        <mat-label>Calendar</mat-label>
+        <mat-select matNativeControl
+                    formControlName="calendar"
+                    aria-label="Calendar"
+                    (selectionChange)="_handleInput()">
+          <mat-option *ngFor="let dispNode of calendarNames" [value]="dispNode">{{dispNode}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+        <mat-checkbox formControlName="timeSpan">Time span</mat-checkbox>
       <br>
-      <mat-select matNativeControl
-                  formControlName="startDay"
-                  aria-label="Start day"
-                  (selectionChange)="_handleInput()">
-        <mat-option *ngFor="let d of days" [value]="d">{{d}}</mat-option>
-      </mat-select>
-      <mat-select matNativeControl
-                  formControlName="startMonth"
-                  aria-label="Start month"
-                  (selectionChange)="_handleInput()">
-        <mat-option *ngFor="let d of months" [value]="d">{{d}}</mat-option>
-      </mat-select>
-      <input matInput formControlName="startYear" aria-label="Start year" (input)="_handleInput()">
-      <mat-select matNativeControl
-                  formControlName="startEra"
-                  aria-label="Start era"
-                  (selectionChange)="_handleInput()">
-        <mat-option value="CE">BC</mat-option>
-        <mat-option value="BCE">BCE</mat-option>
-      </mat-select>
+      <mat-form-field  class="rangesel">
+        <mat-label>Day</mat-label>
+        <mat-select formControlName="startDay"
+                    aria-label="Start day"
+                    (selectionChange)="_handleInput()">
+          <mat-option *ngFor="let d of days" [value]="d">{{d}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="rangesel">
+        <mat-label>Month</mat-label>
+        <mat-select formControlName="startMonth"
+                    aria-label="Start month"
+                    (selectionChange)="_handleInput()">
+          <mat-option *ngFor="let d of months" [value]="d">{{d}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="yearsel">
+        <mat-label>Year</mat-label>
+        <input matInput formControlName="startYear" aria-label="Start year" (input)="_handleInput()">
+      </mat-form-field>
+      <mat-form-field  class="rangesel">
+        <mat-label>Era</mat-label>
+        <mat-select formControlName="startEra"
+                    aria-label="Start era"
+                    (selectionChange)="_handleInput()">
+          <mat-option value="CE">BC</mat-option>
+          <mat-option value="BCE">BCE</mat-option>
+        </mat-select>
+      </mat-form-field>
       <br>
-      <mat-select matNativeControl
-                  formControlName="endDay"
-                  aria-label="End day"
-                  (selectionChange)="_handleInput()">
-        <mat-option *ngFor="let d of days" [value]="d">{{d}}</mat-option>
-      </mat-select>
-      <mat-select matNativeControl
-                  formControlName="endMonth"
-                  aria-label="End month"
-                  (selectionChange)="_handleInput()">
-        <mat-option *ngFor="let d of months" [value]="d">{{d}}</mat-option>
-      </mat-select>
-      <input matInput formControlName="endYear" aria-label="End year" (input)="_handleInput()">
-      <mat-select matNativeControl
-                  formControlName="endEra"
-                  aria-label="End era"
-                  (selectionChange)="_handleInput()">
-        <mat-option value="CE">BC</mat-option>
-        <mat-option value="BCE">BCE</mat-option>
-      </mat-select>
-    </div>
+      <mat-form-field *ngIf="parts.controls.timeSpan.value" class="rangesel">
+        <mat-label>Day</mat-label>
+        <mat-select formControlName="endDay"
+                    aria-label="End day"
+                    (selectionChange)="_handleInput()">
+          <mat-option *ngFor="let d of days" [value]="d">{{d}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="parts.controls.timeSpan.value" class="rangesel">
+        <mat-label>Month</mat-label>
+        <mat-select formControlName="endMonth"
+                    aria-label="End month"
+                    (selectionChange)="_handleInput()">
+          <mat-option *ngFor="let d of months" [value]="d">{{d}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="parts.controls.timeSpan.value" class="yearsel">
+        <mat-label>Year</mat-label>
+        <input matInput formControlName="endYear" aria-label="End year" (input)="_handleInput()">
+      </mat-form-field>
+      <mat-form-field *ngIf="parts.controls.timeSpan.value" class="rangesel">
+        <mat-label>Era</mat-label>
+        <mat-select formControlName="endEra"
+                    aria-label="End era"
+                    (selectionChange)="_handleInput()">
+          <mat-option value="CE">BC</mat-option>
+          <mat-option value="BCE">BCE</mat-option>
+        </mat-select>
+      </mat-form-field>
+     </div>
   `,
   providers: [{provide: MatFormFieldControl, useExisting: DateValueComponent}],
   styles: [
-    '.bg {background-color: lightgrey;}'
+      '.bg {background-color: lightgrey;}',
+      '.calsel {width: 120px; padding-left: 2px; padding-right: 2px;}',
+      '.rangesel {width: 80px; padding-left: 2px; padding-right: 2px;}',
+      '.yearsel {width: 80px; padding-left: 2px; padding-right: 2px;}',
+      '.erasel {width: 80px; padding-left: 2px; padding-right: 2px;}',
+//      '.datecontainer {width: 700px;}'
   ]
 })
 
@@ -234,6 +265,7 @@ export class DateValueComponent
   controlType = 'knora-date-value';
   id = `knora-date-value-${DateValueComponent.nextId++}`;
   describedBy = '';
+  timeSpan: FormGroup;
 
   private _placeholder: string;
   private _required = false;
@@ -243,7 +275,6 @@ export class DateValueComponent
   onTouched = () => {};
 
   get empty() {
-    console.log('--> empty()');
     const {value: {calendar, startDay, startMonth, startYear, startPeriod, endDay, endMonth, endYear, endPeriod}} = this.parts;
     return !startYear;
   }
@@ -282,22 +313,17 @@ export class DateValueComponent
 
   @Input()
   get value(): DateValue | null {
-    console.log('-->get value()');
-    const {value: {calendar, startDay, startMonth, startYear, startPeriod, endDay, endMonth, endYear, endPeriod}} = this.parts;
-    return new DateValue(calendar, startDay, startMonth, startYear, startPeriod, endDay, endMonth, endYear, endPeriod);
+    const {value: {calendar, timeSpan, startDay, startMonth, startYear, startPeriod, endDay, endMonth, endYear, endPeriod}} = this.parts;
+    return new DateValue(calendar, timeSpan, startDay, startMonth, startYear, startPeriod, endDay, endMonth, endYear, endPeriod);
   }
   set value(knoraVal: DateValue | null) {
-    console.log('-->value():1 ::', knoraVal);
     const now = new Date();
-    console.log('-->value():2');
-    const {calendar, startDay, startMonth, startYear, startEra, endDay, endMonth, endYear, endEra} = knoraVal ||
-    new DateValue(DateCalendar.GREGORIAN,
+    const {calendar, timeSpan, startDay, startMonth, startYear, startEra, endDay, endMonth, endYear, endEra} = knoraVal ||
+    new DateValue(DateCalendar.GREGORIAN, false,
         now.getFullYear(), now.getMonth() + 1, now.getDate(), 'CE',
-        now.getFullYear(), now.getMonth() + 1, now.getDate(), 'CE');
-    console.log('-->value():3 ::', startDay);
-    this.parts.setValue({calendar, startDay, startMonth, startYear,
+        '', '-', '-', 'CE');
+    this.parts.setValue({calendar, timeSpan, startDay, startMonth, startYear,
         startEra, endDay, endMonth, endYear, endEra});
-    console.log('-->value():4');
     this.stateChanges.next();
   }
 
@@ -309,6 +335,7 @@ export class DateValueComponent
     console.log('days:', this.days);
     this.parts = this.formBuilder.group({
       calendar: ['GREGORIAN', []],
+      timeSpan: false,
       startDay: ['1', []],
       startMonth: ['1', []],
       startYear: ['2022', []],
@@ -317,6 +344,9 @@ export class DateValueComponent
       endMonth: '-',
       endYear: '',
       endEra: '-'
+    });
+    this.timeSpan = this.formBuilder.group({
+      timeSpan: false
     });
     console.log('-->formBuilder.goup() ended')
 

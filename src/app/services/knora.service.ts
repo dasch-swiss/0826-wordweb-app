@@ -65,12 +65,10 @@ export class PersonData {
         public internalId: string, // hasPersonInternalId (1)
         public firstName: string, // hasFirstName (0-1)
         public lastName: string, // hasLastName (1)
-        public gender: {gender: string; genderIri: string}, // hasGender (1)
+        public genderIri: string, // hasGender (1)
         public description: string, // hasDescription (1)
         public birthDate?: DateValue, // hasBirthDate (0-1)
-        //public birthDateEnd?: Date, // hasBirthDate (0-1)
         public deathDate?: DateValue, // hasDeathDate (0-1)
-        //public deathDateEnd?: Date, // hasDeathDate (0-1)
         public extraInfo?: string, // hasPersonExtraInfo (0-1)
         public lexias?: {lexiaName: string; lexiaIri: string}[], // isLexiaPersonValue (0-n)
     ) {}
