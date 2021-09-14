@@ -8,6 +8,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {DateAdapter} from '@angular/material/core';
 import {combineLatest, forkJoin} from 'rxjs';
 import {ConfirmationComponent, ConfirmationResult} from '../confirmation/confirmation.component';
+import {DateValue, DateValueComponent} from '../date-value/date-value.component';
 
 interface ValInfo {
   id?: string;
@@ -132,7 +133,7 @@ class PersonIds {
         </button>
         <br/>
 
-        <mat-form-field appearance="fill" [style.width.px]=400>
+        <!-- <mat-form-field appearance="fill" [style.width.px]=400>
           <mat-label>Enter a date range</mat-label>
           <mat-date-range-input [rangePicker]="picker" (change)="_handleInput('birthDate')" required>
             <input matStartDate
@@ -151,7 +152,12 @@ class PersonIds {
           <mat-error *ngIf="form.controls.birthDateStart.errors?.required">Ungültiges Startdatum</mat-error>
           <mat-error *ngIf="form.controls.birthDateEnd.errors?.required">Ungültiges Enddatum</mat-error>
         </mat-form-field>
+        -->
         &nbsp;
+        <mat-form-field appearance="fill">
+          <mat-label>Enter a date range</mat-label>
+          <knora-date-value formControlName="deathDate"></knora-date-value>
+        </mat-form-field>
         <button *ngIf="valIds.birthDate.changed" mat-mini-fab (click)="_handleUndo('birthDate')">
           <mat-icon color="warn">cached</mat-icon>
         </button>
@@ -161,7 +167,7 @@ class PersonIds {
         </button>
         <br/>
 
-        <mat-form-field appearance="fill" [style.width.px]=400>
+        <!-- <mat-form-field appearance="fill" [style.width.px]=400>
           <mat-label>Enter a date range</mat-label>
           <mat-date-range-input [rangePicker]="picker" (change)="_handleInput('deathDate')" required>
             <input matStartDate
@@ -180,7 +186,11 @@ class PersonIds {
           <mat-error *ngIf="form.controls.deathDateStart.errors?.required">Invalid start date</mat-error>
           <mat-error *ngIf="form.controls.deathDateEnd.errors?.required">Invalid end date</mat-error>
         </mat-form-field>
-        &nbsp;
+        -->
+        <mat-form-field appearance="fill">
+          <mat-label>Enter a date range</mat-label>
+          <knora-date-value formControlName="deathDate"></knora-date-value>
+        </mat-form-field>&nbsp;
         <button *ngIf="valIds.deathDate.changed" mat-mini-fab (click)="_handleUndo('deathDate')">
           <mat-icon color="warn">cached</mat-icon>
         </button>
@@ -259,7 +269,7 @@ export class EditPersonComponent implements OnInit {
   resId: string;
   lastmod: string;
   data: PersonData = new PersonData('', '', '', '', {gender: '', genderIri: ''},
-      '', new Date(), new Date(), new Date(), new Date(), '', []);
+      '', new DateValue(), new DateValue(), '', []);
   working: boolean;
   public valIds: PersonIds = new PersonIds();
   public genderTypes: Array<OptionType>;
@@ -294,10 +304,8 @@ export class EditPersonComponent implements OnInit {
         this.form.controls.lastName.value,
         this.form.controls.gender.value, // ToDo: is this correct??
         this.form.controls.description.value,
-        this.form.controls.birthDateStart.value,
-        this.form.controls.birthDateEnd.value,
-        this.form.controls.deathDateStart.value,
-        this.form.controls.deathDateEnd.value,
+        this.form.controls.birthDate.value,
+        this.form.controls.deathDate.value,
         this.form.controls.extraInfo.value,
         lexiaValues,
     );
@@ -305,14 +313,12 @@ export class EditPersonComponent implements OnInit {
 
   set value(knoraVal: PersonData | null) {
     const {
-      label, internalId, firstName, lastName, gender, description, birthDateStart, birthDateEnd,
-      deathDateStart, deathDateEnd, extraInfo, lexias
+      label, internalId, firstName, lastName, gender, description, birthDate, deathDate, extraInfo, lexias
     }
         = knoraVal || new PersonData('', '', '', '', {gender: '', genderIri: ''},
-        '', new Date(), new Date(), new Date(), new Date(), '', [{lexiaName: '', lexiaIri: ''}]);
+        '', new DateValue(), new DateValue(), '', [{lexiaName: '', lexiaIri: ''}]);
     this.form.setValue({
-      label, internalId, firstName, lastName, gender, description,
-      birthDateStart, birthDateEnd, deathDateStart, deathDateEnd, extraInfo, lexias
+      label, internalId, firstName, lastName, gender, description, birthDate, deathDate, extraInfo, lexias
     });
   }
 
@@ -373,6 +379,12 @@ export class EditPersonComponent implements OnInit {
                   break;
                 }
                 case this.knoraService.wwOntology + 'hasBirthDate': {
+                  const dateValue = DateValue.parseDateValueFromKnora(ele.values[0]);
+                  this.form.controls.birthDate.setValue(dateValue);
+                  this.valIds.birthDate = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.birthDate = dateValue;
+                  break;
+                  /*
                   const regex = 'GREGORIAN:([0-9]{4})-([0-9]{2})-([0-9]{2}) CE:([0-9]{4})-([0-9]{2})-([0-9]{2}) CE';
                   const found = ele.values[0].match(regex);
                   if (found !== null) {
@@ -391,8 +403,16 @@ export class EditPersonComponent implements OnInit {
                   }
                   this.valIds.birthDate = {id: ele.ids[0], changed: false, toBeDeleted: false};
                   break;
+
+                   */
                 }
                 case this.knoraService.wwOntology + 'hasDeathDate': {
+                  const dateValue = DateValue.parseDateValueFromKnora(ele.values[0]);
+                  this.form.controls.deathDate.setValue(dateValue);
+                  this.valIds.deathDate = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.deathDate = dateValue;
+                  break;
+                  /*
                   const regex = 'GREGORIAN:([0-9]{4})-([0-9]{2})-([0-9]{2}) CE:([0-9]{4})-([0-9]{2})-([0-9]{2}) CE';
                   const found = ele.values[0].match(regex);
                   if (found !== null) {
@@ -411,6 +431,8 @@ export class EditPersonComponent implements OnInit {
                   }
                   this.valIds.deathDate = {id: ele.ids[0], changed: false, toBeDeleted: false};
                   break;
+
+                   */
                 }
                 case this.knoraService.wwOntology + 'hasPersonExtraInfo': {
                   this.form.controls.extraInfo.setValue(ele.values[0]);
@@ -437,10 +459,10 @@ export class EditPersonComponent implements OnInit {
         lastName: [this.data.lastName, [Validators.required]],
         genderIri: [this.data.gender.genderIri, [Validators.required]],
         description: [this.data.description, [Validators.required]],
-        birthDateStart: [this.data.birthDateStart, []],
-        birthDateEnd: [this.data.birthDateEnd, []],
-        deathDateStart: [this.data.deathDateStart, []],
-        deathDateEnd: [this.data.deathDateEnd, []],
+        birthDate: [this.data.birthDate, []],
+        //birthDateEnd: [this.data.birthDateEnd, []],
+        deathDate: [this.data.deathDate, []],
+        //deathDateEnd: [this.data.deathDateEnd, []],
         internalId: [this.data.internalId, [Validators.required]],
         extraInfo: this.data.extraInfo,
         lexias: this.fb.array([
@@ -504,10 +526,10 @@ export class EditPersonComponent implements OnInit {
             this.form.value.lastName,
             this.form.value.gender,
             this.form.value.description,
-            this.form.value.birthDateStart,
-            this.form.value.birthDateEnd,
-            this.form.value.deathDateStart,
-            this.form.value.deathDateEnd,
+            this.form.value.birthDate,
+            //this.form.value.birthDateEnd,
+            this.form.value.deathDate,
+            //this.form.value.deathDateEnd,
             this.form.value.extraInfo,
             this.form.value.lexias,
         );
@@ -603,13 +625,13 @@ export class EditPersonComponent implements OnInit {
         this.valIds.description.changed = false;
         break;
       case 'birthDate':
-        this.form.controls.birthDateStart.setValue(this.data.birthDateStart);
-        this.form.controls.birthDateEnd.setValue(this.data.birthDateEnd);
+        this.form.controls.birthDateStart.setValue(this.data.birthDate);
+        //this.form.controls.birthDateEnd.setValue(this.data.birthDateEnd);
         this.valIds.birthDate.changed = false;
         break;
       case 'deathDate':
-        this.form.controls.deathDateStart.setValue(this.data.deathDateStart);
-        this.form.controls.deathDateEnd.setValue(this.data.deathDateEnd);
+        this.form.controls.deathDateStart.setValue(this.data.deathDate);
+        //this.form.controls.deathDateEnd.setValue(this.data.deathDateEnd);
         this.valIds.deathDate.changed = false;
         break;
       case 'extraInfo':

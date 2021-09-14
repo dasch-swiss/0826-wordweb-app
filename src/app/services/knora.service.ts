@@ -39,6 +39,7 @@ import {IMainClass} from '../model/displayModel';
 import {catchError, map, tap} from "rxjs/operators";
 import {Observable, of, throwError} from "rxjs";
 import {AppInitService} from '../app-init.service';
+import {DateValue} from "../edit/date-value/date-value.component";
 
 //---- BEGIN LUKAS ---------------------------------------------------------------------------------------------------
 
@@ -66,10 +67,10 @@ export class PersonData {
         public lastName: string, // hasLastName (1)
         public gender: {gender: string; genderIri: string}, // hasGender (1)
         public description: string, // hasDescription (1)
-        public birthDateStart?: Date, // hasBirthDate (0-1)
-        public birthDateEnd?: Date, // hasBirthDate (0-1)
-        public deathDateStart?: Date, // hasDeathDate (0-1)
-        public deathDateEnd?: Date, // hasDeathDate (0-1)
+        public birthDate?: DateValue, // hasBirthDate (0-1)
+        //public birthDateEnd?: Date, // hasBirthDate (0-1)
+        public deathDate?: DateValue, // hasDeathDate (0-1)
+        //public deathDateEnd?: Date, // hasDeathDate (0-1)
         public extraInfo?: string, // hasPersonExtraInfo (0-1)
         public lexias?: {lexiaName: string; lexiaIri: string}[], // isLexiaPersonValue (0-n)
     ) {}

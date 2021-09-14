@@ -1,10 +1,12 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, Optional, Self} from '@angular/core';
 import {MatFormFieldControl} from '@angular/material/form-field';
-import {ControlValueAccessor, FormGroup} from '@angular/forms';
+import {ControlValueAccessor, FormBuilder, FormGroup, NgControl} from '@angular/forms';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Subject} from 'rxjs';
 import {calendars} from '../../classes/calender-helper';
 import {IBaseDateValue} from "@dasch-swiss/dsp-js/src/models/v2/resources/values/type-specific-interfaces/base-date-value";
+import {KnoraService} from "../../services/knora.service";
+import {FocusMonitor} from "@angular/cdk/a11y";
 
 // https://material.angular.io/guide/creating-a-custom-form-field-control
 export enum DateCalendar {
@@ -37,21 +39,21 @@ export enum DateMonth {
   december
 }
 
-class DateValue implements IBaseDateValue{
+export class DateValue {
   calendar: string;
-  startDay?: number;
-  startMonth?: number;
-  startYear: number;
-  startEra?: string;
-  endDay?: number;
-  endMonth?: number;
-  endYear: number;
-  endEra?: string;
+  startDay: string;
+  startMonth: string;
+  startYear: string;
+  startEra: string;
+  endDay: string;
+  endMonth: string;
+  endYear: string;
+  endEra: string;
 
-  constructor(calendar: string | undefined,
-              startDay: number | string | undefined,
-              startMonth: number | string | undefined,
-              startYear: number | string,
+  constructor(calendar?: string | undefined,
+              startDay?: number | string | undefined,
+              startMonth?: number | string | undefined,
+              startYear?: number | string | undefined,
               startEra?: string | undefined,
               endDay?: number | string | undefined,
               endMonth?: number | string | undefined,
@@ -67,17 +69,28 @@ class DateValue implements IBaseDateValue{
         default: throw TypeError('Invalid calendar: ' + calendar);
       }
     }
-    this.startDay = this.getRange(startDay, 1, 31);
-    this.startMonth = this.getRange(startMonth, 1, 12);
-    this.startYear = typeof startYear === 'string' ? parseInt(startYear, 10) : startYear;
-    this.startEra = this.getEra(startEra);
-    this.endDay = this.getRange(endDay, 1, 31);
-    this.endMonth = this.getRange(endMonth, 1, 12)
-    this.endYear = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear;
-    this.endEra = this.getEra(endEra);
+    this.startDay = DateValue.getRange(startDay, 1, 31);
+    this.startMonth = DateValue.getRange(startMonth, 1, 12);
+    let sY = typeof startYear === 'string' ? parseInt(startYear, 10) : startYear;
+    if ((sY === undefined) || isNaN(sY)) {
+      const now = new Date();
+      sY = now.getFullYear();
+    }
+    this.startYear = sY.toString(10);
+    this.startEra = DateValue.getEra(startEra);
+    this.endDay = DateValue.getRange(endDay, 1, 31);
+    this.endMonth = DateValue.getRange(endMonth, 1, 12);
+    let eY = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear;
+    if ((eY === undefined) || isNaN(eY)) {
+      this.endYear = '';
+    }
+    else {
+      this.endYear = sY.toString(10);
+    }
+    this.endEra = DateValue.getEra(endEra);
   }
 
-  parseDateValueFromKnora(datestr: string): DateValue {
+  static parseDateValueFromKnora(datestr: string): DateValue {
     let calendar = DateCalendar.GREGORIAN;
     //const regex = '(GREGORIAN|JULIAN):([0-9]{4})-([0-9]{2})-([0-9]{2}) (BCE|CE):([0-9]{4})-([0-9]{2})-([0-9]{2}) (BCE|CE)';
     const regex = '(GREGORIAN:|JULIAN:)?([0-9]{4})(-[0-9]{2})?(-[0-9]{2})?( BCE| CE)?(:[0-9]{4})?(-[0-9]{2})?(-[0-9]{2})?( BCE| CE)?';
@@ -89,50 +102,48 @@ class DateValue implements IBaseDateValue{
         case undefined: calendar = DateCalendar.GREGORIAN; break;
         default: throw TypeError('Invalid calendar string: ' + found[1]);
       }
-
       const startYear = typeof found[2] === 'string' ? parseInt(found[2], 10) : undefined;
-      const startMonth = this.getRange(found[3], 1, 12);
-      const startDay = this.getRange(found[4], 1, 31);
-      const startEra = this.getEra(found[5]);
+      const startMonth = DateValue.getRange(found[3], 1, 12);
+      const startDay = DateValue.getRange(found[4], 1, 31);
+      const startEra = DateValue.getEra(found[5]);
 
-      const startYear = typeof found[2] === 'string' ? parseInt(found[2], 10) : undefined;
-      const startMonth = this.getRange(found[3], 1, 12);
-      const startDay = this.getRange(found[4], 1, 31);
-      const startEra = this.getEra(found[5]);
+      const endYear = typeof found[6] === 'string' ? parseInt(found[6], 10) : undefined;
+      const endMonth = DateValue.getRange(found[7], 1, 12);
+      const endDay = DateValue.getRange(found[8], 1, 31);
+      const endEra = DateValue.getEra(found[9]);
 
-
-      const endYear = parseInt(found[6], 10);
-      const endMonth = parseInt(found[7], 10);
-      const endDay = parseInt(found[8], 10);
-      let endPeriod: DatePeriod;
-      switch(found[9]) {
-        case DatePeriod.BCE: endPeriod = DatePeriod.BCE; break;
-        case DatePeriod.CE: endPeriod = DatePeriod.CE; break;
-        default: throw TypeError('Invalid period string: ' + found[1]);
-      }
-      return new DateValue(calendar, startYear, startMonth, startDay, startPeriod, endYear, endMonth, endDay, endPeriod);
+      return new DateValue(calendar, startYear, startMonth, startDay, startEra, endYear, endMonth, endDay, endEra);
     }
   }
 
-  private getRange(value: number | string | undefined, from: number, to: number): number | undefined {
+  private static getRange(value: number | string | undefined, from: number, to: number): string {
+    if (value === undefined) {
+      return '-';
+    }
     let v: number;
     if (typeof value === 'string') {
+      if (value === '-') {
+        return '-';
+      }
       v = parseInt(value, 10);
+      if (isNaN(v)) {
+        throw new TypeError('Invalid range: ' + value);
+      }
     }
     else if (typeof value === 'number') {
       v = value;
     }
     if (v < from || v > to) {
-      return undefined;
+      throw new TypeError('Invalid range: ' + value);
     }
     else {
-      return v;
+      return v.toString(10);
     }
   }
 
-  private getEra(era: string | undefined): string | undefined {
+  private static getEra(era: string | undefined): string {
     if (era === undefined) {
-      return undefined;
+      return 'CE';
     }
     switch(era.toUpperCase()) {
       case 'CE': return 'CE';
@@ -149,47 +160,49 @@ class DateValue implements IBaseDateValue{
   selector: 'knora-date-value',
   template: `
     <div [formGroup]="parts" class="knora-string-input-container">
-      <mat-select formControlName="calendar"
+      <mat-select matNativeControl
+                  formControlName="calendar"
                   aria-label="Calendar"
                   (selectionChange)="_handleInput()">
-        <mat-option *ngFor="let dispNode in calendarNames" [value]="dispNode">{{dispNode}}</mat-option>
+        <mat-option *ngFor="let dispNode of calendarNames" [value]="dispNode">{{dispNode}}</mat-option>
       </mat-select>
       <br>
-      <mat-select formControlName="startDay"
+      <mat-select matNativeControl
+                  formControlName="startDay"
                   aria-label="Start day"
                   (selectionChange)="_handleInput()">
-        <mat-option *ngFor="let d in days" [value]="d">d</mat-option>
+        <mat-option *ngFor="let d of days" [value]="d">{{d}}</mat-option>
       </mat-select>
-      -
-      <mat-select formControlName="startMonth"
+      <mat-select matNativeControl
+                  formControlName="startMonth"
                   aria-label="Start month"
                   (selectionChange)="_handleInput()">
-        <mat-option *ngFor="let d in months" [value]="d">d</mat-option>
+        <mat-option *ngFor="let d of months" [value]="d">{{d}}</mat-option>
       </mat-select>
-      -
-      <input formControlName="startYear" aria-label="Start year" (input)="_handleInput()"> :
-      <mat-select formControlName="startEra"
+      <input matInput formControlName="startYear" aria-label="Start year" (input)="_handleInput()">
+      <mat-select matNativeControl
+                  formControlName="startEra"
                   aria-label="Start era"
                   (selectionChange)="_handleInput()">
         <mat-option value="CE">BC</mat-option>
         <mat-option value="BCE">BCE</mat-option>
       </mat-select>
       <br>
-      <mat-select formControlName="endDay"
+      <mat-select matNativeControl
+                  formControlName="endDay"
                   aria-label="End day"
                   (selectionChange)="_handleInput()">
-        <mat-option *ngFor="let d in days" [value]="d">d</mat-option>
+        <mat-option *ngFor="let d of days" [value]="d">{{d}}</mat-option>
       </mat-select>
-      -
-      <mat-select formControlName="endMonth"
+      <mat-select matNativeControl
+                  formControlName="endMonth"
                   aria-label="End month"
                   (selectionChange)="_handleInput()">
-        <mat-option *ngFor="let d in months" [value]="d">d</mat-option>
+        <mat-option *ngFor="let d of months" [value]="d">{{d}}</mat-option>
       </mat-select>
-      -
-      <input formControlName="endYear" aria-label="End year" (input)="_handleInput()">
-      :
-      <mat-select formControlName="endEra"
+      <input matInput formControlName="endYear" aria-label="End year" (input)="_handleInput()">
+      <mat-select matNativeControl
+                  formControlName="endEra"
                   aria-label="End era"
                   (selectionChange)="_handleInput()">
         <mat-option value="CE">BC</mat-option>
@@ -199,6 +212,7 @@ class DateValue implements IBaseDateValue{
   `,
   providers: [{provide: MatFormFieldControl, useExisting: DateValueComponent}],
   styles: [
+    '.bg {background-color: lightgrey;}'
   ]
 })
 
@@ -211,7 +225,7 @@ export class DateValueComponent
   calendarNames = ['GREGORIAN', 'JULIAN', 'JEWISH'];
   days = ['-', '1','2','3','4','5','6','7','8','9','10','11','12','13','14','15',
     '16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
-  months = ['-', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+  months = ['-', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
 
   parts: FormGroup;
   stateChanges = new Subject<void>();
@@ -229,8 +243,9 @@ export class DateValueComponent
   onTouched = () => {};
 
   get empty() {
+    console.log('--> empty()');
     const {value: {calendar, startDay, startMonth, startYear, startPeriod, endDay, endMonth, endYear, endPeriod}} = this.parts;
-    return !value && !comment;
+    return !startYear;
   }
 
   get shouldLabelFloat() {
@@ -267,24 +282,61 @@ export class DateValueComponent
 
   @Input()
   get value(): DateValue | null {
+    console.log('-->get value()');
     const {value: {calendar, startDay, startMonth, startYear, startPeriod, endDay, endMonth, endYear, endPeriod}} = this.parts;
     return new DateValue(calendar, startDay, startMonth, startYear, startPeriod, endDay, endMonth, endYear, endPeriod);
   }
   set value(knoraVal: DateValue | null) {
+    console.log('-->value():1 ::', knoraVal);
     const now = new Date();
-    const {calendar, startDay, startMonth, startYear, startPeriod, endDay, endMonth, endYear, endPeriod} = knoraVal ||
+    console.log('-->value():2');
+    const {calendar, startDay, startMonth, startYear, startEra, endDay, endMonth, endYear, endEra} = knoraVal ||
     new DateValue(DateCalendar.GREGORIAN,
-        now.getFullYear(), now.getMonth() + 1, now.getDate(), DatePeriod.CE,
-        now.getFullYear(), now.getMonth() + 1, now.getDate(), DatePeriod.CE);
-    this.parts.setValue({calendar, startDay, startMonth, startYear, startPeriod, endDay, endMonth, endYear, endPeriod});
+        now.getFullYear(), now.getMonth() + 1, now.getDate(), 'CE',
+        now.getFullYear(), now.getMonth() + 1, now.getDate(), 'CE');
+    console.log('-->value():3 ::', startDay);
+    this.parts.setValue({calendar, startDay, startMonth, startYear,
+        startEra, endDay, endMonth, endYear, endEra});
+    console.log('-->value():4');
     this.stateChanges.next();
   }
 
+  constructor(private formBuilder: FormBuilder,
+              private knoraService: KnoraService,
+              private _focusMonitor: FocusMonitor,
+              private _elementRef: ElementRef<HTMLElement>,
+              @Optional() @Self() public ngControl: NgControl) {
+    console.log('days:', this.days);
+    this.parts = this.formBuilder.group({
+      calendar: ['GREGORIAN', []],
+      startDay: ['1', []],
+      startMonth: ['1', []],
+      startYear: ['2022', []],
+      startEra: ['CE', []],
+      endDay: '-',
+      endMonth: '-',
+      endYear: '',
+      endEra: '-'
+    });
+    console.log('-->formBuilder.goup() ended')
 
-  constructor() {
+    _focusMonitor.monitor(_elementRef, true).subscribe(origin => {
+      if (this.focused && !origin) {
+        this.onTouched();
+      }
+      this.focused = !!origin;
+      this.stateChanges.next();
+    });
+
+    if (this.ngControl != null) {
+      this.ngControl.valueAccessor = this;
+    }
   }
 
   ngOnInit(): void {
+    console.log('-->ngOnInit()');
+    if (!this.valueLabel) { this.valueLabel = 'Value'; }
+    this.parts.controls.startDay.setValue('-');
   }
 
   ngOnDestroy() {
@@ -303,7 +355,7 @@ export class DateValueComponent
     }
   }
 
-  writeValue(knoraVal: KnoraListVal | null): void {
+  writeValue(knoraVal: DateValue | null): void {
     this.value = knoraVal;
   }
 
@@ -330,6 +382,7 @@ export class DateValueComponent
   }
 
   _handleInput(): void {
+    console.log('-->_handleInput()');
     this.onChange(this.parts.value);
   }
 
