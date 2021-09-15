@@ -25,6 +25,7 @@
     "@angular/router": "~12.1.0",
     "@dasch-swiss/dsp-js": "2.1.0",
     "file-saver-es": "^2.0.5",
+    "jdnconvertiblecalendar": "^0.0.7",
     "json2typescript": "^1.4.1",
     "jsonld": "^1.8.1",
     "ngx-spinner": "^11.0.2",

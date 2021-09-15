@@ -8,13 +8,21 @@ import {IBaseDateValue} from "@dasch-swiss/dsp-js/src/models/v2/resources/values
 import {KnoraService} from "../../services/knora.service";
 import {FocusMonitor} from "@angular/cdk/a11y";
 import {CalenderHelper} from "../../classes/calender-helper";
+import {CalendarDate, JDNConvertibleCalendar, JDNConvertibleConversionModule} from "jdnconvertiblecalendar";
+import gregorianToJDC = JDNConvertibleConversionModule.gregorianToJDC;
+import julianToJDC = JDNConvertibleConversionModule.julianToJDC;
+import gregorianToJDN = JDNConvertibleConversionModule.gregorianToJDN;
+import julianToJDN = JDNConvertibleConversionModule.julianToJDN;
+import {TypeDefinitionsModule} from "jdnconvertiblecalendar/dist/src/TypeDefinitions";
 
 // https://material.angular.io/guide/creating-a-custom-form-field-control
 export enum DateCalendar {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   GREGORIAN = 'GREGORIAN',
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  JULIAN = 'JULIAN'
+  JULIAN = 'JULIAN',
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  JEWISH = 'JEWISH'
 }
 
 export enum DateEra {
@@ -51,6 +59,8 @@ export class DateValue {
   endMonth: string;
   endYear: string;
   endEra: string;
+  startJd: number;
+  endJd: number;
 
   constructor(calendar?: string | undefined,
               timeSpan?: boolean | undefined,
@@ -92,6 +102,39 @@ export class DateValue {
       this.endYear = sY.toString(10);
     }
     this.endEra = DateValue.getEra(endEra);
+    let sYear: string;
+    let sMonth: string;
+    let sDay: string;
+    let eYear: string;
+    let eMonth: string;
+    let eDay: string;
+    let tmpCalendarDate: CalendarDate;
+    switch(this.calendar) {
+      case DateCalendar.GREGORIAN:
+        sYear = this.startYear || '1'; // we assign startYear=1 for undefined dates
+        sMonth = this.startMonth === '-' ? '1' : this.startMonth;
+        sDay = startDay === '-' ? '1' : this.startDay;
+        tmpCalendarDate = new CalendarDate(parseInt(sYear, 10), parseInt(sMonth, 10), parseInt(sDay, 10));
+        this.startJd = gregorianToJDN(tmpCalendarDate);
+        eYear = this.endYear || sYear; // if endYear undefined, we assume same as startYear...
+        eMonth = this.startMonth === '-' ? '12' : this.startMonth;
+        eDay = startDay === '-' ? '31' : this.startDay;
+        tmpCalendarDate = new CalendarDate(parseInt(eYear, 10), parseInt(eMonth, 10), parseInt(eDay, 10));
+        this.endJd = gregorianToJDN(tmpCalendarDate);
+        break;
+      case DateCalendar.JULIAN:
+        sYear = this.startYear || '1'; // we assign startYear=1 for undefined dates
+        sMonth = this.startMonth === '-' ? '1' : this.startMonth;
+        sDay = startDay === '-' ? '1' : this.startDay;
+        tmpCalendarDate = new CalendarDate(parseInt(sYear, 10), parseInt(sMonth, 10), parseInt(sDay, 10));
+        this.startJd = julianToJDN(tmpCalendarDate);
+        eYear = this.endYear || sYear; // if endYear undefined, we assume same as startYear...
+        eMonth = this.startMonth === '-' ? '12' : this.startMonth;
+        eDay = startDay === '-' ? '31' : this.startDay;
+        tmpCalendarDate = new CalendarDate(parseInt(eYear, 10), parseInt(eMonth, 10), parseInt(eDay, 10));
+        this.endJd = gregorianToJDN(tmpCalendarDate);
+        break;
+    }
   }
 
   static parseDateValueFromKnora(datestr: string): DateValue {
@@ -170,7 +213,7 @@ export class DateValue {
         <mat-select matNativeControl
                     formControlName="calendar"
                     aria-label="Calendar"
-                    (selectionChange)="_handleInput()">
+                    (selectionChange)="_handleInput('calendar')">
           <mat-option *ngFor="let dispNode of calendarNames" [value]="dispNode">{{dispNode}}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -453,6 +496,8 @@ export class DateValueComponent
   _handleInput(what?: string): void {
     if (what !== undefined) {
       switch(what) {
+        case 'calendar':
+          break;
         case 'startYear':
           if (this.parts.controls.startYear.value === '') {
             this.parts.controls.startMonth.disable();

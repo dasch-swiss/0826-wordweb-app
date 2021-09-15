@@ -40,7 +40,7 @@ export class CalenderHelper {
 
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    gregorian_to_jd(year: number | string, month: number | string, day: number | string) {
+    static gregorian_to_jd(year: number | string, month: number | string, day: number | string): number {
         year = typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
         month = typeof(month) === 'number' ? Math.floor(month) : parseInt(month, 10);
         day = typeof(day) === 'number' ? Math.floor(day) : parseInt(day, 10);
@@ -59,7 +59,7 @@ export class CalenderHelper {
     //  JD_TO_GREGORIAN  --  Calculate Gregorian calendar date from Julian day
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    jd_to_gregorian(jd: number | string): number[] {
+    static jd_to_gregorian(jd: number | string): number[] {
         const jsd = typeof(jd) === 'number' ? Math.floor(jd) : parseInt(jd, 10);
         const wjd = Math.floor(jsd - 0.5) + 0.5;
         const depoch = wjd - GREGORIAN_EPOCH;
@@ -91,13 +91,13 @@ export class CalenderHelper {
 
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    leap_julian(year: number | string): boolean {
+    static leap_julian(year: number | string): boolean {
         year = typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
         return this.mod(year, 4) === ((year > 0) ? 0 : 3);
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    julian_to_jd(year: number | string, month: number | string, day: number | string): number {
+    static julian_to_jd(year: number | string, month: number | string, day: number | string): number {
         year = typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
         month = typeof(month) === 'number' ? Math.floor(month) : parseInt(month, 10);
         day = typeof(day) === 'number' ? Math.floor(day) : parseInt(day, 10);
@@ -122,7 +122,7 @@ export class CalenderHelper {
 
     //  JD_TO_JULIAN  --  Calculate Julian calendar date from Julian day
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    jd_to_julian(td: number | string): number[] {
+    static jd_to_julian(td: number | string): number[] {
         let tdn = typeof(td) === 'number' ? Math.floor(td) : parseInt(td, 10); // we want integer!
         tdn += 0.5;
         const z = Math.floor(tdn);
@@ -149,13 +149,13 @@ export class CalenderHelper {
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    hebrew_year_months(year: number | string): number {
+    static hebrew_year_months(year: number | string): number {
         year =  typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
         return this.hebrew_leap(year) ? 13 : 12;
     };
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    hebrew_year_days(year: number | string): number {
+    static hebrew_year_days(year: number | string): number {
         year = typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
         return this.hebrew_to_jd(year + 1, 7, 1) - this.hebrew_to_jd(year, 7, 1);
     }
@@ -163,7 +163,7 @@ export class CalenderHelper {
     //  How many days are in a given month of a given year
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    hebrew_month_days(year: number | string, month: number | string) {
+    static hebrew_month_days(year: number | string, month: number | string) {
         year = typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
         month = typeof(month) === 'number' ? Math.floor(month) : parseInt(month, 10);
         //  First of all, dispose of fixed-length 29 day months
@@ -199,7 +199,7 @@ export class CalenderHelper {
     //  Finally, wrap it all up into...
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    hebrew_to_jd(year: number | string, month: number | string, day: number | string): number {
+    static hebrew_to_jd(year: number | string, month: number | string, day: number | string): number {
         year = typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
         month = typeof(month) === 'number' ? Math.floor(month) : parseInt(month, 10);
         day = typeof(day) === 'number' ? Math.floor(day) : parseInt(day, 10);
@@ -231,7 +231,7 @@ export class CalenderHelper {
                           slow.  */
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    jd_to_hebrew(jd: number |string): number[] {
+    static jd_to_hebrew(jd: number |string): number[] {
         jd = typeof(jd) === 'number' ? Math.floor(jd) : parseInt(jd, 10);
 
         jd = Math.floor(jd) + 0.5;
@@ -250,7 +250,7 @@ export class CalenderHelper {
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    daycnt(cal: string, year: number | string, month: number | string): {days: number; weekday_first: number} {
+    static daycnt(cal: string, year: number | string, month: number | string): {days: number; weekday_first: number} {
         year = typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
         month = typeof(month) === 'number' ? Math.floor(month) : parseInt(month, 10);
 
@@ -312,7 +312,7 @@ export class CalenderHelper {
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    jdc_to_date(jdc: number | string, cal: string): {year: number; month: number; day: number; weekday: number} {
+    static jdc_to_date(jdc: number | string, cal: string): {year: number; month: number; day: number; weekday: number} {
         jdc = typeof(jdc) === 'number' ? Math.floor(jdc) : parseInt(jdc, 10);
         let tmparr: number[];
         switch (cal) {
@@ -339,7 +339,7 @@ export class CalenderHelper {
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    date_to_jdc(day: number | string, month: number | string, year: number | string, cal: string, periodpart: string) {
+    static date_to_jdc(day: number | string, month: number | string, year: number | string, cal: string, periodpart: string) {
         let jdc = 0;
 
         year = typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
@@ -389,23 +389,23 @@ export class CalenderHelper {
 
 // ----- private -----
 
-    private mod(a: number, b: number): number {
+    private static mod(a: number, b: number): number {
         return a - (b * Math.floor(a / b));
     };
 
-    private jwday(j: number | string): number {
+    private static jwday(j: number | string): number {
         j = typeof(j) === 'number' ? j as number: Number(j);
         return this.mod(Math.floor((j + 1.5)), 7);
     };
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    private leap_gregorian(year: number | string): boolean {
+    private static leap_gregorian(year: number | string): boolean {
         year =  typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
         return ((year % 4) === 0) && (!(((year % 100) === 0) && ((year % 400) !== 0)));
     };
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    private hebrew_leap(year: number | string ): boolean {
+    private static hebrew_leap(year: number | string ): boolean {
         year =  typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
         return this.mod(((year * 7) + 1), 19) < 7;
     };
@@ -416,7 +416,7 @@ export class CalenderHelper {
     //  Sunday, Wednesday, and Friday as start of the new year.
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    private hebrew_delay_1(year: number | string): number {
+    private static hebrew_delay_1(year: number | string): number {
         year = typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
 
         const months = Math.floor(((235 * year) - 234) / 19);
@@ -432,7 +432,7 @@ export class CalenderHelper {
     //  Check for delay in start of new year due to length of adjacent years
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    private  hebrew_delay_2(year: number | string): number {
+    private static hebrew_delay_2(year: number | string): number {
         year = typeof(year) === 'number' ? Math.floor(year) : parseInt(year, 10);
 
         const last = this.hebrew_delay_1(year - 1);
@@ -444,8 +444,5 @@ export class CalenderHelper {
     };
 
     //  How many days are in a Hebrew year ?
-
-
-
 
 }
