@@ -7,7 +7,6 @@ import {calendars} from '../../classes/calender-helper';
 import {IBaseDateValue} from "@dasch-swiss/dsp-js/src/models/v2/resources/values/type-specific-interfaces/base-date-value";
 import {KnoraService} from "../../services/knora.service";
 import {FocusMonitor} from "@angular/cdk/a11y";
-import {CalenderHelper} from "../../classes/calender-helper";
 import {CalendarDate, JDNConvertibleCalendar, JDNConvertibleConversionModule} from "jdnconvertiblecalendar";
 import gregorianToJDC = JDNConvertibleConversionModule.gregorianToJDC;
 import julianToJDC = JDNConvertibleConversionModule.julianToJDC;
