@@ -196,7 +196,7 @@ export class DateValue {
 }
 
 @Component({
-  selector: 'knora-date-value',
+  selector: 'app-knora-date-value',
   template: `
     <div [formGroup]="parts" class="datecontainer">
       <mat-form-field class="calsel">
@@ -342,7 +342,12 @@ export class DateValueComponent
   }
   set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
-    this._disabled ? this.parts.disable() : this.parts.enable();
+    if (this._disabled) {
+      this.parts.disable();
+    }
+    else {
+      this.parts.enable();
+    }
     this.stateChanges.next();
   }
 
@@ -353,7 +358,8 @@ export class DateValueComponent
   }
   set value(knoraVal: DateValue | null) {
     const now = new Date();
-    const {calendar, timeSpan, startDay, startMonth, startYear, startEra, endDay, endMonth, endYear, endEra} = knoraVal ||
+    // eslint-disable-next-line prefer-const
+    let {calendar, timeSpan, startDay, startMonth, startYear, startEra, endDay, endMonth, endYear, endEra} = knoraVal ||
     new DateValue(DateCalendar.GREGORIAN, false,
         now.getFullYear(), now.getMonth() + 1, now.getDate(), 'CE',
         '', '-', '-', 'CE');
@@ -375,22 +381,22 @@ export class DateValueComponent
     }
 
     if (startYear && startMonth) {
-      const dcs = this.calender.daycnt(this.parts.controls.calendar.value,
+      const days = Calendar.daycnt(this.parts.controls.calendar.value,
           this.parts.controls.startYear.value,
           this.parts.controls.startMonth.value);
       const startDays: string[] = ['-'];
-      for (let i = 1; i <= dcs.days; i++) {
+      for (let i = 1; i <= days; i++) {
         startDays.push(i.toString(10));
       }
       this.startDays = startDays;
     }
 
     if (endYear && endMonth) {
-      const dcs = this.calender.daycnt(this.parts.controls.calendar.value,
+      const days = Calendar.daycnt(this.parts.controls.calendar.value,
           this.parts.controls.endYear.value,
           this.parts.controls.endMonth.value);
       const endDays: string[] = ['-'];
-      for (let i = 1; i <= dcs.days; i++) {
+      for (let i = 1; i <= days; i++) {
         endDays.push(i.toString(10));
       }
       this.endDays = endDays;
@@ -404,10 +410,10 @@ export class DateValueComponent
 
   constructor(private formBuilder: FormBuilder,
               private knoraService: KnoraService,
-              private calender: Calender,
               private _focusMonitor: FocusMonitor,
               private _elementRef: ElementRef<HTMLElement>,
               @Optional() @Self() public ngControl: NgControl) {
+    console.log('---------------------------------------------->');
     this.parts = this.formBuilder.group({
       calendar: ['GREGORIAN', []],
       timeSpan: false,
@@ -486,6 +492,7 @@ export class DateValueComponent
 
   _handleInput(what?: string): void {
     if (what !== undefined) {
+      let days: number;
       switch(what) {
         case 'calendar':
           break;
@@ -512,11 +519,11 @@ export class DateValueComponent
           else {
             this.parts.controls.startDay.enable();
           }
-          const dcs = this.calender.daycnt(this.parts.controls.calendar.value,
+          days = Calendar.daycnt(this.parts.controls.calendar.value,
               this.parts.controls.startYear.value,
               this.parts.controls.startMonth.value);
           const startDays: string[] = ['-'];
-          for (let i = 1; i <= dcs.days; i++) {
+          for (let i = 1; i <= days; i++) {
             startDays.push(i.toString(10));
           }
           this.startDays = startDays;
@@ -528,11 +535,11 @@ export class DateValueComponent
           else {
             this.parts.controls.endDay.enable();
           }
-          const dce = this.calender.daycnt(this.parts.controls.calendar.value,
+          days = Calendar.daycnt(this.parts.controls.calendar.value,
               this.parts.controls.endYear.value,
               this.parts.controls.endMonth.value);
           const endDays: string[] = ['-'];
-          for (let i = 1; i <= dce.days; i++) {
+          for (let i = 1; i <= days; i++) {
             endDays.push(i.toString(10));
           }
           this.endDays = endDays;

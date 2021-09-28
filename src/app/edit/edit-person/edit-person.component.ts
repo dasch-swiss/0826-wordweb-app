@@ -135,7 +135,7 @@ class PersonIds {
         &nbsp;
         <mat-form-field appearance="fill"  [style.width.px]=600>
           <mat-label>Birthdate</mat-label>
-          <knora-date-value formControlName="birthDate"></knora-date-value>
+          <app-knora-date-value formControlName="birthDate"></app-knora-date-value>
         </mat-form-field>
         <button *ngIf="valIds.birthDate.changed" mat-mini-fab (click)="_handleUndo('birthDate')">
           <mat-icon color="warn">cached</mat-icon>
@@ -147,7 +147,7 @@ class PersonIds {
         <br/>
         <mat-form-field appearance="fill"  [style.width.px]=600>
           <mat-label>Deathdate</mat-label>
-          <knora-date-value formControlName="deathDate"></knora-date-value>
+          <app-knora-date-value formControlName="deathDate"></app-knora-date-value>
         </mat-form-field>&nbsp;
         <button *ngIf="valIds.deathDate.changed" mat-mini-fab (click)="_handleUndo('deathDate')">
           <mat-icon color="warn">cached</mat-icon>
@@ -157,7 +157,7 @@ class PersonIds {
           <mat-icon *ngIf="valIds.deathDate.toBeDeleted" color="warn">delete</mat-icon>
         </button>
         <br/>
-
+        
         <mat-form-field [style.width.px]=600>
           <input matInput
                  class="full-width"
