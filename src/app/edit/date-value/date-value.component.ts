@@ -3,26 +3,18 @@ import {MatFormFieldControl} from '@angular/material/form-field';
 import {ControlValueAccessor, FormBuilder, FormGroup, NgControl} from '@angular/forms';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Subject} from 'rxjs';
-import {calendars} from '../../classes/calender-helper';
-import {IBaseDateValue} from "@dasch-swiss/dsp-js/src/models/v2/resources/values/type-specific-interfaces/base-date-value";
-import {KnoraService} from "../../services/knora.service";
-import {FocusMonitor} from "@angular/cdk/a11y";
-import {CalendarDate, JDNConvertibleCalendar, JDNConvertibleConversionModule} from "jdnconvertiblecalendar";
+import {IBaseDateValue} from '@dasch-swiss/dsp-js/src/models/v2/resources/values/type-specific-interfaces/base-date-value';
+import {KnoraService} from '../../services/knora.service';
+import {FocusMonitor} from '@angular/cdk/a11y';
+import {CalendarDate, JDNConvertibleCalendar, JDNConvertibleConversionModule} from 'jdnconvertiblecalendar';
 import gregorianToJDC = JDNConvertibleConversionModule.gregorianToJDC;
 import julianToJDC = JDNConvertibleConversionModule.julianToJDC;
 import gregorianToJDN = JDNConvertibleConversionModule.gregorianToJDN;
 import julianToJDN = JDNConvertibleConversionModule.julianToJDN;
-import {TypeDefinitionsModule} from "jdnconvertiblecalendar/dist/src/TypeDefinitions";
+import {TypeDefinitionsModule} from 'jdnconvertiblecalendar/dist/src/TypeDefinitions';
+import {Calendar, DateCalendar} from '../../classes/calendar';
 
 // https://material.angular.io/guide/creating-a-custom-form-field-control
-export enum DateCalendar {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  GREGORIAN = 'GREGORIAN',
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  JULIAN = 'JULIAN',
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  JEWISH = 'JEWISH'
-}
 
 export enum DateEra {
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -93,7 +85,7 @@ export class DateValue {
     this.startEra = DateValue.getEra(startEra);
     this.endDay = DateValue.getRange(endDay, 1, 31);
     this.endMonth = DateValue.getRange(endMonth, 1, 12);
-    let eY = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear;
+    const eY = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear;
     if ((eY === undefined) || isNaN(eY)) {
       this.endYear = '';
     }
@@ -361,7 +353,7 @@ export class DateValueComponent
   }
   set value(knoraVal: DateValue | null) {
     const now = new Date();
-    let {calendar, timeSpan, startDay, startMonth, startYear, startEra, endDay, endMonth, endYear, endEra} = knoraVal ||
+    const {calendar, timeSpan, startDay, startMonth, startYear, startEra, endDay, endMonth, endYear, endEra} = knoraVal ||
     new DateValue(DateCalendar.GREGORIAN, false,
         now.getFullYear(), now.getMonth() + 1, now.getDate(), 'CE',
         '', '-', '-', 'CE');
@@ -383,7 +375,7 @@ export class DateValueComponent
     }
 
     if (startYear && startMonth) {
-      const dcs = this.calenderHelper.daycnt(this.parts.controls.calendar.value,
+      const dcs = this.calender.daycnt(this.parts.controls.calendar.value,
           this.parts.controls.startYear.value,
           this.parts.controls.startMonth.value);
       const startDays: string[] = ['-'];
@@ -394,7 +386,7 @@ export class DateValueComponent
     }
 
     if (endYear && endMonth) {
-      const dcs = this.calenderHelper.daycnt(this.parts.controls.calendar.value,
+      const dcs = this.calender.daycnt(this.parts.controls.calendar.value,
           this.parts.controls.endYear.value,
           this.parts.controls.endMonth.value);
       const endDays: string[] = ['-'];
@@ -412,7 +404,7 @@ export class DateValueComponent
 
   constructor(private formBuilder: FormBuilder,
               private knoraService: KnoraService,
-              private calenderHelper: CalenderHelper,
+              private calender: Calender,
               private _focusMonitor: FocusMonitor,
               private _elementRef: ElementRef<HTMLElement>,
               @Optional() @Self() public ngControl: NgControl) {
@@ -520,7 +512,7 @@ export class DateValueComponent
           else {
             this.parts.controls.startDay.enable();
           }
-          const dcs = this.calenderHelper.daycnt(this.parts.controls.calendar.value,
+          const dcs = this.calender.daycnt(this.parts.controls.calendar.value,
               this.parts.controls.startYear.value,
               this.parts.controls.startMonth.value);
           const startDays: string[] = ['-'];
@@ -536,7 +528,7 @@ export class DateValueComponent
           else {
             this.parts.controls.endDay.enable();
           }
-          const dce = this.calenderHelper.daycnt(this.parts.controls.calendar.value,
+          const dce = this.calender.daycnt(this.parts.controls.calendar.value,
               this.parts.controls.endYear.value,
               this.parts.controls.endMonth.value);
           const endDays: string[] = ['-'];

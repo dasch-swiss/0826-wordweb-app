@@ -1,3 +1,13 @@
+export enum DateCalendar {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    GREGORIAN = 'GREGORIAN',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    JULIAN = 'JULIAN',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    JEWISH = 'JEWISH',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    ISLAMIC = 'ISLAMIC'
+}
 
 export class Calendar {
     /*
@@ -15,6 +25,32 @@ export class Calendar {
         interpreted.  Making these variables pseudo-globals permits us
         to avoid overhead constructing and disposing of them in each
         call on the function in which whey are used.  */
+
+    // public static jd_to_gregorian(jd: number): number[]
+    // public static iso_to_julian(year: number, week: number, day: number): number
+    // public static jd_to_iso(jd: number): number[]
+    // public static jd_to_iso_day(jd: number): number[]
+    // public static julian_to_jd(year: number, month: number, day: number): number
+    // public static jd_to_julian(td: number): number[]
+    // public static hebrew_year_months(year: number): number
+    // public static hebrew_month_days(year: number, month: number)
+    // public static hebrew_to_jd(year: number, month: number, day: number): number
+    // public static jd_to_hebrew(jd: number): number[]
+    // public static jd_to_french_revolutionary(jd: number): number[]
+    // public static french_revolutionary_to_jd(an: number, mois: number, decade: number, jour: number): number
+    // public static islamic_to_jd(year: number, month: number, day: number): number
+    // public static jd_to_islamic(jd: number): number[]
+    // public static jd_to_persiana(jd: number): number[]
+    // public static persiana_to_jd(year: number, month: number, day: number): number
+    // public static persian_to_jd(year: number, month: number, day: number): number
+    // public static jd_to_persian(jd: number): number[]
+    // public static mayan_count_to_jd(baktun: number, katun: number, tun: number, uinal: number, kin: number)
+    // public static jd_to_mayan_count(jd: number): number[
+    // public static jd_to_mayan_haab(jd: number): number[]
+    // public static jd_to_mayan_tzolkin(jd: number): number[]
+    // public static indian_civil_to_jd(year: number, month: number, day: number): number
+    // public static jd_to_indian_civil(jd: number): number[] {
+    //
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public static readonly Weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
@@ -758,6 +794,76 @@ export class Calendar {
 
         return [year, month, day];
     }
+
+    public static daycnt(cal: string, year: number, month: number): number {
+        year = Math.floor(year);
+        month = Math.floor(month);
+
+        let dc1: number;
+        let dc2: number;
+        let days: number;
+        switch (cal) {
+            case 'GREGORIAN':
+            case 'gregorian': {
+                dc1 = Math.round(Calendar.gregorian_to_jd(year, month, 1));
+                if ((month + 1) > 12) {
+                    month = 1;
+                    year++;
+                    dc2 = Math.round(Calendar.gregorian_to_jd(year, month, 1));
+                }
+                else {
+                    dc2 = Math.round(Calendar.gregorian_to_jd(year, month + 1, 1));
+                }
+                days = dc2 - dc1;
+                break;
+            }
+            case 'JULIAN':
+            case 'julian': {
+                dc1 = Math.round(Calendar.julian_to_jd(year, month, 1));
+                if ((month + 1) > 12) {
+                    month = 1;
+                    year++;
+                    dc2 = Math.round(Calendar.julian_to_jd(year, month, 1));
+                }
+                else {
+                    dc2 = Math.round(Calendar.julian_to_jd(year, month + 1, 1));
+                }
+                days = dc2 - dc1;
+                break;
+            }
+            case 'JEWISH':
+            case 'jewish': {
+                const nmonths = Calendar.hebrew_year_months(year);
+                dc1 = Math.round(Calendar.hebrew_to_jd(year, month, 1));
+                if ((month + 1) > nmonths) {
+                    month = 1;
+                    year++;
+                    dc2 = Math.round(Calendar.hebrew_to_jd(year, month, 1));
+                }
+                else {
+                    dc2 = Math.round(Calendar.hebrew_to_jd(year, month + 1, 1));
+                }
+                days = dc2 - dc1;
+                break;
+            }
+            case 'ISLAMIC':
+            case 'islamic': {
+                dc1 = Math.round(Calendar.islamic_to_jd(year, month, 1));
+                if ((month + 1) > 12) {
+                    month = 1;
+                    year++;
+                    dc2 = Math.round(Calendar.islamic_to_jd(year, month, 1));
+                }
+                else {
+                    dc2 = Math.round(Calendar.islamic_to_jd(year, month + 1, 1));
+                }
+                days = dc2 - dc1;
+                break;
+            }
+        }
+        return days;
+    }
+
 
     //=============================================================================================
     /*  DTR  --  Degrees to radians.  */
