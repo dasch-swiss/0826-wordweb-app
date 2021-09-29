@@ -242,7 +242,6 @@ export class EditPersonComponent implements OnInit {
               private snackBar: MatSnackBar,
               public dialog: MatDialog,
               @Optional() @Self() public ngControl: NgControl) {
-    console.log('EditPersonComponent.constructor');
     this.dateAdapter.setLocale('de'); // dd/MM/yyyy
     this.inData = {};
     this.working = false;
@@ -256,7 +255,6 @@ export class EditPersonComponent implements OnInit {
     for (const x of lexias.controls) {
       lexiaValues.push(x.value);
     }
-    console.log('********', this.form.controls.gender);
     return new PersonData(
         this.form.controls.label.value,
         this.form.controls.internalId.value,
@@ -283,7 +281,6 @@ export class EditPersonComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('EditPersonComponent.ngOnInit');
     this.working = false;
     combineLatest([this.route.params, this.route.queryParams]).subscribe(arr => {
       if (arr[0].iri !== undefined) {
@@ -293,7 +290,6 @@ export class EditPersonComponent implements OnInit {
       if (this.inData.personIri !== undefined) {
         this.knoraService.getResource(this.inData.personIri).subscribe((data) => {
           if (this.inData.personIri !== undefined) {
-            console.log('DATA: ', data);
             this.resId = data.id;
             this.lastmod = data.lastmod;
             this.form.controls.label.setValue(data.label);
@@ -339,9 +335,7 @@ export class EditPersonComponent implements OnInit {
                   break;
                 }
                 case this.knoraService.wwOntology + 'hasBirthDate': {
-                  console.log('DateValue.parseDateValueFromKnora', ele.values[0]);
                   const dateValue = DateValue.parseDateValueFromKnora(ele.values[0]);
-                  console.log('-=>', dateValue);
                   this.form.controls.birthDate.setValue(dateValue);
                   this.valIds.birthDate = {id: ele.ids[0], changed: false, toBeDeleted: false};
                   this.data.birthDate = dateValue;

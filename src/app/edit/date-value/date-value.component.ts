@@ -49,15 +49,14 @@ export class DateValue {
 
   constructor(calendar?: string | undefined,
               timeSpan?: boolean | undefined,
-              startDay?: number | string | undefined,
-              startMonth?: number | string | undefined,
               startYear?: number | string | undefined,
+              startMonth?: number | string | undefined,
+              startDay?: number | string | undefined,
               startEra?: string | undefined,
-              endDay?: number | string | undefined,
-              endMonth?: number | string | undefined,
               endYear?: number | string | undefined,
+              endMonth?: number | string | undefined,
+              endDay?: number | string | undefined,
               endEra?: string | undefined) {
-    console.log('in DateValue.constructor...');
     if (calendar === undefined) {
       this.calendar = 'GREGORIAN';
     } else {
@@ -99,11 +98,8 @@ export class DateValue {
       case DateCalendar.GREGORIAN:
         sYear = this.startYear || '1'; // we assign startYear=1 for undefined dates
         sMonth = this.startMonth === '-' ? '1' : this.startMonth;
-        console.log('1?????', this.startDay);
         sDay = this.startDay === '-' ? '1' : this.startDay;
-        console.log('2?????', sDay);
         this.startJd = Calendar.gregorian_to_jd(parseInt(sYear, 10), parseInt(sMonth, 10), parseInt(sDay, 10));
-        console.log('______>', parseInt(sYear, 10), parseInt(sMonth, 10), parseInt(sDay, 10));
         eYear = this.endYear || sYear; // if endYear undefined, we assume same as startYear...
         eMonth = this.endMonth === '-' ? '12' : this.startMonth;
         eDay = this.endDay === '-' ? '31' : this.endDay;
@@ -120,26 +116,31 @@ export class DateValue {
         this.endJd = Calendar.julian_to_jd(parseInt(eYear, 10), parseInt(eMonth, 10), parseInt(eDay, 10));
         break;
     }
-    console.log('DateValue.constructor finished:', this);
   }
 
   static parseDateValueFromKnora(datestr: string): DateValue {
     let calendar = DateCalendar.GREGORIAN;
     //const regex = '(GREGORIAN|JULIAN):([0-9]{4})-([0-9]{2})-([0-9]{2}) (BCE|CE):([0-9]{4})-([0-9]{2})-([0-9]{2}) (BCE|CE)';
     const regex = '(GREGORIAN:|JULIAN:)?([0-9]{4})(-[0-9]{2})?(-[0-9]{2})?( BCE| CE)?(:[0-9]{4})?(-[0-9]{2})?(-[0-9]{2})?( BCE| CE)?';
-    const found = datestr.match(datestr);
+    const found = datestr.match(regex);
     if (found) {
-      switch(found[1]) {
-        case DateCalendar.JULIAN: calendar = DateCalendar.JULIAN; break;
-        case DateCalendar.GREGORIAN: calendar = DateCalendar.GREGORIAN; break;
-        case undefined: calendar = DateCalendar.GREGORIAN; break;
-        default: throw TypeError('Invalid calendar string: ' + found[1]);
+      if (found[1]) {
+        const cal = found[1].slice(0, -1);
+        switch(cal) {
+          case DateCalendar.JULIAN: calendar = DateCalendar.JULIAN; break;
+          case DateCalendar.GREGORIAN: calendar = DateCalendar.GREGORIAN; break;
+          case undefined: calendar = DateCalendar.GREGORIAN; break;
+          default: throw TypeError('Invalid calendar string: ' + found[1]);
+        }
       }
-      const timeSpan = found[6] ? true : false;
+      else {
+        calendar = DateCalendar.GREGORIAN;
+      }
       const startYear = typeof found[2] === 'string' ? parseInt(found[2], 10) : undefined;
       const startMonth = DateValue.getRange(found[3], 1, 12);
-      const startDay = DateValue.getRange(found[4], 1, 31);
-      const startEra = DateValue.getEra(found[5]);
+      const startDay = DateValue.getRange(found[4], 1, 31);const startEra = DateValue.getEra(found[5]);
+
+      const timeSpan = found[6] ? true : false;
 
       const endYear = typeof found[6] === 'string' ? parseInt(found[6], 10) : undefined;
       const endMonth = DateValue.getRange(found[7], 1, 12);
@@ -161,14 +162,14 @@ export class DateValue {
       }
       v = parseInt(value, 10);
       if (isNaN(v)) {
-        throw new TypeError('Invalid range: ' + value);
+        throw new TypeError('Invalid range (1): ' + value);
       }
     }
     else if (typeof value === 'number') {
       v = value;
     }
     if (v < from || v > to) {
-      throw new TypeError('Invalid range: ' + value);
+      throw new TypeError('Invalid range (2): ' + value);
     }
     else {
       return v.toString(10);
@@ -179,11 +180,11 @@ export class DateValue {
     if (era === undefined) {
       return 'CE';
     }
-    switch(era.toUpperCase()) {
-      case 'CE': return 'CE';
-      case 'BCE': return 'BCE';
-      case 'BC': return 'BCE';
-      case 'AD': return 'CE';
+    switch(era.toUpperCase().trim()) {
+      case 'CE': return 'CE'; break;
+      case 'BCE': return 'BCE'; break;
+      case 'BC': return 'BCE'; break;
+      case 'AD': return 'CE'; break;
     }
     throw TypeError('Invalid era: ' + era);
   }
@@ -278,6 +279,12 @@ export class DateValue {
           <mat-option value="BCE">BCE</mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-form-field hidden>
+        <input matInput type="number" formControlName="startJd">
+      </mat-form-field>
+      <mat-form-field hidden>
+        <input matInput type="number" formControlName="endJd">
+      </mat-form-field>
      </div>
   `,
   providers: [{provide: MatFormFieldControl, useExisting: DateValueComponent}],
@@ -362,16 +369,14 @@ export class DateValueComponent
 
   @Input()
   get value(): DateValue | null {
-    console.log('...let gaga = this.value...');
-    const {value: {calendar, timeSpan, startDay, startMonth, startYear, startPeriod, endDay, endMonth, endYear, endPeriod}} = this.parts;
-    return new DateValue(calendar, timeSpan, startDay, startMonth, startYear, startPeriod, endDay, endMonth, endYear, endPeriod);
+    const {value: {calendar, timeSpan, startYear, startMonth, startDay, startPeriod, endYear, endMonth, endDay, endPeriod}} = this.parts;
+    return new DateValue(calendar, timeSpan, startYear, startMonth, startDay, startPeriod, endYear, endMonth, endDay, endPeriod);
   }
 
   set value(knoraVal: DateValue | null) {
-    console.log('...this.value = ', knoraVal);
     const now = new Date();
     // eslint-disable-next-line prefer-const
-    let {calendar, timeSpan, startDay, startMonth, startYear, startEra, endDay, endMonth, endYear, endEra} = knoraVal ||
+    let {calendar, timeSpan, startYear, startMonth, startDay, startEra, endYear, endMonth, endDay, endEra} = knoraVal ||
     new DateValue(DateCalendar.GREGORIAN, false,
         now.getFullYear(), now.getMonth() + 1, now.getDate(), 'CE',
         '', '-', '-', 'CE');
@@ -428,14 +433,16 @@ export class DateValueComponent
     this.parts = this.formBuilder.group({
       calendar: ['GREGORIAN', []],
       timeSpan: false,
-      startDay: ['-', []],
-      startMonth: ['-', []],
       startYear: ['', []],
+      startMonth: ['-', []],
+      startDay: ['-', []],
       startEra: ['CE', []],
-      endDay: '-',
-      endMonth: '-',
       endYear: '',
-      endEra: 'CE'
+      endMonth: '-',
+      endDay: '-',
+      endEra: 'CE',
+      startJd: 0,
+      endJd: 0
     });
     this.timeSpan = this.formBuilder.group({
       timeSpan: false
@@ -492,7 +499,6 @@ export class DateValueComponent
     this.disabled = isDisabled;
     if (isDisabled) {
       // tslint:disable-next-line:no-non-null-assertion
-      this.elementRef.nativeElement.querySelector('.dval')?.classList.remove('bg');
       this.elementRef.nativeElement.querySelector('.dval')?.classList.remove('bg');
     } else {
       // tslint:disable-next-line:no-non-null-assertion
