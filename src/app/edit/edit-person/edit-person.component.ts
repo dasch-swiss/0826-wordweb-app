@@ -339,7 +339,9 @@ export class EditPersonComponent implements OnInit {
                   break;
                 }
                 case this.knoraService.wwOntology + 'hasBirthDate': {
+                  console.log('DateValue.parseDateValueFromKnora', ele.values[0]);
                   const dateValue = DateValue.parseDateValueFromKnora(ele.values[0]);
+                  console.log('-=>', dateValue);
                   this.form.controls.birthDate.setValue(dateValue);
                   this.valIds.birthDate = {id: ele.ids[0], changed: false, toBeDeleted: false};
                   this.data.birthDate = dateValue;

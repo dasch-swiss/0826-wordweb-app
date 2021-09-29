@@ -6,12 +6,6 @@ import {Subject} from 'rxjs';
 import {IBaseDateValue} from '@dasch-swiss/dsp-js/src/models/v2/resources/values/type-specific-interfaces/base-date-value';
 import {KnoraService} from '../../services/knora.service';
 import {FocusMonitor} from '@angular/cdk/a11y';
-import {CalendarDate, JDNConvertibleCalendar, JDNConvertibleConversionModule} from 'jdnconvertiblecalendar';
-import gregorianToJDC = JDNConvertibleConversionModule.gregorianToJDC;
-import julianToJDC = JDNConvertibleConversionModule.julianToJDC;
-import gregorianToJDN = JDNConvertibleConversionModule.gregorianToJDN;
-import julianToJDN = JDNConvertibleConversionModule.julianToJDN;
-import {TypeDefinitionsModule} from 'jdnconvertiblecalendar/dist/src/TypeDefinitions';
 import {Calendar, DateCalendar} from '../../classes/calendar';
 
 // https://material.angular.io/guide/creating-a-custom-form-field-control
@@ -63,6 +57,7 @@ export class DateValue {
               endMonth?: number | string | undefined,
               endYear?: number | string | undefined,
               endEra?: string | undefined) {
+    console.log('in DateValue.constructor...');
     if (calendar === undefined) {
       this.calendar = 'GREGORIAN';
     } else {
@@ -99,33 +94,33 @@ export class DateValue {
     let eYear: string;
     let eMonth: string;
     let eDay: string;
-    let tmpCalendarDate: CalendarDate;
+    //let tmpCalendarDate: CalendarDate;
     switch(this.calendar) {
       case DateCalendar.GREGORIAN:
         sYear = this.startYear || '1'; // we assign startYear=1 for undefined dates
         sMonth = this.startMonth === '-' ? '1' : this.startMonth;
-        sDay = startDay === '-' ? '1' : this.startDay;
-        tmpCalendarDate = new CalendarDate(parseInt(sYear, 10), parseInt(sMonth, 10), parseInt(sDay, 10));
-        this.startJd = gregorianToJDN(tmpCalendarDate);
+        console.log('1?????', this.startDay);
+        sDay = this.startDay === '-' ? '1' : this.startDay;
+        console.log('2?????', sDay);
+        this.startJd = Calendar.gregorian_to_jd(parseInt(sYear, 10), parseInt(sMonth, 10), parseInt(sDay, 10));
+        console.log('______>', parseInt(sYear, 10), parseInt(sMonth, 10), parseInt(sDay, 10));
         eYear = this.endYear || sYear; // if endYear undefined, we assume same as startYear...
-        eMonth = this.startMonth === '-' ? '12' : this.startMonth;
-        eDay = startDay === '-' ? '31' : this.startDay;
-        tmpCalendarDate = new CalendarDate(parseInt(eYear, 10), parseInt(eMonth, 10), parseInt(eDay, 10));
-        this.endJd = gregorianToJDN(tmpCalendarDate);
+        eMonth = this.endMonth === '-' ? '12' : this.startMonth;
+        eDay = this.endDay === '-' ? '31' : this.endDay;
+        this.endJd = Calendar.gregorian_to_jd(parseInt(eYear, 10), parseInt(eMonth, 10), parseInt(eDay, 10));
         break;
       case DateCalendar.JULIAN:
         sYear = this.startYear || '1'; // we assign startYear=1 for undefined dates
         sMonth = this.startMonth === '-' ? '1' : this.startMonth;
-        sDay = startDay === '-' ? '1' : this.startDay;
-        tmpCalendarDate = new CalendarDate(parseInt(sYear, 10), parseInt(sMonth, 10), parseInt(sDay, 10));
-        this.startJd = julianToJDN(tmpCalendarDate);
+        sDay = this.startDay === '-' ? '1' : this.startDay;
+        this.startJd = Calendar.julian_to_jd(parseInt(sYear, 10), parseInt(sMonth, 10), parseInt(sDay, 10));
         eYear = this.endYear || sYear; // if endYear undefined, we assume same as startYear...
-        eMonth = this.startMonth === '-' ? '12' : this.startMonth;
-        eDay = startDay === '-' ? '31' : this.startDay;
-        tmpCalendarDate = new CalendarDate(parseInt(eYear, 10), parseInt(eMonth, 10), parseInt(eDay, 10));
-        this.endJd = gregorianToJDN(tmpCalendarDate);
+        eMonth = this.endMonth === '-' ? '12' : this.startMonth;
+        eDay = this.startDay === '-' ? '31' : this.startDay;
+        this.endJd = Calendar.julian_to_jd(parseInt(eYear, 10), parseInt(eMonth, 10), parseInt(eDay, 10));
         break;
     }
+    console.log('DateValue.constructor finished:', this);
   }
 
   static parseDateValueFromKnora(datestr: string): DateValue {
@@ -201,7 +196,8 @@ export class DateValue {
     <div [formGroup]="parts" class="datecontainer">
       <mat-form-field class="calsel">
         <mat-label>Calendar</mat-label>
-        <mat-select matNativeControl
+        <mat-select class="dval"
+                    matNativeControl
                     formControlName="calendar"
                     aria-label="Calendar"
                     (selectionChange)="_handleInput('calendar')">
@@ -212,11 +208,15 @@ export class DateValue {
       <br>
       <mat-form-field class="yearsel">
         <mat-label>Year</mat-label>
-        <input matInput formControlName="startYear" aria-label="Start year" (input)="_handleInput('startYear')">
+        <input matInput class="dval"
+               formControlName="startYear"
+               aria-label="Start year"
+               (input)="_handleInput('startYear')">
       </mat-form-field>
       <mat-form-field class="rangesel">
         <mat-label>Month</mat-label>
-        <mat-select formControlName="startMonth"
+        <mat-select class="dval"
+                    formControlName="startMonth"
                     aria-label="Start month"
                     (selectionChange)="_handleInput('startMonth')">
           <mat-option *ngFor="let d of months" [value]="d">{{d}}</mat-option>
@@ -224,7 +224,8 @@ export class DateValue {
       </mat-form-field>
       <mat-form-field  class="rangesel">
         <mat-label>Day</mat-label>
-        <mat-select formControlName="startDay"
+        <mat-select class="dval"
+                    formControlName="startDay"
                     aria-label="Start day"
                     (selectionChange)="_handleInput()">
           <mat-option *ngFor="let d of startDays" [value]="d">{{d}}</mat-option>
@@ -232,7 +233,8 @@ export class DateValue {
       </mat-form-field>
       <mat-form-field  class="rangesel">
         <mat-label>Era</mat-label>
-        <mat-select formControlName="startEra"
+        <mat-select class="dval"
+                    formControlName="startEra"
                     aria-label="Start era"
                     (selectionChange)="_handleInput()">
           <mat-option value="CE">BC</mat-option>
@@ -242,11 +244,16 @@ export class DateValue {
       <br>
       <mat-form-field *ngIf="parts.controls.timeSpan.value" class="yearsel">
         <mat-label>Year</mat-label>
-        <input matInput formControlName="endYear" aria-label="End year" (input)="_handleInput('endYear')">
+        <input matInput
+               class="dval"
+               formControlName="endYear"
+               aria-label="End year"
+               (input)="_handleInput('endYear')">
       </mat-form-field>
       <mat-form-field *ngIf="parts.controls.timeSpan.value" class="rangesel">
         <mat-label>Month</mat-label>
-        <mat-select formControlName="endMonth"
+        <mat-select class="dval"
+                    formControlName="endMonth"
                     aria-label="End month"
                     (selectionChange)="_handleInput('endMonth')">
           <mat-option *ngFor="let d of months" [value]="d">{{d}}</mat-option>
@@ -254,7 +261,8 @@ export class DateValue {
       </mat-form-field>
       <mat-form-field *ngIf="parts.controls.timeSpan.value" class="rangesel">
         <mat-label>Day</mat-label>
-        <mat-select formControlName="endDay"
+        <mat-select class="dval"
+                    formControlName="endDay"
                     aria-label="End day"
                     (selectionChange)="_handleInput()">
           <mat-option *ngFor="let d of endDays" [value]="d">{{d}}</mat-option>
@@ -262,7 +270,8 @@ export class DateValue {
       </mat-form-field>
       <mat-form-field *ngIf="parts.controls.timeSpan.value" class="rangesel">
         <mat-label>Era</mat-label>
-        <mat-select formControlName="endEra"
+        <mat-select class="dval"
+                    formControlName="endEra"
                     aria-label="End era"
                     (selectionChange)="_handleInput()">
           <mat-option value="CE">BC</mat-option>
@@ -288,7 +297,7 @@ export class DateValueComponent
 
   @Input()
   valueLabel: string;
-  calendarNames = ['GREGORIAN', 'JULIAN', 'JEWISH'];
+  calendarNames = ['GREGORIAN', 'JULIAN', 'JEWISH', 'ISLAMIC'];
   startDays: string[] = [];
   endDays: string[] = [];
   months = ['-', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
@@ -302,9 +311,9 @@ export class DateValueComponent
   describedBy = '';
   timeSpan: FormGroup;
 
-  private _placeholder: string;
-  private _required = false;
-  private _disabled = false;
+  private placeholderL: string;
+  private requiredL = false;
+  private disabledL = false;
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -320,29 +329,29 @@ export class DateValueComponent
 
   @Input()
   get placeholder(): string {
-    return this._placeholder;
+    return this.placeholderL;
   }
   set placeholder(value: string) {
-    this._placeholder = value;
+    this.placeholderL = value;
     this.stateChanges.next();
   }
 
   @Input()
   get required(): boolean {
-    return this._required;
+    return this.requiredL;
   }
   set required(value: boolean) {
-    this._required = coerceBooleanProperty(value);
+    this.requiredL = coerceBooleanProperty(value);
     this.stateChanges.next();
   }
 
   @Input()
   get disabled(): boolean {
-    return this._disabled;
+    return this.disabledL;
   }
   set disabled(value: boolean) {
-    this._disabled = coerceBooleanProperty(value);
-    if (this._disabled) {
+    this.disabledL = coerceBooleanProperty(value);
+    if (this.disabledL) {
       this.parts.disable();
     }
     else {
@@ -353,10 +362,13 @@ export class DateValueComponent
 
   @Input()
   get value(): DateValue | null {
+    console.log('...let gaga = this.value...');
     const {value: {calendar, timeSpan, startDay, startMonth, startYear, startPeriod, endDay, endMonth, endYear, endPeriod}} = this.parts;
     return new DateValue(calendar, timeSpan, startDay, startMonth, startYear, startPeriod, endDay, endMonth, endYear, endPeriod);
   }
+
   set value(knoraVal: DateValue | null) {
+    console.log('...this.value = ', knoraVal);
     const now = new Date();
     // eslint-disable-next-line prefer-const
     let {calendar, timeSpan, startDay, startMonth, startYear, startEra, endDay, endMonth, endYear, endEra} = knoraVal ||
@@ -410,10 +422,9 @@ export class DateValueComponent
 
   constructor(private formBuilder: FormBuilder,
               private knoraService: KnoraService,
-              private _focusMonitor: FocusMonitor,
-              private _elementRef: ElementRef<HTMLElement>,
+              private focusMonitor: FocusMonitor,
+              private elementRef: ElementRef<HTMLElement>,
               @Optional() @Self() public ngControl: NgControl) {
-    console.log('---------------------------------------------->');
     this.parts = this.formBuilder.group({
       calendar: ['GREGORIAN', []],
       timeSpan: false,
@@ -430,7 +441,7 @@ export class DateValueComponent
       timeSpan: false
     });
 
-    _focusMonitor.monitor(_elementRef, true).subscribe(origin => {
+    focusMonitor.monitor(elementRef, true).subscribe(origin => {
       if (this.focused && !origin) {
         this.onTouched();
       }
@@ -450,7 +461,7 @@ export class DateValueComponent
 
   ngOnDestroy() {
     this.stateChanges.complete();
-    this._focusMonitor.stopMonitoring(this._elementRef);
+    this.focusMonitor.stopMonitoring(this.elementRef);
   }
 
   setDescribedByIds(ids: string[]) {
@@ -460,7 +471,7 @@ export class DateValueComponent
   onContainerClick(event: MouseEvent) {
     if ((event.target as Element).tagName.toLowerCase() !== 'input') {
       // tslint:disable-next-line:no-non-null-assertion
-      this._elementRef.nativeElement.querySelector('input')!.focus();
+      this.elementRef.nativeElement.querySelector('input')?.focus();
     }
   }
 
@@ -481,12 +492,11 @@ export class DateValueComponent
     this.disabled = isDisabled;
     if (isDisabled) {
       // tslint:disable-next-line:no-non-null-assertion
-      this._elementRef.nativeElement.querySelector('.klie-val')!.classList.remove('bg');
-      this._elementRef.nativeElement.querySelector('.klie-com')!.classList.remove('bg');
+      this.elementRef.nativeElement.querySelector('.dval')?.classList.remove('bg');
+      this.elementRef.nativeElement.querySelector('.dval')?.classList.remove('bg');
     } else {
       // tslint:disable-next-line:no-non-null-assertion
-      this._elementRef.nativeElement.querySelector('.klie-val')!.classList.add('bg');
-      this._elementRef.nativeElement.querySelector('.klie-com')!.classList.add('bg');
+      this.elementRef.nativeElement.querySelector('.dval')?.classList.add('bg');
     }
   }
 
@@ -495,6 +505,8 @@ export class DateValueComponent
       let days: number;
       switch(what) {
         case 'calendar':
+          console.log(this.value);
+          console.log('========*******>', this.parts.controls.calendar.value);
           break;
         case 'startYear':
           if (this.parts.controls.startYear.value === '') {

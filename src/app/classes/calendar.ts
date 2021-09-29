@@ -26,6 +26,7 @@ export class Calendar {
         to avoid overhead constructing and disposing of them in each
         call on the function in which whey are used.  */
 
+    // public static gregorian_to_jd(year: number, month: number, day: number): number
     // public static jd_to_gregorian(jd: number): number[]
     // public static iso_to_julian(year: number, week: number, day: number): number
     // public static jd_to_iso(jd: number): number[]
