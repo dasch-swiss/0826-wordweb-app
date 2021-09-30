@@ -66,6 +66,10 @@ export class DateValue {
     this.startMonth = DateValue.getRange(startMonth, 1, 12);
     this.startDay = DateValue.getRange(startDay, 1, 31);
 
+    if (this.startMonth === '-' && this.startDay !== '-') {
+      throw TypeError('Invalid date data: day defined for undefined month!');
+    }
+
     this.timeSpan = timeSpan || false;
 
     const eY = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear;
@@ -225,7 +229,7 @@ export class DateValue {
                     formControlName="startMonth"
                     aria-label="Start month"
                     (selectionChange)="_handleInput('startMonth')">
-          <mat-option *ngFor="let d of months" [value]="d[0]">{{d[0]}}</mat-option>
+          <mat-option *ngFor="let d of sMonths" [value]="d[0]" [disabled]="d[1]">{{d[0]}}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field  class="rangesel">
@@ -234,7 +238,7 @@ export class DateValue {
                     formControlName="startDay"
                     aria-label="Start day"
                     (selectionChange)="_handleInput()">
-          <mat-option *ngFor="let d of startDays" [value]="d[0]">{{d[0]}}</mat-option>
+          <mat-option *ngFor="let d of startDays" [value]="d" >{{d}}</mat-option>
         </mat-select>
       </mat-form-field>
       <span  *ngIf="parts.controls.timeSpan.value">&nbsp;-&nbsp;</span>
@@ -254,7 +258,7 @@ export class DateValue {
                     formControlName="endMonth"
                     aria-label="End month"
                     (selectionChange)="_handleInput('endMonth')">
-          <mat-option *ngFor="let d of months" [value]="d">{{d}}</mat-option>
+          <mat-option *ngFor="let d of eMonths" [value]="d[0]" [disabled]="d[1]">{{d[0]}}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field *ngIf="parts.controls.timeSpan.value" class="rangesel">
@@ -287,10 +291,10 @@ export class DateValueComponent
   @Input()
   valueLabel: string;
   calendarNames = ['GREGORIAN', 'JULIAN', 'ISLAMIC'];
-  startDays: string[] = [];
-  endDays: string[] = [];
-  months: [string,boolean][] = [['-', true], ['1', true], ['2', true], ['3', true], ['4', true], ['5', true],
-    ['6', true], ['7', true], ['8', true], ['9', true], ['10', true], ['11', true], ['12', true]];
+  startDays: [string,boolean][] = [];
+  endDays: [string,boolean][] = [];
+  sMonths: [string,boolean][] = [];
+  eMonths: [string,boolean][] = [];
 
   parts: FormGroup;
   stateChanges = new Subject<void>();
@@ -361,7 +365,7 @@ export class DateValueComponent
     let {calendar, timeSpan, startYear, startMonth, startDay, endYear, endMonth, endDay, startJd, endJd} = knoraVal ||
     new DateValue(DateCalendar.GREGORIAN, false,
         now.getFullYear(), now.getMonth() + 1, now.getDate(), '', '-', '-');
-    if (!startYear) {
+    if (startMonth === '-') {
       startMonth = '-';
       this.parts.controls.startMonth.disable();
     }
@@ -378,28 +382,34 @@ export class DateValueComponent
       this.parts.controls.endDay.disable();
     }
 
-    if (startYear && startMonth) {
-      const days = Calendar.daycnt(this.parts.controls.calendar.value,
-          this.parts.controls.startYear.value,
-          this.parts.controls.startMonth.value);
-      const startDays: string[] = ['-'];
-      for (let i = 1; i <= days; i++) {
-        startDays.push(i.toString(10));
+    let sDays = 31;
+    if ()
+    sDays = Calendar.daycnt(this.parts.controls.calendar.value,
+        this.parts.controls.startYear.value,
+        this.parts.controls.startMonth.value);
+    const eDays = Calendar.daycnt(this.parts.controls.calendar.value,
+        this.parts.controls.endYear.value,
+        this.parts.controls.endMonth.value);
+
+    if (startYear === endYear) {
+      if (startMonth === endMonth) {
+        this.startDays = this.daysListTo(sDays, startDay === '-' ? 0 : Number(endDay));
+        this.endDays = this.daysListFrom(eDays, startDay === '-' ? 0 : Number(startDay));
+      } else {
+        this.startDays = this.daysListTo(sDays, startDay === '-' ? 0 : Number(endDay));
+        this.endDays = this.daysListFrom(eDays, startDay === '-' ? 0 : Number(startDay));
       }
-      this.startDays = startDays;
+    }
+
+    if (startYear && startMonth) {
     }
 
     if (endYear && endMonth) {
       const days = Calendar.daycnt(this.parts.controls.calendar.value,
           this.parts.controls.endYear.value,
           this.parts.controls.endMonth.value);
-      const endDays: string[] = ['-'];
-      for (let i = 1; i <= days; i++) {
-        endDays.push(i.toString(10));
-      }
-      this.endDays = endDays;
+      this.endDays = this.daysListFrom(days);
     }
-
 
     this.parts.setValue({calendar, timeSpan, startDay, startMonth, startYear, endDay, endMonth, endYear, startJd, endJd});
     this.stateChanges.next();
@@ -440,7 +450,47 @@ export class DateValueComponent
     }
   }
 
+  monthsListFrom(from?: number): [string,boolean][] {
+    const ml: [string,boolean][] = [['-', false]];
+    if (!from) { from = 1; }
+    for (let i = 1; i <= 12; i++) {
+      ml.push([String(i), i < from ? true : false]);
+    }
+    return ml;
+  }
+
+  monthsListTo(to?: number): [string,boolean][] {
+    const ml: [string,boolean][] = [['-', false]];
+    if (!to) {
+      to = 12;
+    }
+    for (let i = 1; i <= 12; i++) {
+      ml.push([String(i), i > to ? true : false]);
+    }
+    return ml;
+  }
+
+  daysListFrom(total: number, from?: number): [string,boolean][] {
+    const dl: [string,boolean][] = [['-', false]];
+    if (!from) { from = 1; }
+    for (let i = 1; i <= total; i++) {
+      dl.push([String(i), i < from ? true : false]);
+    }
+    return dl;
+  }
+
+  daysListTo(total: number, to?: number): [string,boolean][] {
+    const dl: [string,boolean][] = [['-', false]];
+    if (!to) { to = 1; }
+    for (let i = 1; i <= total; i++) {
+      dl.push([String(i), i > to ? true : false]);
+    }
+    return dl;
+  }
+
   ngOnInit(): void {
+    this.sMonths = this.monthsListFrom();
+    this.eMonths = this.monthsListFrom();
     if (!this.valueLabel) { this.valueLabel = 'Value'; }
     this.parts.controls.startDay.setValue('-');
   }
@@ -492,8 +542,14 @@ export class DateValueComponent
       this.parts.controls.endYear.enable();
 
       const sMonth = this.parts.controls.startMonth.value;
+      this.sMonths = this.monthsListTo(sMonth);
       this.parts.controls.endMonth.setValue(sMonth);
       this.parts.controls.endMonth.enable();
+      if (sMonth === '-') {
+        this.eMonths = this.monthsListFrom(13);
+      } else {
+        this.eMonths = this.monthsListFrom(sMonth);
+      }
 
       const sDay = this.parts.controls.startDay.value;
       const daycnt = Calendar.daycnt(this.parts.controls.calendar.value,
@@ -523,6 +579,7 @@ export class DateValueComponent
       this.parts.controls.endMonth.disable();
       this.parts.controls.endDay.setValue('-');
       this.parts.controls.endDay.disable();
+      this.sMonths = this.monthsListTo();
     }
   }
 
