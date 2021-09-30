@@ -105,6 +105,7 @@ import {DatePipe} from '@angular/common';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from '@angular/material/core';
 import { DateValueComponent } from './edit/date-value/date-value.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -207,6 +208,7 @@ export function initializeApp(appInitService: AppInitService) {
         MatAutocompleteModule,
         MatDatepickerModule,
         MatNativeDateModule,
+        MatTooltipModule,
     ],
     providers: [
         AppInitService,
