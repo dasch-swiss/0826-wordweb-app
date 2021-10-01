@@ -44,6 +44,9 @@ export class DateValue {
       this.calendar = calendar;
     }
 
+    //
+    // we fill the structure that we can calcalulate the period start and end using JD
+    //
     this.startYear = typeof startYear === 'string' ? parseInt(startYear, 10) : startYear;
     if (isNaN(this.startYear)) {
       this.startYear = undefined;
@@ -54,111 +57,84 @@ export class DateValue {
       this.endDay = undefined;
       this.startJd = undefined;
       this.endJd = undefined;
-    } else {
-      this.startMonth = DateValue.getRange(startMonth, 1, 12);
-      if (this.startMonth) {
-        const daycnt = Calendar.daycnt(this.calendar, this.startYear, this.startMonth);
-        this.startDay = DateValue.getRange(startDay, 1, daycnt);
-      } else {
-        this.startDay = undefined;
-      }
+      return;
     }
 
+    this.endYear = this.startYear;
+    this.startMonth = DateValue.getRange(startMonth, 1, 12);
+    if (this.startMonth) {
+      this.endMonth = this.startMonth;
+      const sDaycnt = Calendar.daycnt(this.calendar, this.startYear, this.startMonth);
+      this.startDay = DateValue.getRange(startDay, 1, sDaycnt);
+      if (this.startDay) {
+        this.endDay = this.startDay;
+      } else {
+        this.startDay = 1;
+        const eDaycnt = Calendar.daycnt(this.calendar, this.endYear, this.endMonth);
+        this.endDay = eDaycnt;
+      }
+    } else {
+      this.startMonth = 1;
+      this.endMonth = 12;
+      this.startDay = 1;
+      this.endDay = Calendar.daycnt(this.calendar, this.endYear, this.endMonth);
+    }
 
-    // this.timeSpan = timeSpan || false;
-
-    this.endYear = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear;
-    if (isNaN(this.endYear)) { this.endYear = undefined; }
-
-    if (!this.timeSpan) { this.timeSpan = !!this.endYear; }
+    this.timeSpan = timeSpan || false;
 
     if (this.timeSpan) {
-      if (this.endYear) {
-
-      } else {
-        this.endYear = undefined;
-        this.endMonth = undefined;
-        this.endDay = undefined;
+      let eY = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear;
+      if (isNaN(eY)) {
+        eY = undefined;
       }
-
-
-
-
-
-      this.endMonth = DateValue.getRange(endMonth, 1, 12);
-      this.endDay = DateValue.getRange(endDay, 1, 31);
-      if (!this.endYear) {
-        throw TypeError('Invalid date: time span with invalid end year!');
-      }
-      if (!this.endMonth && this.endDay) {
-        throw TypeError('Invalid date: end day defined for undefined end month!');
-      }
-      if (this.startYear > this.endYear) {
-        throw TypeError('Invalid date: end year before start year!');
-      } else if (this.startYear === this.endYear) {
-        if (!this.startMonth && this.endMonth) {
-          this.startMonth = 1;
+      if (eY) {
+        if (eY >= this.startYear) {
+          this.endYear = eY;
+        } else {
+          throw TypeError('Invalid date: startYear > endYear!');
         }
-        if (this.startMonth && !this.endMonth) {
-          this.endMonth = 12;
-        }
-        if (this.startMonth && this.endMonth) {
-          if (this.startMonth > this.endMonth) {
-            throw TypeError('Invalid date: end year/month before start year/month!');
-          } else if (this.startMonth === this.endMonth) {
-            if (!this.startDay && this.endDay) {
-              this.startDay = 1;
-            }
-            if (this.startDay && !this.endDay) {
-              this.endDay = Calendar.daycnt(this.calendar, this.startYear, this.startMonth);
-            }
-            if (this.startDay && this.endDay) {
-              if (this.startDay > this.endDay) {
-                throw TypeError('Invalid date: end year/month before start year/month!');
-              } else if (this.startDay === this.endDay) {
-                this.timeSpan = false;
-                this.endYear = undefined;
-                this.endMonth = undefined;
-                this.endDay = undefined;
-              }
-            }
+        const eM = DateValue.getRange(endMonth, 1, 12) || 12;
+        const eD = DateValue.getRange(endDay, 1, 31) || Calendar.daycnt(this.calendar, this.endYear, eM);
+        if (this.startYear === this.endYear) {
+          if (eM < this.startMonth) {
+            throw TypeError('Invalid date: startYear/startMonth > endYear/endMonth!');
+          } else {
+            this.endMonth = eM;
           }
+          if (this.startMonth === this.endMonth) {
+            if (eD < this.startDay) {
+              throw TypeError('Invalid date: startYear/startMonth/startDay > endYear/endMonth/endDay!');
+            } else {
+              this.endDay = eD;
+            }
+          } else {
+            this.endDay = eD;
+          }
+        } else {
+          this.endMonth = eM;
+          this.endDay = eD;
         }
       }
-    } else {
-      this.endYear = undefined;
-      this.endMonth = undefined;
-      this.endDay = undefined;
     }
-
-    const now = new Date();
-
-    const sYear = this.startYear || now.getFullYear();
-    const sMonth = this.startMonth || 1;
-    const sDay = this.startDay || 1;
-    const eYear = this.endYear || sYear;
-    const eMonth = this.endMonth || 12;
-    const eDay = this.endDay || Calendar.daycnt(this.calendar, eYear, eMonth);
 
     switch(this.calendar) {
       case DateCalendar.GREGORIAN:
-        this.startJd = Calendar.gregorian_to_jd(sYear, sMonth, sDay);
-        this.endJd = Calendar.gregorian_to_jd(eYear, eMonth, eDay);
+        this.startJd = Calendar.gregorian_to_jd(this.startYear, this.startMonth, this.startDay);
+        this.endJd = Calendar.gregorian_to_jd(this.startYear, this.startMonth, this.startDay);
         break;
       case DateCalendar.JULIAN:
-        this.startJd = Calendar.julian_to_jd(sYear, sMonth, sDay);
-        this.endJd = Calendar.julian_to_jd(eYear, eMonth, eDay);
+        this.startJd = Calendar.julian_to_jd(this.startYear, this.startMonth, this.startDay);
+        this.endJd = Calendar.julian_to_jd(this.startYear, this.startMonth, this.startDay);
         break;
       case DateCalendar.ISLAMIC:
-        this.startJd = Calendar.islamic_to_jd(sYear, sMonth, sDay);
-        this.endJd = Calendar.islamic_to_jd(eYear, eMonth, eDay);
+        this.startJd = Calendar.islamic_to_jd(this.startYear, this.startMonth, this.startDay);
+        this.endJd = Calendar.islamic_to_jd(this.startYear, this.startMonth, this.startDay);
         break;
     }
   }
 
   static parseDateValueFromKnora(datestr: string): DateValue {
     let calendar = DateCalendar.GREGORIAN;
-    //const regex = '(GREGORIAN|JULIAN):([0-9]{4})-([0-9]{2})-([0-9]{2}) (BCE|CE):([0-9]{4})-([0-9]{2})-([0-9]{2}) (BCE|CE)';
     const regex = '(GREGORIAN:|JULIAN:)?([0-9]{4})(-[0-9]{2})?(-[0-9]{2})?( BCE| CE)?(:[0-9]{4})?(-[0-9]{2})?(-[0-9]{2})?( BCE| CE)?';
     const found = datestr.match(regex);
     if (found) {
@@ -630,7 +606,6 @@ export class DateValueComponent
           }
         }
       }
-
     } else {
       this.parts.controls.endYear.setValue('');
       this.parts.controls.endYear.disable();
@@ -726,11 +701,7 @@ export class DateValueComponent
           daycnt = Calendar.daycnt(this.parts.controls.calendar.value,
               this.parts.controls.startYear.value,
               this.parts.controls.startMonth.value);
-          const startDays: string[] = ['-'];
-          for (let i = 1; i <= daycnt; i++) {
-            startDays.push(i.toString(10));
-          }
-          this.startDays = startDays;
+          this.startDays = this.daysListTo(daycnt);
           const sday = parseInt(this.parts.controls.startDay.value, 10);
           if (!isNaN(sday)) {
             if (sday > daycnt) {
@@ -753,7 +724,7 @@ export class DateValueComponent
           for (let i = 1; i <= daycnt; i++) {
             endDays.push(i.toString(10));
           }
-          this.endDays = endDays;
+          this.endDays = this.daysListTo(daycnt);
           const eday = parseInt(this.parts.controls.endDay.value, 10);
           if (!isNaN(eday)) {
             if (eday > daycnt) {
