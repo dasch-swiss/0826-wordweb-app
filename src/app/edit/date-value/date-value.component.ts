@@ -3,43 +3,27 @@ import {MatFormFieldControl} from '@angular/material/form-field';
 import {ControlValueAccessor, FormBuilder, FormGroup, NgControl} from '@angular/forms';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Subject} from 'rxjs';
-import {IBaseDateValue} from '@dasch-swiss/dsp-js/src/models/v2/resources/values/type-specific-interfaces/base-date-value';
 import {KnoraService} from '../../services/knora.service';
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {Calendar, DateCalendar} from '../../classes/calendar';
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatSnackBar} from '@angular/material/snack-bar';
+//import {timestamp} from 'rxjs/operators';
 
 // https://material.angular.io/guide/creating-a-custom-form-field-control
 
-export enum DateMonth {
-  undefinedMonth,
-  january,
-  february,
-  march,
-  april,
-  may,
-  june,
-  july,
-  august,
-  september,
-  october,
-  november,
-  december
-}
-
 export class DateValue {
-  calendar: string;
+  calendar: DateCalendar;
   timeSpan: boolean;
-  startDay: string;
-  startMonth: string;
-  startYear: string;
-  endDay: string;
-  endMonth: string;
-  endYear: string;
-  startJd: number;
-  endJd: number;
+  startYear: number;
+  startMonth?: number;
+  startDay?: number;
+  endYear?: number;
+  endMonth?: number;
+  endDay?: number;
+  startJd?: number;
+  endJd?: number;
 
-  constructor(calendar?: string | undefined,
+  constructor(calendar?: string | DateCalendar | undefined,
               timeSpan?: boolean | undefined,
               startYear?: number | string | undefined,
               startMonth?: number | string | undefined,
@@ -48,76 +32,126 @@ export class DateValue {
               endMonth?: number | string | undefined,
               endDay?: number | string | undefined) {
     if (calendar === undefined) {
-      this.calendar = 'GREGORIAN';
-    } else {
+      this.calendar = DateCalendar.GREGORIAN;
+    } else if (typeof calendar === 'string') {
       switch (calendar.toUpperCase()) {
-        case 'GREGORIAN': this.calendar = 'GREGORIAN'; break;
-        case 'JULIAN': this.calendar = 'JULIAN'; break;
-        case 'ISLAMIC': this.calendar = 'ISLAMIC'; break;
+        case 'GREGORIAN': this.calendar = DateCalendar.GREGORIAN; break;
+        case 'JULIAN': this.calendar = DateCalendar.JULIAN; break;
+        case 'ISLAMIC': this.calendar = DateCalendar.ISLAMIC; break;
         default: throw TypeError('Invalid calendar: ' + calendar);
       }
-    }
-    let sY = typeof startYear === 'string' ? parseInt(startYear, 10) : startYear;
-    if ((sY === undefined) || isNaN(sY)) {
-      const now = new Date();
-      sY = now.getFullYear();
-    }
-    this.startYear = sY.toString(10);
-    this.startMonth = DateValue.getRange(startMonth, 1, 12);
-    this.startDay = DateValue.getRange(startDay, 1, 31);
-
-    if (this.startMonth === '-' && this.startDay !== '-') {
-      throw TypeError('Invalid date data: day defined for undefined month!');
+    } else {
+      this.calendar = calendar;
     }
 
-    this.timeSpan = timeSpan || false;
-
-    const eY = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear;
-    if ((eY === undefined) || isNaN(eY)) {
-      this.endYear = '';
+    this.startYear = typeof startYear === 'string' ? parseInt(startYear, 10) : startYear;
+    if (isNaN(this.startYear)) {
+      this.startYear = undefined;
+      this.startMonth = undefined;
+      this.startDay = undefined;
+      this.endYear = undefined;
+      this.endMonth = undefined;
+      this.endDay = undefined;
+      this.startJd = undefined;
+      this.endJd = undefined;
+    } else {
+      this.startMonth = DateValue.getRange(startMonth, 1, 12);
+      if (this.startMonth) {
+        const daycnt = Calendar.daycnt(this.calendar, this.startYear, this.startMonth);
+        this.startDay = DateValue.getRange(startDay, 1, daycnt);
+      } else {
+        this.startDay = undefined;
+      }
     }
-    else {
-      this.endYear = sY.toString(10);
-    }
-    this.endMonth = DateValue.getRange(endMonth, 1, 12);
-    this.endDay = DateValue.getRange(endDay, 1, 31);
 
-    let sYear: string;
-    let sMonth: string;
-    let sDay: string;
-    let eYear: string;
-    let eMonth: string;
-    let eDay: string;
+
+    // this.timeSpan = timeSpan || false;
+
+    this.endYear = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear;
+    if (isNaN(this.endYear)) { this.endYear = undefined; }
+
+    if (!this.timeSpan) { this.timeSpan = !!this.endYear; }
+
+    if (this.timeSpan) {
+      if (this.endYear) {
+
+      } else {
+        this.endYear = undefined;
+        this.endMonth = undefined;
+        this.endDay = undefined;
+      }
+
+
+
+
+
+      this.endMonth = DateValue.getRange(endMonth, 1, 12);
+      this.endDay = DateValue.getRange(endDay, 1, 31);
+      if (!this.endYear) {
+        throw TypeError('Invalid date: time span with invalid end year!');
+      }
+      if (!this.endMonth && this.endDay) {
+        throw TypeError('Invalid date: end day defined for undefined end month!');
+      }
+      if (this.startYear > this.endYear) {
+        throw TypeError('Invalid date: end year before start year!');
+      } else if (this.startYear === this.endYear) {
+        if (!this.startMonth && this.endMonth) {
+          this.startMonth = 1;
+        }
+        if (this.startMonth && !this.endMonth) {
+          this.endMonth = 12;
+        }
+        if (this.startMonth && this.endMonth) {
+          if (this.startMonth > this.endMonth) {
+            throw TypeError('Invalid date: end year/month before start year/month!');
+          } else if (this.startMonth === this.endMonth) {
+            if (!this.startDay && this.endDay) {
+              this.startDay = 1;
+            }
+            if (this.startDay && !this.endDay) {
+              this.endDay = Calendar.daycnt(this.calendar, this.startYear, this.startMonth);
+            }
+            if (this.startDay && this.endDay) {
+              if (this.startDay > this.endDay) {
+                throw TypeError('Invalid date: end year/month before start year/month!');
+              } else if (this.startDay === this.endDay) {
+                this.timeSpan = false;
+                this.endYear = undefined;
+                this.endMonth = undefined;
+                this.endDay = undefined;
+              }
+            }
+          }
+        }
+      }
+    } else {
+      this.endYear = undefined;
+      this.endMonth = undefined;
+      this.endDay = undefined;
+    }
+
+    const now = new Date();
+
+    const sYear = this.startYear || now.getFullYear();
+    const sMonth = this.startMonth || 1;
+    const sDay = this.startDay || 1;
+    const eYear = this.endYear || sYear;
+    const eMonth = this.endMonth || 12;
+    const eDay = this.endDay || Calendar.daycnt(this.calendar, eYear, eMonth);
+
     switch(this.calendar) {
       case DateCalendar.GREGORIAN:
-        sYear = this.startYear || '1'; // we assign startYear=1 for undefined dates
-        sMonth = this.startMonth === '-' ? '1' : this.startMonth;
-        sDay = this.startDay === '-' ? '1' : this.startDay;
-        this.startJd = Calendar.gregorian_to_jd(parseInt(sYear, 10), parseInt(sMonth, 10), parseInt(sDay, 10));
-        eYear = this.endYear || sYear; // if endYear undefined, we assume same as startYear...
-        eMonth = this.endMonth === '-' ? '12' : this.startMonth;
-        eDay = this.endDay === '-' ? '31' : this.endDay;
-        this.endJd = Calendar.gregorian_to_jd(parseInt(eYear, 10), parseInt(eMonth, 10), parseInt(eDay, 10));
+        this.startJd = Calendar.gregorian_to_jd(sYear, sMonth, sDay);
+        this.endJd = Calendar.gregorian_to_jd(eYear, eMonth, eDay);
         break;
       case DateCalendar.JULIAN:
-        sYear = this.startYear || '1'; // we assign startYear=1 for undefined dates
-        sMonth = this.startMonth === '-' ? '1' : this.startMonth;
-        sDay = this.startDay === '-' ? '1' : this.startDay;
-        this.startJd = Calendar.julian_to_jd(parseInt(sYear, 10), parseInt(sMonth, 10), parseInt(sDay, 10));
-        eYear = this.endYear || sYear; // if endYear undefined, we assume same as startYear...
-        eMonth = this.endMonth === '-' ? '12' : this.startMonth;
-        eDay = this.startDay === '-' ? '31' : this.startDay;
-        this.endJd = Calendar.julian_to_jd(parseInt(eYear, 10), parseInt(eMonth, 10), parseInt(eDay, 10));
+        this.startJd = Calendar.julian_to_jd(sYear, sMonth, sDay);
+        this.endJd = Calendar.julian_to_jd(eYear, eMonth, eDay);
         break;
       case DateCalendar.ISLAMIC:
-        sYear = this.startYear || '1'; // we assign startYear=1 for undefined dates
-        sMonth = this.startMonth === '-' ? '1' : this.startMonth;
-        sDay = this.startDay === '-' ? '1' : this.startDay;
-        this.startJd = Calendar.islamic_to_jd(parseInt(sYear, 10), parseInt(sMonth, 10), parseInt(sDay, 10));
-        eYear = this.endYear || sYear; // if endYear undefined, we assume same as startYear...
-        eMonth = this.endMonth === '-' ? '12' : this.startMonth;
-        eDay = this.startDay === '-' ? '31' : this.startDay;
-        this.endJd = Calendar.islamic_to_jd(parseInt(eYear, 10), parseInt(eMonth, 10), parseInt(eDay, 10));
+        this.startJd = Calendar.islamic_to_jd(sYear, sMonth, sDay);
+        this.endJd = Calendar.islamic_to_jd(eYear, eMonth, eDay);
         break;
     }
   }
@@ -141,16 +175,19 @@ export class DateValue {
       else {
         calendar = DateCalendar.GREGORIAN;
       }
-      let startYear: number = typeof found[2] === 'string' ? parseInt(found[2], 10) : undefined;
+
+      let startYear: number = parseInt(found[2], 10);
+      if (isNaN(startYear)) { startYear = undefined; }
       if (startYear && DateValue.isBCE(found[5])) {
         startYear = -startYear;
       }
       const startMonth = DateValue.getRange(found[3], 1, 12);
       const startDay = DateValue.getRange(found[4], 1, 31);
 
-      const timeSpan = found[6] ? true : false;
+      const timeSpan = !!found[6];
 
-      let endYear: number = typeof found[6] === 'string' ? parseInt(found[6], 10) : undefined;
+      let endYear: number = parseInt(found[6], 10);
+      if (isNaN(endYear)) { endYear = undefined; }
       if (endYear && DateValue.isBCE(found[9])) {
         endYear = -endYear;
       }
@@ -160,14 +197,14 @@ export class DateValue {
     }
   }
 
-  private static getRange(value: number | string | undefined, from: number, to: number): string {
+  private static getRange(value: number | string | undefined, from: number, to: number): number | undefined {
     if (value === undefined) {
-      return '-';
+      return undefined;
     }
     let v: number;
     if (typeof value === 'string') {
       if (value === '-') {
-        return '-';
+        return undefined;
       }
       v = parseInt(value, 10);
       if (isNaN(v)) {
@@ -179,7 +216,7 @@ export class DateValue {
     if (v < from || v > to) {
       throw new TypeError('Invalid range (2): ' + value);
     } else {
-      return v.toString(10);
+      return v;
     }
   }
 
@@ -188,10 +225,10 @@ export class DateValue {
       return false;
     }
     switch(era.toUpperCase().trim()) {
-      case 'CE': return false; break;
-      case 'BCE': return true; break;
-      case 'BC': return true; break;
-      case 'AD': return false; break;
+      case 'CE': return false;
+      case 'BCE': return true;
+      case 'BC': return true;
+      case 'AD': return false;
     }
     throw TypeError('Invalid era: ' + era);
   }
@@ -205,7 +242,6 @@ export class DateValue {
       <mat-form-field class="calsel">
         <mat-label>Calendar</mat-label>
         <mat-select class="dval" matTooltip="Select one of the Calendars"
-                    matNativeControl
                     formControlName="calendar"
                     aria-label="Calendar"
                     (selectionChange)="_handleCalendarChange()">
@@ -309,12 +345,46 @@ export class DateValueComponent
   private requiredL = false;
   private disabledL = false;
 
+  constructor(private formBuilder: FormBuilder,
+              private knoraService: KnoraService,
+              private focusMonitor: FocusMonitor,
+              private snackBar: MatSnackBar,
+              private elementRef: ElementRef<HTMLElement>,
+              @Optional() @Self() public ngControl: NgControl) {
+    this.parts = this.formBuilder.group({
+      calendar: ['GREGORIAN', []],
+      timeSpan: false,
+      startYear: ['', []],
+      startMonth: ['-', []],
+      startDay: ['-', []],
+      endYear: '',
+      endMonth: '-',
+      endDay: '-',
+      startJd: 0,
+      endJd: 0
+    });
+    this.timeSpan = this.formBuilder.group({
+      timeSpan: false
+    });
+
+    focusMonitor.monitor(elementRef, true).subscribe(origin => {
+      if (this.focused && !origin) {
+        this.onTouched();
+      }
+      this.focused = !!origin;
+      this.stateChanges.next();
+    });
+
+    if (this.ngControl != null) {
+      this.ngControl.valueAccessor = this;
+    }
+  }
+
   onChange = (_: any) => {};
   onTouched = () => {};
 
   get empty() {
-    const {value: {calendar, startDay, startMonth, startYear, endDay, endMonth, endYear}} = this.parts;
-    return !startYear;
+    return !this.parts.controls.startYear.value;
   }
 
   get shouldLabelFloat() {
@@ -365,90 +435,76 @@ export class DateValueComponent
     let {calendar, timeSpan, startYear, startMonth, startDay, endYear, endMonth, endDay, startJd, endJd} = knoraVal ||
     new DateValue(DateCalendar.GREGORIAN, false,
         now.getFullYear(), now.getMonth() + 1, now.getDate(), '', '-', '-');
-    if (startMonth === '-') {
-      startMonth = '-';
+
+    if (startYear) {
+      this.parts.controls.startMonth.enable();
+      if (startMonth) {
+        this.parts.controls.startDay.enable();
+      } else {
+        this.parts.controls.startDay.disable();
+      }
+    } else {
       this.parts.controls.startMonth.disable();
-    }
-    if (!endYear) {
-      endMonth = '-';
-      this.parts.controls.endMonth.disable();
-    }
-    if (startMonth === '-') {
-      startDay = '-';
       this.parts.controls.startDay.disable();
     }
-    if (endMonth === '-') {
-      endDay = '-';
-      this.parts.controls.endDay.disable();
-    }
+    const sYear = startYear ? String(startYear) : '';
+    const sMonth = startMonth ? String(startMonth) : '-';
+    const sDay = startDay ? String(startDay) : '-';
 
-    let sDays = 31;
-    if ()
-    sDays = Calendar.daycnt(this.parts.controls.calendar.value,
-        this.parts.controls.startYear.value,
-        this.parts.controls.startMonth.value);
-    const eDays = Calendar.daycnt(this.parts.controls.calendar.value,
-        this.parts.controls.endYear.value,
-        this.parts.controls.endMonth.value);
-
-    if (startYear === endYear) {
-      if (startMonth === endMonth) {
-        this.startDays = this.daysListTo(sDays, startDay === '-' ? 0 : Number(endDay));
-        this.endDays = this.daysListFrom(eDays, startDay === '-' ? 0 : Number(startDay));
+    if (timeSpan) {
+      if (endMonth) {
+        this.parts.controls.endDay.enable();
       } else {
-        this.startDays = this.daysListTo(sDays, startDay === '-' ? 0 : Number(endDay));
-        this.endDays = this.daysListFrom(eDays, startDay === '-' ? 0 : Number(startDay));
+        this.parts.controls.endDay.disable();
       }
     }
+    const eYear = String(endYear) || '';
+    const eMonth = String(endMonth) || '-';
+    const eDay = String(endDay) || '-';
 
-    if (startYear && startMonth) {
+    if (timeSpan) {
+      this.parts.controls.timeSpan.setValue(true);
+      this.parts.controls.endYear.enable();
+      if (!endYear) { endYear = startYear; }
+      if (startYear === endYear) {
+        if (startMonth) {
+          if (!endMonth) { endMonth = startMonth; }
+          this.sMonths = this.monthsListTo(endMonth);
+          this.eMonths = this.monthsListFrom(startMonth);
+          if (startDay) {
+            if (!endDay) { endDay = startDay; }
+            const nStartDays = Calendar.daycnt(calendar, startYear, startMonth);
+            this.startDays = this.daysListTo(nStartDays, endDay);
+            const nEndDays = Calendar.daycnt(calendar, endYear, endMonth);
+            this.endDays = this.daysListFrom(nEndDays, startMonth);
+          }
+        } else {
+          this.sMonths = this.monthsListTo();
+          this.eMonths = this.monthsListFrom();
+          this.startDays = this.daysListTo(31);
+          this.endDays = this.daysListFrom(31);
+        }
+      } else {
+        this.sMonths = this.monthsListTo();
+        this.eMonths = this.monthsListFrom();
+        const nStartDays = startMonth ? Calendar.daycnt(calendar, startYear, startMonth) : 31;
+        this.startDays = this.daysListTo(nStartDays);
+        const nEndDays = endMonth ? Calendar.daycnt(calendar, endYear, endMonth) : 31;
+        this.startDays = this.daysListTo(nEndDays);
+      }
+    } else {
+      this.sMonths = this.monthsListTo();
+      this.eMonths = this.monthsListFrom();
+      const nStartDays = startMonth ? Calendar.daycnt(calendar, startYear, startMonth) : 31;
+      this.startDays = this.daysListTo(nStartDays);
+      const nEndDays = endMonth ? Calendar.daycnt(calendar, endYear, endMonth) : 31;
+      this.startDays = this.daysListTo(nEndDays);
     }
 
-    if (endYear && endMonth) {
-      const days = Calendar.daycnt(this.parts.controls.calendar.value,
-          this.parts.controls.endYear.value,
-          this.parts.controls.endMonth.value);
-      this.endDays = this.daysListFrom(days);
-    }
-
-    this.parts.setValue({calendar, timeSpan, startDay, startMonth, startYear, endDay, endMonth, endYear, startJd, endJd});
+    this.parts.setValue({calendar, timeSpan, sYear, sMonth, sDay, eYear, eMonth, eDay, startJd, endJd});
     this.stateChanges.next();
   }
 
-  constructor(private formBuilder: FormBuilder,
-              private knoraService: KnoraService,
-              private focusMonitor: FocusMonitor,
-              private snackBar: MatSnackBar,
-              private elementRef: ElementRef<HTMLElement>,
-              @Optional() @Self() public ngControl: NgControl) {
-    this.parts = this.formBuilder.group({
-      calendar: ['GREGORIAN', []],
-      timeSpan: false,
-      startYear: ['', []],
-      startMonth: ['-', []],
-      startDay: ['-', []],
-      endYear: '',
-      endMonth: '-',
-      endDay: '-',
-      startJd: 0,
-      endJd: 0
-    });
-    this.timeSpan = this.formBuilder.group({
-      timeSpan: false
-    });
-
-    focusMonitor.monitor(elementRef, true).subscribe(origin => {
-      if (this.focused && !origin) {
-        this.onTouched();
-      }
-      this.focused = !!origin;
-      this.stateChanges.next();
-    });
-
-    if (this.ngControl != null) {
-      this.ngControl.valueAccessor = this;
-    }
-  }
 
   monthsListFrom(from?: number): [string,boolean][] {
     const ml: [string,boolean][] = [['-', false]];
@@ -536,42 +592,45 @@ export class DateValueComponent
   }
 
   _handleTimeSpanChange(): void {
+    this.parts.controls.endYear.enable();
     if (this.parts.controls.timeSpan.value) {
-      const sYear = this.parts.controls.startYear.value;
-      this.parts.controls.endYear.setValue(sYear);
-      this.parts.controls.endYear.enable();
+      const startYear = Number(this.parts.controls.startYear.value);
+      const endYear = startYear;
+      this.parts.controls.endYear.setValue('');
 
-      const sMonth = this.parts.controls.startMonth.value;
-      this.sMonths = this.monthsListTo(sMonth);
-      this.parts.controls.endMonth.setValue(sMonth);
-      this.parts.controls.endMonth.enable();
-      if (sMonth === '-') {
-        this.eMonths = this.monthsListFrom(13);
+      if (isNaN(endYear)) {
+        this.parts.controls.endMonth.disable();
+        this.eMonths = this.monthsListTo();
+        this.parts.controls.endMonth.setValue('-');
+        this.parts.controls.endDay.disable();
+        this.parts.controls.endDay.setValue('-');
       } else {
-        this.eMonths = this.monthsListFrom(sMonth);
-      }
-
-      const sDay = this.parts.controls.startDay.value;
-      const daycnt = Calendar.daycnt(this.parts.controls.calendar.value,
-          this.parts.controls.endYear.value,
-          this.parts.controls.endMonth.value);
-      const endDays: string[] = ['-'];
-      for (let i = 1; i <= daycnt; i++) {
-        endDays.push(i.toString(10));
-      }
-      this.endDays = endDays;
-      const eday = parseInt(this.parts.controls.endDay.value, 10);
-      if (!isNaN(eday)) {
-        if (eday > daycnt) {
-          this.parts.controls.startDay.setValue(String(daycnt));
+        this.parts.controls.endMonth.enable();
+        const startMonth = Number(this.parts.controls.startMonth.value);
+        if (isNaN(startMonth)) {
+          this.eMonths = this.monthsListTo();
+          this.parts.controls.endMonth.setValue('-');
+          this.endDays = this.daysListFrom(1);
+          this.parts.controls.endDay.disable();
+          this.parts.controls.endDay.setValue('-');
+        } else {
+          const endMonth = startMonth;
+          this.eMonths = this.monthsListTo(endMonth);
+          this.parts.controls.endMonth.setValue(this.parts.controls.startMonth.value);
+          const startDay = Number(this.parts.controls.startDay.value);
+          const daycnt = Calendar.daycnt(this.parts.controls.calendar.value, endYear, endMonth);
+          if (isNaN(startDay)) {
+            this.endDays = this.daysListFrom(daycnt);
+            this.parts.controls.endDay.disable();
+            this.parts.controls.endDay.setValue('-');
+          } else {
+            this.endDays = this.daysListFrom(daycnt, startDay);
+            this.parts.controls.endDay.enable();
+            this.parts.controls.endDay.setValue(this.parts.controls.startDay.value);
+          }
         }
       }
-      if (sMonth !== '-') {
-        this.parts.controls.endDay.enable();
-      } else {
-        this.parts.controls.endDay.disable();
-      }
-      this.parts.controls.endDay.setValue(sDay);
+
     } else {
       this.parts.controls.endYear.setValue('');
       this.parts.controls.endYear.disable();
@@ -579,14 +638,14 @@ export class DateValueComponent
       this.parts.controls.endMonth.disable();
       this.parts.controls.endDay.setValue('-');
       this.parts.controls.endDay.disable();
-      this.sMonths = this.monthsListTo();
+      this.eMonths = this.monthsListTo();
     }
   }
 
   _handleCalendarChange(): void {
     if (this.parts.controls.startDay.value) {
-      const sDay = parseInt(this.parts.controls.startDay.value, 10);
-      if (!isNaN(sDay)) {
+      const startDay = parseInt(this.parts.controls.startDay.value, 10);
+      if (!isNaN(startDay)) {
         const sMonth = parseInt(this.parts.controls.startMonth.value, 10);
         const sYear = parseInt(this.parts.controls.startYear.value, 10);
         const sJd = Number(this.parts.controls.startJd.value);
