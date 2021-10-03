@@ -618,50 +618,148 @@ export class DateValueComponent
   }
 
   _handleCalendarChange(): void {
-    if (this.parts.controls.startDay.value) {
-      const startDay = parseInt(this.parts.controls.startDay.value, 10);
-      if (!isNaN(startDay)) {
-        const sMonth = parseInt(this.parts.controls.startMonth.value, 10);
-        const sYear = parseInt(this.parts.controls.startYear.value, 10);
-        const sJd = Number(this.parts.controls.startJd.value);
-        let newSDateArr: number[];
-        switch (this.parts.controls.calendar.value) {
-          case DateCalendar.GREGORIAN:
-            newSDateArr = Calendar.jd_to_gregorian(sJd);
-            break;
-          case DateCalendar.JULIAN:
-            newSDateArr = Calendar.jd_to_julian(sJd);
-            break;
-          case DateCalendar.ISLAMIC:
-            newSDateArr = Calendar.jd_to_islamic(sJd);
-            break;
-        }
-        this.parts.controls.startYear.setValue(String(newSDateArr[0]));
-        this.parts.controls.startMonth.setValue(String(newSDateArr[1]));
-        this.parts.controls.startDay.setValue(String(newSDateArr[2]));
+    const sJd = Number(this.parts.controls.startJd.value);
+    const eJd = Number(this.parts.controls.endJd.value);
+    if (!isNaN(sJd) && !isNaN(eJd)) {
+      let newSDateArr: number[];
+      switch (this.parts.controls.calendar.value) {
+        case DateCalendar.GREGORIAN:
+          newSDateArr = Calendar.jd_to_gregorian(sJd);
+          break;
+        case DateCalendar.JULIAN:
+          newSDateArr = Calendar.jd_to_julian(sJd);
+          break;
+        case DateCalendar.ISLAMIC:
+          newSDateArr = Calendar.jd_to_islamic(sJd);
+          break;
       }
-    }
-    if (this.parts.controls.endDay.value) {
-      const eDay = parseInt(this.parts.controls.endDay.value, 10);
-      if (!isNaN(eDay)) {
-        const eMonth = parseInt(this.parts.controls.endMonth.value, 10);
-        const sYear = parseInt(this.parts.controls.endYear.value, 10);
-        const eJd = Number(this.parts.controls.endJd.value);
-        let newEDateArr: number[];
-        switch (this.parts.controls.calendar.value) {
-          case DateCalendar.GREGORIAN:
-            newEDateArr = Calendar.jd_to_gregorian(eJd);
-            break;
-          case DateCalendar.JULIAN:
-            newEDateArr = Calendar.jd_to_julian(eJd);
-            break;
-          case DateCalendar.ISLAMIC:
-            newEDateArr = Calendar.jd_to_islamic(eJd);
-            break;
+      let newEDateArr: number[];
+      switch (this.parts.controls.calendar.value) {
+        case DateCalendar.GREGORIAN:
+          newEDateArr = Calendar.jd_to_gregorian(eJd);
+          break;
+        case DateCalendar.JULIAN:
+          newEDateArr = Calendar.jd_to_julian(eJd);
+          break;
+        case DateCalendar.ISLAMIC:
+          newEDateArr = Calendar.jd_to_islamic(eJd);
+          break;
+      }
+      const sY = newSDateArr[0];
+      const sM = newSDateArr[1];
+      const sD = newSDateArr[2];
+      const eY = newEDateArr[0];
+      const eM = newEDateArr[1];
+      const eD = newEDateArr[2];
+      if (sY === eY) {
+        if (sM === eM) {
+          if (sD === eD) {
+            // exact date (yyyy/mm/dd) -> no timespan, sY, sM, sD defined
+            this.parts.controls.timeSpan.setValue(false);
+            this.parts.controls.startYear.setValue(sY);
+            this.parts.controls.startYear.enable();
+            this.parts.controls.startMonth.setValue(String(sM));
+            this.parts.controls.startMonth.enable();
+            this.parts.controls.startDay.setValue(String(sD));
+            this.parts.controls.startDay.enable();
+            this.parts.controls.endYear.setValue('');
+            this.parts.controls.endYear.disable();
+            this.parts.controls.endMonth.setValue('-');
+            this.parts.controls.endMonth.disable();
+            this.parts.controls.endDay.setValue('-');
+            this.parts.controls.endDay.disable();
+          } else {
+            if (sD === 1 && eD === Calendar.daycnt(this.parts.controls.calendar.value, eY, eM)) {
+              // One date, month precision (yyyy/mm/-)
+              this.parts.controls.timeSpan.setValue(false);
+              this.parts.controls.startYear.setValue(sY);
+              this.parts.controls.startYear.enable();
+              this.parts.controls.startMonth.setValue(String(sM));
+              this.parts.controls.startMonth.enable();
+              this.parts.controls.startDay.setValue('-');
+              this.parts.controls.startDay.enable();
+              this.parts.controls.endYear.setValue('');
+              this.parts.controls.endYear.disable();
+              this.parts.controls.endMonth.setValue('-');
+              this.parts.controls.endMonth.disable();
+              this.parts.controls.endDay.setValue('-');
+              this.parts.controls.endDay.disable();
+            } else {
+              // timespan with same year/month (yyyy/mm/d1 - yyyy/mm/d2)
+              this.parts.controls.timeSpan.setValue(true);
+              this.parts.controls.startYear.setValue(sY);
+              this.parts.controls.startYear.enable();
+              this.parts.controls.startMonth.setValue(String(sM));
+              this.parts.controls.startMonth.enable();
+              this.parts.controls.startDay.setValue(String(sD));
+              this.parts.controls.startDay.enable();
+              this.parts.controls.endYear.setValue(eY);
+              this.parts.controls.endYear.enable();
+              this.parts.controls.endMonth.setValue(String(eM));
+              this.parts.controls.endMonth.enable();
+              this.parts.controls.endDay.setValue(String(eD));
+              this.parts.controls.endDay.enable();
+            }
+          }
+        } else {
+          if (sM === 1 && sD === 1 && eM === 12 && eD === Calendar.daycnt(this.parts.controls.calendar.value, eY, 12)) {
+            // one date with year only (yyyy)
+            this.parts.controls.timeSpan.setValue(false);
+            this.parts.controls.startYear.setValue(sY);
+            this.parts.controls.startYear.enable();
+            this.parts.controls.startMonth.setValue('-');
+            this.parts.controls.startMonth.enable();
+            this.parts.controls.startDay.setValue('-');
+            this.parts.controls.startDay.disable();
+            this.parts.controls.endYear.setValue('');
+            this.parts.controls.endYear.disable();
+            this.parts.controls.endMonth.setValue('-');
+            this.parts.controls.endMonth.disable();
+            this.parts.controls.endDay.setValue('-');
+            this.parts.controls.endDay.disable();
+          } else {
+            // timespan (yyyy/m1/dd - yyyy/m2/-)
+            // timespan (yyyy/m1/- - yyyy/m1/dd)
+            // timespan (yyyy/m1/- - yyyy/m1/-)
+            this.parts.controls.timeSpan.setValue(true);
+            this.parts.controls.startYear.setValue(sY);
+            this.parts.controls.startYear.enable();
+            this.parts.controls.startMonth.setValue('-');
+            this.parts.controls.startMonth.enable();
+            if (sD === 1) {
+              this.parts.controls.endDay.setValue('-');
+              this.parts.controls.endDay.disable();
+            } else {
+              this.parts.controls.endDay.setValue(String(sD));
+              this.parts.controls.endDay.enable();
+            }
+            if (eD === Calendar.daycnt(this.parts.controls.calendar.value, eY, eM)) {
+              this.parts.controls.endDay.setValue('-');
+              this.parts.controls.endDay.disable();
+            } else {
+              this.parts.controls.endDay.setValue(String(sD));
+              this.parts.controls.endDay.enable();
+            }
+          }
         }
-        this.parts.controls.endYear.setValue(String(newEDateArr[0]));
-        this.parts.controls.endMonth.setValue(String(newEDateArr[1]));
-        this.parts.controls.endDay.setValue(String(newEDateArr[2]));
+      } else { // sY !== eY
+        // timespan (yyyy/mm/dd - yyyy/mm/dd)
+        // timespan (yyyy/mm/-  - yyyy/mm/dd)
+        // timespan (yyyy/-/-   - yyyy/mm/dd)
+        // timespan (yyyy/mm/dd - yyyy/mm/-)
+        // timespan (yyyy/mm/-  - yyyy/mm/-)
+        // timespan (yyyy/-/-   - yyyy/mm/-)
+        // timespan (yyyy/mm/dd - yyyy/-/-)
+        // timespan (yyyy/mm/-  - yyyy/-/-)
+        // timespan (yyyy/-/-   - yyyy/-/-)
+        
+        this.parts.controls.timeSpan.setValue(true);
+        this.parts.controls.startYear.setValue(sY);
+        this.parts.controls.startYear.enable();
+
+        this.parts.controls.endYear.setValue(eY);
+        this.parts.controls.endYear.enable();
+
       }
     }
   }
