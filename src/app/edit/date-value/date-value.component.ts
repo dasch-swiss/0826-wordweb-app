@@ -786,7 +786,7 @@ export class DateValueComponent
     } else {
       const sJd = Number(this.parts.controls.startJd.value);
 
-      let eY = Number(this.parts.controls.startYear.value);
+      const eY = Number(this.parts.controls.startYear.value);
       let eM = Number(this.parts.controls.startMonth.value);
       let eD = Number(this.parts.controls.startDay.value);
       if (isNaN(eM)) {
