@@ -454,13 +454,16 @@ export class DateValueComponent
         if (sM === eM) {
           if (sD === eD) {
             // exact date (yyyy/mm/dd) -> no timespan, sY, sM, sD defined
+            console.log('NOTS: sY === eY, sM === eM, sD === eD');
             this.parts.controls.timeSpan.setValue(false);
             this.parts.controls.startYear.setValue(sY);
             this.parts.controls.startYear.enable();
-            this.sMonths = this.monthsListTo(eM);
+            //this.sMonths = this.monthsListTo(eM);
+            this.sMonths = this.monthsListTo();
             this.parts.controls.startMonth.setValue(String(sM));
             this.parts.controls.startMonth.enable();
-            this.startDays = this.daysListTo(Calendar.daycnt(this.parts.controls.calendar.value, sY, sM), eD);
+            //this.startDays = this.daysListTo(Calendar.daycnt(this.parts.controls.calendar.value, sY, sM), eD);
+            this.startDays = this.daysListTo(Calendar.daycnt(this.parts.controls.calendar.value, sY, sM));
             this.parts.controls.startDay.setValue(String(sD));
             this.parts.controls.startDay.enable();
             this.parts.controls.endYear.setValue('');
@@ -474,7 +477,7 @@ export class DateValueComponent
           } else {
             // sY === eY, sM === eM, sD !== eD
             if (sD === 1 && eD === Calendar.daycnt(this.parts.controls.calendar.value, eY, eM)) {
-              console.log('sY === eY, sM === eM, sD !== eD');
+              console.log('NOTS: sY === eY, sM === eM, sD !== eD');
               // exact date, month precision (yyyy/mm/-)
               this.parts.controls.timeSpan.setValue(false);
               this.parts.controls.startYear.setValue(sY);
@@ -495,6 +498,7 @@ export class DateValueComponent
               this.parts.controls.endDay.disable();
             } else {
               // timespan with same year/month (yyyy/mm/d1 - yyyy/mm/d2)
+              console.log('TS: sY === eY, sM === eM');
               this.parts.controls.timeSpan.setValue(true);
               this.parts.controls.startYear.setValue(sY);
               this.parts.controls.startYear.enable();
@@ -514,10 +518,10 @@ export class DateValueComponent
               this.parts.controls.endDay.enable();
             }
           }
-        } else { // sY === e Y, sM !== eM
+        } else { // sY === eY, sM !== eM
           if (sM === 1 && sD === 1 && eM === 12 && eD === Calendar.daycnt(this.parts.controls.calendar.value, eY, 12)) {
             // exact date with year only (yyyy)
-            console.log('Passed here....');
+            console.log('NOTS: sY - -');
             this.parts.controls.timeSpan.setValue(false);
             this.parts.controls.startYear.setValue(sY);
             this.parts.controls.startYear.enable();
@@ -537,8 +541,8 @@ export class DateValueComponent
             this.parts.controls.endDay.disable();
           } else {
             // timespan (yyyy/m1/dd - yyyy/m2/-)
-            // timespan (yyyy/m1/- - yyyy/m1/dd)
-            // timespan (yyyy/m1/- - yyyy/m1/-)
+            // timespan (yyyy/m1/- - yyyy/m2/dd)
+            // timespan (yyyy/m1/- - yyyy/m2/-)
             this.parts.controls.timeSpan.setValue(true);
             this.parts.controls.startYear.setValue(sY);
             this.parts.controls.startYear.enable();
@@ -560,22 +564,20 @@ export class DateValueComponent
             this.parts.controls.endMonth.enable();
             if (sD === 1) {
               this.startDays = this.daysListTo(Calendar.daycnt(this.parts.controls.calendar.value, sY, sM));
-              this.parts.controls.endDay.setValue('-');
-              this.parts.controls.endDay.enable();
+              this.parts.controls.startDay.setValue('-');
             } else {
               this.startDays = this.daysListTo(Calendar.daycnt(this.parts.controls.calendar.value, sY, sM));
-              this.parts.controls.endDay.setValue(String(sD));
-              this.parts.controls.endDay.enable();
+              this.parts.controls.startDay.setValue(String(sD));
             }
+            this.parts.controls.startDay.enable();
             if (eD === Calendar.daycnt(this.parts.controls.calendar.value, eY, eM)) {
-              this.startDays = this.daysListTo(Calendar.daycnt(this.parts.controls.calendar.value, eY, eM));
+              this.endDays = this.daysListTo(Calendar.daycnt(this.parts.controls.calendar.value, eY, eM));
               this.parts.controls.endDay.setValue('-');
-              this.parts.controls.endDay.disable();
             } else {
-              this.startDays = this.daysListTo(Calendar.daycnt(this.parts.controls.calendar.value, eY, eM));
-              this.parts.controls.endDay.setValue(String(sD));
-              this.parts.controls.endDay.enable();
+              this.endDays = this.daysListTo(Calendar.daycnt(this.parts.controls.calendar.value, eY, eM));
+              this.parts.controls.endDay.setValue(String(eD));
             }
+            this.parts.controls.endDay.enable();
           }
         }
       } else { // sY !== eY
@@ -589,6 +591,9 @@ export class DateValueComponent
         // timespan (yyyy/mm/dd - yyyy/-/-)
         // timespan (yyyy/mm/-  - yyyy/-/-)
         // timespan (yyyy/-/-   - yyyy/-/-)
+        console.log('1 TS: sY !== eY sM: ',
+            sM, this.parts.controls.startMonth.value, ' sD: ', sD, this.parts.controls.startDay.value, ' eM: ',
+            eM, this.parts.controls.endMonth.value, ' eD: ', eD, this.parts.controls.endDay.value);
         this.parts.controls.timeSpan.setValue(true);
         this.parts.controls.startYear.setValue(sY);
         this.parts.controls.startYear.enable();
@@ -599,6 +604,11 @@ export class DateValueComponent
           this.parts.controls.startMonth.enable();
           this.parts.controls.startDay.setValue('-');
           this.parts.controls.startDay.disable();
+        } else if (sD === 1) {
+          this.parts.controls.startMonth.setValue(String(sM));
+          this.parts.controls.startMonth.enable();
+          this.parts.controls.startDay.setValue('-');
+          this.parts.controls.startDay.enable();
         } else {
           this.parts.controls.startMonth.setValue(String(sM));
           this.parts.controls.startMonth.enable();
@@ -614,12 +624,20 @@ export class DateValueComponent
           this.parts.controls.endMonth.enable();
           this.parts.controls.endDay.setValue('-');
           this.parts.controls.endDay.disable();
+        } else if (eD === Calendar.daycnt(this.parts.controls.calendar.value, eY, eM)) {
+          this.parts.controls.endMonth.setValue(String(eM));
+          this.parts.controls.endMonth.enable();
+          this.parts.controls.endDay.setValue('-');
+          this.parts.controls.endDay.enable();
         } else {
           this.parts.controls.endMonth.setValue(String(eM));
           this.parts.controls.endMonth.enable();
           this.parts.controls.endDay.setValue(String(eD));
           this.parts.controls.endDay.enable();
         }
+        console.log('2 TS: sY !== eY sM: ',
+            sM, this.parts.controls.startMonth.value, ' sD: ', sD, this.parts.controls.startDay.value, ' eM: ',
+            eM, this.parts.controls.endMonth.value, ' eD: ', eD, this.parts.controls.endDay.value);
       }
     } else {
       console.log('==========> ERROR::', sJd, eJd);
@@ -730,7 +748,39 @@ export class DateValueComponent
   _handleTimeSpanChange(): void {
     if (this.parts.controls.timeSpan.value) {
       const sJd = Number(this.parts.controls.startJd.value);
-      const eJd = Number(this.parts.controls.endJd.value) + 1;
+      const sY = Number(this.parts.controls.startYear.value);
+      const sM = Number(this.parts.controls.startMonth.value);
+      const sD = Number(this.parts.controls.startDay.value);
+      let eY;
+      let eM;
+      let eD;
+      if (isNaN(sM) && isNaN(sD)) { // yyyy/-/-  => yyyy++
+        eY = sY + 1;
+        eM = 12;
+        eD = Calendar.daycnt(this.parts.controls.calendar.value, eY, eM);
+      } else if (isNaN(sD)) { // yyyy/mm/-  => mm++
+        eY = sY;
+        eM = sM + 1;
+        if (eM > 12) {
+          eY = eY + 1;
+          eM = 1;
+        }
+        eD = Calendar.daycnt(this.parts.controls.calendar.value, eY, eM);
+      } else { // yyyy/mm/dd
+        eY = sY;
+        eM = sM;
+        eD = sD + 1;
+        if (eD > Calendar.daycnt(this.parts.controls.calendar.value, eY, eM)) {
+          eM = sM + 1;
+          if (eM > 12) {
+            eY = eY + 1;
+            eM = 1;
+          }
+          eD = 1;
+        }
+      }
+      console.log('_handleTimeSpanChange():', sY, sM, sD, ' | ', eY, eM, eD);
+      const eJd = this.getJd(this.parts.controls.calendar.value, eY, eM, eD);
       this.setFormControls(sJd, eJd);
 
     } else {
@@ -763,7 +813,7 @@ export class DateValueComponent
   _handleInput(what?: string): void {
     if (what !== undefined) {
       let daycnt: number;
-      let sY = Number(this.parts.controls.startYear.value);
+      const sY = Number(this.parts.controls.startYear.value);
       let sM = Number(this.parts.controls.startMonth.value);
       if (isNaN(sM)) { sM = 1; }
       let sD = Number(this.parts.controls.startDay.value);
@@ -771,9 +821,9 @@ export class DateValueComponent
       let eY = Number(this.parts.controls.endYear.value);
       if (isNaN(eY)) { eY = sY; }
       let eM = Number(this.parts.controls.endMonth.value);
-      if (isNaN(eM)) { eM = 12; } // !!!!!!!!!!!!!!!!!!!!!!!!!
+      if (isNaN(eM)) { eM = 12; }
       let eD = Number(this.parts.controls.endDay.value);
-      if (isNaN(eD)) { eD = Calendar.daycnt(this.parts.controls.calendar.value, eY, eM); } // !!!!!!!!!!!!!!!!!!!
+      if (isNaN(eD)) { eD = Calendar.daycnt(this.parts.controls.calendar.value, eY, eM); }
 
       let sJd: number;
       let eJd: number;
@@ -801,10 +851,18 @@ export class DateValueComponent
           } else {
             sJd = this.getJd(this.parts.controls.calendar.value, sY, sM, sD);
             eY = sY;
-            daycnt = Calendar.daycnt(this.parts.controls.calendar.value, eY, eM);
-            if (eD > daycnt) { eD = daycnt; }
+            if (this.parts.controls.startMonth.value === '-') {
+              eM = 12;
+            } else {
+              eM = sM;
+            }
+            if (this.parts.controls.startDay.value === '-') {
+              daycnt = Calendar.daycnt(this.parts.controls.calendar.value, eY, eM);
+              if (eD > daycnt) { eD = daycnt; }
+            } else {
+              eD = sD;
+            }
             eJd = this.getJd(this.parts.controls.calendar.value, eY, eM, eD);
-            console.log('?????>', sY, sM, sD, ' | ', eY, eM, eD);
           }
           this.setFormControls(sJd, eJd);
           break;
