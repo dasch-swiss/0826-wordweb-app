@@ -47,8 +47,8 @@ export class DateValue {
     //
     // we fill the structure that we can calcalulate the period start and end using JD
     //
-    this.startYear = typeof startYear === 'string' ? parseInt(startYear, 10) : startYear;
-    if (isNaN(this.startYear)) {
+    const sY = typeof startYear === 'string' ? parseInt(startYear, 10) : startYear;
+    if (isNaN(sY)) {
       this.timeSpan = false;
       this.startYear = undefined;
       this.startMonth = undefined;
@@ -61,75 +61,82 @@ export class DateValue {
       return;
     }
 
-    this.endYear = this.startYear;
-    this.startMonth = DateValue.getRange(startMonth, 1, 12);
-    if (this.startMonth) {
-      this.endMonth = this.startMonth;
-      const sDaycnt = Calendar.daycnt(this.calendar, this.startYear, this.startMonth);
-      this.startDay = DateValue.getRange(startDay, 1, sDaycnt);
-      if (this.startDay) {
-        this.endDay = this.startDay;
+    this.startYear = sY;
+    let eY = sY;
+    let sM = DateValue.getRange(startMonth, 1, 12);
+    let eM: number;
+    let sD: number;
+    let eD: number;
+    if (sM) {
+      this.startMonth = sD;
+      eM = sM;
+      const sDaycnt = Calendar.daycnt(this.calendar, sY, sM);
+      sD = DateValue.getRange(startDay, 1, sDaycnt);
+      if (sD) {
+        this.startDay = sD;
+        eD = sD;
       } else {
-        this.startDay = 1;
-        const eDaycnt = Calendar.daycnt(this.calendar, this.endYear, this.endMonth);
-        this.endDay = eDaycnt;
+        sD = 1;
+        eD = Calendar.daycnt(this.calendar, eY, eM);
       }
     } else {
-      this.startMonth = 1;
-      this.endMonth = 12;
-      this.startDay = 1;
-      this.endDay = Calendar.daycnt(this.calendar, this.endYear, this.endMonth);
+      sM = 1;
+      eM = 12;
+      sD = 1;
+      eD = Calendar.daycnt(this.calendar, eY, eM);
     }
 
     this.timeSpan = timeSpan || false;
 
     if (this.timeSpan) {
-      let eY = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear;
+      eY = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear;
       if (isNaN(eY)) {
         eY = undefined;
       }
       if (eY) {
-        if (eY >= this.startYear) {
+        if (eY >= sY) {
           this.endYear = eY;
         } else {
           throw TypeError('Invalid date: startYear > endYear!');
         }
-        const eM = DateValue.getRange(endMonth, 1, 12) || 12;
-        const eD = DateValue.getRange(endDay, 1, 31) || Calendar.daycnt(this.calendar, this.endYear, eM);
-        if (this.startYear === this.endYear) {
-          if (eM < this.startMonth) {
-            throw TypeError('Invalid date: startYear/startMonth > endYear/endMonth!');
-          } else {
-            this.endMonth = eM;
-          }
-          if (this.startMonth === this.endMonth) {
-            if (eD < this.startDay) {
-              throw TypeError('Invalid date: startYear/startMonth/startDay > endYear/endMonth/endDay!');
-            } else {
-              this.endDay = eD;
-            }
-          } else {
-            this.endDay = eD;
-          }
-        } else {
+        eM = DateValue.getRange(endMonth, 1, 12);
+        if (eM) {
           this.endMonth = eM;
+        } else {
+          eM = 12;
+        }
+        const dcnt = Calendar.daycnt(this.calendar, this.endYear, eM);
+        eD = DateValue.getRange(endDay, 1, dcnt);
+        if (eD) {
           this.endDay = eD;
+        } else {
+          eD = dcnt;
+        }
+        if (sY === sY) {
+          if (eM < sM) {
+            throw TypeError('Invalid date: startYear/startMonth > endYear/endMonth!');
+          }
+          if (sM === eM) {
+            if (eD < sD) {
+              throw TypeError('Invalid date: startYear/startMonth/startDay > endYear/endMonth/endDay!');
+            }
+          }
         }
       }
     }
 
     switch(this.calendar) {
       case DateCalendar.GREGORIAN:
-        this.startJd = Calendar.gregorian_to_jd(this.startYear, this.startMonth, this.startDay);
-        this.endJd = Calendar.gregorian_to_jd(this.endYear, this.endMonth, this.endDay);
+        this.startJd = Calendar.gregorian_to_jd(sY, sM, sD);
+        this.endJd = Calendar.gregorian_to_jd(eY, eM, eD);
         break;
       case DateCalendar.JULIAN:
-        this.startJd = Calendar.julian_to_jd(this.startYear, this.startMonth, this.startDay);
-        this.endJd = Calendar.julian_to_jd(this.endYear, this.endMonth, this.endDay);
+        this.startJd = Calendar.julian_to_jd(sY, sM, sD);
+        this.endJd = Calendar.julian_to_jd(eY, eM, eD);
         break;
       case DateCalendar.ISLAMIC:
-        this.startJd = Calendar.islamic_to_jd(this.startYear, this.startMonth, this.startDay);
-        this.endJd = Calendar.islamic_to_jd(this.endYear, this.endMonth, this.endDay);
+        this.startJd = Calendar.islamic_to_jd(sY, sM, sD);
+        this.endJd = Calendar.islamic_to_jd(eY, eM, eD);
         break;
     }
   }
@@ -449,12 +456,10 @@ export class DateValueComponent
       const eY = newEDateArr[0];
       const eM = newEDateArr[1];
       const eD = newEDateArr[2];
-      console.log('==>>', sY, sM, sD, eY, eM, eD);
       if (sY === eY) {
         if (sM === eM) {
           if (sD === eD) {
             // exact date (yyyy/mm/dd) -> no timespan, sY, sM, sD defined
-            console.log('NOTS: sY === eY, sM === eM, sD === eD');
             this.parts.controls.timeSpan.setValue(false);
             this.parts.controls.startYear.setValue(sY);
             this.parts.controls.startYear.enable();
@@ -477,7 +482,6 @@ export class DateValueComponent
           } else {
             // sY === eY, sM === eM, sD !== eD
             if (sD === 1 && eD === Calendar.daycnt(this.parts.controls.calendar.value, eY, eM)) {
-              console.log('NOTS: sY === eY, sM === eM, sD !== eD');
               // exact date, month precision (yyyy/mm/-)
               this.parts.controls.timeSpan.setValue(false);
               this.parts.controls.startYear.setValue(sY);
@@ -498,7 +502,6 @@ export class DateValueComponent
               this.parts.controls.endDay.disable();
             } else {
               // timespan with same year/month (yyyy/mm/d1 - yyyy/mm/d2)
-              console.log('TS: sY === eY, sM === eM');
               this.parts.controls.timeSpan.setValue(true);
               this.parts.controls.startYear.setValue(sY);
               this.parts.controls.startYear.enable();
@@ -521,7 +524,6 @@ export class DateValueComponent
         } else { // sY === eY, sM !== eM
           if (sM === 1 && sD === 1 && eM === 12 && eD === Calendar.daycnt(this.parts.controls.calendar.value, eY, 12)) {
             // exact date with year only (yyyy)
-            console.log('NOTS: sY - -');
             this.parts.controls.timeSpan.setValue(false);
             this.parts.controls.startYear.setValue(sY);
             this.parts.controls.startYear.enable();
@@ -581,7 +583,6 @@ export class DateValueComponent
           }
         }
       } else { // sY !== eY
-        console.log('sY !== eY');
         // timespan (yyyy/mm/dd - yyyy/mm/dd)
         // timespan (yyyy/mm/-  - yyyy/mm/dd)
         // timespan (yyyy/-/-   - yyyy/mm/dd)
@@ -591,9 +592,6 @@ export class DateValueComponent
         // timespan (yyyy/mm/dd - yyyy/-/-)
         // timespan (yyyy/mm/-  - yyyy/-/-)
         // timespan (yyyy/-/-   - yyyy/-/-)
-        console.log('1 TS: sY !== eY sM: ',
-            sM, this.parts.controls.startMonth.value, ' sD: ', sD, this.parts.controls.startDay.value, ' eM: ',
-            eM, this.parts.controls.endMonth.value, ' eD: ', eD, this.parts.controls.endDay.value);
         this.parts.controls.timeSpan.setValue(true);
         this.parts.controls.startYear.setValue(sY);
         this.parts.controls.startYear.enable();
@@ -635,9 +633,7 @@ export class DateValueComponent
           this.parts.controls.endDay.setValue(String(eD));
           this.parts.controls.endDay.enable();
         }
-        console.log('2 TS: sY !== eY sM: ',
-            sM, this.parts.controls.startMonth.value, ' sD: ', sD, this.parts.controls.startDay.value, ' eM: ',
-            eM, this.parts.controls.endMonth.value, ' eD: ', eD, this.parts.controls.endDay.value);
+
       }
     } else {
       console.log('==========> ERROR::', sJd, eJd);
@@ -726,7 +722,6 @@ export class DateValueComponent
   }
 
   registerOnChange(fn: any): void {
-    console.log('registerOnChange', fn);
     this.onChange = fn;
   }
 
@@ -779,7 +774,6 @@ export class DateValueComponent
           eD = 1;
         }
       }
-      console.log('_handleTimeSpanChange():', sY, sM, sD, ' | ', eY, eM, eD);
       const eJd = this.getJd(this.parts.controls.calendar.value, eY, eM, eD);
       this.setFormControls(sJd, eJd);
 
@@ -799,15 +793,15 @@ export class DateValueComponent
       const eJd = this.getJd(this.parts.controls.calendar.value, eY, eM, eD);
       this.setFormControls(sJd, eJd);
     }
+    this.onChange(this.parts.value);
   }
 
   _handleCalendarChange(): void {
     const sJd = Number(this.parts.controls.startJd.value);
-    console.log('sJd=', sJd);
     const eJd = Number(this.parts.controls.endJd.value);
-    console.log('eJd=', eJd);
 
     this.setFormControls(sJd, eJd);
+    this.onChange(this.parts.value);
   }
 
   _handleInput(what?: string): void {
