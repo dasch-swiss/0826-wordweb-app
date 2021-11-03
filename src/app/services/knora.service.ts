@@ -1,45 +1,51 @@
 import {Injectable} from '@angular/core';
 import {
-    KnoraApiConfig,
-    KnoraApiConnection,
     ApiResponseData,
-    ReadResource,
-    ReadResourceSequence,
-    ReadTextValueAsString,
-    ReadListValue,
-    ReadLinkValue,
-    ReadDateValue,
-    CountQueryResponse,
-    ListResponse,
-    ListsResponse,
-    KnoraPeriod,
-    ListNodeInfo,
-    List,
-    ILabelSearchParams,
     ApiResponseError,
-    ReadStillImageFileValue,
-    StringLiteral,
-    ReadIntValue,
-    ReadUriValue,
     Constants,
+    CountQueryResponse,
+    CreateDateValue,
+    CreateLinkValue,
+    CreateListValue,
     CreateResource,
     CreateTextValueAsString,
-    CreateLinkValue,
-    UpdateResourceMetadataResponse,
-    UpdateResourceMetadata,
+    CreateValue,
+    DeleteResource,
     DeleteValue,
     DeleteValueResponse,
+    ILabelSearchParams,
+    KnoraApiConfig,
+    KnoraApiConnection,
+    KnoraPeriod,
+    List,
+    ListAdminCache,
+    ListNodeInfo,
+    ListResponse,
+    ListsResponse,
+    ReadDateValue,
+    ReadIntValue,
+    ReadLinkValue,
+    ReadListValue,
+    ReadResource,
+    ReadResourceSequence,
+    ReadStillImageFileValue,
+    ReadTextValueAsString,
+    ReadUriValue,
+    StringLiteral, UpdateDateValue,
+    UpdateLinkValue, UpdateListValue,
     UpdateResource,
-    CreateValue,
-    WriteValueResponse,
-    UpdateTextValueAsString, UpdateValue, UpdateLinkValue, DeleteResource, ListAdminCache
-} from "@dasch-swiss/dsp-js";
+    UpdateResourceMetadata,
+    UpdateResourceMetadataResponse,
+    UpdateTextValueAsString,
+    UpdateValue,
+    WriteValueResponse
+} from '@dasch-swiss/dsp-js';
 import {GravsearchBuilderService} from './gravsearch-builder.service';
 import {IMainClass} from '../model/displayModel';
-import {catchError, map, tap} from "rxjs/operators";
-import {Observable, of, throwError} from "rxjs";
-import {AppInitService} from '../app-init.service';
-import {DateValue} from "../edit/date-value/date-value.component";
+import {catchError, map, tap} from 'rxjs/operators';
+import {Observable, of, throwError} from 'rxjs';
+import {DateValue} from '../edit/date-value/date-value.component';
+import {DateCalendar} from '../classes/calendar';
 
 //---- BEGIN LUKAS ---------------------------------------------------------------------------------------------------
 
@@ -257,15 +263,15 @@ export class KnoraService {
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 tap(data => console.log(data)),
-                map((sequence: ReadResourceSequence) => {
+                map((sequence: ReadResourceSequence) =>
                     // Error found in person res without last names
                     // resources.map(resource => {
                     //     if (!Object.keys(resource.properties).includes('http://0.0.0.0:3333/ontology/0826/teimww/v2#hasLastName')) {
                     //         console.log('knora', resource);
                     //     }
                     // });
-                    return sequence.resources.map(resource => this.processRes(resource));
-                })
+                     sequence.resources.map(resource => this.processRes(resource))
+                )
             );
     }
 
@@ -364,9 +370,7 @@ export class KnoraService {
         console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                map((sequence: ReadResourceSequence) => {
-                    return sequence.resources.map(resource => this.processRes(resource));
-                })
+                map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
             );
     }
 
@@ -384,9 +388,7 @@ export class KnoraService {
         console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                map((sequence: ReadResourceSequence) => {
-                    return sequence.resources.map(resource => this.processRes(resource));
-                })
+                map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
             );
     }
 
@@ -405,9 +407,7 @@ export class KnoraService {
         console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                map((sequence: ReadResourceSequence) => {
-                    return sequence.resources.map(resource => this.processRes(resource));
-                })
+                map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
             );
     }
 
@@ -425,9 +425,7 @@ export class KnoraService {
         console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                map((sequence: ReadResourceSequence) => {
-                    return sequence.resources.map(resource => this.processRes(resource));
-                })
+                map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
             );
     }
 
@@ -445,9 +443,7 @@ export class KnoraService {
         console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                map((sequence: ReadResourceSequence) => {
-                    return sequence.resources.map(resource => this.processRes(resource));
-                })
+                map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
             );
     }
 
@@ -465,9 +461,7 @@ export class KnoraService {
         console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                map((sequence: ReadResourceSequence) => {
-                    return sequence.resources.map(resource => this.processRes(resource));
-                })
+                map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
             );
     }
 
@@ -485,9 +479,7 @@ export class KnoraService {
         // console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                map((sequence: ReadResourceSequence) => {
-                    return sequence.resources.map(resource => this.processRes(resource));
-                })
+                map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
             );
     }
 
@@ -505,9 +497,7 @@ export class KnoraService {
         // console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                map((sequence: ReadResourceSequence) => {
-                    return sequence.resources.map(resource => this.processRes(resource));
-                })
+                map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
             );
     }
 
@@ -525,9 +515,7 @@ export class KnoraService {
         // console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                map((sequence: ReadResourceSequence) => {
-                    return sequence.resources.map(resource => this.processRes(resource));
-                })
+                map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
             );
     }
 
@@ -545,9 +533,7 @@ export class KnoraService {
         // console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                map((sequence: ReadResourceSequence) => {
-                    return sequence.resources.map(resource => this.processRes(resource));
-                })
+                map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
             );
     }
 
@@ -711,9 +697,7 @@ export class KnoraService {
                 if (data instanceof ApiResponseError) {
                     return [];
                 } else {
-                    const items: Array<{id: string, label: string}> = data.resources.map((item: ReadResource) => {
-                        return {id: item.id, label: item.label};
-                    });
+                    const items: Array<{id: string; label: string}> = data.resources.map((item: ReadResource) => ({id: item.id, label: item.label}));
                     return items;
                 }
             }),
@@ -802,6 +786,169 @@ export class KnoraService {
             catchError((error: ApiResponseError) => of('error'))
         );
 
+    }
+
+    createPerson(data: PersonData): Observable<string> {
+        const createResource = new CreateResource();
+        createResource.label = data.label;
+        createResource.type = this.wwOntology + 'person';
+        createResource.attachedToProject = 'http://rdfh.ch/projects/0826';
+
+        const props = {};
+        createResource.properties = props;
+
+        if (data.internalId !== null && data.internalId !== undefined && data.internalId !== '') {
+            const internalIdVal = new CreateTextValueAsString();
+            internalIdVal.text = data.internalId;
+            props[this.wwOntology + 'hasPersonInternalId'] = [
+                internalIdVal
+            ];
+        }
+
+        if (data.firstName !== null && data.firstName !== undefined && data.firstName !== '') {
+            const firstNameVal = new CreateTextValueAsString();
+            firstNameVal.text = data.firstName;
+            props[this.wwOntology + 'hasFirstName'] = [
+                firstNameVal
+            ];
+        }
+
+        if (data.lastName !== null && data.lastName !== undefined && data.lastName !== '') {
+            const lastNameVal = new CreateTextValueAsString();
+            lastNameVal.text = data.lastName;
+            props[this.wwOntology + 'hasLastName'] = [
+                lastNameVal
+            ];
+        }
+
+        if (data.genderIri !== null && data.genderIri !== undefined && data.genderIri !== '') {
+            const genderIriVal = new CreateListValue();
+            genderIriVal.listNode = data.genderIri;
+            props[this.wwOntology + 'hasGender'] = [
+                genderIriVal
+            ];
+        }
+
+        if (data.description !== null && data.description !== undefined && data.description !== '') {
+            const descriptionVal = new CreateTextValueAsString();
+            descriptionVal.text = data.description;
+            props[this.wwOntology + 'hasDescription'] = [
+                descriptionVal
+            ];
+        }
+
+        const birthVal = new DateValue(
+            data.birthDate.calendar,
+            data.birthDate.timeSpan,
+            data.birthDate.startYear,
+            data.birthDate.startMonth,
+            data.birthDate.startDay,
+            data.birthDate.endYear,
+            data.birthDate.endMonth,
+            data.birthDate.endDay);
+        if (!birthVal.isEmpty()) {
+            const birthDateVal = new CreateDateValue();
+            birthDateVal.calendar = birthVal.calendar;
+            if (data.birthDate.startYear < 0) {
+                birthDateVal.startEra = 'BCE';
+                if (data.birthDate.calendar === DateCalendar.JULIAN) {
+                    birthDateVal.startYear = -birthVal.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                } else {
+                    birthDateVal.startYear = -birthVal.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                }
+            } else {
+                birthDateVal.startEra = 'CE';
+                birthDateVal.startYear = birthVal.startYear;
+            }
+            birthDateVal.startMonth = birthVal.startMonth;
+            birthDateVal.startDay = birthVal.startDay;
+            if (birthVal.endYear < 0) {
+                birthDateVal.endEra = 'BCE';
+                if (birthVal.calendar === DateCalendar.JULIAN) {
+                    birthDateVal.endYear = -birthVal.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                } else {
+                    birthDateVal.endYear = -birthVal.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                }
+            } else {
+                birthDateVal.endEra = 'CE';
+                birthDateVal.endYear = birthVal.endYear;
+            }
+            birthDateVal.endMonth = birthVal.endMonth;
+            birthDateVal.endDay = birthVal.endDay;
+            props[this.wwOntology + 'hasBirthDate'] = [
+                birthDateVal
+            ];
+        }
+
+        const deathVal = new DateValue(
+            data.deathDate.calendar,
+            data.deathDate.timeSpan,
+            data.deathDate.startYear,
+            data.deathDate.startMonth,
+            data.deathDate.startDay,
+            data.deathDate.endYear,
+            data.deathDate.endMonth,
+            data.deathDate.endDay);
+        if (!deathVal.isEmpty()) {
+            const deathDateVal = new CreateDateValue();
+            deathDateVal.calendar = deathVal.calendar;
+            if (deathVal.startYear < 0) {
+                deathDateVal.startEra = 'BCE';
+                if (deathVal.calendar === DateCalendar.JULIAN) {
+                    deathDateVal.startYear = -deathVal.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                } else {
+                    deathDateVal.startYear = -deathVal.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                }
+            } else {
+                deathDateVal.startEra = 'CE';
+                deathDateVal.startYear = deathVal.startYear;
+            }
+            deathDateVal.startMonth = deathVal.startMonth;
+            deathDateVal.startDay = deathVal.startDay;
+            if (deathVal.endYear < 0) {
+                deathDateVal.endEra = 'BCE';
+                if (deathVal.calendar === DateCalendar.JULIAN) {
+                    deathDateVal.endYear = -deathVal.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                } else {
+                    deathDateVal.endYear = -deathVal.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                }
+            } else {
+                deathDateVal.endEra = 'CE';
+                deathDateVal.endYear = deathVal.endYear;
+            }
+            deathDateVal.endMonth = deathVal.endMonth;
+            deathDateVal.endDay = deathVal.endDay;
+            props[this.wwOntology + 'hasDeathDate'] = [
+                deathDateVal
+            ];
+        }
+
+        if (data.extraInfo !== null && data.extraInfo !== undefined && data.extraInfo !== '') {
+            const extraInfoIdVal = new CreateTextValueAsString();
+            extraInfoIdVal.text = data.extraInfo;
+            props[this.wwOntology + 'hasPersonExtraInfo'] = [
+                extraInfoIdVal
+            ];
+        }
+
+        if (data.lexias !== null && data.lexias !== undefined && data.lexias.length > 0) {
+            const v: CreateLinkValue[] = [];
+            for (const lexia of data.lexias) {
+                if (lexia.lexiaIri !== '') {
+                    const lexiaVal = new CreateLinkValue();
+                    lexiaVal.linkedResourceIri = lexia.lexiaIri;
+                    v.push(lexiaVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'isLexiaPersonValue'] = v;
+            }
+        }
+
+        return this._knoraApiConnection.v2.res.createResource(createResource).pipe(
+            map((res: ReadResource) => res.id),
+            catchError((error: ApiResponseError) => of('error'))
+        );
     }
 
     updateLabel(resId: string, resType: string, label: string) {
@@ -905,6 +1052,132 @@ export class KnoraService {
 
         deleteVal.id = valId;
         deleteVal.type = Constants.LinkValue;
+
+        const updateResource = new UpdateResource<DeleteValue>();
+        updateResource.id = resId;
+        updateResource.type = resType;
+        updateResource.property = property;
+        updateResource.value = deleteVal;
+
+        return this._knoraApiConnection.v2.values.deleteValue(updateResource).pipe(
+            map((res: DeleteValueResponse) => 'OK'),
+            catchError((error: ApiResponseError) => of('ERROR'))
+        );
+    }
+
+    createListValue(resId: string, resType: string, property: string, nodeIri: string): Observable<string> {
+        const createListVal = new CreateListValue();
+        createListVal.listNode = nodeIri;
+
+        const createResource = new UpdateResource<CreateValue>();
+        createResource.id = resId;
+        createResource.type = resType;
+        createResource.property = property;
+        createResource.value = createListVal;
+
+        return this._knoraApiConnection.v2.values.createValue(createResource).pipe(
+            map((res: WriteValueResponse) => 'OK'),
+            catchError((error: ApiResponseError) => of('error'))
+        );
+    }
+
+    updateListValue(resId: string, resType: string, valId: string, property: string, nodeIri: string): Observable<string> {
+        const updateListVal = new UpdateListValue();
+        updateListVal.id = valId;
+        updateListVal.listNode = nodeIri;
+
+        const updateResource = new UpdateResource<UpdateValue>();
+        updateResource.id = resId;
+        updateResource.type = resType;
+        updateResource.property = property;
+        updateResource.value = updateListVal;
+
+        return this._knoraApiConnection.v2.values.updateValue(updateResource).pipe(
+            map((res: WriteValueResponse) => 'OK'),
+            catchError((error: ApiResponseError) => of('error'))
+        );
+    }
+
+    deleteListValue(resId: string, resType: string, valId: string, property: string): Observable<string> {
+        const deleteVal = new DeleteValue();
+
+        deleteVal.id = valId;
+        deleteVal.type = Constants.ListValue;
+
+        const updateResource = new UpdateResource<DeleteValue>();
+        updateResource.id = resId;
+        updateResource.type = resType;
+        updateResource.property = property;
+        updateResource.value = deleteVal;
+
+        return this._knoraApiConnection.v2.values.deleteValue(updateResource).pipe(
+            map((res: DeleteValueResponse) => 'OK'),
+            catchError((error: ApiResponseError) => of('ERROR'))
+        );
+    }
+
+    createDateValue(resId: string, resType: string, property: string,
+                    startDay: number, startMonth: number, startYear: number,
+                    endDay?: number, endMonth?: number, endYear?: number): Observable<string> {
+        const createDateVal = new CreateDateValue();
+        createDateVal.calendar = 'GREGORIAN';
+        createDateVal.startYear = typeof startYear === 'string' ? parseInt(startYear, 10) : startYear;
+        if (startMonth !== undefined) { createDateVal.startMonth = typeof startMonth === 'string' ? parseInt(startMonth, 10) : startMonth; }
+        if (startDay !== undefined) { createDateVal.startDay = typeof startDay === 'string' ? parseInt(startDay, 10) : startDay; }
+        createDateVal.startEra = 'CE';
+        if (endYear !== undefined) { createDateVal.endYear = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear; }
+        if (endMonth !== undefined) { createDateVal.endMonth = typeof endMonth === 'string' ? parseInt(endMonth, 10) : endMonth; }
+        if (endDay !== undefined) { createDateVal.endDay = typeof endDay === 'string' ? parseInt(endDay, 10) : endDay; }
+        createDateVal.endEra = 'CE';
+
+        const createResource = new UpdateResource<CreateValue>();
+        createResource.id = resId;
+        createResource.type = resType;
+        createResource.property = property;
+        createResource.value = createDateVal;
+
+        return this._knoraApiConnection.v2.values.createValue(createResource).pipe(
+            map((res: WriteValueResponse) => 'OK'),
+            catchError((error: ApiResponseError) => of('error'))
+        );
+    }
+
+    updateDateValue(resId: string, resType: string, valId: string, property: string,
+                    startDay: number | string, startMonth: number | string, startYear: number | string,
+                    endDay?: number, endMonth?: number, endYear?: number): Observable<string> {
+        const updateDateVal = new UpdateDateValue();
+        updateDateVal.id = valId;
+        updateDateVal.calendar = 'GREGORIAN';
+        updateDateVal.startYear = typeof startYear === 'string' ? parseInt(startYear, 10) : startYear;
+        if (startMonth !== undefined) { updateDateVal.startMonth = typeof startMonth === 'string' ? parseInt(startMonth, 10) : startMonth; }
+        if (startDay !== undefined) { updateDateVal.startDay = typeof startDay === 'string' ? parseInt(startDay, 10) : startDay; }
+        updateDateVal.startEra = 'CE';
+        if (endYear !== undefined) { updateDateVal.endYear = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear; }
+        if (endMonth !== undefined) { updateDateVal.endMonth = typeof endMonth === 'string' ? parseInt(endMonth, 10) : endMonth; }
+        if (endDay !== undefined) { updateDateVal.endDay = typeof endDay === 'string' ? parseInt(endDay, 10) : endDay; }
+        updateDateVal.endEra = 'CE';
+
+        console.log('A)===>', updateDateVal);
+
+        const updateResource = new UpdateResource<UpdateValue>();
+        updateResource.id = resId;
+        updateResource.type = resType;
+        updateResource.property = property;
+        updateResource.value = updateDateVal;
+
+        console.log('B)===>', updateResource);
+
+        return this._knoraApiConnection.v2.values.updateValue(updateResource).pipe(
+            map((res: WriteValueResponse) => 'OK'),
+            catchError((error: ApiResponseError) => of('error'))
+        );
+    }
+
+    deleteDateValue(resId: string, resType: string, valId: string, property: string): Observable<string> {
+        const deleteVal = new DeleteValue();
+
+        deleteVal.id = valId;
+        deleteVal.type = Constants.DateValue;
 
         const updateResource = new UpdateResource<DeleteValue>();
         updateResource.id = resId;

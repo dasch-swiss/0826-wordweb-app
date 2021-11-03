@@ -504,8 +504,7 @@ export class EditCompanyComponent implements OnInit {
             this.location.back();
           }
       );
-    }
-    else {
+    } else {
       const obs: Array<Observable<string>> = [];
 
       if (this.valIds.label.changed) {

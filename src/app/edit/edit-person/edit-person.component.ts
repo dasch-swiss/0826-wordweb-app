@@ -6,7 +6,7 @@ import {Location} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {DateAdapter} from '@angular/material/core';
-import {combineLatest, forkJoin} from 'rxjs';
+import {combineLatest, forkJoin, Observable, of} from 'rxjs';
 import {ConfirmationComponent, ConfirmationResult} from '../confirmation/confirmation.component';
 import {DateValue, DateValueComponent} from '../date-value/date-value.component';
 
@@ -135,7 +135,9 @@ class PersonIds {
         &nbsp;
         <mat-form-field appearance="fill"  [style.width.px]=600>
           <mat-label>Birthdate</mat-label>
-          <app-knora-date-value formControlName="birthDate"></app-knora-date-value>
+          <app-knora-date-value matInput
+                                formControlName="birthDate"
+                                (ngModelChange)="_handleInput('birthDate')"></app-knora-date-value>
         </mat-form-field>
         <button *ngIf="valIds.birthDate.changed" mat-mini-fab (click)="_handleUndo('birthDate')">
           <mat-icon color="warn">cached</mat-icon>
@@ -147,7 +149,9 @@ class PersonIds {
         <br/>
         <mat-form-field appearance="fill"  [style.width.px]=600>
           <mat-label>Deathdate</mat-label>
-          <app-knora-date-value formControlName="deathDate"></app-knora-date-value>
+          <app-knora-date-value matInput
+                                formControlName="deathDate"
+                                (ngModelChange)="_handleInput('deathDate')"></app-knora-date-value>
         </mat-form-field>&nbsp;
         <button *ngIf="valIds.deathDate.changed" mat-mini-fab (click)="_handleUndo('deathDate')">
           <mat-icon color="warn">cached</mat-icon>
@@ -157,7 +161,7 @@ class PersonIds {
           <mat-icon *ngIf="valIds.deathDate.toBeDeleted" color="warn">delete</mat-icon>
         </button>
         <br/>
-        
+
         <mat-form-field [style.width.px]=600>
           <input matInput
                  class="full-width"
@@ -328,14 +332,9 @@ export class EditPersonComponent implements OnInit {
                   this.data.description = ele.values[0];
                   break;
                 }
-                case this.knoraService.wwOntology + 'hasDescription': {
-                  this.form.controls.description.setValue(ele.values[0]);
-                  this.valIds.description = {id: ele.ids[0], changed: false, toBeDeleted: false};
-                  this.data.description = ele.values[0];
-                  break;
-                }
                 case this.knoraService.wwOntology + 'hasBirthDate': {
                   const dateValue = DateValue.parseDateValueFromKnora(ele.values[0]);
+                  console.log('dateValue', dateValue);
                   this.form.controls.birthDate.setValue(dateValue);
                   this.valIds.birthDate = {id: ele.ids[0], changed: false, toBeDeleted: false};
                   this.data.birthDate = dateValue;
@@ -450,6 +449,7 @@ export class EditPersonComponent implements OnInit {
   }
 
   _handleInput(what: string, index?: number): void {
+    console.log('***********>_handleInput:', what);
     this.onChange(this.form.value);
     switch (what) {
       case 'label':
@@ -560,7 +560,209 @@ export class EditPersonComponent implements OnInit {
   }
 
   save(): void {
+    this.working = true;
     console.log('this.value:', this.value);
+    if (this.inData.personIri === undefined) {
+      console.log('---!!!hoppla!!!---');
+      this.knoraService.createPerson(this.value).subscribe(
+          res => {
+            console.log('CREATE_RESULT:', res);
+            this.working = false;
+            this.location.back();
+          },
+          error => {
+            this.snackBar.open('Error storing the person object!', 'OK');
+            console.log('EditPerson.save(): ERROR', error);
+            this.working = false;
+            this.location.back();
+          }
+      );
+    } else {
+      console.log('this.valIds:', this.valIds);
+
+      const obs: Array<Observable<string>> = [];
+
+      if (this.valIds.label.changed) {
+        const gaga: Observable<string> = this.knoraService.updateLabel(
+            this.resId,
+            this.knoraService.wwOntology + 'company',
+            this.form.value.label);
+        obs.push(gaga);
+      }
+
+      if (this.valIds.internalId.toBeDeleted && this.valIds.internalId.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'person',
+            this.valIds.internalId.id as string,
+            this.knoraService.wwOntology + 'hasPersonInternalId');
+        obs.push(gaga);
+      } else if (this.valIds.internalId.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.internalId.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.knoraService.wwOntology + 'hasPersonInternalId',
+              this.value.internalId);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.valIds.internalId.id as string,
+              this.knoraService.wwOntology + 'hasPersonInternalId',
+              this.value.internalId);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.firstName.toBeDeleted && this.valIds.firstName.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'person',
+            this.valIds.firstName.id as string,
+            this.knoraService.wwOntology + 'hasFirstName');
+        obs.push(gaga);
+      } else if (this.valIds.firstName.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.firstName.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.knoraService.wwOntology + 'hasFirstName',
+              this.value.firstName);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.valIds.firstName.id as string,
+              this.knoraService.wwOntology + 'hasFirstName',
+              this.value.firstName);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.lastName.toBeDeleted && this.valIds.lastName.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'person',
+            this.valIds.lastName.id as string,
+            this.knoraService.wwOntology + 'hasLastName');
+        obs.push(gaga);
+      } else if (this.valIds.lastName.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.lastName.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.knoraService.wwOntology + 'hasLastName',
+              this.value.lastName);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.valIds.lastName.id as string,
+              this.knoraService.wwOntology + 'hasLastName',
+              this.value.lastName);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.gender.toBeDeleted && this.valIds.gender.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteListValue(
+            this.resId,
+            this.knoraService.wwOntology + 'person',
+            this.valIds.gender.id as string,
+            this.knoraService.wwOntology + 'hasGender');
+        obs.push(gaga);
+      } else if (this.valIds.gender.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.gender.id === undefined) {
+          gaga = this.knoraService.createListValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.knoraService.wwOntology + 'hasGender',
+              this.form.value.genderIri);
+        } else {
+          gaga = this.knoraService.updateListValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.valIds.gender.id as string,
+              this.knoraService.wwOntology + 'hasGender',
+              this.form.value.genderIri);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.description.toBeDeleted && this.valIds.description.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'person',
+            this.valIds.description.id as string,
+            this.knoraService.wwOntology + 'hasDescription');
+        obs.push(gaga);
+      } else if (this.valIds.description.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.description.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.knoraService.wwOntology + 'hasDescription',
+              this.value.description);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.valIds.description.id as string,
+              this.knoraService.wwOntology + 'hasDescription',
+              this.value.description);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.birthDate.toBeDeleted && this.valIds.birthDate.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteDateValue(
+            this.resId,
+            this.knoraService.wwOntology + 'person',
+            this.valIds.birthDate.id as string,
+            this.knoraService.wwOntology + 'hasBirthDate');
+        obs.push(gaga);
+      } else if (this.valIds.birthDate.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.birthDate.id === undefined) {
+          const birthDate = this.form.value.birthDate;
+          gaga = this.knoraService.createDateValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.knoraService.wwOntology + 'hasBirthDate',
+              birthDate.startDay, birthDate.startMonth, birthDate.startYear,
+              birthDate.endDay, birthDate.endMonth, birthDate.endYear);
+          console.log('gaga:', gaga);
+        } else {
+          const birthDate = this.form.value.birthDate;
+          console.log('CHANGED:', birthDate);
+          gaga = this.knoraService.updateDateValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.valIds.birthDate.id as string,
+              this.knoraService.wwOntology + 'hasBirthDate',
+              birthDate.startDay, birthDate.startMonth, birthDate.startYear,
+              birthDate.endDay, birthDate.endMonth, birthDate.endYear);
+        }
+        obs.push(gaga);
+      }
+
+      forkJoin(obs).subscribe(res => {
+            this.working = false;
+            this.location.back();
+          },
+          error => {
+            this.snackBar.open('Fehler beim Speichern der Daten des person-Eintrags!', 'OK');
+            this.working = false;
+            this.location.back();
+          });
+
+    }
   }
 
   delete(): void {
