@@ -1117,17 +1117,18 @@ export class KnoraService {
     }
 
     createDateValue(resId: string, resType: string, property: string,
-                    startDay: number, startMonth: number, startYear: number,
-                    endDay?: number, endMonth?: number, endYear?: number): Observable<string> {
+                    value: DateValue): Observable<string> {
         const createDateVal = new CreateDateValue();
-        createDateVal.calendar = 'GREGORIAN';
-        createDateVal.startYear = typeof startYear === 'string' ? parseInt(startYear, 10) : startYear;
-        if (startMonth !== undefined) { createDateVal.startMonth = typeof startMonth === 'string' ? parseInt(startMonth, 10) : startMonth; }
-        if (startDay !== undefined) { createDateVal.startDay = typeof startDay === 'string' ? parseInt(startDay, 10) : startDay; }
+
+        createDateVal.calendar = value.calendar;
+        createDateVal.startYear = value.startYear;
+        createDateVal.startMonth = value.startMonth;
+        createDateVal.startDay = value.startDay;
+        createDateVal.endYear = value.endYear;
+        createDateVal.endMonth = value.endMonth;
+        createDateVal.endDay = value.endDay;
+
         createDateVal.startEra = 'CE';
-        if (endYear !== undefined) { createDateVal.endYear = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear; }
-        if (endMonth !== undefined) { createDateVal.endMonth = typeof endMonth === 'string' ? parseInt(endMonth, 10) : endMonth; }
-        if (endDay !== undefined) { createDateVal.endDay = typeof endDay === 'string' ? parseInt(endDay, 10) : endDay; }
         createDateVal.endEra = 'CE';
 
         const createResource = new UpdateResource<CreateValue>();
@@ -1143,29 +1144,25 @@ export class KnoraService {
     }
 
     updateDateValue(resId: string, resType: string, valId: string, property: string,
-                    startDay: number | string, startMonth: number | string, startYear: number | string,
-                    endDay?: number, endMonth?: number, endYear?: number): Observable<string> {
+                    value: DateValue): Observable<string> {
         const updateDateVal = new UpdateDateValue();
         updateDateVal.id = valId;
-        updateDateVal.calendar = 'GREGORIAN';
-        updateDateVal.startYear = typeof startYear === 'string' ? parseInt(startYear, 10) : startYear;
-        if (startMonth !== undefined) { updateDateVal.startMonth = typeof startMonth === 'string' ? parseInt(startMonth, 10) : startMonth; }
-        if (startDay !== undefined) { updateDateVal.startDay = typeof startDay === 'string' ? parseInt(startDay, 10) : startDay; }
-        updateDateVal.startEra = 'CE';
-        if (endYear !== undefined) { updateDateVal.endYear = typeof endYear === 'string' ? parseInt(endYear, 10) : endYear; }
-        if (endMonth !== undefined) { updateDateVal.endMonth = typeof endMonth === 'string' ? parseInt(endMonth, 10) : endMonth; }
-        if (endDay !== undefined) { updateDateVal.endDay = typeof endDay === 'string' ? parseInt(endDay, 10) : endDay; }
-        updateDateVal.endEra = 'CE';
+        updateDateVal.calendar = value.calendar;
+        updateDateVal.startYear = value.startYear;
+        updateDateVal.startMonth = value.startMonth;
+        updateDateVal.startDay = value.startDay;
+        updateDateVal.endYear = value.endYear;
+        updateDateVal.endMonth = value.endMonth;
+        updateDateVal.endDay = value.endDay;
 
-        console.log('A)===>', updateDateVal);
+        updateDateVal.startEra = 'CE';
+        updateDateVal.endEra = 'CE';
 
         const updateResource = new UpdateResource<UpdateValue>();
         updateResource.id = resId;
         updateResource.type = resType;
         updateResource.property = property;
         updateResource.value = updateDateVal;
-
-        console.log('B)===>', updateResource);
 
         return this._knoraApiConnection.v2.values.updateValue(updateResource).pipe(
             map((res: WriteValueResponse) => 'OK'),

@@ -731,25 +731,146 @@ export class EditPersonComponent implements OnInit {
         let gaga: Observable<string>;
         if (this.valIds.birthDate.id === undefined) {
           const birthDate = this.form.value.birthDate;
+          const birthDateValue = new DateValue(
+              birthDate.calendar,
+              birthDate.timeSpan,
+              birthDate.startYear,
+              birthDate.startMonth,
+              birthDate.startDay,
+              birthDate.endYear,
+              birthDate.endMonth,
+              birthDate.endDay);
           gaga = this.knoraService.createDateValue(
               this.resId,
               this.knoraService.wwOntology + 'person',
               this.knoraService.wwOntology + 'hasBirthDate',
-              birthDate.startDay, birthDate.startMonth, birthDate.startYear,
-              birthDate.endDay, birthDate.endMonth, birthDate.endYear);
+              birthDateValue);
           console.log('gaga:', gaga);
         } else {
           const birthDate = this.form.value.birthDate;
-          console.log('CHANGED:', birthDate);
+          const birthDateValue = new DateValue(
+              birthDate.calendar,
+              birthDate.timeSpan,
+              birthDate.startYear,
+              birthDate.startMonth,
+              birthDate.startDay,
+              birthDate.endYear,
+              birthDate.endMonth,
+              birthDate.endDay);
+          console.log('CHANGED:', birthDateValue);
           gaga = this.knoraService.updateDateValue(
               this.resId,
               this.knoraService.wwOntology + 'person',
               this.valIds.birthDate.id as string,
               this.knoraService.wwOntology + 'hasBirthDate',
-              birthDate.startDay, birthDate.startMonth, birthDate.startYear,
-              birthDate.endDay, birthDate.endMonth, birthDate.endYear);
+              birthDateValue);
         }
         obs.push(gaga);
+      }
+
+      if (this.valIds.deathDate.toBeDeleted && this.valIds.deathDate.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteDateValue(
+            this.resId,
+            this.knoraService.wwOntology + 'person',
+            this.valIds.deathDate.id as string,
+            this.knoraService.wwOntology + 'hasDeathDate');
+        obs.push(gaga);
+      } else if (this.valIds.deathDate.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.deathDate.id === undefined) {
+          const deathDate = this.form.value.deathDate;
+          const deathDateValue = new DateValue(
+              deathDate.calendar,
+              deathDate.timeSpan,
+              deathDate.startYear,
+              deathDate.startMonth,
+              deathDate.startDay,
+              deathDate.endYear,
+              deathDate.endMonth,
+              deathDate.endDay);
+          gaga = this.knoraService.createDateValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.knoraService.wwOntology + 'hasDeathDate',
+              deathDateValue);
+          console.log('gaga:', gaga);
+        } else {
+          const deathDate = this.form.value.deathDate;
+          const deathDateValue = new DateValue(
+              deathDate.calendar,
+              deathDate.timeSpan,
+              deathDate.startYear,
+              deathDate.startMonth,
+              deathDate.startDay,
+              deathDate.endYear,
+              deathDate.endMonth,
+              deathDate.endDay);
+          console.log('CHANGED:', deathDateValue);
+          gaga = this.knoraService.updateDateValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.valIds.deathDate.id as string,
+              this.knoraService.wwOntology + 'hasDeathDate',
+              deathDateValue);
+        }
+        obs.push(gaga);
+      }
+
+      console.log('this.valIds.extraInfo:', this.valIds.extraInfo);
+      if (this.valIds.extraInfo.toBeDeleted && this.valIds.extraInfo.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'person',
+            this.valIds.extraInfo.id as string,
+            this.knoraService.wwOntology + 'hasPersonExtraInfo');
+        obs.push(gaga);
+      } else if (this.valIds.extraInfo.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.extraInfo.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.knoraService.wwOntology + 'hasPersonExtraInfo',
+              this.value.extraInfo);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.valIds.extraInfo.id as string,
+              this.knoraService.wwOntology + 'hasPersonExtraInfo',
+              this.value.extraInfo);
+        }
+        obs.push(gaga);
+      }
+
+      let index = 0;
+      for (const valId of this.valIds.lexias) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteLinkValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              valId.id as string,
+              this.knoraService.wwOntology + 'isLexiaPersonValue');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'person',
+                this.knoraService.wwOntology + 'isLexiaPersonValue',
+                this.value.lexias[index].lexiaIri);
+          } else {
+            gaga = this.knoraService.updateLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'person',
+                valId.id as string,
+                this.knoraService.wwOntology + 'isLexiaPersonValue',
+                this.value.lexias[index].lexiaIri);
+          }
+          obs.push(gaga);
+        }
+        index++;
       }
 
       forkJoin(obs).subscribe(res => {

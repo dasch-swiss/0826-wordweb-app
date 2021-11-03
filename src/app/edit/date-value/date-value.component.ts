@@ -176,7 +176,7 @@ export class DateValue {
 
       const timeSpan = !!found[6];
 
-      let endYear: number = parseInt(found[6], 10);
+      let endYear: number = parseInt(found[6]?.substring(1), 10);
       if (isNaN(endYear)) { endYear = undefined; }
       if (endYear && DateValue.isBCE(found[9])) {
         endYear = -endYear;
