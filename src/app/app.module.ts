@@ -106,6 +106,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from '@angular/material/core';
 import { DateValueComponent } from './edit/date-value/date-value.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
+import { EditLexiaComponent } from './edit/edit-lexia/edit-lexia.component';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -173,6 +174,7 @@ export function initializeApp(appInitService: AppInitService) {
         ConfirmationComponent,
         EditPersonComponent,
         DateValueComponent,
+        EditLexiaComponent,
     ],
     imports: [
         BrowserModule,

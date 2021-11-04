@@ -80,6 +80,43 @@ export class PersonData {
     ) {}
 }
 
+export class LexiaData {
+    constructor(
+        public label: string,
+        public internalId: string, //hasLexiaInternalId (1)
+        public title: string, // hasLexiaTitle (1)
+        public formalClass: string, // hasFormalClass (1-n)
+        public image?: string, // hasImage (0-n)
+        public displayedTitle?: string, // hasLexiaDisplayedTitle (0-1)
+        public extraInfo?: string, // hasLexiaExtraInfo (0-1)
+    ) {}
+}
+
+export class PassageData {
+    constructor(
+        public label: string,
+        public internalId: string, //hasLexiaInternalId (1)
+        public displayedTitle: string, // hasDisplayedTitle (1)
+        public functionVoice: string, // hasFunctionVoice (1-n)
+        public marking: string, // has Marking (1-n)
+        public researchField: string, // hasResearchField (1)
+        public status: string, // hasStatus (1)
+        public text: string, // hasText (1)
+        public occursIn: string, // occursIn (1)
+        public contributedBy: string, // wasContributedBy (1)
+        public contains?: string, // contains (0-n)
+        public internalComment?: string, // hasInternalComment (0-1)
+        public page?: string, // hasPage (0-1)
+        public pageHist?: string, // hasPageHist (0-1)
+        public comment?: string, // hasPassageComment (0-1)
+        public extraInfo?: string, // hasPassageExtraInfo (0-1)
+        public prefixTitle?: string, // hasPrefixDisplayedTitle (0-1)
+        public textHist?: string, // hasTextHist (0-1)
+        public mentionedIn?: string, // isMentionedIn (0-n)
+    ) {
+    }
+}
+
 export class LangString {
     data: {[index: string]: string};
 
