@@ -85,8 +85,8 @@ export class LexiaData {
         public label: string,
         public internalId: string, //hasLexiaInternalId (1)
         public title: string, // hasLexiaTitle (1)
-        public formalClass: string, // hasFormalClass (1-n)
-        public image?: string, // hasImage (0-n)
+        public formalClassIris: string[], // hasFormalClass (1-n) -> List formalClass
+        public imageIris?: string[], // hasImage (0-n) -> List image
         public displayedTitle?: string, // hasLexiaDisplayedTitle (0-1)
         public extraInfo?: string, // hasLexiaExtraInfo (0-1)
     ) {}
@@ -97,14 +97,14 @@ export class PassageData {
         public label: string,
         public internalId: string, //hasLexiaInternalId (1)
         public displayedTitle: string, // hasDisplayedTitle (1)
-        public functionVoice: string, // hasFunctionVoice (1-n)
-        public marking: string, // has Marking (1-n)
-        public researchField: string, // hasResearchField (1)
-        public status: string, // hasStatus (1)
+        public functionVoiceIri: string[], // hasFunctionVoice (1-n) -> List functionVoice
+        public markingIri: string[], // has Marking (1-n) -> List marking
+        public researchFieldIri: string, // hasResearchField (1) -> List researchField
+        public statusIri: string, // hasStatus (1) -> List status
         public text: string, // hasText (1)
-        public occursIn: string, // occursIn (1)
-        public contributedBy: string, // wasContributedBy (1)
-        public contains?: string, // contains (0-n)
+        public occursIn: {occursInName: string; occursInIri: string}, // occursIn (1) -> Link ww:book
+        public contributedBy: {contributedByName: string; contributedByIri: string}, // wasContributedBy (1) -> Link ww:person
+        public contains?: {containsName: string; containsIri: string}[], // contains (0-n) -> Link ww:lexia
         public internalComment?: string, // hasInternalComment (0-1)
         public page?: string, // hasPage (0-1)
         public pageHist?: string, // hasPageHist (0-1)
@@ -112,9 +112,8 @@ export class PassageData {
         public extraInfo?: string, // hasPassageExtraInfo (0-1)
         public prefixTitle?: string, // hasPrefixDisplayedTitle (0-1)
         public textHist?: string, // hasTextHist (0-1)
-        public mentionedIn?: string, // isMentionedIn (0-n)
-    ) {
-    }
+        public mentionedIn?: {mentionedInName: string; mentionedInIri: string}[], // isMentionedIn (0-n) -> Link ww:pasage
+    ) {}
 }
 
 export class LangString {
