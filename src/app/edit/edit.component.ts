@@ -83,7 +83,7 @@ import {Router} from "@angular/router";
           <input matInput [(ngModel)]="lexiaIri" [hidden]="true">
           <mat-autocomplete #autoLexia="matAutocomplete"
                             (optionSelected)="_optionSelected($event.option.value,
-                          'lexia')">
+                            'lexia')">
             <mat-option *ngFor="let option of options" [value]="option.label">
               {{ option.label }}
             </mat-option>
@@ -170,7 +170,7 @@ export class EditComponent implements OnInit {
         }
         this.lexiaEditDisabled = true;
         console.log(this.lexia);
-        this.knoraService.getResourcesByLabel(this.person, this.knoraService.wwOntology + 'lexia').subscribe(
+        this.knoraService.getResourcesByLabel(this.lexia, this.knoraService.wwOntology + 'lexia').subscribe(
             res => {
               this.options = res;
               console.log('_handleLinkInput:res=', res);

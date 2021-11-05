@@ -18,7 +18,7 @@ import {
     KnoraApiConnection,
     KnoraPeriod,
     List,
-    ListAdminCache,
+    ListAdminCache, ListNode,
     ListNodeInfo,
     ListResponse,
     ListsResponse,
@@ -39,7 +39,7 @@ import {
     UpdateTextValueAsString,
     UpdateValue,
     WriteValueResponse
-} from '@dasch-swiss/dsp-js';
+} from "@dasch-swiss/dsp-js";
 import {GravsearchBuilderService} from './gravsearch-builder.service';
 import {IMainClass} from '../model/displayModel';
 import {catchError, map, tap} from 'rxjs/operators';
@@ -83,7 +83,7 @@ export class PersonData {
 export class LexiaData {
     constructor(
         public label: string,
-        public internalId: string, //hasLexiaInternalId (1)
+        public internalId: string, // hasLexiaInternalId (1)
         public title: string, // hasLexiaTitle (1)
         public formalClassIris: string[], // hasFormalClass (1-n) -> List formalClass
         public imageIris?: string[], // hasImage (0-n) -> List image
@@ -143,7 +143,8 @@ export class LangString {
 export class ListData {
     constructor(public listid: string,
                 public labels: LangString,
-                public name?: string) {
+                public name?: string,
+                public level?: number) {
     }
 }
 
@@ -588,13 +589,28 @@ export class KnoraService {
         );
     }
 
+    getChildren(children: Array<ListNode>, level: number, flatlist: Array<ListData>) {
+        // eslint-disable-next-line guard-for-in
+        for (const child of children) {
+            flatlist.push(new ListData(child.id, new LangString(child.labels), child.name, level));
+            if (child.children.length > 0) {
+                this.getChildren(child.children, level + 1, flatlist);
+            }
+        }
+    }
+
     getFlatList(listIri: string): Observable<Array<ListData>> {
         return this.listAdminCache.getList(listIri).pipe(
             map( (res: ListResponse) => {
+                console.log('ListResponse:', res);
                 const flatList: Array<ListData> = [];
+                /*
                 for (const child of res.list.children) {
-                    flatList.push(new ListData(child.id, new LangString(child.labels), child.name));
+                    flatList.push(new ListData(child.id, new LangString(child.labels), child.name, 0));
                 }
+                */
+                this.getChildren(res.list.children, 0, flatList);
+
                 return flatList;
             })
         );
@@ -604,60 +620,80 @@ export class KnoraService {
         this.getAllLists2().subscribe(
             lists => {
                 for (const list of lists) {
-                    console.log('List processing: ', list);
                     if (list.labels.get('en') === 'Research field') {
                         this.researchFieldListIri = list.listid;
-                        this.getFlatList(list.listid).subscribe(
+                        this.getFlatList(this.researchFieldListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
-                                    this.researchFieldTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                    let prefix = '';
+                                    for (let ii = 0; ii < lt.level; ii++) {
+                                        prefix += '– ';
+                                    }
+                                    this.researchFieldTypes.push({iri: lt.listid, name: prefix + lt.labels.get('en')});
                                 }
                             }
                         );
                     }
                     if (list.labels.get('en') === 'Marking') {
                         this.markingTypeListIri = list.listid;
-                        this.getFlatList(list.listid).subscribe(
+                        this.getFlatList(this.markingTypeListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
-                                    this.markingTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                    let prefix = '';
+                                    for (let ii = 0; ii < lt.level; ii++) {
+                                        prefix += '– ';
+                                    }
+                                    this.markingTypes.push({iri: lt.listid, name: prefix + lt.labels.get('en')});
                                 }
                             }
                         );
                     }
                     if (list.labels.get('en') === 'Language') {
                         this.languageListIri = list.listid;
-                        this.getFlatList(list.listid).subscribe(
+                        this.getFlatList(this.languageListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
-                                    this.languageTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                    let prefix = '';
+                                    for (let ii = 0; ii < lt.level; ii++) {
+                                        prefix += '– ';
+                                    }
+                                    this.languageTypes.push({iri: lt.listid, name: prefix + lt.labels.get('en')});
                                 }
                             }
                         );
                     }
                     if (list.labels.get('en') === 'Formal class') {
                         this.formalClassListIri = list.listid;
-                        this.getFlatList(list.listid).subscribe(
+                        this.getFlatList(this.formalClassListIri).subscribe(
                             (res: Array<ListData>) => {
+                                console.log('?????????????>', res);
                                 for (const lt of res) {
-                                    this.formalClassTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                    let prefix = '';
+                                    for (let ii = 0; ii < lt.level; ii++) {
+                                        prefix += '– ';
+                                    }
+                                    this.formalClassTypes.push({iri: lt.listid, name: prefix + lt.labels.get('en')});
                                 }
                             }
                         );
                     }
                     if (list.labels.get('en') === 'Venue place') {
                         this.venuePlaceListIri = list.listid;
-                        this.getFlatList(list.listid).subscribe(
+                        this.getFlatList(this.venuePlaceListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
-                                    this.venuePlaceTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                    let prefix = '';
+                                    for (let ii = 0; ii < lt.level; ii++) {
+                                        prefix += '– ';
+                                    }
+                                    this.venuePlaceTypes.push({iri: lt.listid, name: prefix + lt.labels.get('en')});
                                 }
                             }
                         );
                     }
                     if (list.labels.get('en') === 'Genre') {
                         this.genreListIri = list.listid;
-                        this.getFlatList(list.listid).subscribe(
+                        this.getFlatList(this.genreListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
                                     this.genreTypes.push({iri: lt.listid, name: lt.labels.get('en')});
@@ -667,7 +703,7 @@ export class KnoraService {
                     }
                     if (list.labels.get('en') === 'Gender') {
                         this.genderListIri = list.listid;
-                        this.getFlatList(list.listid).subscribe(
+                        this.getFlatList(this.genderListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
                                     this.genderTypes.push({iri: lt.listid, name: lt.labels.get('en')});
@@ -677,7 +713,7 @@ export class KnoraService {
                     }
                     if (list.labels.get('en') === 'Subject') {
                         this.subjectListIri = list.listid;
-                        this.getFlatList(list.listid).subscribe(
+                        this.getFlatList(this.subjectListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
                                     this.subjectTypes.push({iri: lt.listid, name: lt.labels.get('en')});
@@ -687,7 +723,7 @@ export class KnoraService {
                     }
                     if (list.labels.get('en') === 'Image') {
                         this.imageListIri = list.listid;
-                        this.getFlatList(list.listid).subscribe(
+                        this.getFlatList(this.imageListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
                                     this.imageTypes.push({iri: lt.listid, name: lt.labels.get('en')});
@@ -697,7 +733,7 @@ export class KnoraService {
                     }
                     if (list.labels.get('en') === 'Status') {
                         this.statusListIri = list.listid;
-                        this.getFlatList(list.listid).subscribe(
+                        this.getFlatList(this.statusListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
                                     this.statusTypes.push({iri: lt.listid, name: lt.labels.get('en')});
@@ -707,7 +743,7 @@ export class KnoraService {
                     }
                     if (list.labels.get('en') === 'Function voice') {
                         this.functionVoiceListIri = list.listid;
-                        this.getFlatList(list.listid).subscribe(
+                        this.getFlatList(this.functionVoiceListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
                                     this.functionVoiceTypes.push({iri: lt.listid, name: lt.labels.get('en')});

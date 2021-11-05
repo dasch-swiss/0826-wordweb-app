@@ -95,7 +95,7 @@ class LexiaIds {
       <div formArrayName="formalClasses">
         <mat-label>Formal class</mat-label>
         <div *ngFor="let formalClassItem of getFormalClasses().controls; let i=index">
-          <mat-form-field [style.width.px]=600>
+          <mat-form-field [formGroup]="formalClassItem" [style.width.px]=300>
             <mat-select matInput
                         placeholder="formalClass"
                         formControlName="formalClassIri"
@@ -108,6 +108,10 @@ class LexiaIds {
           <button *ngIf="valIds.formalClasses[i].changed" mat-mini-fab (click)="_handleUndo('formalClasses')">
             <mat-icon color="warn">cached</mat-icon>
           </button>
+          <button *ngIf="valIds.formalClasses[i].id !== undefined" mat-mini-fab (click)="_handleDelete('formalClasses', i)">
+            <mat-icon *ngIf="!valIds.formalClasses[i].toBeDeleted" color="basic">delete</mat-icon>
+            <mat-icon *ngIf="valIds.formalClasses[i].toBeDeleted" color="warn">delete</mat-icon>
+          </button>
         </div>
         <button mat-mini-fab (click)="addFormalClass()">
           <mat-icon>add</mat-icon>
@@ -116,11 +120,10 @@ class LexiaIds {
       </div>
       <br/>
 
-      <!--
       <div formArrayName="images">
         <mat-label>Image</mat-label>
-        <div *ngFor="let formalClassItem of getImages().controls; let i=index">
-          <mat-form-field [style.width.px]=600>
+        <div *ngFor="let imageItem of getImages().controls; let i=index">
+          <mat-form-field [formGroup]="imageItem" [style.width.px]=300>
             <mat-select matInput required
                         placeholder="Image"
                         formControlName="imageIri"
@@ -134,9 +137,12 @@ class LexiaIds {
             <mat-icon color="warn">cached</mat-icon>
           </button>
         </div>
+        <button mat-mini-fab (click)="addImage()">
+          <mat-icon>add</mat-icon>
+        </button>
       </div>
       <br/>
-        -->
+
       <mat-form-field [style.width.px]=400>
         <input matInput
                class="full-width"
@@ -205,19 +211,22 @@ export class EditLexiaComponent implements OnInit {
 
   @Input()
   get value(): LexiaData | null {
-    console.log('======================================');
     const formalClasses: FormArray = this.getFormalClasses();
     const formalClassIriValues: string[] = [];
     for (const x of formalClasses.controls) {
-      console.log('----------->', x);
       formalClassIriValues.push(x.value);
+    }
+    const images: FormArray = this.getImages();
+    const imagesIriValues: string[] = [];
+    for (const x of images.controls) {
+      imagesIriValues.push(x.value);
     }
     return new LexiaData(
         this.form.controls.label.value,
         this.form.controls.internalId.value,
         this.form.controls.title.value,
         formalClassIriValues,
-        [],
+        imagesIriValues,
         this.form.controls.displayedTitle.value,
         this.form.controls.extraInfo.value
     );
@@ -236,18 +245,57 @@ export class EditLexiaComponent implements OnInit {
       if (arr[0].iri !== undefined) {
         this.inData.lexiaIri = arr[0].iri;
       }
-      if (this.inData.companyIri !== undefined) {
-
+      if (this.inData.lexiaIri !== undefined) {
+        this.knoraService.getResource(this.inData.lexiaIri).subscribe((data) => {
+          if (this.inData.lexiaIri !== undefined) {
+            console.log('DATA: ', data);
+            this.resId = data.id;
+            this.lastmod = data.lastmod;
+            this.form.controls.label.setValue(data.label);
+            this.valIds.label = {id: data.label, changed: false, toBeDeleted: false};
+            this.data.label = data.label;
+            for (const ele of data.properties) {
+              switch (ele.propname) {
+                case this.knoraService.wwOntology + 'hasLexiaTitle': {
+                  this.form.controls.title.setValue(ele.values[0]);
+                  this.valIds.title = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.title = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasLexiaInternalId': {
+                  this.form.controls.internalId.setValue(ele.values[0]);
+                  this.valIds.internalId = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.internalId = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasLexiaExtraInfo': {
+                  this.form.controls.extraInfo.setValue(ele.values[0]);
+                  this.valIds.extraInfo = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.extraInfo = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasFormalClass': {
+                  for (let i = 0; i < ele.values.length; i++) {
+                    this.addFormalClass(ele.values[i]);
+                  }
+                }
+              }
+            }
+          }
+        });
       }
+      this.valIds.formalClasses[0] = {id: undefined, changed: false, toBeDeleted: false};
       this.form = this.fb.group({
         label: [this.data.label, [Validators.required, Validators.minLength(5)]],
         title: [this.data.title, [Validators.required, Validators.minLength(5)]],
         internalId: [this.data.internalId, [Validators.required]],
         formalClasses: this.fb.array([
-          /*this.fb.group({memberName: '', memberIri: ''}),*/
+          this.fb.group({
+            formalClassIri: ['http://rdfh.ch/lists/0826/a2YTLJSYRqmQ_TLH4BwV_Q', [Validators.required]]
+          })
         ]),
-        imageIris: this.fb.array([
-          /*this.fb.group({lexiaName: '', lexiaIri: ''}),*/
+        images: this.fb.array([
+          /*this.fb.group({formalClassIri: ''}),*/
         ]),
         displayedTitle: [this.data.displayedTitle, []],
         extraInfo: [this.data.extraInfo, []],
@@ -271,11 +319,23 @@ export class EditLexiaComponent implements OnInit {
       this.data.formalClassIris.push(formalClassIri);
       this.valIds.formalClasses.push({id: formalClassIri, changed: false, toBeDeleted: false});
     }
-    console.log('addFormalClass::', this.data.formalClassIris);
   }
 
   getImages() {
-    return this.form.controls.imageIris as FormArray;
+    return this.form.controls.images as FormArray;
+  }
+
+  addImage(imageIri?: string) {
+    const images = this.getImages();
+    if (imageIri === undefined) {
+      images.push(this.fb.group({imageIri: ''}));
+      this.data.imageIris.push('');
+      this.valIds.images.push({id: undefined, changed: false, toBeDeleted: false});
+    } else {
+      images.push(this.fb.group({imageIri}));
+      this.data.imageIris.push(imageIri);
+      this.valIds.images.push({id: imageIri, changed: false, toBeDeleted: false});
+    }
   }
 
   onChange = (_: any) => {
@@ -313,10 +373,10 @@ export class EditLexiaComponent implements OnInit {
 
   _handleDelete(what: string, index?: number): void {
     switch (what) {
-      case 'members':
+      case 'formalClasses':
         this.valIds.formalClasses[index].toBeDeleted = !this.valIds.formalClasses[index].toBeDeleted;
         break;
-      case 'lexias':
+      case 'images':
         this.valIds.images[index].toBeDeleted = !this.valIds.images[index].toBeDeleted;
         break;
       case 'displayedTitle':
