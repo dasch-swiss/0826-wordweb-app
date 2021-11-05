@@ -26,9 +26,10 @@ import {ExpertSearchComponent} from "./search/expert-search/expert-search.compon
 import {BrowsingComponent} from "./search/browsing/browsing.component";
 import {ResourceComponent} from "./resource/resource.component";
 
+import {EditComponent} from "./edit/edit.component";
 import {EditCompanyComponent} from "./edit/edit-company/edit-company.component";
 import {EditPersonComponent} from "./edit/edit-person/edit-person.component";
-import {EditComponent} from "./edit/edit.component";
+import {EditLexiaComponent} from "./edit/edit-lexia/edit-lexia.component";
 
 const routes: Routes = [
   {path: "", redirectTo: "search", pathMatch: "full"},
@@ -75,7 +76,9 @@ const routes: Routes = [
       {path: "company/:iri", component: EditCompanyComponent},
       {path: "company", component: EditCompanyComponent},
       {path: "person/:iri", component: EditPersonComponent},
-      {path: "person", component: EditPersonComponent}
+      {path: "person", component: EditPersonComponent},
+      {path: "lexia/:iri", component: EditLexiaComponent},
+      {path: "lexia", component: EditLexiaComponent}
     ],
   },
   {path: "**", component: PageNotFoundComponent}

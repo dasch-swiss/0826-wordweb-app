@@ -50,6 +50,7 @@ class LexiaIds {
   <mat-card>
     <mat-card-title>Lexia Editor</mat-card-title>
     <mat-card-content [formGroup]="form">
+
       <mat-form-field [style.width.px]=400>
         <input matInput
                class="full-width"
@@ -95,24 +96,80 @@ class LexiaIds {
         <mat-label>Formal class</mat-label>
         <div *ngFor="let formalClassItem of getFormalClasses().controls; let i=index">
           <mat-form-field [style.width.px]=600>
-            <mat-select matInput required
+            <mat-select matInput
                         placeholder="formalClass"
                         formControlName="formalClassIri"
-                        (selectionChange)="_handleInput('formalClass', i)">
+                        (selectionChange)="_handleInput('formalClasses', i)">
               <mat-option *ngFor="let lt of formalClassTypes" [value]="lt.iri">
                 {{lt.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <button *ngIf="valIds.formalClass.changed" mat-mini-fab (click)="_handleUndo('formalClass')">
+          <button *ngIf="valIds.formalClasses[i].changed" mat-mini-fab (click)="_handleUndo('formalClasses')">
+            <mat-icon color="warn">cached</mat-icon>
+          </button>
+        </div>
+        <button mat-mini-fab (click)="addFormalClass()">
+          <mat-icon>add</mat-icon>
+        </button>
+
+      </div>
+      <br/>
+
+      <!--
+      <div formArrayName="images">
+        <mat-label>Image</mat-label>
+        <div *ngFor="let formalClassItem of getImages().controls; let i=index">
+          <mat-form-field [style.width.px]=600>
+            <mat-select matInput required
+                        placeholder="Image"
+                        formControlName="imageIri"
+                        (selectionChange)="_handleInput('images', i)">
+              <mat-option *ngFor="let lt of imageTypes" [value]="lt.iri">
+                {{lt.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button *ngIf="valIds.images[i].changed" mat-mini-fab (click)="_handleUndo('images')">
             <mat-icon color="warn">cached</mat-icon>
           </button>
         </div>
       </div>
+      <br/>
+        -->
+      <mat-form-field [style.width.px]=400>
+        <input matInput
+               class="full-width"
+               placeholder="Displayed Title"
+               formControlName="displayedTitle"
+               (input)="_handleInput('displayedTitle')">
+      </mat-form-field>
+      <button *ngIf="valIds.displayedTitle.changed" mat-mini-fab (click)="_handleUndo('displayedTitle')">
+        <mat-icon color="warn">cached</mat-icon>
+      </button>
+      <br/>
 
+      <mat-form-field [style.width.px]=400>
+        <input matInput
+               class="full-width"
+               placeholder="Extra Info"
+               formControlName="extraInfo"
+               (input)="_handleInput('extraInfo')">
+      </mat-form-field>
+      <button *ngIf="valIds.extraInfo.changed" mat-mini-fab (click)="_handleUndo('extraInfo')">
+        <mat-icon color="warn">cached</mat-icon>
+      </button>
       <br/>
 
     </mat-card-content>
+
+    <mat-card-actions>
+      <button appBackButton class="mat-raised-button" matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
+      <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Save</button>
+      <button *ngIf="inData.companyIri" type="submit" class="mat-raised-button" (click)="delete()">Delete</button>
+      <mat-progress-bar *ngIf="working" mode="indeterminate"></mat-progress-bar>
+    </mat-card-actions>
+
   </mat-card>
   `,
   styles: [
@@ -138,13 +195,21 @@ export class EditLexiaComponent implements OnInit {
               public location: Location,
               private snackBar: MatSnackBar,
               public dialog: MatDialog,
-              @Optional() @Self() public ngControl: NgControl) { }
+              @Optional() @Self() public ngControl: NgControl) {
+    this.inData = {};
+    this.working = false;
+    this.formalClassTypes = knoraService.formalClassTypes;
+    console.log('formalClassTypes:', this.formalClassTypes);
+    this.imageTypes = knoraService.imageTypes;
+  }
 
   @Input()
   get value(): LexiaData | null {
+    console.log('======================================');
     const formalClasses: FormArray = this.getFormalClasses();
     const formalClassIriValues: string[] = [];
     for (const x of formalClasses.controls) {
+      console.log('----------->', x);
       formalClassIriValues.push(x.value);
     }
     return new LexiaData(
@@ -153,7 +218,7 @@ export class EditLexiaComponent implements OnInit {
         this.form.controls.title.value,
         formalClassIriValues,
         [],
-        '',
+        this.form.controls.displayedTitle.value,
         this.form.controls.extraInfo.value
     );
   }
@@ -166,8 +231,29 @@ export class EditLexiaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.inData = {};
     this.working = false;
+    combineLatest([this.route.params, this.route.queryParams]).subscribe(arr => {
+      if (arr[0].iri !== undefined) {
+        this.inData.lexiaIri = arr[0].iri;
+      }
+      if (this.inData.companyIri !== undefined) {
+
+      }
+      this.form = this.fb.group({
+        label: [this.data.label, [Validators.required, Validators.minLength(5)]],
+        title: [this.data.title, [Validators.required, Validators.minLength(5)]],
+        internalId: [this.data.internalId, [Validators.required]],
+        formalClasses: this.fb.array([
+          /*this.fb.group({memberName: '', memberIri: ''}),*/
+        ]),
+        imageIris: this.fb.array([
+          /*this.fb.group({lexiaName: '', lexiaIri: ''}),*/
+        ]),
+        displayedTitle: [this.data.displayedTitle, []],
+        extraInfo: [this.data.extraInfo, []],
+      });
+      console.log('this.form:', this.form);
+    });
   }
 
   getFormalClasses() {
@@ -175,19 +261,112 @@ export class EditLexiaComponent implements OnInit {
   }
 
   addFormalClass(formalClassIri?: string) {
-    const formalClassIris = this.getFormalClasses();
+    const formalClasses = this.getFormalClasses();
     if (formalClassIri === undefined) {
-      formalClassIris.push(this.fb.group({formalClassIri: ''}));
+      formalClasses.push(this.fb.group({formalClassIri: ''}));
       this.data.formalClassIris.push('');
       this.valIds.formalClasses.push({id: undefined, changed: false, toBeDeleted: false});
-    }
-    else {
-      formalClassIris.push(this.fb.group({formalClassIri}));
+    } else {
+      formalClasses.push(this.fb.group({formalClassIri}));
       this.data.formalClassIris.push(formalClassIri);
       this.valIds.formalClasses.push({id: formalClassIri, changed: false, toBeDeleted: false});
     }
     console.log('addFormalClass::', this.data.formalClassIris);
   }
 
+  getImages() {
+    return this.form.controls.imageIris as FormArray;
+  }
 
+  onChange = (_: any) => {
+  };
+
+  onTouched = () => {
+  };
+
+  _handleInput(what: string, index?: number): void {
+    this.onChange(this.form.value);
+    switch (what) {
+      case 'label':
+        this.valIds.label.changed = true;
+        break;
+      case 'internalId':
+        this.valIds.internalId.changed = true;
+        break;
+      case 'title':
+        this.valIds.title.changed = true;
+        break;
+      case 'formalClasses':
+        this.valIds.formalClasses[index].changed = true;
+        break;
+      case 'images':
+        this.valIds.images[index].changed = true;
+        break;
+      case 'displayedTitle':
+        this.valIds.displayedTitle.changed = true;
+        break;
+      case 'extraInfo':
+        this.valIds.extraInfo.changed = true;
+        break;
+    }
+  }
+
+  _handleDelete(what: string, index?: number): void {
+    switch (what) {
+      case 'members':
+        this.valIds.formalClasses[index].toBeDeleted = !this.valIds.formalClasses[index].toBeDeleted;
+        break;
+      case 'lexias':
+        this.valIds.images[index].toBeDeleted = !this.valIds.images[index].toBeDeleted;
+        break;
+      case 'displayedTitle':
+        this.valIds.displayedTitle.toBeDeleted = !this.valIds.displayedTitle.toBeDeleted;
+        break;
+      case 'extraInfo':
+        this.valIds.extraInfo.toBeDeleted = !this.valIds.extraInfo.toBeDeleted;
+        console.log('_handleDelete("extraInfo")');
+        break;
+    }
+  }
+
+  _handleUndo(what: string, index?: number): void {
+    switch (what) {
+      case 'label':
+        this.form.controls.label.setValue(this.data.label);
+        this.valIds.label.changed = false;
+        break;
+      case 'internalId':
+        this.form.controls.internalId.setValue(this.data.internalId);
+        this.valIds.internalId.changed = false;
+        break;
+      case 'title':
+        this.form.controls.title.setValue(this.data.title);
+        this.valIds.title.changed = false;
+        break;
+      case 'formalClasses':
+        this.getFormalClasses().controls[index].setValue(this.data.formalClassIris[index]);
+        this.valIds.formalClasses[index].changed = false;
+        break;
+      case 'images':
+        this.getImages().controls[index].setValue(this.data.imageIris[index]);
+        this.valIds.images[index].changed = false;
+        break;
+      case 'displayedTitle':
+        this.form.controls.displayedTitle.setValue(this.data.displayedTitle);
+        this.valIds.displayedTitle.changed = false;
+        break;
+      case 'extraInfo':
+        this.form.controls.extraInfo.setValue(this.data.extraInfo);
+        this.valIds.extraInfo.changed = false;
+        break;
+    }
+  }
+
+  save(): void {
+    console.log('this.value:', this.value);
+  }
+
+  delete(): void {
+    console.log('DELETE!');
+  }
 }
