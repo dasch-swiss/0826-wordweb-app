@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {combineLatest, forkJoin, Observable} from 'rxjs';
-import {CompanyData, KnoraService, LexiaData, OptionType} from "../../services/knora.service";
+import {CompanyData, KnoraService, LexiaData, ListPropertyData, OptionType} from "../../services/knora.service";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Location} from '@angular/common';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
@@ -108,7 +108,7 @@ class LexiaIds {
           <button *ngIf="valIds.formalClasses[i].changed" mat-mini-fab (click)="_handleUndo('formalClasses')">
             <mat-icon color="warn">cached</mat-icon>
           </button>
-          <button *ngIf="valIds.formalClasses[i].id !== undefined" mat-mini-fab (click)="_handleDelete('formalClasses', i)">
+          <button *ngIf="valIds.formalClasses[i].id !== undefined && valIds.formalClasses.length > 1" mat-mini-fab (click)="_handleDelete('formalClasses', i)">
             <mat-icon *ngIf="!valIds.formalClasses[i].toBeDeleted" color="basic">delete</mat-icon>
             <mat-icon *ngIf="valIds.formalClasses[i].toBeDeleted" color="warn">delete</mat-icon>
           </button>
@@ -205,7 +205,6 @@ export class EditLexiaComponent implements OnInit {
     this.inData = {};
     this.working = false;
     this.formalClassTypes = knoraService.formalClassTypes;
-    console.log('formalClassTypes:', this.formalClassTypes);
     this.imageTypes = knoraService.imageTypes;
   }
 
@@ -268,32 +267,54 @@ export class EditLexiaComponent implements OnInit {
                   this.data.internalId = ele.values[0];
                   break;
                 }
+                case this.knoraService.wwOntology + 'hasFormalClass': {
+                  const tmp = ele as ListPropertyData;
+                  for (let i = 0; i < ele.values.length; i++) {
+                    this.addFormalClass(tmp.nodeIris[i]);
+                  }
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasImage': {
+                  const tmp = ele as ListPropertyData;
+                  for (let i = 0; i < ele.values.length; i++) {
+                    this.addImage(tmp.nodeIris[i]);
+                  }
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasLexiaDisplayedTitle': {
+                  this.form.controls.displayedTitle.setValue(ele.values[0]);
+                  this.valIds.displayedTitle = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.displayedTitle = ele.values[0];
+                  break;
+                }
                 case this.knoraService.wwOntology + 'hasLexiaExtraInfo': {
                   this.form.controls.extraInfo.setValue(ele.values[0]);
                   this.valIds.extraInfo = {id: ele.ids[0], changed: false, toBeDeleted: false};
                   this.data.extraInfo = ele.values[0];
                   break;
                 }
-                case this.knoraService.wwOntology + 'hasFormalClass': {
-                  for (let i = 0; i < ele.values.length; i++) {
-                    this.addFormalClass(ele.values[i]);
-                  }
-                }
               }
             }
           }
         });
       }
-      this.valIds.formalClasses[0] = {id: undefined, changed: false, toBeDeleted: false};
+      //this.valIds.formalClasses[0] = {id: undefined, changed: false, toBeDeleted: false};
+      let fcInitial;
+      if (this.inData.lexiaIri === undefined) {
+        this.valIds.formalClasses[0] = {id: this.formalClassTypes[0].iri, changed: false, toBeDeleted: false};
+        fcInitial = [
+          this.fb.group({
+            formalClassIri: [this.formalClassTypes[0].iri, [Validators.required]]
+          })
+        ];
+      } else {
+        fcInitial = [];
+      }
       this.form = this.fb.group({
         label: [this.data.label, [Validators.required, Validators.minLength(5)]],
         title: [this.data.title, [Validators.required, Validators.minLength(5)]],
         internalId: [this.data.internalId, [Validators.required]],
-        formalClasses: this.fb.array([
-          this.fb.group({
-            formalClassIri: ['http://rdfh.ch/lists/0826/a2YTLJSYRqmQ_TLH4BwV_Q', [Validators.required]]
-          })
-        ]),
+        formalClasses: this.fb.array(fcInitial),
         images: this.fb.array([
           /*this.fb.group({formalClassIri: ''}),*/
         ]),

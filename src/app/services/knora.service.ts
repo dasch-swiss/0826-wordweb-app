@@ -296,7 +296,6 @@ export class KnoraService {
 
     gravseachQuery(structure: IMainClass, priority: number, offset?: number): Observable<any> {
         const gravsearch = this._gsBuilder.getQuery(structure, priority, offset);
-        console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 tap(data => console.log(data)),
@@ -395,7 +394,6 @@ export class KnoraService {
 
     getAllAuthorsCount(offset?: number): Observable<number> {
         const gravsearch = this._gsBuilder.getAllAuthorsQuery(offset);
-        console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
@@ -404,7 +402,6 @@ export class KnoraService {
 
     getAllAuthors(offset?: number) {
         const gravsearch = this._gsBuilder.getAllAuthorsQuery(offset);
-        console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
@@ -413,7 +410,6 @@ export class KnoraService {
 
     getPrimaryAuthorsCount(char: string, offset?: number): Observable<number> {
         const gravsearch = this._gsBuilder.getPrimaryAuthorsQuery(char, offset);
-        console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
@@ -422,7 +418,6 @@ export class KnoraService {
 
     getPrimaryAuthors(char: string, offset?: number) {
         const gravsearch = this._gsBuilder.getPrimaryAuthorsQuery(char, offset);
-        console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
@@ -432,7 +427,6 @@ export class KnoraService {
 
     getAllBooksCount(offset?: number): Observable<number> {
         const gravsearch = this._gsBuilder.getAllBooksQuery(offset);
-        console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
@@ -441,7 +435,6 @@ export class KnoraService {
 
     getAllBooks(offset?: number) {
         const gravsearch = this._gsBuilder.getAllBooksQuery(offset);
-        console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
@@ -450,7 +443,6 @@ export class KnoraService {
 
     getPrimaryBooksCount(char: string, offset?: number): Observable<number> {
         const gravsearch = this._gsBuilder.getPrimaryBooksQuery(char, offset);
-        console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
@@ -459,7 +451,6 @@ export class KnoraService {
 
     getPrimaryBooks(char: string, offset?: number) {
         const gravsearch = this._gsBuilder.getPrimaryBooksQuery(char, offset);
-        console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
@@ -468,7 +459,6 @@ export class KnoraService {
 
     getAllLexiasCount(offset?: number): Observable<number> {
         const gravsearch = this._gsBuilder.getAllLexiasQuery(offset);
-        console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
@@ -477,7 +467,6 @@ export class KnoraService {
 
     getAllLexias(offset?: number) {
         const gravsearch = this._gsBuilder.getAllLexiasQuery(offset);
-        console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
@@ -486,7 +475,6 @@ export class KnoraService {
 
     getLexiasCount(char: string, offset?: number): Observable<number> {
         const gravsearch = this._gsBuilder.getLexiasQuery(char, offset);
-        console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
@@ -495,7 +483,6 @@ export class KnoraService {
 
     getLexias(char: string, offset?: number) {
         const gravsearch = this._gsBuilder.getLexiasQuery(char, offset);
-        console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
@@ -504,7 +491,6 @@ export class KnoraService {
 
     getCompaniesCount(offset?: number): Observable<number> {
         const gravsearch = this._gsBuilder.getCompaniesQuery(offset);
-        // console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
@@ -513,7 +499,6 @@ export class KnoraService {
 
     getCompanies(offset?: number) {
         const gravsearch = this._gsBuilder.getCompaniesQuery(offset);
-        // console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
@@ -522,7 +507,6 @@ export class KnoraService {
 
     getVenuesCount(offset?: number): Observable<number> {
         const gravsearch = this._gsBuilder.getVenuesQuery(offset);
-        // console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
@@ -531,7 +515,6 @@ export class KnoraService {
 
     getVenues(offset?: number) {
         const gravsearch = this._gsBuilder.getVenuesQuery(offset);
-        // console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
@@ -540,7 +523,6 @@ export class KnoraService {
 
     getActorsCount(offset?: number): Observable<number> {
         const gravsearch = this._gsBuilder.getActorsQuery(offset);
-        // console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
@@ -549,7 +531,6 @@ export class KnoraService {
 
     getActors(offset?: number) {
         const gravsearch = this._gsBuilder.getActorsQuery(offset);
-        // console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
@@ -558,7 +539,6 @@ export class KnoraService {
 
     getMembersCount(offset?: number): Observable<number> {
         const gravsearch = this._gsBuilder.getMembersQuery(offset);
-        // console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearchCountQuery(gravsearch)
             .pipe(
                 map((data: CountQueryResponse) => data.numberOfResults)
@@ -567,7 +547,6 @@ export class KnoraService {
 
     getMembers(offset?: number) {
         const gravsearch = this._gsBuilder.getMembersQuery(offset);
-        // console.log(gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 map((sequence: ReadResourceSequence) => sequence.resources.map(resource => this.processRes(resource)))
@@ -590,7 +569,6 @@ export class KnoraService {
     }
 
     getChildren(children: Array<ListNode>, level: number, flatlist: Array<ListData>) {
-        // eslint-disable-next-line guard-for-in
         for (const child of children) {
             flatlist.push(new ListData(child.id, new LangString(child.labels), child.name, level));
             if (child.children.length > 0) {
@@ -602,13 +580,7 @@ export class KnoraService {
     getFlatList(listIri: string): Observable<Array<ListData>> {
         return this.listAdminCache.getList(listIri).pipe(
             map( (res: ListResponse) => {
-                console.log('ListResponse:', res);
                 const flatList: Array<ListData> = [];
-                /*
-                for (const child of res.list.children) {
-                    flatList.push(new ListData(child.id, new LangString(child.labels), child.name, 0));
-                }
-                */
                 this.getChildren(res.list.children, 0, flatList);
 
                 return flatList;
@@ -666,7 +638,6 @@ export class KnoraService {
                         this.formalClassListIri = list.listid;
                         this.getFlatList(this.formalClassListIri).subscribe(
                             (res: Array<ListData>) => {
-                                console.log('?????????????>', res);
                                 for (const lt of res) {
                                     let prefix = '';
                                     for (let ii = 0; ii < lt.level; ii++) {
@@ -696,7 +667,11 @@ export class KnoraService {
                         this.getFlatList(this.genreListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
-                                    this.genreTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                    let prefix = '';
+                                    for (let ii = 0; ii < lt.level; ii++) {
+                                        prefix += '– ';
+                                    }
+                                    this.genreTypes.push({iri: lt.listid, name: prefix + lt.labels.get('en')});
                                 }
                             }
                         );
@@ -716,7 +691,11 @@ export class KnoraService {
                         this.getFlatList(this.subjectListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
-                                    this.subjectTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                    let prefix = '';
+                                    for (let ii = 0; ii < lt.level; ii++) {
+                                        prefix += '– ';
+                                    }
+                                    this.subjectTypes.push({iri: lt.listid, name: prefix + lt.labels.get('en')});
                                 }
                             }
                         );
@@ -726,7 +705,11 @@ export class KnoraService {
                         this.getFlatList(this.imageListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
-                                    this.imageTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                    let prefix = '';
+                                    for (let ii = 0; ii < lt.level; ii++) {
+                                        prefix += '– ';
+                                    }
+                                    this.imageTypes.push({iri: lt.listid, name: prefix + lt.labels.get('en')});
                                 }
                             }
                         );
@@ -736,7 +719,11 @@ export class KnoraService {
                         this.getFlatList(this.statusListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
-                                    this.statusTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                    let prefix = '';
+                                    for (let ii = 0; ii < lt.level; ii++) {
+                                        prefix += '– ';
+                                    }
+                                    this.statusTypes.push({iri: lt.listid, name: prefix + lt.labels.get('en')});
                                 }
                             }
                         );
@@ -746,7 +733,11 @@ export class KnoraService {
                         this.getFlatList(this.functionVoiceListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
-                                    this.functionVoiceTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                    let prefix = '';
+                                    for (let ii = 0; ii < lt.level; ii++) {
+                                        prefix += '– ';
+                                    }
+                                    this.functionVoiceTypes.push({iri: lt.listid, name: prefix + lt.labels.get('en')});
                                 }
                             }
                         );
@@ -779,7 +770,6 @@ export class KnoraService {
     getResource(iri: string): Observable<ResourceData> {
         return this._knoraApiConnection.v2.res.getResource(iri).pipe(
             map((data: ReadResource) => {
-                    console.log(':::::::::', data);
                     return {
                         id: data.id,
                         label: data.label,
@@ -1266,7 +1256,6 @@ export class KnoraService {
         deleteResource.type = this.wwOntology + resType;
         deleteResource.lastModificationDate = lastmod;
         deleteResource.deleteComment = delcomment || undefined;
-        console.log(deleteResource);
         return this._knoraApiConnection.v2.res.deleteResource(deleteResource).pipe(
             map( (res: DeleteValueResponse) => 'OK'),
             catchError((error: ApiResponseError) => of('ERROR'))
