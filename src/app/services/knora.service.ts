@@ -681,7 +681,11 @@ export class KnoraService {
                         this.getFlatList(this.genderListIri).subscribe(
                             (res: Array<ListData>) => {
                                 for (const lt of res) {
-                                    this.genderTypes.push({iri: lt.listid, name: lt.labels.get('en')});
+                                    let prefix = '';
+                                    for (let ii = 0; ii < lt.level; ii++) {
+                                        prefix += '– ';
+                                    }
+                                    this.genderTypes.push({iri: lt.listid, name: prefix + lt.labels.get('en')});
                                 }
                             }
                         );
@@ -1006,6 +1010,74 @@ export class KnoraService {
                 props[this.wwOntology + 'isLexiaPersonValue'] = v;
             }
         }
+
+        return this._knoraApiConnection.v2.res.createResource(createResource).pipe(
+            map((res: ReadResource) => res.id),
+            catchError((error: ApiResponseError) => of('error'))
+        );
+    }
+
+    createLexia(data: LexiaData): Observable<string> {
+        const createResource = new CreateResource();
+        createResource.label = data.label;
+        createResource.type = this.wwOntology + 'lexia';
+        createResource.attachedToProject = 'http://rdfh.ch/projects/0826';
+
+        const props = {};
+
+        if (data.title !== null && data.title !== undefined && data.title !== '') {
+            const titleVal = new CreateTextValueAsString();
+            titleVal.text = data.title;
+            props[this.wwOntology + 'hasCompanyTitle'] = [
+                titleVal
+            ];
+        }
+
+        if (data.internalId !== null && data.internalId !== undefined && data.internalId !== '') {
+            const internalIdVal = new CreateTextValueAsString();
+            internalIdVal.text = data.internalId;
+            props[this.wwOntology + 'hasCompanyInternalId'] = [
+                internalIdVal
+            ];
+        }
+
+        if (data.formalClassIris !== null && data.formalClassIris !== undefined && data.formalClassIris.length > 0) {
+            const v: CreateListValue[] = [];
+            for (const formalClassIri of data.formalClassIris) {
+                if (formalClassIri !== '') {
+                    const formalClassIriVal = new CreateListValue();
+                    formalClassIriVal.listNode = formalClassIri;
+                    v.push(formalClassIriVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'hasFormalClass'] = v;
+            }
+        }
+
+        if (data.imageIris !== null && data.imageIris !== undefined && data.imageIris.length > 0) {
+            const v: CreateListValue[] = [];
+            for (const imageIri of data.imageIris) {
+                if (imageIri !== '') {
+                    const imageIriVal = new CreateListValue();
+                    imageIriVal.listNode = imageIri;
+                    v.push(imageIriVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'hasImage'] = v;
+            }
+        }
+
+        if (data.extraInfo !== null && data.extraInfo !== undefined && data.extraInfo !== '') {
+            const extraInfoIdVal = new CreateTextValueAsString();
+            extraInfoIdVal.text = data.extraInfo;
+            props[this.wwOntology + 'hasCompanyExtraInfo'] = [
+                extraInfoIdVal
+            ];
+        }
+
+        createResource.properties = props;
 
         return this._knoraApiConnection.v2.res.createResource(createResource).pipe(
             map((res: ReadResource) => res.id),

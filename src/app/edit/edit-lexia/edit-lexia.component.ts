@@ -105,12 +105,17 @@ class LexiaIds {
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <button *ngIf="valIds.formalClasses[i].changed" mat-mini-fab (click)="_handleUndo('formalClasses')">
+          <button *ngIf="valIds.formalClasses[i].changed" mat-mini-fab (click)="_handleUndo('formalClasses', i)">
             <mat-icon color="warn">cached</mat-icon>
           </button>
-          <button *ngIf="valIds.formalClasses[i].id !== undefined && valIds.formalClasses.length > 1" mat-mini-fab (click)="_handleDelete('formalClasses', i)">
+          <button *ngIf="valIds.formalClasses[i].id !== undefined && (nFormalClasses > 1 || valIds.formalClasses[i].toBeDeleted)"
+                  mat-mini-fab (click)="_handleDelete('formalClasses', i)">
             <mat-icon *ngIf="!valIds.formalClasses[i].toBeDeleted" color="basic">delete</mat-icon>
             <mat-icon *ngIf="valIds.formalClasses[i].toBeDeleted" color="warn">delete</mat-icon>
+          </button>
+          <button *ngIf="valIds.formalClasses[i].id === undefined && nFormalClasses > 1"
+                  mat-mini-fab (click)="_handleDelete('formalClasses', i)">
+            <mat-icon *ngIf="!valIds.formalClasses[i].toBeDeleted" color="basic">delete</mat-icon>
           </button>
         </div>
         <button mat-mini-fab (click)="addFormalClass()">
@@ -133,8 +138,17 @@ class LexiaIds {
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <button *ngIf="valIds.images[i].changed" mat-mini-fab (click)="_handleUndo('images')">
+          <button *ngIf="valIds.images[i].changed" mat-mini-fab (click)="_handleUndo('images', i)">
             <mat-icon color="warn">cached</mat-icon>
+          </button>
+          <button *ngIf="valIds.images[i].id !== undefined"
+                  mat-mini-fab (click)="_handleDelete('images', i)">
+            <mat-icon *ngIf="!valIds.images[i].toBeDeleted" color="basic">delete</mat-icon>
+            <mat-icon *ngIf="valIds.images[i].toBeDeleted" color="warn">delete</mat-icon>
+          </button>
+          <button *ngIf="valIds.images[i].id === undefined"
+                  mat-mini-fab (click)="_handleDelete('images', i)">
+            <mat-icon *ngIf="!valIds.images[i].toBeDeleted" color="basic">delete</mat-icon>
           </button>
         </div>
         <button mat-mini-fab (click)="addImage()">
@@ -172,7 +186,7 @@ class LexiaIds {
     <mat-card-actions>
       <button appBackButton class="mat-raised-button" matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
       <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Save</button>
-      <button *ngIf="inData.companyIri" type="submit" class="mat-raised-button" (click)="delete()">Delete</button>
+      <button *ngIf="inData.lexiaIri" type="submit" class="mat-raised-button" (click)="delete()">Delete</button>
       <mat-progress-bar *ngIf="working" mode="indeterminate"></mat-progress-bar>
     </mat-card-actions>
 
@@ -190,6 +204,8 @@ export class EditLexiaComponent implements OnInit {
   lastmod: string;
   data: LexiaData = new LexiaData('', '', '', [], [],
       '', '');
+  nFormalClasses: number;
+  nImages: number;
   working: boolean;
   public valIds: LexiaIds = new LexiaIds();
   public formalClassTypes: Array<OptionType>;
@@ -206,6 +222,8 @@ export class EditLexiaComponent implements OnInit {
     this.working = false;
     this.formalClassTypes = knoraService.formalClassTypes;
     this.imageTypes = knoraService.imageTypes;
+    this.nFormalClasses = 0;
+    this.nImages = 0;
   }
 
   @Input()
@@ -325,38 +343,56 @@ export class EditLexiaComponent implements OnInit {
     });
   }
 
-  getFormalClasses() {
+  getFormalClasses(): FormArray {
     return this.form.controls.formalClasses as FormArray;
   }
 
-  addFormalClass(formalClassIri?: string) {
+  addFormalClass(formalClassIri?: string): void {
     const formalClasses = this.getFormalClasses();
     if (formalClassIri === undefined) {
-      formalClasses.push(this.fb.group({formalClassIri: ''}));
-      this.data.formalClassIris.push('');
+      formalClasses.push(this.fb.group({formalClassIri: this.formalClassTypes[0].iri}));
+      this.data.formalClassIris.push(this.formalClassTypes[0].iri);
       this.valIds.formalClasses.push({id: undefined, changed: false, toBeDeleted: false});
     } else {
       formalClasses.push(this.fb.group({formalClassIri}));
       this.data.formalClassIris.push(formalClassIri);
       this.valIds.formalClasses.push({id: formalClassIri, changed: false, toBeDeleted: false});
     }
+    this.nFormalClasses++;
   }
 
-  getImages() {
+  removeFormalClass(index: number): void {
+    const formalClasses = this.getFormalClasses();
+    formalClasses.removeAt(index);
+    this.valIds.formalClasses.splice(index, 1);
+    this.data.formalClassIris.splice(index, 1);
+    this.nFormalClasses--;
+  }
+
+  getImages(): FormArray {
     return this.form.controls.images as FormArray;
   }
 
-  addImage(imageIri?: string) {
+  addImage(imageIri?: string): void {
     const images = this.getImages();
     if (imageIri === undefined) {
-      images.push(this.fb.group({imageIri: ''}));
-      this.data.imageIris.push('');
+      images.push(this.fb.group({imageIri: this.imageTypes[0].iri}));
+      this.data.imageIris.push(this.imageTypes[0].iri);
       this.valIds.images.push({id: undefined, changed: false, toBeDeleted: false});
     } else {
       images.push(this.fb.group({imageIri}));
       this.data.imageIris.push(imageIri);
       this.valIds.images.push({id: imageIri, changed: false, toBeDeleted: false});
     }
+    this.nImages++;
+  }
+
+  removeImage(index: number): void {
+    const images = this.getImages();
+    images.removeAt(index);
+    this.valIds.images.splice(index, 1);
+    this.data.imageIris.splice(index, 1);
+    this.nImages--;
   }
 
   onChange = (_: any) => {
@@ -395,10 +431,28 @@ export class EditLexiaComponent implements OnInit {
   _handleDelete(what: string, index?: number): void {
     switch (what) {
       case 'formalClasses':
-        this.valIds.formalClasses[index].toBeDeleted = !this.valIds.formalClasses[index].toBeDeleted;
+        if (this.valIds.formalClasses[index].id !== undefined) {
+          this.valIds.formalClasses[index].toBeDeleted = !this.valIds.formalClasses[index].toBeDeleted;
+          if (this.valIds.formalClasses[index].toBeDeleted) {
+            this.nFormalClasses--;
+          } else {
+            this.nFormalClasses++;
+          }
+        } else {
+          this.removeFormalClass(index);
+        }
         break;
       case 'images':
-        this.valIds.images[index].toBeDeleted = !this.valIds.images[index].toBeDeleted;
+        if (this.valIds.images[index].id !== undefined) {
+          this.valIds.images[index].toBeDeleted = !this.valIds.images[index].toBeDeleted;
+          if (this.valIds.images[index].toBeDeleted) {
+            this.nImages--;
+          } else {
+            this.nImages++;
+          }
+        } else {
+          this.removeImage(index);
+        }
         break;
       case 'displayedTitle':
         this.valIds.displayedTitle.toBeDeleted = !this.valIds.displayedTitle.toBeDeleted;
@@ -425,11 +479,13 @@ export class EditLexiaComponent implements OnInit {
         this.valIds.title.changed = false;
         break;
       case 'formalClasses':
-        this.getFormalClasses().controls[index].setValue(this.data.formalClassIris[index]);
+        const formalClasses = this.getFormalClasses().controls[index] as FormGroup;
+        formalClasses.controls.formalClassIri.setValue(this.data.formalClassIris[index]);
         this.valIds.formalClasses[index].changed = false;
         break;
       case 'images':
-        this.getImages().controls[index].setValue(this.data.imageIris[index]);
+        const images = this.getImages().controls[index] as FormGroup;
+        images.controls.imageIri.setValue(this.data.imageIris[index]);
         this.valIds.images[index].changed = false;
         break;
       case 'displayedTitle':
@@ -444,10 +500,53 @@ export class EditLexiaComponent implements OnInit {
   }
 
   save(): void {
+    this.working = true;
     console.log('this.value:', this.value);
+    if (this.inData.companyIri === undefined) {
+      this.knoraService.createLexia(this.value).subscribe(
+          res => {
+            console.log('CREATE_RESULT:', res);
+            this.working = false;
+            this.location.back();
+          },
+          error => {
+            this.snackBar.open('Error storing the lexia object!', 'OK');
+            console.log('EditLexia.save(): ERROR', error);
+            this.working = false;
+            this.location.back();
+          }
+      );
+    } else {
+
+    }
   }
 
   delete(): void {
-    console.log('DELETE!');
+    const confirmationConfig = new MatDialogConfig();
+    confirmationConfig.autoFocus = true;
+    confirmationConfig.disableClose = true;
+    confirmationConfig.data = {
+      title: 'Delete lexia',
+      text: 'Do You really want to delete this lexia?'
+    };
+
+    const dialogRef = this.dialog.open(ConfirmationComponent, confirmationConfig);
+    this.working = true;
+    dialogRef.afterClosed().subscribe((data: ConfirmationResult) => {
+      if (data.status) {
+        console.log('lastmod', this.lastmod);
+        this.knoraService.deleteResource(this.resId, 'lexia', this.lastmod, data.comment).subscribe(
+            res => {
+              this.working = false;
+              this.location.back();
+            },
+            error => {
+              this.snackBar.open('Error while deleting the lexia entry!', 'OK');
+              console.log('deleteResource:ERROR:: ', error);
+              this.working = false;
+              this.location.back();
+            });
+      }
+    });
   }
 }
