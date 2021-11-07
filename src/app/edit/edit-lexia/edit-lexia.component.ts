@@ -504,7 +504,7 @@ export class EditLexiaComponent implements OnInit {
   save(): void {
     this.working = true;
     console.log('this.value:', this.value);
-    if (this.inData.companyIri === undefined) {
+    if (this.inData.lexiaIri === undefined) {
       this.knoraService.createLexia(this.value).subscribe(
           res => {
             console.log('CREATE_RESULT:', res);
@@ -519,6 +519,179 @@ export class EditLexiaComponent implements OnInit {
           }
       );
     } else {
+      const obs: Array<Observable<string>> = [];
+
+      if (this.valIds.label.changed) {
+        const gaga: Observable<string> = this.knoraService.updateLabel(
+            this.resId,
+            this.knoraService.wwOntology + 'lexia',
+            this.form.value.label);
+        obs.push(gaga);
+      }
+
+      if (this.valIds.title.toBeDeleted && this.valIds.title.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'lexia',
+            this.valIds.title.id as string,
+            this.knoraService.wwOntology + 'hasLexiaTitle');
+        obs.push(gaga);
+      } else if (this.valIds.title.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.title.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'lexia',
+              this.knoraService.wwOntology + 'hasLexiaTitle',
+              this.value.title);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'lexia',
+              this.valIds.title.id as string,
+              this.knoraService.wwOntology + 'hasLexiaTitle',
+              this.value.title);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.internalId.toBeDeleted && this.valIds.internalId.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'lexia',
+            this.valIds.internalId.id as string,
+            this.knoraService.wwOntology + 'hasLexiaInternalId');
+        obs.push(gaga);
+      } else if (this.valIds.internalId.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.internalId.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'lexia',
+              this.knoraService.wwOntology + 'hasLexiaInternalId',
+              this.value.internalId);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'lexia',
+              this.valIds.internalId.id as string,
+              this.knoraService.wwOntology + 'hasLexiaInternalId',
+              this.value.internalId);
+        }
+        obs.push(gaga);
+      }
+
+      let index = 0;
+      for (const valId of this.valIds.formalClasses) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteListValue(
+              this.resId,
+              this.knoraService.wwOntology + 'lexia',
+              valId.id as string,
+              this.knoraService.wwOntology + 'hasFormalClass');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createListValue(
+                this.resId,
+                this.knoraService.wwOntology + 'lexia',
+                this.knoraService.wwOntology + 'hasFormalClass',
+                this.value.formalClassIris[index]);
+          } else {
+            gaga = this.knoraService.updateListValue(
+                this.resId,
+                this.knoraService.wwOntology + 'lexia',
+                valId.id as string,
+                this.knoraService.wwOntology + 'hasFormalClass',
+                this.value.formalClassIris[index]);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
+
+      index = 0;
+      for (const valId of this.valIds.images) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteListValue(
+              this.resId,
+              this.knoraService.wwOntology + 'lexia',
+              valId.id as string,
+              this.knoraService.wwOntology + 'hasImage');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createListValue(
+                this.resId,
+                this.knoraService.wwOntology + 'lexia',
+                this.knoraService.wwOntology + 'hasImage',
+                this.value.imageIris[index]);
+          } else {
+            gaga = this.knoraService.updateListValue(
+                this.resId,
+                this.knoraService.wwOntology + 'lexia',
+                valId.id as string,
+                this.knoraService.wwOntology + 'hasImage',
+                this.value.imageIris[index]);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
+
+      if (this.valIds.displayedTitle.toBeDeleted && this.valIds.displayedTitle.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'lexia',
+            this.valIds.displayedTitle.id as string,
+            this.knoraService.wwOntology + 'hasLexiaDisplayedTitle');
+        obs.push(gaga);
+      } else if (this.valIds.displayedTitle.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.displayedTitle.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'lexia',
+              this.knoraService.wwOntology + 'hasLexiaDisplayedTitle',
+              this.value.displayedTitle);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'lexia',
+              this.valIds.displayedTitle.id as string,
+              this.knoraService.wwOntology + 'hasLexiaDisplayedTitle',
+              this.value.displayedTitle);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.extraInfo.toBeDeleted && this.valIds.extraInfo.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'lexia',
+            this.valIds.extraInfo.id as string,
+            this.knoraService.wwOntology + 'hasLexiaExtraInfo');
+        obs.push(gaga);
+      } else if (this.valIds.extraInfo.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.extraInfo.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'lexia',
+              this.knoraService.wwOntology + 'hasLexiaExtraInfo',
+              this.value.extraInfo);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'lexia',
+              this.valIds.extraInfo.id as string,
+              this.knoraService.wwOntology + 'hasLexiaExtraInfo',
+              this.value.extraInfo);
+        }
+        obs.push(gaga);
+      }
 
     }
   }
