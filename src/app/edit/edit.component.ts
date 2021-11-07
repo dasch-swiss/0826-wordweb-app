@@ -95,6 +95,33 @@ import {Router} from "@angular/router";
       </mat-card-content>
     </mat-card>
 
+    <mat-card>
+      <mat-card-title>Passage</mat-card-title>
+      <mat-card-content>
+        <button mat-raised-button (click)="createPassage()">New</button><br><br>
+        <mat-form-field>
+          <input matInput
+                 placeholder="Select Passage"
+                 aria-label="Value"
+                 [matAutocomplete]="autoPassage"
+                 [(ngModel)]="passage"
+                 (change)="_handleInput('passage')"
+                 (input)="_handleLinkInput('passage')">
+          <input matInput [(ngModel)]="passageIri" [hidden]="true">
+          <mat-autocomplete #autoPassage="matAutocomplete"
+                            (optionSelected)="_optionSelected($event.option.value,
+                            'passage')">
+            <mat-option *ngFor="let option of options" [value]="option.label">
+              {{ option.label }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-raised-button
+                [disabled]="passageEditDisabled"
+                (click)="editPassage()">Edit</button>
+      </mat-card-content>
+    </mat-card>
+
   `,
   styles: [
   ]
@@ -109,6 +136,9 @@ export class EditComponent implements OnInit {
   lexia = '';
   lexiaIri = '';
   lexiaEditDisabled = true;
+  passage = '';
+  passageIri = '';
+  passageEditDisabled = true;
   options: Array<{id: string; label: string}> = [];
 
   constructor(public knoraService: KnoraService,
@@ -132,6 +162,10 @@ export class EditComponent implements OnInit {
       case 'lexia':
         this.onChange(this.lexia);
         this.onChange(this.lexiaIri);
+        break;
+      case 'passage':
+        this.onChange(this.passage);
+        this.onChange(this.passageIri);
         break;
     }
   }
@@ -177,6 +211,19 @@ export class EditComponent implements OnInit {
             }
         );
         break;
+      case 'passage':
+        if (this.passageIri !== '') {
+          this.passageIri = '';
+        }
+        this.passageEditDisabled = true;
+        console.log(this.passage);
+        this.knoraService.getResourcesByLabel(this.passage, this.knoraService.wwOntology + 'passage').subscribe(
+            res => {
+              this.options = res;
+              console.log('_handleLinkInput:res=', res);
+            }
+        );
+        break;
     }
   }
 
@@ -197,6 +244,11 @@ export class EditComponent implements OnInit {
         this.lexia = res[0].label;
         this.lexiaIri = res[0].id;
         this.lexiaEditDisabled = false;
+        break;
+      case 'passage':
+        this.passage = res[0].label;
+        this.passageIri = res[0].id;
+        this.passageEditDisabled = false;
         break;
     }
     console.log('_optionSelected:res', res);
@@ -224,5 +276,13 @@ export class EditComponent implements OnInit {
 
   createLexia(): void {
     this.router.navigate(['/edit/lexia']);
+  }
+
+  editPassage(): void {
+    this.router.navigate(['/edit/passage', this.passageIri]);
+  }
+
+  createPassage(): void {
+    this.router.navigate(['/edit/passage']);
   }
 }

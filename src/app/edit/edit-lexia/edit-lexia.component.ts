@@ -15,7 +15,6 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {Location} from '@angular/common';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {ConfirmationComponent, ConfirmationResult} from '../confirmation/confirmation.component';
-import {DateValue} from '../date-value/date-value.component';
 
 
 interface ValInfo {
@@ -124,6 +123,7 @@ class LexiaIds {
 
       </div>
       <br/>
+
       <div>&nbsp;</div>
       <div formArrayName="images">
         <mat-label>Image</mat-label>
@@ -157,6 +157,7 @@ class LexiaIds {
       </div>
       <br/>
       <div>&nbsp;</div>
+      
       <mat-form-field [style.width.px]=400>
         <input matInput
                class="full-width"

@@ -97,8 +97,8 @@ export class PassageData {
         public label: string,
         public internalId: string, //hasLexiaInternalId (1)
         public displayedTitle: string, // hasDisplayedTitle (1)
-        public functionVoiceIri: string[], // hasFunctionVoice (1-n) -> List functionVoice
-        public markingIri: string[], // has Marking (1-n) -> List marking
+        public functionVoiceIris: string[], // hasFunctionVoice (1-n) -> List functionVoice
+        public markingIris: string[], // has Marking (1-n) -> List marking
         public researchFieldIri: string, // hasResearchField (1) -> List researchField
         public statusIri: string, // hasStatus (1) -> List status
         public text: string, // hasText (1)
