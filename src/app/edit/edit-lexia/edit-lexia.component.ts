@@ -124,7 +124,7 @@ class LexiaIds {
 
       </div>
       <br/>
-
+      <div>&nbsp;</div>
       <div formArrayName="images">
         <mat-label>Image</mat-label>
         <div *ngFor="let imageItem of getImages().controls; let i=index">
@@ -156,7 +156,7 @@ class LexiaIds {
         </button>
       </div>
       <br/>
-
+      <div>&nbsp;</div>
       <mat-form-field [style.width.px]=400>
         <input matInput
                class="full-width"
@@ -166,6 +166,10 @@ class LexiaIds {
       </mat-form-field>
       <button *ngIf="valIds.displayedTitle.changed" mat-mini-fab (click)="_handleUndo('displayedTitle')">
         <mat-icon color="warn">cached</mat-icon>
+      </button>
+      <button *ngIf="valIds.displayedTitle.id !== undefined" mat-mini-fab (click)="_handleDelete('displayedTitle')">
+        <mat-icon *ngIf="!valIds.displayedTitle.toBeDeleted">delete</mat-icon>
+        <mat-icon *ngIf="valIds.displayedTitle.toBeDeleted" color="warn">delete</mat-icon>
       </button>
       <br/>
 
@@ -178,6 +182,10 @@ class LexiaIds {
       </mat-form-field>
       <button *ngIf="valIds.extraInfo.changed" mat-mini-fab (click)="_handleUndo('extraInfo')">
         <mat-icon color="warn">cached</mat-icon>
+      </button>
+      <button *ngIf="valIds.extraInfo.id !== undefined" mat-mini-fab (click)="_handleDelete('extraInfo')">
+        <mat-icon *ngIf="!valIds.extraInfo.toBeDeleted">delete</mat-icon>
+        <mat-icon *ngIf="valIds.extraInfo.toBeDeleted" color="warn">delete</mat-icon>
       </button>
       <br/>
 
@@ -193,8 +201,13 @@ class LexiaIds {
   </mat-card>
   `,
   styles: [
+    '.maxw { min-width: 500px; max-width: 1000px; }',
+    '.wide { width: 100%; }',
+    '.ck-editor__editable_inline { min-height: 500px; }',
+    '.full-width { width: 100%; }'
   ]
 })
+
 export class EditLexiaComponent implements OnInit {
   controlType = 'EditLexia';
   inData: any;
@@ -692,6 +705,16 @@ export class EditLexiaComponent implements OnInit {
         }
         obs.push(gaga);
       }
+
+      forkJoin(obs).subscribe(res => {
+            this.working = false;
+            this.location.back();
+          },
+          error => {
+            this.snackBar.open('Fehler beim Speichern der Daten des lexia-Eintrags!', 'OK');
+            this.working = false;
+            this.location.back();
+          });
 
     }
   }
