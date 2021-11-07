@@ -1028,7 +1028,7 @@ export class KnoraService {
         if (data.title !== null && data.title !== undefined && data.title !== '') {
             const titleVal = new CreateTextValueAsString();
             titleVal.text = data.title;
-            props[this.wwOntology + 'hasCompanyTitle'] = [
+            props[this.wwOntology + 'hasLexiaTitle'] = [
                 titleVal
             ];
         }
@@ -1036,7 +1036,7 @@ export class KnoraService {
         if (data.internalId !== null && data.internalId !== undefined && data.internalId !== '') {
             const internalIdVal = new CreateTextValueAsString();
             internalIdVal.text = data.internalId;
-            props[this.wwOntology + 'hasCompanyInternalId'] = [
+            props[this.wwOntology + 'hasLexiaInternalId'] = [
                 internalIdVal
             ];
         }
@@ -1069,10 +1069,18 @@ export class KnoraService {
             }
         }
 
+        if (data.displayedTitle !== null && data.displayedTitle !== undefined && data.displayedTitle !== '') {
+            const displayedTitleVal = new CreateTextValueAsString();
+            displayedTitleVal.text = data.displayedTitle;
+            props[this.wwOntology + 'hasLexiaDisplayedTitle'] = [
+                displayedTitleVal
+            ];
+        }
+
         if (data.extraInfo !== null && data.extraInfo !== undefined && data.extraInfo !== '') {
             const extraInfoIdVal = new CreateTextValueAsString();
             extraInfoIdVal.text = data.extraInfo;
-            props[this.wwOntology + 'hasCompanyExtraInfo'] = [
+            props[this.wwOntology + 'hasLexiaExtraInfo'] = [
                 extraInfoIdVal
             ];
         }

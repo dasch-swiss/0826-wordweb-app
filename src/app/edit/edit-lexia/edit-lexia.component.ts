@@ -231,12 +231,14 @@ export class EditLexiaComponent implements OnInit {
     const formalClasses: FormArray = this.getFormalClasses();
     const formalClassIriValues: string[] = [];
     for (const x of formalClasses.controls) {
-      formalClassIriValues.push(x.value);
+      const y = x as FormGroup;
+      formalClassIriValues.push(y.controls.formalClassIri.value);
     }
     const images: FormArray = this.getImages();
     const imagesIriValues: string[] = [];
     for (const x of images.controls) {
-      imagesIriValues.push(x.value);
+      const y = x as FormGroup;
+      imagesIriValues.push(y.controls.imageIri.value);
     }
     return new LexiaData(
         this.form.controls.label.value,
