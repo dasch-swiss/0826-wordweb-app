@@ -95,10 +95,10 @@ export class LexiaData {
 export class PassageData {
     constructor(
         public label: string,
-        public internalId: string, //hasLexiaInternalId (1)
+        public internalId: string, //hasPassageInternalId (1)
         public displayedTitle: string, // hasDisplayedTitle (1)
         public functionVoiceIris: string[], // hasFunctionVoice (1-n) -> List functionVoice
-        public markingIris: string[], // has Marking (1-n) -> List marking
+        public markingIris: string[], // hasMarking (1-n) -> List marking
         public researchFieldIri: string, // hasResearchField (1) -> List researchField
         public statusIri: string, // hasStatus (1) -> List status
         public text: string, // hasText (1)

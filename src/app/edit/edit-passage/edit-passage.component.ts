@@ -17,7 +17,7 @@ import {
   ListPropertyData,
   OptionType,
   PassageData
-} from "../../services/knora.service";
+} from '../../services/knora.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Location} from '@angular/common';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
@@ -123,9 +123,43 @@ class PassageIds {
         </button>
         <br/>
 
+        <div formArrayName="functionVoices">
+          <mat-label>Function voices</mat-label>
+          <div *ngFor="let functionVoiceItem of getFunctionVoices().controls; let i=index">
+            <mat-form-field [formGroup]="functionVoiceItem" [style.width.px]=300>
+              <mat-select matInput
+                          placeholder="functionVoices"
+                          formControlName="functionVoiceIri"
+                          (selectionChange)="_handleInput('functionVoices', i)">
+                <mat-option *ngFor="let lt of functionVoiceTypes" [value]="lt.iri">
+                  {{lt.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button *ngIf="valIds.functionVoices[i].changed" mat-mini-fab (click)="_handleUndo('functionVoices', i)">
+              <mat-icon color="warn">cached</mat-icon>
+            </button>
+            <button *ngIf="valIds.functionVoices[i].id !== undefined && (nFunctionVoices > 1 || valIds.functionVoices[i].toBeDeleted)"
+                    mat-mini-fab (click)="_handleDelete('functionVoices', i)">
+              <mat-icon *ngIf="!valIds.functionVoices[i].toBeDeleted" color="basic">delete</mat-icon>
+              <mat-icon *ngIf="valIds.functionVoices[i].toBeDeleted" color="warn">delete</mat-icon>
+            </button>
+            <button *ngIf="valIds.functionVoices[i].id === undefined && nFunctionVoices > 1"
+                    mat-mini-fab (click)="_handleDelete('functionVoices', i)">
+              <mat-icon *ngIf="!valIds.functionVoices[i].toBeDeleted" color="basic">delete</mat-icon>
+            </button>
+          </div>
+          <button mat-mini-fab (click)="addFunctionVoice()">
+            <mat-icon>add</mat-icon>
+          </button>
+
+        </div>
+        <br/>
+        <div>&nbsp;</div>
+
         <div formArrayName="markings">
           <mat-label>Markings</mat-label>
-          <div *ngFor="let markingItem of getMArkings().controls; let i=index">
+          <div *ngFor="let markingItem of getMarkings().controls; let i=index">
             <mat-form-field [formGroup]="markingItem" [style.width.px]=300>
               <mat-select matInput
                           placeholder="marking"
@@ -136,7 +170,7 @@ class PassageIds {
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <button *ngIf="valIds.markings[i].changed" mat-mini-fab (click)="_handleUndo('makrings', i)">
+            <button *ngIf="valIds.markings[i].changed" mat-mini-fab (click)="_handleUndo('markings', i)">
               <mat-icon color="warn">cached</mat-icon>
             </button>
             <button *ngIf="valIds.markings[i].id !== undefined && (nMarkings > 1 || valIds.markings[i].toBeDeleted)"
@@ -156,7 +190,7 @@ class PassageIds {
         </div>
         <br/>
         <div>&nbsp;</div>
-        
+
       </mat-card-content>
     </mat-card>
   `,
@@ -167,6 +201,8 @@ class PassageIds {
     '.full-width { width: 100%; }'
   ]
 })
+
+
 export class EditPassageComponent implements OnInit {
   controlType = 'EditPassage';
   inData: any;
@@ -206,7 +242,299 @@ export class EditPassageComponent implements OnInit {
     this.nContains = 0;
   }
 
-  ngOnInit(): void {
+  @Input()
+  get value(): PassageData | null {
+    const functionVoices: FormArray = this.getFunctionVoices();
+    const functionVoiceIriValues: string[] = [];
+    for (const x of functionVoices.controls) {
+      const y = x as FormGroup;
+      functionVoiceIriValues.push(y.controls.functionVoiceIri.value);
+    }
+    const markings: FormArray = this.getMarkings();
+    const markingIriValues: string[] = [];
+    for (const x of markings.controls) {
+      const y = x as FormGroup;
+      markingIriValues.push(y.controls.markingIri.value);
+    }
+    return new PassageData(
+        this.form.controls.label.value,
+        this.form.controls.internalId.value,
+        this.form.controls.displayedTitle.value,
+        functionVoiceIriValues,
+        markingIriValues,
+        '',
+        '',
+        '',
+        {occursInName: '', occursInIri: ''},
+        {contributedByName: '', contributedByIri: ''},
+        [],
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        []
+    );
   }
 
+  set value(knoraVal: PassageData | null) {
+    const {label, internalId, displayedTitle, functionVoiceIris, markingIris}
+        = knoraVal || new PassageData('', '', '', [],
+        [], '', '', '', {occursInName: '', occursInIri: ''},
+        {contributedByName: '', contributedByIri: ''}, [], '',
+        '', '', '', '', '', '', []);
+    this.form.setValue({label, internalId, displayedTitle, functionVoiceIris, markingIris});
+  }
+
+  ngOnInit(): void {
+    this.working = false;
+    combineLatest([this.route.params, this.route.queryParams]).subscribe(arr => {
+      if (arr[0].iri !== undefined) {
+        this.inData.passageIri = arr[0].iri;
+      }
+      if (this.inData.passageIri !== undefined) {
+        this.knoraService.getResource(this.inData.passageIri).subscribe((data) => {
+          if (this.inData.passageIri !== undefined) {
+            console.log('DATA: ', data);
+            this.resId = data.id;
+            this.lastmod = data.lastmod;
+            this.form.controls.label.setValue(data.label);
+            this.valIds.label = {id: data.label, changed: false, toBeDeleted: false};
+            this.data.label = data.label;
+            for (const ele of data.properties) {
+              switch (ele.propname) {
+                case this.knoraService.wwOntology + 'hasPassageInternalId': {
+                  this.form.controls.internalId.setValue(ele.values[0]);
+                  this.valIds.internalId = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.internalId = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasDisplayedTitle': {
+                  this.form.controls.displayedTitle.setValue(ele.values[0]);
+                  this.valIds.displayedTitle = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.displayedTitle = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasFunctionVoice': {
+                  const tmp = ele as ListPropertyData;
+                  for (let i = 0; i < ele.values.length; i++) {
+                    this.addFunctionVoice(tmp.nodeIris[i]);
+                  }
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasMarking': {
+                  const tmp = ele as ListPropertyData;
+                  for (let i = 0; i < ele.values.length; i++) {
+                    this.addMarking(tmp.nodeIris[i]);
+                  }
+                  break;
+                }
+              }
+            }
+          }
+          let fvInitial;
+          if (this.inData.passageIri === undefined) {
+            this.valIds.functionVoices[0] = {id: this.functionVoiceTypes[0].iri, changed: false, toBeDeleted: false};
+            fvInitial = [
+              this.fb.group({
+                functionVoiceIri: [this.functionVoiceTypes[0].iri, [Validators.required]]
+              })
+            ];
+          } else {
+            fvInitial = [];
+          }
+          let mInitial;
+          if (this.inData.passageIri === undefined) {
+            this.valIds.markings[0] = {id: this.markingTypes[0].iri, changed: false, toBeDeleted: false};
+            mInitial = [
+              this.fb.group({
+                markingIri: [this.markingTypes[0].iri, [Validators.required]]
+              })
+            ];
+          } else {
+            mInitial = [];
+          }
+          this.form = this.fb.group({
+            label: [this.data.label, [Validators.required, Validators.minLength(5)]],
+            internalId: [this.data.internalId, [Validators.required]],
+            displayedTitle: [this.data.displayedTitle, []],
+            functionVoices: this.fb.array(fvInitial),
+            markings: this.fb.array(mInitial),
+          });
+        });
+      }
+    });
+  }
+
+  getFunctionVoices(): FormArray {
+    return this.form.controls.functionVoices as FormArray;
+  }
+
+  addFunctionVoice(functionVoiceIri?: string): void {
+    const functionVoices = this.getFunctionVoices();
+    if (functionVoiceIri === undefined) {
+      functionVoices.push(this.fb.group({functionVoiceIri: this.functionVoiceTypes[0].iri}));
+      this.data.functionVoiceIris.push(this.functionVoiceTypes[0].iri);
+      this.valIds.functionVoices.push({id: undefined, changed: false, toBeDeleted: false});
+    } else {
+      functionVoices.push(this.fb.group({functionVoiceIri}));
+      this.data.functionVoiceIris.push(functionVoiceIri);
+      this.valIds.functionVoices.push({id: functionVoiceIri, changed: false, toBeDeleted: false});
+    }
+    this.nFunctionVoices++;
+  }
+
+  removeFunctionVoice(index: number): void {
+    const functionVoices = this.getFunctionVoices();
+    functionVoices.removeAt(index);
+    this.valIds.functionVoices.splice(index, 1);
+    this.data.functionVoiceIris.splice(index, 1);
+    this.nFunctionVoices--;
+  }
+
+  getMarkings(): FormArray {
+    return this.form.controls.markings as FormArray;
+  }
+
+  addMarking(markingIri?: string): void {
+    const markings = this.getMarkings();
+    if (markingIri === undefined) {
+      markings.push(this.fb.group({markingIri: this.markingTypes[0].iri}));
+      this.data.markingIris.push(this.markingTypes[0].iri);
+      this.valIds.markings.push({id: undefined, changed: false, toBeDeleted: false});
+    } else {
+      markings.push(this.fb.group({markingIri}));
+      this.data.markingIris.push(markingIri);
+      this.valIds.markings.push({id: markingIri, changed: false, toBeDeleted: false});
+    }
+    this.nMarkings++;
+  }
+
+  removeMarking(index: number): void {
+    const markings = this.getMarkings();
+    markings.removeAt(index);
+    this.valIds.markings.splice(index, 1);
+    this.data.markingIris.splice(index, 1);
+    this.nMarkings--;
+  }
+
+  onChange = (_: any) => {
+  };
+
+  onTouched = () => {
+  };
+
+  _handleInput(what: string, index?: number): void {
+    this.onChange(this.form.value);
+    switch (what) {
+      case 'label':
+        this.valIds.label.changed = true;
+        break;
+      case 'internalId':
+        this.valIds.internalId.changed = true;
+        break;
+      case 'displayedTitle':
+        this.valIds.displayedTitle.changed = true;
+        break;
+      case 'functionVoices':
+        this.valIds.functionVoices[index].changed = true;
+        break;
+      case 'markings':
+        this.valIds.markings[index].changed = true;
+        break;
+    }
+  }
+
+  _handleDelete(what: string, index?: number): void {
+    switch(what) {
+      case 'functionVoices':
+        if (this.valIds.functionVoices[index].id !== undefined) {
+          this.valIds.functionVoices[index].toBeDeleted = !this.valIds.functionVoices[index].toBeDeleted;
+          if (this.valIds.functionVoices[index].toBeDeleted) {
+            this.nFunctionVoices--;
+          } else {
+            this.nFunctionVoices++;
+          }
+        } else {
+          this.removeFunctionVoice(index);
+        }
+        break;
+      case 'markings':
+        if (this.valIds.markings[index].id !== undefined) {
+          this.valIds.markings[index].toBeDeleted = !this.valIds.markings[index].toBeDeleted;
+          if (this.valIds.markings[index].toBeDeleted) {
+            this.nMarkings--;
+          } else {
+            this.nMarkings++;
+          }
+        } else {
+          this.removeMarking(index);
+        }
+        break;
+    }
+  }
+
+  _handleUndo(what: string, index?: number): void {
+    switch (what) {
+      case 'label':
+        this.form.controls.label.setValue(this.data.label);
+        this.valIds.label.changed = false;
+        break;
+      case 'internalId':
+        this.form.controls.internalId.setValue(this.data.internalId);
+        this.valIds.internalId.changed = false;
+        break;
+      case 'displayedTitle':
+        this.form.controls.displayedTitle.setValue(this.data.displayedTitle);
+        this.valIds.displayedTitle.changed = false;
+        break;
+      case 'functionVoices':
+        const functionVoices = this.getFunctionVoices().controls[index] as FormGroup;
+        functionVoices.controls.functionVoiceIri.setValue(this.data.functionVoiceIris[index]);
+        this.valIds.functionVoices[index].changed = false;
+        break;
+      case 'markings':
+        const markings = this.getMarkings().controls[index] as FormGroup;
+        markings.controls.markingIri.setValue(this.data.markingIris[index]);
+        this.valIds.markings[index].changed = false;
+        break;
+    }
+  }
+
+  save(): void {
+    console.log('this.value:', this.value);
+  }
+
+  delete(): void {
+    const confirmationConfig = new MatDialogConfig();
+    confirmationConfig.autoFocus = true;
+    confirmationConfig.disableClose = true;
+    confirmationConfig.data = {
+      title: 'Delete passage',
+      text: 'Do You really want to delete this passage?'
+    };
+
+    const dialogRef = this.dialog.open(ConfirmationComponent, confirmationConfig);
+    this.working = true;
+    dialogRef.afterClosed().subscribe((data: ConfirmationResult) => {
+      if (data.status) {
+        console.log('lastmod', this.lastmod);
+        this.knoraService.deleteResource(this.resId, 'passage', this.lastmod, data.comment).subscribe(
+            res => {
+              this.working = false;
+              this.location.back();
+            },
+            error => {
+              this.snackBar.open('Error while deleting the passage entry!', 'OK');
+              console.log('deleteResource:ERROR:: ', error);
+              this.working = false;
+              this.location.back();
+            });
+      }
+    });
+
+  }
 }
+
