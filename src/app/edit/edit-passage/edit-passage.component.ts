@@ -78,16 +78,17 @@ class PassageIds {
   selector: 'app-edit-passage',
   template: `
     <mat-card>
-      <mat-card-title>Lexia Editor</mat-card-title>
+      <mat-card-title>Passage Editor</mat-card-title>
       <mat-card-content [formGroup]="form">
         <mat-form-field [style.width.px]=400>
-          <input matInput
+          <input matInput required
                  class="full-width"
                  placeholder="Label"
                  formControlName="label"
                  (input)="_handleInput('label')">
           <mat-error *ngIf="form.controls.label.errors?.required">Label erforderlich!</mat-error>
-          <mat-error *ngIf="form.controls.label.errors?.minlength">Label muss mindestens aus 5 Buchstaben bestehen!</mat-error>
+          <mat-error *ngIf="form.controls.label.errors?.minlength">Label muss mindestens aus 5 Buchstaben bestehen!
+          </mat-error>
         </mat-form-field>
         <button *ngIf="valIds.label.changed" mat-mini-fab (click)="_handleUndo('label')">
           <mat-icon color="warn">cached</mat-icon>
@@ -95,9 +96,9 @@ class PassageIds {
         <br/>
 
         <mat-form-field [style.width.px]=400>
-          <input matInput
+          <input matInput required
                  class="full-width"
-                 placeholder="Internald id"
+                 placeholder="Internal id"
                  formControlName="internalId"
                  (input)="_handleInput('internalId')">
           <mat-error *ngIf="form.controls.internalId.errors?.required">Internal id required!</mat-error>
@@ -122,7 +123,6 @@ class PassageIds {
           <mat-icon *ngIf="valIds.displayedTitle.toBeDeleted" color="warn">delete</mat-icon>
         </button>
         <br/>
-
         <div formArrayName="functionVoices">
           <mat-label>Function voices</mat-label>
           <div *ngFor="let functionVoiceItem of getFunctionVoices().controls; let i=index">
@@ -139,8 +139,9 @@ class PassageIds {
             <button *ngIf="valIds.functionVoices[i].changed" mat-mini-fab (click)="_handleUndo('functionVoices', i)">
               <mat-icon color="warn">cached</mat-icon>
             </button>
-            <button *ngIf="valIds.functionVoices[i].id !== undefined && (nFunctionVoices > 1 || valIds.functionVoices[i].toBeDeleted)"
-                    mat-mini-fab (click)="_handleDelete('functionVoices', i)">
+            <button
+                *ngIf="valIds.functionVoices[i].id !== undefined && (nFunctionVoices > 1 || valIds.functionVoices[i].toBeDeleted)"
+                mat-mini-fab (click)="_handleDelete('functionVoices', i)">
               <mat-icon *ngIf="!valIds.functionVoices[i].toBeDeleted" color="basic">delete</mat-icon>
               <mat-icon *ngIf="valIds.functionVoices[i].toBeDeleted" color="warn">delete</mat-icon>
             </button>
@@ -191,7 +192,45 @@ class PassageIds {
         <br/>
         <div>&nbsp;</div>
 
+        <mat-form-field [style.width.px]=600>
+          <mat-select matInput required
+                      placeholder="Research field"
+                      formControlName="researchFieldIri"
+                      (selectionChange)="_handleInput('researchField')">
+            <mat-option *ngFor="let lt of researchFieldTypes" [value]="lt.iri">
+              {{lt.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button *ngIf="valIds.researchField.changed" mat-mini-fab (click)="_handleUndo('researchField')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=600>
+          <mat-select matInput required
+                      placeholder="Status"
+                      formControlName="statusIri"
+                      (selectionChange)="_handleInput('status')">
+            <mat-option *ngFor="let lt of statusTypes" [value]="lt.iri">
+              {{lt.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button *ngIf="valIds.status.changed" mat-mini-fab (click)="_handleUndo('status')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <br/>
+
       </mat-card-content>
+
+      <mat-card-actions>
+        <button appBackButton class="mat-raised-button" matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
+        <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Save</button>
+        <button *ngIf="inData.passageIri" type="submit" class="mat-raised-button" (click)="delete()">Delete</button>
+        <mat-progress-bar *ngIf="working" mode="indeterminate"></mat-progress-bar>
+      </mat-card-actions>
+
     </mat-card>
   `,
   styles: [
@@ -262,8 +301,8 @@ export class EditPassageComponent implements OnInit {
         this.form.controls.displayedTitle.value,
         functionVoiceIriValues,
         markingIriValues,
-        '',
-        '',
+        this.form.controls.researchFieldIri.value,
+        this.form.controls.statusIri.value,
         '',
         {occursInName: '', occursInIri: ''},
         {contributedByName: '', contributedByIri: ''},
@@ -280,12 +319,12 @@ export class EditPassageComponent implements OnInit {
   }
 
   set value(knoraVal: PassageData | null) {
-    const {label, internalId, displayedTitle, functionVoiceIris, markingIris}
+    const {label, internalId, displayedTitle, functionVoiceIris, markingIris, researchFieldIri}
         = knoraVal || new PassageData('', '', '', [],
         [], '', '', '', {occursInName: '', occursInIri: ''},
         {contributedByName: '', contributedByIri: ''}, [], '',
         '', '', '', '', '', '', []);
-    this.form.setValue({label, internalId, displayedTitle, functionVoiceIris, markingIris});
+    this.form.setValue({label, internalId, displayedTitle, functionVoiceIris, markingIris, researchFieldIri});
   }
 
   ngOnInit(): void {
@@ -331,41 +370,57 @@ export class EditPassageComponent implements OnInit {
                   }
                   break;
                 }
+                case this.knoraService.wwOntology + 'hasResearchField': {
+                  const tmp = ele as ListPropertyData;
+                  this.form.controls.researchFieldIri.setValue(tmp.nodeIris[0]);
+                  this.valIds.researchField = {id: tmp.ids[0], changed: false, toBeDeleted: false};
+                  this.data.researchFieldIri = tmp.nodeIris[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasStatus': {
+                  const tmp = ele as ListPropertyData;
+                  this.form.controls.statusIri.setValue(tmp.nodeIris[0]);
+                  this.valIds.status = {id: tmp.ids[0], changed: false, toBeDeleted: false};
+                  this.data.statusIri = tmp.nodeIris[0];
+                  break;
+                }
               }
             }
           }
-          let fvInitial;
-          if (this.inData.passageIri === undefined) {
-            this.valIds.functionVoices[0] = {id: this.functionVoiceTypes[0].iri, changed: false, toBeDeleted: false};
-            fvInitial = [
-              this.fb.group({
-                functionVoiceIri: [this.functionVoiceTypes[0].iri, [Validators.required]]
-              })
-            ];
-          } else {
-            fvInitial = [];
-          }
-          let mInitial;
-          if (this.inData.passageIri === undefined) {
-            this.valIds.markings[0] = {id: this.markingTypes[0].iri, changed: false, toBeDeleted: false};
-            mInitial = [
-              this.fb.group({
-                markingIri: [this.markingTypes[0].iri, [Validators.required]]
-              })
-            ];
-          } else {
-            mInitial = [];
-          }
-          this.form = this.fb.group({
-            label: [this.data.label, [Validators.required, Validators.minLength(5)]],
-            internalId: [this.data.internalId, [Validators.required]],
-            displayedTitle: [this.data.displayedTitle, []],
-            functionVoices: this.fb.array(fvInitial),
-            markings: this.fb.array(mInitial),
-          });
         });
       }
-    });
+      let fvInitial;
+      if (this.inData.passageIri === undefined) {
+        this.valIds.functionVoices[0] = {id: this.functionVoiceTypes[0].iri, changed: false, toBeDeleted: false};
+        fvInitial = [
+          this.fb.group({
+            functionVoiceIri: [this.functionVoiceTypes[0].iri, [Validators.required]]
+          })
+        ];
+      } else {
+        fvInitial = [];
+      }
+      let mInitial;
+      if (this.inData.passageIri === undefined) {
+        this.valIds.markings[0] = {id: this.markingTypes[0].iri, changed: false, toBeDeleted: false};
+        mInitial = [
+          this.fb.group({
+            markingIri: [this.markingTypes[0].iri, [Validators.required]]
+          })
+        ];
+      } else {
+        mInitial = [];
+      }
+      this.form = this.fb.group({
+        label: [this.data.label, [Validators.required, Validators.minLength(5)]],
+        internalId: [this.data.internalId, [Validators.required]],
+        displayedTitle: [this.data.displayedTitle, []],
+        functionVoices: this.fb.array(fvInitial),
+        markings: this.fb.array(mInitial),
+        researchFieldIri: [this.data.researchFieldIri || this.researchFieldTypes[0].iri, [Validators.required]],
+        statusIri: [this.data.statusIri || this.statusTypes[0].iri, [Validators.required]],
+      });
+     });
   }
 
   getFunctionVoices(): FormArray {
@@ -444,6 +499,12 @@ export class EditPassageComponent implements OnInit {
       case 'markings':
         this.valIds.markings[index].changed = true;
         break;
+      case 'researchField':
+        this.valIds.researchField.changed = true;
+        break;
+      case 'status':
+        this.valIds.status.changed = true;
+        break;
     }
   }
 
@@ -499,6 +560,14 @@ export class EditPassageComponent implements OnInit {
         const markings = this.getMarkings().controls[index] as FormGroup;
         markings.controls.markingIri.setValue(this.data.markingIris[index]);
         this.valIds.markings[index].changed = false;
+        break;
+      case 'researchField':
+        this.form.controls.researchFieldIri.setValue(this.data.researchFieldIri);
+        this.valIds.researchField.changed = false;
+        break;
+      case 'status':
+        this.form.controls.statusIri.setValue(this.data.statusIri);
+        this.valIds.status.changed = false;
         break;
     }
   }

@@ -51,7 +51,7 @@ class LexiaIds {
     <mat-card-content [formGroup]="form">
 
       <mat-form-field [style.width.px]=400>
-        <input matInput
+        <input matInput required
                class="full-width"
                placeholder="Label"
                formControlName="label"
@@ -65,7 +65,7 @@ class LexiaIds {
       <br/>
 
       <mat-form-field [style.width.px]=400>
-        <input matInput
+        <input matInput required
                class="full-width"
                placeholder="Title"
                formControlName="title"

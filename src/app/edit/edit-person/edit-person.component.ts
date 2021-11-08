@@ -449,7 +449,6 @@ export class EditPersonComponent implements OnInit {
   }
 
   _handleInput(what: string, index?: number): void {
-    console.log('***********>_handleInput:', what);
     this.onChange(this.form.value);
     switch (what) {
       case 'label':
