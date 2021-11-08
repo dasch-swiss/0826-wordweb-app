@@ -427,6 +427,44 @@ class PassageIds {
           <mat-icon *ngIf="valIds.textHist.toBeDeleted" color="warn">delete</mat-icon>
         </button>
         <br/>
+
+        <div formArrayName="mentionedIn">
+          <mat-label>MentionedIn (passage)</mat-label>
+          <div *ngFor="let mentionedInItem of getMentionedIn().controls; let i=index">
+            <mat-form-field [formGroup]="mentionedInItem">
+              <input matInput [matAutocomplete]="autoMentionedIn"
+                     formControlName="mentionedInName"
+                     class="knora-link-input-element klnkie-val full-width"
+                     placeholder="Mentioned in (passage)"
+                     aria-label="Value"
+                     (change)="_handleInput('mentionedIn', i)"
+                     (input)="_handleLinkInput('mentionedIn', i)">
+              <input matInput formControlName="mentionedInIri" [hidden]="true" ><br/>
+              <mat-autocomplete #autoMentionedIn="matAutocomplete"
+                                (optionSelected)="_optionSelected($event.option.value, 'mentionedIn', i)">
+                <mat-option *ngFor="let option of options" [value]="option.label">
+                  {{ option.label }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <button *ngIf="valIds.mentionedIn[i].changed" mat-mini-fab (click)="_handleUndo('mentionedIn', i)">
+              <mat-icon color="warn">cached</mat-icon>
+            </button>
+            <button *ngIf="valIds.mentionedIn[i].id !== undefined"
+                    mat-mini-fab (click)="_handleDelete('mentionedIn', i)">
+              <mat-icon *ngIf="!valIds.mentionedIn[i].toBeDeleted" color="basic">delete</mat-icon>
+              <mat-icon *ngIf="valIds.mentionedIn[i].toBeDeleted" color="warn">delete</mat-icon>
+            </button>
+            <button *ngIf="valIds.mentionedIn[i].id === undefined"
+                    mat-mini-fab (click)="_handleDelete('mentionedIn', i)">
+              <mat-icon *ngIf="!valIds.mentionedIn[i].toBeDeleted" color="basic">delete</mat-icon>
+            </button>
+          </div>
+          <button mat-mini-fab (click)="addMentionedIn()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
       </mat-card-content>
 
       <mat-card-actions>
@@ -462,6 +500,7 @@ export class EditPassageComponent implements OnInit {
   nFunctionVoices: number;
   nMarkings: number;
   nContains: number;
+  nMentionedIn: number;
   working: boolean;
   public valIds: PassageIds = new PassageIds();
   public functionVoiceTypes: Array<OptionType>;
@@ -485,6 +524,7 @@ export class EditPassageComponent implements OnInit {
     this.nFunctionVoices = 0;
     this.nMarkings = 0;
     this.nContains = 0;
+    this.nMentionedIn = 0;
   }
 
   @Input()
@@ -501,13 +541,16 @@ export class EditPassageComponent implements OnInit {
       const y = x as FormGroup;
       markingIriValues.push({markingIri: y.controls.markingIri.value});
     }
-    const tmp: FormArray = this.getContains();
+    const tmpContains: FormArray = this.getContains();
     const containsValues: {containsName: string; containsIri: string}[] = [];
-    for (const x of tmp.controls) {
-      console.log('::::', x.value);
+    for (const x of tmpContains.controls) {
       containsValues.push(x.value);
     }
-    console.log('get value():', containsValues);
+    const tmpMentionedIn: FormArray = this.getMentionedIn();
+    const mentionedInValues: {mentionedInName: string; mentionedInIri: string}[] = [];
+    for (const x of tmpMentionedIn.controls) {
+      mentionedInValues.push(x.value);
+    }
     return new PassageData(
         this.form.controls.label.value,
         this.form.controls.internalId.value,
@@ -532,23 +575,24 @@ export class EditPassageComponent implements OnInit {
         this.form.controls.comment.value,
         this.form.controls.extraInfo.value,
         this.form.controls.prefixTitle.value,
-        '',
-        []
+        this.form.controls.textHist.value,
+        mentionedInValues
     );
   }
 
   set value(knoraVal: PassageData | null) {
     const {label, internalId, displayedTitle, functionVoices, markings, researchField, status, text, occursIn,
-    contributedBy, contains, internalComment, page, pageHist, comment, extraInfo, prefixTitle, textHist}
+    contributedBy, contains, internalComment, page, pageHist, comment, extraInfo, prefixTitle, textHist, mentionedIn}
         = knoraVal || new PassageData('', '', '', [],
         [], {researchFieldIri: ''}, {statusIri: ''}, '', {occursInName: '', occursInIri: ''},
         {contributedByName: '', contributedByIri: ''},
         [{containsName: '', containsIri: ''}], '',
-        '', '', '', '', '', '', []);
+        '', '', '', '', '', '',
+        [{mentionedInName: '', mentionedInIri: ''}]);
     this.form.setValue({label, internalId, displayedTitle, functionVoices, markings, researchField,
       status, text, occursInName: occursIn.occursInName, occursInIri: occursIn.occursInIri,
       contributedByName: contributedBy.contributedByName, contributedByIri: contributedBy.contributedByIri,
-      contains, internalComment, page, pageHist, comment, extraInfo, prefixTitle, textHist});
+      contains, internalComment, page, pageHist, comment, extraInfo, prefixTitle, textHist, mentionedIn});
   }
 
   ngOnInit(): void {
@@ -676,6 +720,12 @@ export class EditPassageComponent implements OnInit {
                   this.data.textHist = ele.values[0];
                   break;
                 }
+                case this.knoraService.wwOntology + 'isMentionedIn': {
+                  for (let i = 0; i < ele.values.length; i++) {
+                    this.addMentionedIn({mentionedInName: ele.values[i], mentionedInIri: ele.ids[i]});
+                  }
+                  break;
+                }
               }
             }
           }
@@ -726,6 +776,9 @@ export class EditPassageComponent implements OnInit {
         extraInfo: [this.data.extraInfo, []],
         prefixTitle: [this.data.prefixTitle, []],
         textHist: [this.data.textHist, []],
+        mentionedIn: this.fb.array([
+          /*this.fb.group({containsName: '', containsIri: ''}),*/
+        ])
       });
      });
   }
@@ -794,7 +847,7 @@ export class EditPassageComponent implements OnInit {
       this.valIds.contains.push({id: undefined, changed: false, toBeDeleted: false});
     }
     else {
-      tmp.push(this.fb.group({lexiaName: contains.containsName, containsIri: contains.containsIri}));
+      tmp.push(this.fb.group({containsName: contains.containsName, containsIri: contains.containsIri}));
       this.data.contains.push({containsName: contains.containsName, containsIri: contains.containsIri});
       this.valIds.contains.push({id: contains.containsIri, changed: false, toBeDeleted: false});
     }
@@ -809,6 +862,32 @@ export class EditPassageComponent implements OnInit {
     this.nContains--;
   }
 
+  getMentionedIn() {
+    return this.form.controls.mentionedIn as FormArray;
+  }
+
+  addMentionedIn(mentionedIn?: {mentionedInName: string; mentionedInIri: string}) {
+    const tmp = this.getMentionedIn();
+    if (mentionedIn === undefined) {
+      tmp.push(this.fb.group({mentionedInName: '', mentionedInIri: ''}));
+      this.data.mentionedIn.push({mentionedInName: '', mentionedInIri: ''});
+      this.valIds.mentionedIn.push({id: undefined, changed: false, toBeDeleted: false});
+    }
+    else {
+      tmp.push(this.fb.group({mentionedInName: mentionedIn.mentionedInName, mentionedInIri: mentionedIn.mentionedInIri}));
+      this.data.mentionedIn.push({mentionedInName: mentionedIn.mentionedInName, mentionedInIri: mentionedIn.mentionedInIri});
+      this.valIds.mentionedIn.push({id: mentionedIn.mentionedInIri, changed: false, toBeDeleted: false});
+    }
+    this.nMentionedIn++;
+  }
+
+  removeMentionedIn(index: number): void {
+    const tmp = this.getMentionedIn();
+    tmp.removeAt(index);
+    this.valIds.mentionedIn.splice(index, 1);
+    this.data.mentionedIn.splice(index, 1);
+    this.nMentionedIn--;
+  }
 
   onChange = (_: any) => {
   };
@@ -853,6 +932,19 @@ export class EditPassageComponent implements OnInit {
             }
         );
         break;
+      case 'mentionedIn':
+        const mentionedIn = this.getMentionedIn();
+        const mentionedInName = mentionedIn.value[index].mentionedInName;
+
+        this.valIds.mentionedIn[index].changed = true;
+        this.knoraService.getResourcesByLabel(mentionedInName, this.knoraService.wwOntology + 'passage').subscribe(
+            res => {
+              this.options = res;
+              this.form.value.mentionedIn[index].mentionedInName = res[0].label;
+              this.form.value.mentionedIn[index].mentionedInIri =  res[0].id;
+            }
+        );
+        break;
     }
   }
 
@@ -874,6 +966,10 @@ export class EditPassageComponent implements OnInit {
         this.form.value.contains[index].containsName = res[0].label;
         this.form.value.contains[index].containsIri = res[0].id;
         break;
+      case 'mentionedIn':
+        this.form.value.mentionedIn[index].mentionedInName = res[0].label;
+        this.form.value.mentionedIn[index].mentionedInIri = res[0].id;
+        break;
     }
     this.value = new PassageData(
         this.form.value.label,
@@ -888,13 +984,13 @@ export class EditPassageComponent implements OnInit {
         {contributedByName: this.form.value.contributedByName, contributedByIri: this.form.value.contributedByIri},
         this.form.value.contains,
         this.form.value.internalComment,
-        '',  // ToDo: complete
-        '',  // ToDo: complete
-        '',  // ToDo: complete
-        '',  // ToDo: complete
-        '',  // ToDo: complete
-        '',
-        []
+        this.form.value.page,
+        this.form.value.pageHist,
+        this.form.value.comment,
+        this.form.value.extraInfo,
+        this.form.value.prefixTitle,
+        this.form.value.textHist,
+        this.form.value.mentionedIn
     );
   }
 
@@ -954,6 +1050,9 @@ export class EditPassageComponent implements OnInit {
         break;
       case 'textHist':
         this.valIds.textHist.changed = true;
+        break;
+      case 'mentionedIn':
+        this.valIds.mentionedIn[index].changed = true;
         break;
     }
   }
@@ -1016,6 +1115,18 @@ export class EditPassageComponent implements OnInit {
         break;
       case 'textHist':
         this.valIds.textHist.toBeDeleted = !this.valIds.textHist.toBeDeleted;
+        break;
+      case 'mentionedIn':
+        if (this.valIds.mentionedIn[index].id !== undefined) {
+          this.valIds.mentionedIn[index].toBeDeleted = !this.valIds.mentionedIn[index].toBeDeleted;
+          if (this.valIds.mentionedIn[index].toBeDeleted) {
+            this.nMentionedIn--;
+          } else {
+            this.nMentionedIn++;
+          }
+        } else {
+          this.removeMentionedIn(index);
+        }
         break;
     }
   }
@@ -1097,6 +1208,10 @@ export class EditPassageComponent implements OnInit {
       case 'textHist':
         this.form.controls.textHist.setValue(this.data.textHist);
         this.valIds.textHist.changed = false;
+        break;
+      case 'mentionedIn':
+        this.getMentionedIn().controls[index].setValue(this.data.mentionedIn[index]);
+        this.valIds.mentionedIn[index].changed = false;
         break;
     }
   }
