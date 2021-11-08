@@ -444,7 +444,6 @@ export class EditCompanyComponent implements OnInit {
     switch (what) {
       case 'extraInfo':
         this.valIds.extraInfo.toBeDeleted = !this.valIds.extraInfo.toBeDeleted;
-        console.log('_handleDelete("extraInfo")');
         break;
       case 'members':
         this.valIds.members[index].toBeDeleted = !this.valIds.members[index].toBeDeleted;

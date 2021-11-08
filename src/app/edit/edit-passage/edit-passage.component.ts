@@ -42,7 +42,7 @@ class PassageIds {
   public occursIn: ValInfo;
   public contributedBy: ValInfo;
   public contains: ValInfo[];
-  public internalComments: ValInfo[];
+  public internalComment: ValInfo;
   public page: ValInfo;
   public pageHist: ValInfo;
   public comment: ValInfo;
@@ -63,7 +63,7 @@ class PassageIds {
     this.occursIn = {id: undefined, changed: false, toBeDeleted: false};
     this.contributedBy = {id: undefined, changed: false, toBeDeleted: false};
     this.contains = [];
-    this.internalComments = [];
+    this.internalComment = {id: undefined, changed: false, toBeDeleted: false};
     this.page = {id: undefined, changed: false, toBeDeleted: false};
     this.pageHist = {id: undefined, changed: false, toBeDeleted: false};
     this.comment = {id: undefined, changed: false, toBeDeleted: false};
@@ -224,11 +224,11 @@ class PassageIds {
         <br/>
 
         <mat-form-field [style.width.px]=400>
-          <input matInput required
-                 class="full-width"
+          <textarea matInput text required
+                 class="full-width tarows"
                  placeholder="Text"
                  formControlName="text"
-                 (input)="_handleInput('text')">
+                    (input)="_handleInput('text')"></textarea>
           <mat-error *ngIf="form.controls.text.errors?.required">Text erforderlich!</mat-error>
         </mat-form-field>
         <button *ngIf="valIds.label.changed" mat-mini-fab (click)="_handleUndo('text')">
@@ -278,6 +278,155 @@ class PassageIds {
         </button>
         <br/>
 
+        <div formArrayName="contains">
+          <mat-label>Contains (lexias)</mat-label>
+          <div *ngFor="let containsItem of getContains().controls; let i=index">
+            <mat-form-field [formGroup]="containsItem">
+              <input matInput [matAutocomplete]="autoContains"
+                     required
+                     formControlName="containsName"
+                     class="knora-link-input-element klnkie-val full-width"
+                     placeholder="Contains (lexia)"
+                     aria-label="Value"
+                     (change)="_handleInput('contains', i)"
+                     (input)="_handleLinkInput('contains', i)">
+              <input matInput formControlName="containsIri" [hidden]="true" ><br/>
+              <mat-autocomplete #autoContains="matAutocomplete" (optionSelected)="_optionSelected($event.option.value, 'contains', i)">
+                <mat-option *ngFor="let option of options" [value]="option.label">
+                  {{ option.label }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <button *ngIf="valIds.contains[i].changed" mat-mini-fab (click)="_handleUndo('contains', i)">
+              <mat-icon color="warn">cached</mat-icon>
+            </button>
+            <button *ngIf="valIds.contains[i].id !== undefined"
+                    mat-mini-fab (click)="_handleDelete('contains', i)">
+              <mat-icon *ngIf="!valIds.contains[i].toBeDeleted" color="basic">delete</mat-icon>
+              <mat-icon *ngIf="valIds.contains[i].toBeDeleted" color="warn">delete</mat-icon>
+            </button>
+            <button *ngIf="valIds.contains[i].id === undefined"
+                    mat-mini-fab (click)="_handleDelete('contains', i)">
+              <mat-icon *ngIf="!valIds.contains[i].toBeDeleted" color="basic">delete</mat-icon>
+            </button>
+          </div>
+          <button mat-mini-fab (click)="addContains()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+
+        <mat-form-field [style.width.px]=400>
+          <input matInput
+                 class="full-width"
+                 placeholder="Internal comment"
+                 formControlName="internalComment"
+                 (input)="_handleInput('internalComment')">
+        </mat-form-field>
+        <button *ngIf="valIds.internalComment.changed" mat-mini-fab (click)="_handleUndo('internalComment')">
+          <mat-icon>cached</mat-icon>
+        </button>
+        <button *ngIf="valIds.internalComment.id !== undefined" mat-mini-fab (click)="_handleDelete('internalComment')">
+          <mat-icon *ngIf="!valIds.internalComment.toBeDeleted">delete</mat-icon>
+          <mat-icon *ngIf="valIds.internalComment.toBeDeleted" color="warn">delete</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=400>
+          <input matInput
+                 class="full-width"
+                 placeholder="Page"
+                 formControlName="page"
+                 (input)="_handleInput('page')">
+        </mat-form-field>
+        <button *ngIf="valIds.page.changed" mat-mini-fab (click)="_handleUndo('page')">
+          <mat-icon>cached</mat-icon>
+        </button>
+        <button *ngIf="valIds.page.id !== undefined" mat-mini-fab (click)="_handleDelete('page')">
+          <mat-icon *ngIf="!valIds.page.toBeDeleted">delete</mat-icon>
+          <mat-icon *ngIf="valIds.page.toBeDeleted" color="warn">delete</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=400>
+          <input matInput
+                 class="full-width"
+                 placeholder="Page history"
+                 formControlName="pageHist"
+                 (input)="_handleInput('pageHist')">
+        </mat-form-field>
+        <button *ngIf="valIds.pageHist.changed" mat-mini-fab (click)="_handleUndo('pageHist')">
+          <mat-icon>cached</mat-icon>
+        </button>
+        <button *ngIf="valIds.pageHist.id !== undefined" mat-mini-fab (click)="_handleDelete('pageHist')">
+          <mat-icon *ngIf="!valIds.pageHist.toBeDeleted">delete</mat-icon>
+          <mat-icon *ngIf="valIds.pageHist.toBeDeleted" color="warn">delete</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=400>
+          <input matInput
+                 class="full-width"
+                 placeholder="Comment"
+                 formControlName="comment"
+                 (input)="_handleInput('comment')">
+        </mat-form-field>
+        <button *ngIf="valIds.comment.changed" mat-mini-fab (click)="_handleUndo('comment')">
+          <mat-icon>cached</mat-icon>
+        </button>
+        <button *ngIf="valIds.comment.id !== undefined" mat-mini-fab (click)="_handleDelete('comment')">
+          <mat-icon *ngIf="!valIds.comment.toBeDeleted">delete</mat-icon>
+          <mat-icon *ngIf="valIds.comment.toBeDeleted" color="warn">delete</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=400>
+          <input matInput
+                 class="full-width"
+                 placeholder="Extra info"
+                 formControlName="extraInfo"
+                 (input)="_handleInput('extraInfo')">
+        </mat-form-field>
+        <button *ngIf="valIds.extraInfo.changed" mat-mini-fab (click)="_handleUndo('extraInfo')">
+          <mat-icon>cached</mat-icon>
+        </button>
+        <button *ngIf="valIds.extraInfo.id !== undefined" mat-mini-fab (click)="_handleDelete('extraInfo')">
+          <mat-icon *ngIf="!valIds.extraInfo.toBeDeleted">delete</mat-icon>
+          <mat-icon *ngIf="valIds.extraInfo.toBeDeleted" color="warn">delete</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=400>
+          <input matInput
+                 class="full-width"
+                 placeholder="Prefix title"
+                 formControlName="prefixTitle"
+                 (input)="_handleInput('prefixTitle')">
+        </mat-form-field>
+        <button *ngIf="valIds.prefixTitle.changed" mat-mini-fab (click)="_handleUndo('prefixTitle')">
+          <mat-icon>cached</mat-icon>
+        </button>
+        <button *ngIf="valIds.prefixTitle.id !== undefined" mat-mini-fab (click)="_handleDelete('prefixTitle')">
+          <mat-icon *ngIf="!valIds.prefixTitle.toBeDeleted">delete</mat-icon>
+          <mat-icon *ngIf="valIds.prefixTitle.toBeDeleted" color="warn">delete</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=400>
+          <textarea matInput
+                 class="full-width tarows"
+                 placeholder="Text history"
+                 formControlName="textHist"
+                 (input)="_handleInput('textHist')"></textarea>
+        </mat-form-field>
+        <button *ngIf="valIds.textHist.changed" mat-mini-fab (click)="_handleUndo('textHist')">
+          <mat-icon>cached</mat-icon>
+        </button>
+        <button *ngIf="valIds.textHist.id !== undefined" mat-mini-fab (click)="_handleDelete('textHist')">
+          <mat-icon *ngIf="!valIds.textHist.toBeDeleted">delete</mat-icon>
+          <mat-icon *ngIf="valIds.textHist.toBeDeleted" color="warn">delete</mat-icon>
+        </button>
+        <br/>
       </mat-card-content>
 
       <mat-card-actions>
@@ -290,10 +439,11 @@ class PassageIds {
     </mat-card>
   `,
   styles: [
-    '.maxw { min-width: 500px; max-width: 1000px; }',
+      '.maxw { min-width: 500px; max-width: 1000px; }',
     '.wide { width: 100%; }',
     '.ck-editor__editable_inline { min-height: 500px; }',
-    '.full-width { width: 100%; }'
+    '.full-width { width: 100%; }',
+    '.tarows { height: 5em;}'
   ]
 })
 
@@ -351,6 +501,13 @@ export class EditPassageComponent implements OnInit {
       const y = x as FormGroup;
       markingIriValues.push({markingIri: y.controls.markingIri.value});
     }
+    const tmp: FormArray = this.getContains();
+    const containsValues: {containsName: string; containsIri: string}[] = [];
+    for (const x of tmp.controls) {
+      console.log('::::', x.value);
+      containsValues.push(x.value);
+    }
+    console.log('get value():', containsValues);
     return new PassageData(
         this.form.controls.label.value,
         this.form.controls.internalId.value,
@@ -368,13 +525,13 @@ export class EditPassageComponent implements OnInit {
           contributedByName: this.form.controls.contributedByName.value,
           contributedByIri: this.form.controls.contributedByIri.value
         },
-        [],
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
+        containsValues,
+        this.form.controls.internalComment.value,
+        this.form.controls.page.value,
+        this.form.controls.pageHist.value,
+        this.form.controls.comment.value,
+        this.form.controls.extraInfo.value,
+        this.form.controls.prefixTitle.value,
         '',
         []
     );
@@ -382,15 +539,16 @@ export class EditPassageComponent implements OnInit {
 
   set value(knoraVal: PassageData | null) {
     const {label, internalId, displayedTitle, functionVoices, markings, researchField, status, text, occursIn,
-    contributedBy}
+    contributedBy, contains, internalComment, page, pageHist, comment, extraInfo, prefixTitle, textHist}
         = knoraVal || new PassageData('', '', '', [],
         [], {researchFieldIri: ''}, {statusIri: ''}, '', {occursInName: '', occursInIri: ''},
-        {contributedByName: '', contributedByIri: ''}, [], '',
+        {contributedByName: '', contributedByIri: ''},
+        [{containsName: '', containsIri: ''}], '',
         '', '', '', '', '', '', []);
-    console.log('!!!!!!', occursIn);
     this.form.setValue({label, internalId, displayedTitle, functionVoices, markings, researchField,
       status, text, occursInName: occursIn.occursInName, occursInIri: occursIn.occursInIri,
-      contributedByName: contributedBy.contributedByName, contributedByIri: contributedBy.contributedByIri});
+      contributedByName: contributedBy.contributedByName, contributedByIri: contributedBy.contributedByIri,
+      contains, internalComment, page, pageHist, comment, extraInfo, prefixTitle, textHist});
   }
 
   ngOnInit(): void {
@@ -470,6 +628,54 @@ export class EditPassageComponent implements OnInit {
                   this.data.contributedBy = {contributedByName: ele.values[0], contributedByIri: ele.ids[0]};
                   break;
                 }
+                case this.knoraService.wwOntology + 'contains': {
+                  for (let i = 0; i < ele.values.length; i++) {
+                    this.addContains({containsName: ele.values[i], containsIri: ele.ids[i]});
+                  }
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasInternalComment': {
+                  this.form.controls.internalComment.setValue(ele.values[0]);
+                  this.valIds.internalComment = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.internalComment = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasPage': {
+                  this.form.controls.page.setValue(ele.values[0]);
+                  this.valIds.page = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.page = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasPageHist': {
+                  this.form.controls.pageHist.setValue(ele.values[0]);
+                  this.valIds.pageHist = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.pageHist = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasPassageComment': {
+                  this.form.controls.comment.setValue(ele.values[0]);
+                  this.valIds.comment = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.comment = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasPassageExtraInfo': {
+                  this.form.controls.extraInfo.setValue(ele.values[0]);
+                  this.valIds.extraInfo = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.extraInfo = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasPrefixDisplayedTitle': {
+                  this.form.controls.prefixTitle.setValue(ele.values[0]);
+                  this.valIds.prefixTitle = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.prefixTitle = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasTextHist': {
+                  this.form.controls.textHist.setValue(ele.values[0]);
+                  this.valIds.textHist = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.textHist = ele.values[0];
+                  break;
+                }
               }
             }
           }
@@ -510,6 +716,16 @@ export class EditPassageComponent implements OnInit {
         occursInIri: this.data.occursIn.occursInIri,
         contributedByName: this.data.contributedBy.contributedByName,
         contributedByIri: this.data.contributedBy.contributedByIri,
+        contains: this.fb.array([
+          /*this.fb.group({containsName: '', containsIri: ''}),*/
+        ]),
+        internalComment: [this.data.internalComment, []],
+        page: [this.data.page, []],
+        pageHist: [this.data.pageHist, []],
+        comment: [this.data.comment, []],
+        extraInfo: [this.data.extraInfo, []],
+        prefixTitle: [this.data.prefixTitle, []],
+        textHist: [this.data.textHist, []],
       });
      });
   }
@@ -566,6 +782,34 @@ export class EditPassageComponent implements OnInit {
     this.nMarkings--;
   }
 
+  getContains() {
+    return this.form.controls.contains as FormArray;
+  }
+
+  addContains(contains?: {containsName: string; containsIri: string}) {
+    const tmp = this.getContains();
+    if (contains === undefined) {
+      tmp.push(this.fb.group({containsName: '', containsIri: ''}));
+      this.data.contains.push({containsName: '', containsIri: ''});
+      this.valIds.contains.push({id: undefined, changed: false, toBeDeleted: false});
+    }
+    else {
+      tmp.push(this.fb.group({lexiaName: contains.containsName, containsIri: contains.containsIri}));
+      this.data.contains.push({containsName: contains.containsName, containsIri: contains.containsIri});
+      this.valIds.contains.push({id: contains.containsIri, changed: false, toBeDeleted: false});
+    }
+    this.nContains++;
+  }
+
+  removeContains(index: number): void {
+    const tmp = this.getContains();
+    tmp.removeAt(index);
+    this.valIds.contains.splice(index, 1);
+    this.data.contains.splice(index, 1);
+    this.nContains--;
+  }
+
+
   onChange = (_: any) => {
   };
 
@@ -596,6 +840,19 @@ export class EditPassageComponent implements OnInit {
             }
         );
         break;
+      case 'contains':
+        const contains = this.getContains();
+        const containsName = contains.value[index].containsName;
+
+        this.valIds.contains[index].changed = true;
+        this.knoraService.getResourcesByLabel(containsName, this.knoraService.wwOntology + 'lexia').subscribe(
+            res => {
+              this.options = res;
+              this.form.value.contains[index].containsName = res[0].label;
+              this.form.value.contains[index].containsIri =  res[0].id;
+            }
+        );
+        break;
     }
   }
 
@@ -613,6 +870,10 @@ export class EditPassageComponent implements OnInit {
         this.form.value.contributedByName = res[0].label;
         this.form.value.contributedByIri =  res[0].id;
         break;
+      case 'contains':
+        this.form.value.contains[index].containsName = res[0].label;
+        this.form.value.contains[index].containsIri = res[0].id;
+        break;
     }
     this.value = new PassageData(
         this.form.value.label,
@@ -625,8 +886,8 @@ export class EditPassageComponent implements OnInit {
         this.form.value.text,
         {occursInName: this.form.value.occursInName, occursInIri: this.form.value.occursInIri},
         {contributedByName: this.form.value.contributedByName, contributedByIri: this.form.value.contributedByIri},
-        [],  // ToDo: complete
-        '', // ToDo: complete
+        this.form.value.contains,
+        this.form.value.internalComment,
         '',  // ToDo: complete
         '',  // ToDo: complete
         '',  // ToDo: complete
@@ -670,6 +931,30 @@ export class EditPassageComponent implements OnInit {
       case 'contributedBy':
         this.valIds.contributedBy.changed = true;
         break;
+      case 'contains':
+        this.valIds.contains[index].changed = true;
+        break;
+      case 'internalComment':
+        this.valIds.internalComment.changed = true;
+        break;
+      case 'page':
+        this.valIds.page.changed = true;
+        break;
+      case 'pageHist':
+        this.valIds.pageHist.changed = true;
+        break;
+      case 'comment':
+        this.valIds.comment.changed = true;
+        break;
+      case 'extraInfo':
+        this.valIds.extraInfo.changed = true;
+        break;
+      case 'prefixTitle':
+        this.valIds.prefixTitle.changed = true;
+        break;
+      case 'textHist':
+        this.valIds.textHist.changed = true;
+        break;
     }
   }
 
@@ -698,6 +983,39 @@ export class EditPassageComponent implements OnInit {
         } else {
           this.removeMarking(index);
         }
+        break;
+      case 'contains':
+        if (this.valIds.contains[index].id !== undefined) {
+          this.valIds.contains[index].toBeDeleted = !this.valIds.contains[index].toBeDeleted;
+          if (this.valIds.contains[index].toBeDeleted) {
+            this.nContains--;
+          } else {
+            this.nContains++;
+          }
+        } else {
+          this.removeContains(index);
+        }
+        break;
+      case 'internalComment':
+        this.valIds.internalComment.toBeDeleted = !this.valIds.internalComment.toBeDeleted;
+        break;
+      case 'page':
+        this.valIds.page.toBeDeleted = !this.valIds.page.toBeDeleted;
+        break;
+      case 'pageHist':
+        this.valIds.pageHist.toBeDeleted = !this.valIds.pageHist.toBeDeleted;
+        break;
+      case 'comment':
+        this.valIds.comment.toBeDeleted = !this.valIds.comment.toBeDeleted;
+        break;
+      case 'extraInfo':
+        this.valIds.extraInfo.toBeDeleted = !this.valIds.extraInfo.toBeDeleted;
+        break;
+      case 'prefixTitle':
+        this.valIds.prefixTitle.toBeDeleted = !this.valIds.prefixTitle.toBeDeleted;
+        break;
+      case 'textHist':
+        this.valIds.textHist.toBeDeleted = !this.valIds.textHist.toBeDeleted;
         break;
     }
   }
@@ -747,6 +1065,38 @@ export class EditPassageComponent implements OnInit {
         this.form.controls.contributedByName.setValue(this.data.contributedBy.contributedByName);
         this.form.controls.contributedByIri.setValue(this.data.contributedBy.contributedByIri);
         this.valIds.occursIn.changed = false;
+        break;
+      case 'contains':
+        this.getContains().controls[index].setValue(this.data.contains[index]);
+        this.valIds.contains[index].changed = false;
+        break;
+      case 'internalComment':
+        this.form.controls.internalComment.setValue(this.data.internalComment);
+        this.valIds.internalComment.changed = false;
+        break;
+      case 'page':
+        this.form.controls.page.setValue(this.data.page);
+        this.valIds.page.changed = false;
+        break;
+      case 'pageHist':
+        this.form.controls.pageHist.setValue(this.data.pageHist);
+        this.valIds.pageHist.changed = false;
+        break;
+      case 'comment':
+        this.form.controls.comment.setValue(this.data.comment);
+        this.valIds.comment.changed = false;
+        break;
+      case 'extraInfo':
+        this.form.controls.extraInfo.setValue(this.data.extraInfo);
+        this.valIds.extraInfo.changed = false;
+        break;
+      case 'prefixTitle':
+        this.form.controls.prefixTitle.setValue(this.data.prefixTitle);
+        this.valIds.prefixTitle.changed = false;
+        break;
+      case 'textHist':
+        this.form.controls.textHist.setValue(this.data.textHist);
+        this.valIds.textHist.changed = false;
         break;
     }
   }
