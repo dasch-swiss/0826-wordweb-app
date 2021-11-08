@@ -97,10 +97,10 @@ export class PassageData {
         public label: string,
         public internalId: string, //hasPassageInternalId (1)
         public displayedTitle: string, // hasDisplayedTitle (1)
-        public functionVoiceIris: string[], // hasFunctionVoice (1-n) -> List functionVoice
-        public markingIris: string[], // hasMarking (1-n) -> List marking
-        public researchFieldIri: string, // hasResearchField (1) -> List researchField
-        public statusIri: string, // hasStatus (1) -> List status
+        public functionVoices: {functionVoiceIri: string} [], // hasFunctionVoice (1-n) -> List functionVoice
+        public markings: {markingIri: string}[], // hasMarking (1-n) -> List marking
+        public researchField: {researchFieldIri: string}, // hasResearchField (1) -> List researchField
+        public status: {statusIri: string}, // hasStatus (1) -> List status
         public text: string, // hasText (1)
         public occursIn: {occursInName: string; occursInIri: string}, // occursIn (1) -> Link ww:book
         public contributedBy: {contributedByName: string; contributedByIri: string}, // wasContributedBy (1) -> Link ww:person

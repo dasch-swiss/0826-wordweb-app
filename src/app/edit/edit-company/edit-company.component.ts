@@ -142,6 +142,7 @@ class CompanyIds {
           <div *ngFor="let lexiaItem of getLexias().controls; let i=index">
             <mat-form-field [formGroup]="lexiaItem">
               <input matInput [matAutocomplete]="autoLexia"
+                     required
                      formControlName="lexiaName"
                      class="knora-link-input-element klnkie-val full-width"
                      placeholder="Has lexia"

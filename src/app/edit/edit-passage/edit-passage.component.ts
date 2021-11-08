@@ -123,6 +123,7 @@ class PassageIds {
           <mat-icon *ngIf="valIds.displayedTitle.toBeDeleted" color="warn">delete</mat-icon>
         </button>
         <br/>
+
         <div formArrayName="functionVoices">
           <mat-label>Function voices</mat-label>
           <div *ngFor="let functionVoiceItem of getFunctionVoices().controls; let i=index">
@@ -195,7 +196,7 @@ class PassageIds {
         <mat-form-field [style.width.px]=600>
           <mat-select matInput required
                       placeholder="Research field"
-                      formControlName="researchFieldIri"
+                      formControlName="researchField"
                       (selectionChange)="_handleInput('researchField')">
             <mat-option *ngFor="let lt of researchFieldTypes" [value]="lt.iri">
               {{lt.name}}
@@ -210,7 +211,7 @@ class PassageIds {
         <mat-form-field [style.width.px]=600>
           <mat-select matInput required
                       placeholder="Status"
-                      formControlName="statusIri"
+                      formControlName="status"
                       (selectionChange)="_handleInput('status')">
             <mat-option *ngFor="let lt of statusTypes" [value]="lt.iri">
               {{lt.name}}
@@ -218,6 +219,39 @@ class PassageIds {
           </mat-select>
         </mat-form-field>
         <button *ngIf="valIds.status.changed" mat-mini-fab (click)="_handleUndo('status')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=400>
+          <input matInput required
+                 class="full-width"
+                 placeholder="Text"
+                 formControlName="text"
+                 (input)="_handleInput('text')">
+          <mat-error *ngIf="form.controls.text.errors?.required">Text erforderlich!</mat-error>
+        </mat-form-field>
+        <button *ngIf="valIds.label.changed" mat-mini-fab (click)="_handleUndo('text')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]="400">
+          <input matInput [matAutocomplete]="autoOccursIn"
+                 formControlName="occursInName"
+                 class="knora-link-input-element klnkie-val full-width"
+                 placeholder="Occurs in (book)"
+                 aria-label="Value"
+                 (change)="_handleInput('occursIn')"
+                 (input)="_handleLinkInput('occursIn')">
+          <input matInput formControlName="occursInIri" [hidden]="true" ><br/>
+          <mat-autocomplete #autoOccursIn="matAutocomplete" (optionSelected)="_optionSelected($event.option.value, 'occursIn')">
+            <mat-option *ngFor="let option of options" [value]="option.label">
+              {{ option.label }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button *ngIf="valIds.occursIn.changed" mat-mini-fab (click)="_handleUndo('occursIn')">
           <mat-icon color="warn">cached</mat-icon>
         </button>
         <br/>
@@ -249,8 +283,8 @@ export class EditPassageComponent implements OnInit {
   options: Array<{ id: string; label: string }> = [];
   resId: string;
   lastmod: string;
-  data: PassageData = new PassageData('', '', '',[], [], '',
-      '', '', {occursInName: '', occursInIri: ''},
+  data: PassageData = new PassageData('', '', '',[], [], {researchFieldIri: ''},
+      {statusIri: ''}, '', {occursInName: '', occursInIri: ''},
       {contributedByName: '', contributedByIri: ''}, [], '', '', '',
       '', '', '', '', []);
   nFunctionVoices: number;
@@ -284,16 +318,16 @@ export class EditPassageComponent implements OnInit {
   @Input()
   get value(): PassageData | null {
     const functionVoices: FormArray = this.getFunctionVoices();
-    const functionVoiceIriValues: string[] = [];
+    const functionVoiceIriValues: {functionVoiceIri: string }[] = [];
     for (const x of functionVoices.controls) {
       const y = x as FormGroup;
-      functionVoiceIriValues.push(y.controls.functionVoiceIri.value);
+      functionVoiceIriValues.push({functionVoiceIri: y.controls.functionVoiceIri.value});
     }
     const markings: FormArray = this.getMarkings();
-    const markingIriValues: string[] = [];
+    const markingIriValues: {markingIri: string}[] = [];
     for (const x of markings.controls) {
       const y = x as FormGroup;
-      markingIriValues.push(y.controls.markingIri.value);
+      markingIriValues.push({markingIri: y.controls.markingIri.value});
     }
     return new PassageData(
         this.form.controls.label.value,
@@ -301,9 +335,9 @@ export class EditPassageComponent implements OnInit {
         this.form.controls.displayedTitle.value,
         functionVoiceIriValues,
         markingIriValues,
-        this.form.controls.researchFieldIri.value,
-        this.form.controls.statusIri.value,
-        '',
+        {researchFieldIri: this.form.controls.researchField.value},
+        {statusIri: this.form.controls.status.value},
+        this.form.controls.text.value,
         {occursInName: '', occursInIri: ''},
         {contributedByName: '', contributedByIri: ''},
         [],
@@ -319,12 +353,14 @@ export class EditPassageComponent implements OnInit {
   }
 
   set value(knoraVal: PassageData | null) {
-    const {label, internalId, displayedTitle, functionVoiceIris, markingIris, researchFieldIri}
+    const {label, internalId, displayedTitle, functionVoices, markings, researchField, status, text, occursIn}
         = knoraVal || new PassageData('', '', '', [],
-        [], '', '', '', {occursInName: '', occursInIri: ''},
+        [], {researchFieldIri: ''}, {statusIri: ''}, '', {occursInName: '', occursInIri: ''},
         {contributedByName: '', contributedByIri: ''}, [], '',
         '', '', '', '', '', '', []);
-    this.form.setValue({label, internalId, displayedTitle, functionVoiceIris, markingIris, researchFieldIri});
+    console.log('!!!!!!', occursIn);
+    this.form.setValue({label, internalId, displayedTitle, functionVoices, markings, researchField,
+      status, text, occursInName: occursIn.occursInName, occursInIri: occursIn.occursInIri});
   }
 
   ngOnInit(): void {
@@ -372,16 +408,29 @@ export class EditPassageComponent implements OnInit {
                 }
                 case this.knoraService.wwOntology + 'hasResearchField': {
                   const tmp = ele as ListPropertyData;
-                  this.form.controls.researchFieldIri.setValue(tmp.nodeIris[0]);
+                  this.form.controls.researchField.setValue(tmp.nodeIris[0]);
                   this.valIds.researchField = {id: tmp.ids[0], changed: false, toBeDeleted: false};
-                  this.data.researchFieldIri = tmp.nodeIris[0];
+                  this.data.researchField = {researchFieldIri: tmp.nodeIris[0]};
                   break;
                 }
                 case this.knoraService.wwOntology + 'hasStatus': {
                   const tmp = ele as ListPropertyData;
-                  this.form.controls.statusIri.setValue(tmp.nodeIris[0]);
+                  this.form.controls.status.setValue(tmp.nodeIris[0]);
                   this.valIds.status = {id: tmp.ids[0], changed: false, toBeDeleted: false};
-                  this.data.statusIri = tmp.nodeIris[0];
+                  this.data.status = {statusIri: tmp.nodeIris[0]};
+                  break;
+                }
+                case this.knoraService.wwOntology + 'hasText': {
+                  this.form.controls.text.setValue(ele.values[0]);
+                  this.valIds.text = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.text = ele.values[0];
+                  break;
+                }
+                case this.knoraService.wwOntology + 'occursIn': {
+                  this.form.controls.occursInName.setValue(ele.values[0]);
+                  this.form.controls.occursInIri.setValue(ele.ids[0]);
+                  this.valIds.text = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.occursIn = {occursInName: ele.values[0], occursInIri: ele.ids[0]};
                   break;
                 }
               }
@@ -417,8 +466,11 @@ export class EditPassageComponent implements OnInit {
         displayedTitle: [this.data.displayedTitle, []],
         functionVoices: this.fb.array(fvInitial),
         markings: this.fb.array(mInitial),
-        researchFieldIri: [this.data.researchFieldIri || this.researchFieldTypes[0].iri, [Validators.required]],
-        statusIri: [this.data.statusIri || this.statusTypes[0].iri, [Validators.required]],
+        researchField: [this.data.researchField?.researchFieldIri || this.researchFieldTypes[0].iri, [Validators.required]],
+        status: [this.data.status?.statusIri || this.statusTypes[0].iri, [Validators.required]],
+        text: [this.data.label, [Validators.required]],
+        occursInName: this.data.occursIn.occursInName,
+        occursInIri: this.data.occursIn.occursInIri,
       });
      });
   }
@@ -431,11 +483,11 @@ export class EditPassageComponent implements OnInit {
     const functionVoices = this.getFunctionVoices();
     if (functionVoiceIri === undefined) {
       functionVoices.push(this.fb.group({functionVoiceIri: this.functionVoiceTypes[0].iri}));
-      this.data.functionVoiceIris.push(this.functionVoiceTypes[0].iri);
+      this.data.functionVoices.push({functionVoiceIri: this.functionVoiceTypes[0].iri});
       this.valIds.functionVoices.push({id: undefined, changed: false, toBeDeleted: false});
     } else {
       functionVoices.push(this.fb.group({functionVoiceIri}));
-      this.data.functionVoiceIris.push(functionVoiceIri);
+      this.data.functionVoices.push({functionVoiceIri});
       this.valIds.functionVoices.push({id: functionVoiceIri, changed: false, toBeDeleted: false});
     }
     this.nFunctionVoices++;
@@ -445,7 +497,7 @@ export class EditPassageComponent implements OnInit {
     const functionVoices = this.getFunctionVoices();
     functionVoices.removeAt(index);
     this.valIds.functionVoices.splice(index, 1);
-    this.data.functionVoiceIris.splice(index, 1);
+    this.data.functionVoices.splice(index, 1);
     this.nFunctionVoices--;
   }
 
@@ -457,11 +509,11 @@ export class EditPassageComponent implements OnInit {
     const markings = this.getMarkings();
     if (markingIri === undefined) {
       markings.push(this.fb.group({markingIri: this.markingTypes[0].iri}));
-      this.data.markingIris.push(this.markingTypes[0].iri);
+      this.data.markings.push({markingIri: this.markingTypes[0].iri});
       this.valIds.markings.push({id: undefined, changed: false, toBeDeleted: false});
     } else {
       markings.push(this.fb.group({markingIri}));
-      this.data.markingIris.push(markingIri);
+      this.data.markings.push({markingIri});
       this.valIds.markings.push({id: markingIri, changed: false, toBeDeleted: false});
     }
     this.nMarkings++;
@@ -471,7 +523,7 @@ export class EditPassageComponent implements OnInit {
     const markings = this.getMarkings();
     markings.removeAt(index);
     this.valIds.markings.splice(index, 1);
-    this.data.markingIris.splice(index, 1);
+    this.data.markings.splice(index, 1);
     this.nMarkings--;
   }
 
@@ -480,6 +532,66 @@ export class EditPassageComponent implements OnInit {
 
   onTouched = () => {
   };
+
+  _handleLinkInput(what: string, index?: number): void {
+    switch(what) {
+      case 'occursIn':
+        const occursInName = this.form.controls.occursInName.value;
+
+        this.valIds.occursIn.changed = true;
+        this.knoraService.getResourcesByLabel(occursInName, this.knoraService.wwOntology + 'book').subscribe(
+            res => {
+              this.options = res;
+              this.form.value.occursInName = res[0].label;
+              this.form.value.occursInIri =  res[0].id;
+            }
+        );
+        break;
+    }
+  }
+
+  _optionSelected(val: any, what: string, index?: number): void {
+    console.log('=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*>>>>>>> _optionSelected()');
+    const res = this.options.filter(tmp => tmp.label === val);
+    if (res.length !== 1) {
+      console.log('BIG ERROR...');
+    }
+    console.log(res);
+    switch(what) {
+      case 'occursIn':
+        //this.form.value.occursInName = res[0].label;
+        //this.form.value.occursInIri =  res[0].id;
+        this.form.controls.occursInName.setValue(res[0].label);
+        this.form.controls.occursInIri.setValue(res[0].id);
+        console.log(this.form.value.occursInName);
+        console.log(this.form.value.occursInIri);
+
+        this.value = new PassageData(
+            this.form.value.label,
+            this.form.value.internalId,
+            this.form.value.displayedTitle,
+            this.form.value.functionVoices,
+            this.form.value.markings,
+            this.form.value.researchField,
+            this.form.value.status,
+            this.form.value.text,
+            {occursInName: 'GAGA', occursInIri: 'GUGUS'},
+            {contributedByName: '', contributedByIri: ''}, // ToDo: complete
+            [],  // ToDo: complete
+            '', // ToDo: complete
+            '',  // ToDo: complete
+            '',  // ToDo: complete
+            '',  // ToDo: complete
+            '',  // ToDo: complete
+            '',  // ToDo: complete
+            '',
+            []
+        );
+        console.log('_optionSelected', this.value);
+
+        break;
+    }
+  }
 
   _handleInput(what: string, index?: number): void {
     this.onChange(this.form.value);
@@ -504,6 +616,12 @@ export class EditPassageComponent implements OnInit {
         break;
       case 'status':
         this.valIds.status.changed = true;
+        break;
+      case 'text':
+        this.valIds.text.changed = true;
+        break;
+      case 'occursIn':
+        this.valIds.occursIn.changed = true;
         break;
     }
   }
@@ -553,21 +671,30 @@ export class EditPassageComponent implements OnInit {
         break;
       case 'functionVoices':
         const functionVoices = this.getFunctionVoices().controls[index] as FormGroup;
-        functionVoices.controls.functionVoiceIri.setValue(this.data.functionVoiceIris[index]);
+        functionVoices.controls.functionVoiceIri.setValue(this.data.functionVoices[index].functionVoiceIri);
         this.valIds.functionVoices[index].changed = false;
         break;
       case 'markings':
         const markings = this.getMarkings().controls[index] as FormGroup;
-        markings.controls.markingIri.setValue(this.data.markingIris[index]);
+        markings.controls.markingIri.setValue(this.data.markings[index].markingIri);
         this.valIds.markings[index].changed = false;
         break;
       case 'researchField':
-        this.form.controls.researchFieldIri.setValue(this.data.researchFieldIri);
+        this.form.controls.researchField.setValue(this.data.researchField.researchFieldIri);
         this.valIds.researchField.changed = false;
         break;
       case 'status':
-        this.form.controls.statusIri.setValue(this.data.statusIri);
+        this.form.controls.status.setValue(this.data.status.statusIri);
         this.valIds.status.changed = false;
+        break;
+      case 'text':
+        this.form.controls.text.setValue(this.data.text);
+        this.valIds.text.changed = false;
+        break;
+      case 'occursIn':
+        this.form.controls.occursInName.setValue(this.data.occursIn.occursInName); // ToDo: check if correct
+        this.form.controls.occursInIri.setValue(this.data.occursIn.occursInIri); // ToDo: check if correct
+        this.valIds.occursIn.changed = false;
         break;
     }
   }
