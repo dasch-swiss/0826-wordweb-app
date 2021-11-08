@@ -238,6 +238,7 @@ class PassageIds {
 
         <mat-form-field [style.width.px]="400">
           <input matInput [matAutocomplete]="autoOccursIn"
+                 required
                  formControlName="occursInName"
                  class="knora-link-input-element klnkie-val full-width"
                  placeholder="Occurs in (book)"
@@ -252,6 +253,27 @@ class PassageIds {
           </mat-autocomplete>
         </mat-form-field>
         <button *ngIf="valIds.occursIn.changed" mat-mini-fab (click)="_handleUndo('occursIn')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]="400">
+          <input matInput [matAutocomplete]="autoContributedBy"
+                 required
+                 formControlName="contributedByName"
+                 class="knora-link-input-element klnkie-val full-width"
+                 placeholder="Contributed by (person)"
+                 aria-label="Value"
+                 (change)="_handleInput('contributedBy')"
+                 (input)="_handleLinkInput('contributedBy')">
+          <input matInput formControlName="contributedByIri" [hidden]="true" ><br/>
+          <mat-autocomplete #autoContributedBy="matAutocomplete" (optionSelected)="_optionSelected($event.option.value, 'contributedBy')">
+            <mat-option *ngFor="let option of options" [value]="option.label">
+              {{ option.label }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button *ngIf="valIds.contributedBy.changed" mat-mini-fab (click)="_handleUndo('contributedBy')">
           <mat-icon color="warn">cached</mat-icon>
         </button>
         <br/>
@@ -338,8 +360,14 @@ export class EditPassageComponent implements OnInit {
         {researchFieldIri: this.form.controls.researchField.value},
         {statusIri: this.form.controls.status.value},
         this.form.controls.text.value,
-        {occursInName: '', occursInIri: ''},
-        {contributedByName: '', contributedByIri: ''},
+        {
+          occursInName: this.form.controls.occursInName.value,
+          occursInIri: this.form.controls.occursInIri.value
+        },
+        {
+          contributedByName: this.form.controls.contributedByName.value,
+          contributedByIri: this.form.controls.contributedByIri.value
+        },
         [],
         '',
         '',
@@ -353,14 +381,16 @@ export class EditPassageComponent implements OnInit {
   }
 
   set value(knoraVal: PassageData | null) {
-    const {label, internalId, displayedTitle, functionVoices, markings, researchField, status, text, occursIn}
+    const {label, internalId, displayedTitle, functionVoices, markings, researchField, status, text, occursIn,
+    contributedBy}
         = knoraVal || new PassageData('', '', '', [],
         [], {researchFieldIri: ''}, {statusIri: ''}, '', {occursInName: '', occursInIri: ''},
         {contributedByName: '', contributedByIri: ''}, [], '',
         '', '', '', '', '', '', []);
     console.log('!!!!!!', occursIn);
     this.form.setValue({label, internalId, displayedTitle, functionVoices, markings, researchField,
-      status, text, occursInName: occursIn.occursInName, occursInIri: occursIn.occursInIri});
+      status, text, occursInName: occursIn.occursInName, occursInIri: occursIn.occursInIri,
+      contributedByName: contributedBy.contributedByName, contributedByIri: contributedBy.contributedByIri});
   }
 
   ngOnInit(): void {
@@ -429,8 +459,15 @@ export class EditPassageComponent implements OnInit {
                 case this.knoraService.wwOntology + 'occursIn': {
                   this.form.controls.occursInName.setValue(ele.values[0]);
                   this.form.controls.occursInIri.setValue(ele.ids[0]);
-                  this.valIds.text = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.valIds.occursIn = {id: ele.ids[0], changed: false, toBeDeleted: false};
                   this.data.occursIn = {occursInName: ele.values[0], occursInIri: ele.ids[0]};
+                  break;
+                }
+                case this.knoraService.wwOntology + 'wasContributedBy': {
+                  this.form.controls.contributedByName.setValue(ele.values[0]);
+                  this.form.controls.contributedByIri.setValue(ele.ids[0]);
+                  this.valIds.contributedBy = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.contributedBy = {contributedByName: ele.values[0], contributedByIri: ele.ids[0]};
                   break;
                 }
               }
@@ -471,6 +508,8 @@ export class EditPassageComponent implements OnInit {
         text: [this.data.label, [Validators.required]],
         occursInName: this.data.occursIn.occursInName,
         occursInIri: this.data.occursIn.occursInIri,
+        contributedByName: this.data.contributedBy.contributedByName,
+        contributedByIri: this.data.contributedBy.contributedByIri,
       });
      });
   }
@@ -537,7 +576,6 @@ export class EditPassageComponent implements OnInit {
     switch(what) {
       case 'occursIn':
         const occursInName = this.form.controls.occursInName.value;
-
         this.valIds.occursIn.changed = true;
         this.knoraService.getResourcesByLabel(occursInName, this.knoraService.wwOntology + 'book').subscribe(
             res => {
@@ -547,50 +585,56 @@ export class EditPassageComponent implements OnInit {
             }
         );
         break;
+      case 'contributedBy':
+        const contributedByName = this.form.controls.contributedByName.value;
+        this.valIds.contributedBy.changed = true;
+        this.knoraService.getResourcesByLabel(contributedByName, this.knoraService.wwOntology + 'person').subscribe(
+            res => {
+              this.options = res;
+              this.form.value.contributedByName = res[0].label;
+              this.form.value.contributedByIri =  res[0].id;
+            }
+        );
+        break;
     }
   }
 
   _optionSelected(val: any, what: string, index?: number): void {
-    console.log('=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*>>>>>>> _optionSelected()');
     const res = this.options.filter(tmp => tmp.label === val);
     if (res.length !== 1) {
       console.log('BIG ERROR...');
     }
-    console.log(res);
     switch(what) {
       case 'occursIn':
-        //this.form.value.occursInName = res[0].label;
-        //this.form.value.occursInIri =  res[0].id;
-        this.form.controls.occursInName.setValue(res[0].label);
-        this.form.controls.occursInIri.setValue(res[0].id);
-        console.log(this.form.value.occursInName);
-        console.log(this.form.value.occursInIri);
-
-        this.value = new PassageData(
-            this.form.value.label,
-            this.form.value.internalId,
-            this.form.value.displayedTitle,
-            this.form.value.functionVoices,
-            this.form.value.markings,
-            this.form.value.researchField,
-            this.form.value.status,
-            this.form.value.text,
-            {occursInName: 'GAGA', occursInIri: 'GUGUS'},
-            {contributedByName: '', contributedByIri: ''}, // ToDo: complete
-            [],  // ToDo: complete
-            '', // ToDo: complete
-            '',  // ToDo: complete
-            '',  // ToDo: complete
-            '',  // ToDo: complete
-            '',  // ToDo: complete
-            '',  // ToDo: complete
-            '',
-            []
-        );
-        console.log('_optionSelected', this.value);
-
+        this.form.value.occursInName = res[0].label;
+        this.form.value.occursInIri =  res[0].id;
+        break;
+      case 'contributedBy':
+        this.form.value.contributedByName = res[0].label;
+        this.form.value.contributedByIri =  res[0].id;
         break;
     }
+    this.value = new PassageData(
+        this.form.value.label,
+        this.form.value.internalId,
+        this.form.value.displayedTitle,
+        this.form.value.functionVoices,
+        this.form.value.markings,
+        this.form.value.researchField,
+        this.form.value.status,
+        this.form.value.text,
+        {occursInName: this.form.value.occursInName, occursInIri: this.form.value.occursInIri},
+        {contributedByName: this.form.value.contributedByName, contributedByIri: this.form.value.contributedByIri},
+        [],  // ToDo: complete
+        '', // ToDo: complete
+        '',  // ToDo: complete
+        '',  // ToDo: complete
+        '',  // ToDo: complete
+        '',  // ToDo: complete
+        '',  // ToDo: complete
+        '',
+        []
+    );
   }
 
   _handleInput(what: string, index?: number): void {
@@ -622,6 +666,9 @@ export class EditPassageComponent implements OnInit {
         break;
       case 'occursIn':
         this.valIds.occursIn.changed = true;
+        break;
+      case 'contributedBy':
+        this.valIds.contributedBy.changed = true;
         break;
     }
   }
@@ -692,8 +739,13 @@ export class EditPassageComponent implements OnInit {
         this.valIds.text.changed = false;
         break;
       case 'occursIn':
-        this.form.controls.occursInName.setValue(this.data.occursIn.occursInName); // ToDo: check if correct
-        this.form.controls.occursInIri.setValue(this.data.occursIn.occursInIri); // ToDo: check if correct
+        this.form.controls.occursInName.setValue(this.data.occursIn.occursInName);
+        this.form.controls.occursInIri.setValue(this.data.occursIn.occursInIri);
+        this.valIds.occursIn.changed = false;
+        break;
+      case 'contributedBy':
+        this.form.controls.contributedByName.setValue(this.data.contributedBy.contributedByName);
+        this.form.controls.contributedByIri.setValue(this.data.contributedBy.contributedByIri);
         this.valIds.occursIn.changed = false;
         break;
     }
