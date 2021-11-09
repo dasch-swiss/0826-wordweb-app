@@ -315,6 +315,7 @@ class PassageIds {
             <mat-icon>add</mat-icon>
           </button>
         </div>
+        <div>&nbsp;</div>
 
         <mat-form-field [style.width.px]=400>
           <input matInput
@@ -627,14 +628,14 @@ export class EditPassageComponent implements OnInit {
                 case this.knoraService.wwOntology + 'hasFunctionVoice': {
                   const tmp = ele as ListPropertyData;
                   for (let i = 0; i < ele.values.length; i++) {
-                    this.addFunctionVoice(tmp.nodeIris[i]);
+                    this.addFunctionVoice({id: tmp.ids[i], iri: tmp.nodeIris[i]});
                   }
                   break;
                 }
                 case this.knoraService.wwOntology + 'hasMarking': {
                   const tmp = ele as ListPropertyData;
                   for (let i = 0; i < ele.values.length; i++) {
-                    this.addMarking(tmp.nodeIris[i]);
+                    this.addMarking({id: tmp.ids[i], iri: tmp.nodeIris[i]});
                   }
                   break;
                 }
@@ -658,21 +659,21 @@ export class EditPassageComponent implements OnInit {
                   this.data.text = ele.values[0];
                   break;
                 }
-                case this.knoraService.wwOntology + 'occursIn': {
+                case this.knoraService.wwOntology + 'occursInValue': {
                   this.form.controls.occursInName.setValue(ele.values[0]);
                   this.form.controls.occursInIri.setValue(ele.ids[0]);
                   this.valIds.occursIn = {id: ele.ids[0], changed: false, toBeDeleted: false};
                   this.data.occursIn = {occursInName: ele.values[0], occursInIri: ele.ids[0]};
                   break;
                 }
-                case this.knoraService.wwOntology + 'wasContributedBy': {
+                case this.knoraService.wwOntology + 'wasContributedByValue': {
                   this.form.controls.contributedByName.setValue(ele.values[0]);
                   this.form.controls.contributedByIri.setValue(ele.ids[0]);
                   this.valIds.contributedBy = {id: ele.ids[0], changed: false, toBeDeleted: false};
                   this.data.contributedBy = {contributedByName: ele.values[0], contributedByIri: ele.ids[0]};
                   break;
                 }
-                case this.knoraService.wwOntology + 'contains': {
+                case this.knoraService.wwOntology + 'containsValue': {
                   for (let i = 0; i < ele.values.length; i++) {
                     this.addContains({containsName: ele.values[i], containsIri: ele.ids[i]});
                   }
@@ -720,7 +721,7 @@ export class EditPassageComponent implements OnInit {
                   this.data.textHist = ele.values[0];
                   break;
                 }
-                case this.knoraService.wwOntology + 'isMentionedIn': {
+                case this.knoraService.wwOntology + 'isMentionedInValue': {
                   for (let i = 0; i < ele.values.length; i++) {
                     this.addMentionedIn({mentionedInName: ele.values[i], mentionedInIri: ele.ids[i]});
                   }
@@ -787,16 +788,16 @@ export class EditPassageComponent implements OnInit {
     return this.form.controls.functionVoices as FormArray;
   }
 
-  addFunctionVoice(functionVoiceIri?: string): void {
+  addFunctionVoice(functionVoice?: {id: string; iri: string }): void {
     const functionVoices = this.getFunctionVoices();
-    if (functionVoiceIri === undefined) {
+    if (functionVoice.iri === undefined) {
       functionVoices.push(this.fb.group({functionVoiceIri: this.functionVoiceTypes[0].iri}));
       this.data.functionVoices.push({functionVoiceIri: this.functionVoiceTypes[0].iri});
       this.valIds.functionVoices.push({id: undefined, changed: false, toBeDeleted: false});
     } else {
-      functionVoices.push(this.fb.group({functionVoiceIri}));
-      this.data.functionVoices.push({functionVoiceIri});
-      this.valIds.functionVoices.push({id: functionVoiceIri, changed: false, toBeDeleted: false});
+      functionVoices.push(this.fb.group({functionVoiceIri: functionVoice.iri}));
+      this.data.functionVoices.push({functionVoiceIri: functionVoice.iri});
+      this.valIds.functionVoices.push({id: functionVoice.id, changed: false, toBeDeleted: false});
     }
     this.nFunctionVoices++;
   }
@@ -813,16 +814,16 @@ export class EditPassageComponent implements OnInit {
     return this.form.controls.markings as FormArray;
   }
 
-  addMarking(markingIri?: string): void {
+  addMarking(marking?: {id: string; iri: string }): void {
     const markings = this.getMarkings();
-    if (markingIri === undefined) {
+    if (marking.iri === undefined) {
       markings.push(this.fb.group({markingIri: this.markingTypes[0].iri}));
       this.data.markings.push({markingIri: this.markingTypes[0].iri});
       this.valIds.markings.push({id: undefined, changed: false, toBeDeleted: false});
     } else {
-      markings.push(this.fb.group({markingIri}));
-      this.data.markings.push({markingIri});
-      this.valIds.markings.push({id: markingIri, changed: false, toBeDeleted: false});
+      markings.push(this.fb.group({markingIri: marking.iri}));
+      this.data.markings.push({markingIri: marking.iri});
+      this.valIds.markings.push({id: marking.id, changed: false, toBeDeleted: false});
     }
     this.nMarkings++;
   }
@@ -1217,7 +1218,529 @@ export class EditPassageComponent implements OnInit {
   }
 
   save(): void {
+    this.working = true;
     console.log('this.value:', this.value);
+    if (this.inData.passageIri === undefined) {
+      this.knoraService.createPassage(this.value).subscribe(
+          res => {
+            console.log('CREATE_RESULT:', res);
+            this.working = false;
+            this.location.back();
+          },
+          error => {
+            this.snackBar.open('Error storing the passage object!', 'OK');
+            console.log('EditCompany.save(): ERROR', error);
+            this.working = false;
+            this.location.back();
+          }
+      );
+    } else {
+      const obs: Array<Observable<string>> = [];
+
+      if (this.valIds.label.changed) {
+        const gaga: Observable<string> = this.knoraService.updateLabel(
+            this.resId,
+            this.knoraService.wwOntology + 'company',
+            this.form.value.label);
+        obs.push(gaga);
+      }
+
+      if (this.valIds.internalId.toBeDeleted && this.valIds.internalId.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'passage',
+            this.valIds.internalId.id as string,
+            this.knoraService.wwOntology + 'hasPassageInternalId');
+        obs.push(gaga);
+      } else if (this.valIds.internalId.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.internalId.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.knoraService.wwOntology + 'hasPassageInternalId',
+              this.value.internalId);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.valIds.internalId.id as string,
+              this.knoraService.wwOntology + 'hasPassageInternalId',
+              this.value.internalId);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.displayedTitle.toBeDeleted && this.valIds.displayedTitle.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'passage',
+            this.valIds.displayedTitle.id as string,
+            this.knoraService.wwOntology + 'hasDisplayedTitle');
+        obs.push(gaga);
+      } else if (this.valIds.displayedTitle.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.displayedTitle.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.knoraService.wwOntology + 'hasDisplayedTitle',
+              this.value.displayedTitle);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.valIds.displayedTitle.id as string,
+              this.knoraService.wwOntology + 'hasDisplayedTitle',
+              this.value.displayedTitle);
+        }
+        obs.push(gaga);
+      }
+
+      let index = 0;
+      for (const valId of this.valIds.functionVoices) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteListValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              valId.id as string,
+              this.knoraService.wwOntology + 'hasFunctionVoice');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createListValue(
+                this.resId,
+                this.knoraService.wwOntology + 'passage',
+                this.knoraService.wwOntology + 'hasFunctionVoice',
+                this.value.functionVoices[index].functionVoiceIri);
+          } else {
+            gaga = this.knoraService.updateListValue(
+                this.resId,
+                this.knoraService.wwOntology + 'passage',
+                valId.id as string,
+                this.knoraService.wwOntology + 'hasFunctionVoice',
+                this.value.functionVoices[index].functionVoiceIri);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
+
+      index = 0;
+      for (const valId of this.valIds.markings) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteListValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              valId.id as string,
+              this.knoraService.wwOntology + 'hasMarking');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createListValue(
+                this.resId,
+                this.knoraService.wwOntology + 'passage',
+                this.knoraService.wwOntology + 'hasMarking',
+                this.value.markings[index].markingIri);
+          } else {
+            gaga = this.knoraService.updateListValue(
+                this.resId,
+                this.knoraService.wwOntology + 'passage',
+                valId.id as string,
+                this.knoraService.wwOntology + 'hasMarking',
+                this.value.markings[index].markingIri);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
+
+      if (this.valIds.researchField.toBeDeleted && this.valIds.researchField.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteListValue(
+            this.resId,
+            this.knoraService.wwOntology + 'passage',
+            this.valIds.researchField.id as string,
+            this.knoraService.wwOntology + 'hasResearchField');
+        obs.push(gaga);
+      } else if (this.valIds.researchField.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.researchField.id === undefined) {
+          gaga = this.knoraService.createListValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.knoraService.wwOntology + 'hasResearchField',
+              this.form.value.researchField);
+        } else {
+          gaga = this.knoraService.updateListValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.valIds.researchField.id as string,
+              this.knoraService.wwOntology + 'hasResearchField',
+              this.form.value.researchField);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.status.toBeDeleted && this.valIds.status.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteListValue(
+            this.resId,
+            this.knoraService.wwOntology + 'passage',
+            this.valIds.status.id as string,
+            this.knoraService.wwOntology + 'hasStatus');
+        obs.push(gaga);
+      } else if (this.valIds.status.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.status.id === undefined) {
+          gaga = this.knoraService.createListValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.knoraService.wwOntology + 'hasStatus',
+              this.form.value.status);
+        } else {
+          gaga = this.knoraService.updateListValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.valIds.status.id as string,
+              this.knoraService.wwOntology + 'hasStatus',
+              this.form.value.status);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.text.toBeDeleted && this.valIds.text.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'passage',
+            this.valIds.text.id as string,
+            this.knoraService.wwOntology + 'hasText');
+        obs.push(gaga);
+      } else if (this.valIds.text.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.text.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.knoraService.wwOntology + 'hasText',
+              this.value.text);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.valIds.text.id as string,
+              this.knoraService.wwOntology + 'hasText',
+              this.value.text);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.occursIn.toBeDeleted && this.valIds.occursIn.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteLinkValue(
+            this.resId,
+            this.knoraService.wwOntology + 'passage',
+            this.valIds.occursIn.id as string,
+            this.knoraService.wwOntology + 'occursInValue');
+        obs.push(gaga);
+      } else if (this.valIds.occursIn.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.occursIn.id === undefined) {
+          gaga = this.knoraService.createLinkValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.knoraService.wwOntology + 'occursInValue',
+              this.form.value.occursInIri);
+        } else {
+          gaga = this.knoraService.updateLinkValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.valIds.occursIn.id as string,
+              this.knoraService.wwOntology + 'occursInValue',
+              this.form.value.occursInIri);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.contributedBy.toBeDeleted && this.valIds.contributedBy.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteLinkValue(
+            this.resId,
+            this.knoraService.wwOntology + 'passage',
+            this.valIds.contributedBy.id as string,
+            this.knoraService.wwOntology + 'wasContributedByValue');
+        obs.push(gaga);
+      } else if (this.valIds.contributedBy.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.contributedBy.id === undefined) {
+          gaga = this.knoraService.createLinkValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.knoraService.wwOntology + 'wasContributedByValue',
+              this.form.value.contributedByIri);
+        } else {
+          gaga = this.knoraService.updateLinkValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.valIds.contributedBy.id as string,
+              this.knoraService.wwOntology + 'wasContributedByValue',
+              this.form.value.contributedByIri);
+        }
+        obs.push(gaga);
+      }
+
+      index = 0;
+      for (const valId of this.valIds.contains) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteLinkValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              valId.id as string,
+              this.knoraService.wwOntology + 'containsValue');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'passage',
+                this.knoraService.wwOntology + 'containsValue',
+                this.value.contains[index].containsIri);
+          } else {
+            gaga = this.knoraService.updateLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'passage',
+                valId.id as string,
+                this.knoraService.wwOntology + 'containsValue',
+                this.value.contains[index].containsIri);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
+
+      if (this.valIds.internalComment.toBeDeleted && this.valIds.internalComment.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'passage',
+            this.valIds.internalComment.id as string,
+            this.knoraService.wwOntology + 'hasInternalComment');
+        obs.push(gaga);
+      } else if (this.valIds.internalComment.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.internalComment.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.knoraService.wwOntology + 'hasInternalComment',
+              this.value.internalComment);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.valIds.internalComment.id as string,
+              this.knoraService.wwOntology + 'hasInternalComment',
+              this.value.internalComment);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.page.toBeDeleted && this.valIds.page.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'passage',
+            this.valIds.page.id as string,
+            this.knoraService.wwOntology + 'hasPage');
+        obs.push(gaga);
+      } else if (this.valIds.page.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.page.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.knoraService.wwOntology + 'hasPage',
+              this.value.page);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.valIds.page.id as string,
+              this.knoraService.wwOntology + 'hasPage',
+              this.value.page);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.pageHist.toBeDeleted && this.valIds.pageHist.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'passage',
+            this.valIds.pageHist.id as string,
+            this.knoraService.wwOntology + 'hasPageHist');
+        obs.push(gaga);
+      } else if (this.valIds.pageHist.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.pageHist.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.knoraService.wwOntology + 'hasPageHist',
+              this.value.pageHist);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.valIds.pageHist.id as string,
+              this.knoraService.wwOntology + 'hasPageHist',
+              this.value.pageHist);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.comment.toBeDeleted && this.valIds.comment.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'passage',
+            this.valIds.comment.id as string,
+            this.knoraService.wwOntology + 'hasPassageComment');
+        obs.push(gaga);
+      } else if (this.valIds.comment.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.comment.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.knoraService.wwOntology + 'hasPassageComment',
+              this.value.comment);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.valIds.comment.id as string,
+              this.knoraService.wwOntology + 'hasPassageComment',
+              this.value.comment);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.extraInfo.toBeDeleted && this.valIds.extraInfo.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'passage',
+            this.valIds.extraInfo.id as string,
+            this.knoraService.wwOntology + 'hasPassageExtraInfo');
+        obs.push(gaga);
+      } else if (this.valIds.extraInfo.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.extraInfo.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.knoraService.wwOntology + 'hasPassageExtraInfo',
+              this.value.extraInfo);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.valIds.extraInfo.id as string,
+              this.knoraService.wwOntology + 'hasPassageExtraInfo',
+              this.value.extraInfo);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.prefixTitle.toBeDeleted && this.valIds.prefixTitle.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'passage',
+            this.valIds.prefixTitle.id as string,
+            this.knoraService.wwOntology + 'hasPrefixDisplayedTitle');
+        obs.push(gaga);
+      } else if (this.valIds.prefixTitle.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.prefixTitle.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.knoraService.wwOntology + 'hasPrefixDisplayedTitle',
+              this.value.prefixTitle);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.valIds.prefixTitle.id as string,
+              this.knoraService.wwOntology + 'hasPrefixDisplayedTitle',
+              this.value.prefixTitle);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.textHist.toBeDeleted && this.valIds.textHist.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'passage',
+            this.valIds.textHist.id as string,
+            this.knoraService.wwOntology + 'hasTextHist');
+        obs.push(gaga);
+      } else if (this.valIds.textHist.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.textHist.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.knoraService.wwOntology + 'hasTextHist',
+              this.value.textHist);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              this.valIds.textHist.id as string,
+              this.knoraService.wwOntology + 'hasTextHist',
+              this.value.textHist);
+        }
+        obs.push(gaga);
+      }
+
+      index = 0;
+      for (const valId of this.valIds.mentionedIn) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteLinkValue(
+              this.resId,
+              this.knoraService.wwOntology + 'passage',
+              valId.id as string,
+              this.knoraService.wwOntology + 'isMentionedInValue');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'passage',
+                this.knoraService.wwOntology + 'isMentionedInValue',
+                this.value.mentionedIn[index].mentionedInIri);
+          } else {
+            gaga = this.knoraService.updateLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'passage',
+                valId.id as string,
+                this.knoraService.wwOntology + 'isMentionedInValue',
+                this.value.mentionedIn[index].mentionedInIri);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
+
+      forkJoin(obs).subscribe(res => {
+            this.working = false;
+            this.location.back();
+          },
+          error => {
+            this.snackBar.open('Fehler beim Speichern der Daten des company-Eintrags!', 'OK');
+            this.working = false;
+            this.location.back();
+          });
+
+    }
+
   }
 
   delete(): void {

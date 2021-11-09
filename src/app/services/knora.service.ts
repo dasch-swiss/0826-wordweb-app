@@ -102,9 +102,9 @@ export class PassageData {
         public researchField: {researchFieldIri: string}, // hasResearchField (1) -> List researchField
         public status: {statusIri: string}, // hasStatus (1) -> List status
         public text: string, // hasText (1)
-        public occursIn: {occursInName: string; occursInIri: string}, // occursIn (1) -> Link ww:book
-        public contributedBy: {contributedByName: string; contributedByIri: string}, // wasContributedBy (1) -> Link ww:person
-        public contains?: {containsName: string; containsIri: string}[], // contains (0-n) -> Link ww:lexia
+        public occursIn: {occursInName: string; occursInIri: string}, // occursInValue (1) -> Link ww:book
+        public contributedBy: {contributedByName: string; contributedByIri: string}, // wasContributedByValue (1) -> Link ww:person
+        public contains?: {containsName: string; containsIri: string}[], // containsValue (0-n) -> Link ww:lexia
         public internalComment?: string, // hasInternalComment (0-1)
         public page?: string, // hasPage (0-1)
         public pageHist?: string, // hasPageHist (0-1)
@@ -112,7 +112,7 @@ export class PassageData {
         public extraInfo?: string, // hasPassageExtraInfo (0-1)
         public prefixTitle?: string, // hasPrefixDisplayedTitle (0-1)
         public textHist?: string, // hasTextHist (0-1)
-        public mentionedIn?: {mentionedInName: string; mentionedInIri: string}[], // isMentionedIn (0-n) -> Link ww:pasage
+        public mentionedIn?: {mentionedInName: string; mentionedInIri: string}[], // isMentionedInValue (0-n) -> Link ww:pasage
     ) {}
 }
 
@@ -1141,7 +1141,7 @@ export class KnoraService {
                 }
             }
             if (v.length > 0) {
-                props[this.wwOntology + 'hasFunctionVoice'] = v;
+                props[this.wwOntology + 'hasMarking'] = v;
             }
         }
 
@@ -1174,7 +1174,7 @@ export class KnoraService {
         if (data.occursIn?.occursInIri !== null && data.occursIn?.occursInIri !== undefined && data.occursIn?.occursInIri !== '') {
             const occursInVal = new CreateLinkValue();
             occursInVal.linkedResourceIri = data.occursIn.occursInIri;
-            props[this.wwOntology + 'occursIn'] = [
+            props[this.wwOntology + 'occursInValue'] = [
                 occursInVal
             ];
         }
@@ -1183,7 +1183,7 @@ export class KnoraService {
             data.contributedBy?.contributedByIri !== '') {
             const contributedByVal = new CreateLinkValue();
             contributedByVal.linkedResourceIri = data.contributedBy.contributedByIri;
-            props[this.wwOntology + 'wasContributedBy'] = [
+            props[this.wwOntology + 'wasContributedByValue'] = [
                 contributedByVal
             ];
         }
@@ -1198,7 +1198,7 @@ export class KnoraService {
                 }
             }
             if (v.length > 0) {
-                props[this.wwOntology + 'contains'] = v;
+                props[this.wwOntology + 'containsValue'] = v;
             }
         }
 
@@ -1268,7 +1268,7 @@ export class KnoraService {
                 }
             }
             if (v.length > 0) {
-                props[this.wwOntology + 'isMentionedIn'] = v;
+                props[this.wwOntology + 'isMentionedInValue'] = v;
             }
         }
 
@@ -1411,6 +1411,10 @@ export class KnoraService {
     }
 
     updateListValue(resId: string, resType: string, valId: string, property: string, nodeIri: string): Observable<string> {
+        console.log('resId:', resId);
+        console.log('resType:', resType);
+        console.log('valId:', valId);
+        console.log('nodeIri:', nodeIri);
         const updateListVal = new UpdateListValue();
         updateListVal.id = valId;
         updateListVal.listNode = nodeIri;
