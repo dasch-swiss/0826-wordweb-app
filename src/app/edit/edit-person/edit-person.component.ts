@@ -147,6 +147,7 @@ class PersonIds {
           <mat-icon *ngIf="valIds.birthDate.toBeDeleted" color="warn">delete</mat-icon>
         </button>
         <br/>
+        
         <mat-form-field appearance="fill"  [style.width.px]=600>
           <mat-label>Deathdate</mat-label>
           <app-knora-date-value matInput
@@ -536,12 +537,12 @@ export class EditPersonComponent implements OnInit {
         this.valIds.description.changed = false;
         break;
       case 'birthDate':
-        this.form.controls.birthDateStart.setValue(this.data.birthDate);
+        this.form.controls.birthDate.setValue(this.data.birthDate);
         //this.form.controls.birthDateEnd.setValue(this.data.birthDateEnd);
         this.valIds.birthDate.changed = false;
         break;
       case 'deathDate':
-        this.form.controls.deathDateStart.setValue(this.data.deathDate);
+        this.form.controls.deathDate.setValue(this.data.deathDate);
         //this.form.controls.deathDateEnd.setValue(this.data.deathDateEnd);
         this.valIds.deathDate.changed = false;
         break;

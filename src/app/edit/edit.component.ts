@@ -122,6 +122,32 @@ import {Router} from "@angular/router";
       </mat-card-content>
     </mat-card>
 
+    <mat-card>
+      <mat-card-title>Book</mat-card-title>
+      <mat-card-content>
+        <button mat-raised-button (click)="createBook()">New</button><br><br>
+        <mat-form-field>
+          <input matInput
+                 placeholder="Select Book"
+                 aria-label="Value"
+                 [matAutocomplete]="autoBook"
+                 [(ngModel)]="book"
+                 (change)="_handleInput('book')"
+                 (input)="_handleLinkInput('book')">
+          <input matInput [(ngModel)]="bookIri" [hidden]="true">
+          <mat-autocomplete #autoBook="matAutocomplete"
+                            (optionSelected)="_optionSelected($event.option.value,
+                            'book')">
+            <mat-option *ngFor="let option of options" [value]="option.label">
+              {{ option.label }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-raised-button
+                [disabled]="bookEditDisabled"
+                (click)="editBook()">Edit</button>
+      </mat-card-content>
+    </mat-card>
   `,
   styles: [
   ]
@@ -139,6 +165,9 @@ export class EditComponent implements OnInit {
   passage = '';
   passageIri = '';
   passageEditDisabled = true;
+  book = '';
+  bookIri = '';
+  bookEditDisabled = true;
   options: Array<{id: string; label: string}> = [];
 
   constructor(public knoraService: KnoraService,
@@ -166,6 +195,10 @@ export class EditComponent implements OnInit {
       case 'passage':
         this.onChange(this.passage);
         this.onChange(this.passageIri);
+        break;
+      case 'book':
+        this.onChange(this.book);
+        this.onChange(this.bookIri);
         break;
     }
   }
@@ -224,6 +257,19 @@ export class EditComponent implements OnInit {
             }
         );
         break;
+      case 'book':
+        if (this.bookIri !== '') {
+          this.bookIri = '';
+        }
+        this.bookEditDisabled = true;
+        console.log(this.book);
+        this.knoraService.getResourcesByLabel(this.book, this.knoraService.wwOntology + 'book').subscribe(
+            res => {
+              this.options = res;
+              console.log('_handleLinkInput:res=', res);
+            }
+        );
+        break;
     }
   }
 
@@ -249,6 +295,11 @@ export class EditComponent implements OnInit {
         this.passage = res[0].label;
         this.passageIri = res[0].id;
         this.passageEditDisabled = false;
+        break;
+      case 'book':
+        this.book = res[0].label;
+        this.bookIri = res[0].id;
+        this.bookEditDisabled = false;
         break;
     }
     console.log('_optionSelected:res', res);
@@ -284,5 +335,13 @@ export class EditComponent implements OnInit {
 
   createPassage(): void {
     this.router.navigate(['/edit/passage']);
+  }
+
+  editBook(): void {
+    this.router.navigate(['/edit/book', this.bookIri]);
+  }
+
+  createBook(): void {
+    this.router.navigate(['/edit/book']);
   }
 }

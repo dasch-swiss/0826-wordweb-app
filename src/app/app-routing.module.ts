@@ -31,6 +31,7 @@ import {EditCompanyComponent} from "./edit/edit-company/edit-company.component";
 import {EditPersonComponent} from "./edit/edit-person/edit-person.component";
 import {EditLexiaComponent} from "./edit/edit-lexia/edit-lexia.component";
 import {EditPassageComponent} from "./edit/edit-passage/edit-passage.component";
+import {EditBookComponent} from "./edit/edit-book/edit-book.component";
 
 const routes: Routes = [
   {path: "", redirectTo: "search", pathMatch: "full"},
@@ -81,7 +82,9 @@ const routes: Routes = [
       {path: "lexia/:iri", component: EditLexiaComponent},
       {path: "lexia", component: EditLexiaComponent},
       {path: "passage/:iri", component: EditPassageComponent},
-      {path: "passage", component: EditPassageComponent}
+      {path: "passage", component: EditPassageComponent},
+      {path: "book/:iri", component: EditBookComponent},
+      {path: "book", component: EditBookComponent}
     ],
   },
   {path: "**", component: PageNotFoundComponent}
