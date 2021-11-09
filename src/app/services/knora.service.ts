@@ -116,6 +116,30 @@ export class PassageData {
     ) {}
 }
 
+export class BookData {
+    constructor(
+        public label: string,
+        public comment: string, // hasBookComment (0-1) ->text
+        public extraInfo: string, // hasBookExtraInfo (0-1) ->text
+        public internalId: string, // hasBookInternalInfo (1) ->text
+        public title: string, // hasBookTitle (1) -> text
+        public creationDate: DateValue, // hasCreationDate (1) ->date
+        public edition: string, // hasEdition (1) ->text
+        public editionHist: string, // hasEditionHistory (0-1) ->text
+        public firstPerformance: DateValue, // hasFirstPerformanceDate (0-1) ->date
+        public genre: string, // hasGenre (1-n) ->list genre
+        public language: string, // hasLanguage (1) -> list language
+        public predixTitle: string, // hasPrefixBookTitle (0-1) ->text
+        public pubdate: DateValue, // hasPublicationDate (0-1) ->date
+        public subject: string, // hasSubject (0-n) -> list subject
+        public lexia: string, // isLexiaBook (0-n) -> link ww:lexia
+        public writtenBy: string, // isWrittenBy (1-n) link ww:person
+        public performedBy: string, // performedBy (0-n) link ww:company
+        public performedByActor: string, // performedByActor (0-n) link ww:person
+        public performedIn: string, // performedIn (0-n) link -> venue
+    ) {}
+}
+
 export class LangString {
     data: {[index: string]: string};
 
