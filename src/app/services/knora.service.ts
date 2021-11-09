@@ -1093,6 +1093,193 @@ export class KnoraService {
         );
     }
 
+    createPassage(data: PassageData): Observable<string> {
+        const createResource = new CreateResource();
+        createResource.label = data.label;
+        createResource.type = this.wwOntology + 'passage';
+        createResource.attachedToProject = 'http://rdfh.ch/projects/0826';
+
+        const props = {};
+
+        if (data.internalId !== null && data.internalId !== undefined && data.internalId !== '') {
+            const internalIdVal = new CreateTextValueAsString();
+            internalIdVal.text = data.internalId;
+            props[this.wwOntology + 'hasPassageInternalId'] = [
+                internalIdVal
+            ];
+        }
+
+        if (data.displayedTitle !== null && data.displayedTitle !== undefined && data.displayedTitle !== '') {
+            const displayedTitleVal = new CreateTextValueAsString();
+            displayedTitleVal.text = data.displayedTitle;
+            props[this.wwOntology + 'hasDisplayedTitle'] = [
+                displayedTitleVal
+            ];
+        }
+
+        if (data.functionVoices !== null && data.functionVoices !== undefined && data.functionVoices.length > 0) {
+            const v: CreateListValue[] = [];
+            for (const functionVoice of data.functionVoices) {
+                if (functionVoice.functionVoiceIri !== '') {
+                    const functionVoiceIriVal = new CreateListValue();
+                    functionVoiceIriVal.listNode = functionVoice.functionVoiceIri;
+                    v.push(functionVoiceIriVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'hasFunctionVoice'] = v;
+            }
+        }
+
+        if (data.markings !== null && data.markings !== undefined && data.markings.length > 0) {
+            const v: CreateListValue[] = [];
+            for (const marking of data.markings) {
+                if (marking.markingIri !== '') {
+                    const markingIriVal = new CreateListValue();
+                    markingIriVal.listNode = marking.markingIri;
+                    v.push(markingIriVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'hasFunctionVoice'] = v;
+            }
+        }
+
+        if (data.researchField?.researchFieldIri !== null && data.researchField?.researchFieldIri !== undefined &&
+            data.researchField?.researchFieldIri !== '') {
+            const researchFieldIriVal = new CreateListValue();
+            researchFieldIriVal.listNode = data.researchField.researchFieldIri;
+            props[this.wwOntology + 'hasResearchField'] = [
+                researchFieldIriVal
+            ];
+        }
+
+        if (data.status?.statusIri !== null && data.status?.statusIri !== undefined &&
+            data.status?.statusIri !== '') {
+            const statusIriVal = new CreateListValue();
+            statusIriVal.listNode = data.status.statusIri;
+            props[this.wwOntology + 'hasStatus'] = [
+                statusIriVal
+            ];
+        }
+
+        if (data.text !== null && data.text !== undefined && data.text !== '') {
+            const textVal = new CreateTextValueAsString();
+            textVal.text = data.text;
+            props[this.wwOntology + 'hasText'] = [
+                textVal
+            ];
+        }
+
+        if (data.occursIn?.occursInIri !== null && data.occursIn?.occursInIri !== undefined && data.occursIn?.occursInIri !== '') {
+            const occursInVal = new CreateLinkValue();
+            occursInVal.linkedResourceIri = data.occursIn.occursInIri;
+            props[this.wwOntology + 'occursIn'] = [
+                occursInVal
+            ];
+        }
+
+        if (data.contributedBy?.contributedByIri !== null && data.contributedBy?.contributedByIri !== undefined &&
+            data.contributedBy?.contributedByIri !== '') {
+            const contributedByVal = new CreateLinkValue();
+            contributedByVal.linkedResourceIri = data.contributedBy.contributedByIri;
+            props[this.wwOntology + 'wasContributedBy'] = [
+                contributedByVal
+            ];
+        }
+
+        if (data.contains !== null && data.contains !== undefined && data.contains.length > 0) {
+            const v: CreateLinkValue[] = [];
+            for (const contains of data.contains) {
+                if (contains.containsIri !== '') {
+                    const containsVal = new CreateLinkValue();
+                    containsVal.linkedResourceIri = contains.containsIri;
+                    v.push(containsVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'contains'] = v;
+            }
+        }
+
+        if (data.internalComment !== null && data.internalComment !== undefined && data.internalComment !== '') {
+            const internalCommentVal = new CreateTextValueAsString();
+            internalCommentVal.text = data.internalComment;
+            props[this.wwOntology + 'hasInternalComment'] = [
+                internalCommentVal
+            ];
+        }
+
+        if (data.page !== null && data.page !== undefined && data.page !== '') {
+            const pageVal = new CreateTextValueAsString();
+            pageVal.text = data.page;
+            props[this.wwOntology + 'hasPage'] = [
+                pageVal
+            ];
+        }
+
+        if (data.pageHist !== null && data.pageHist !== undefined && data.pageHist !== '') {
+            const pageHistVal = new CreateTextValueAsString();
+            pageHistVal.text = data.pageHist;
+            props[this.wwOntology + 'hasPageHist'] = [
+                pageHistVal
+            ];
+        }
+
+        if (data.comment !== null && data.comment !== undefined && data.comment !== '') {
+            const commentVal = new CreateTextValueAsString();
+            commentVal.text = data.comment;
+            props[this.wwOntology + 'hasPassageComment'] = [
+                commentVal
+            ];
+        }
+
+        if (data.extraInfo !== null && data.extraInfo !== undefined && data.extraInfo !== '') {
+            const extraInfoVal = new CreateTextValueAsString();
+            extraInfoVal.text = data.extraInfo;
+            props[this.wwOntology + 'hasPassageExtraInfo'] = [
+                extraInfoVal
+            ];
+        }
+
+        if (data.prefixTitle !== null && data.prefixTitle !== undefined && data.prefixTitle !== '') {
+            const prefixTitleVal = new CreateTextValueAsString();
+            prefixTitleVal.text = data.prefixTitle;
+            props[this.wwOntology + 'hasPrefixDisplayedTitle'] = [
+                prefixTitleVal
+            ];
+        }
+
+        if (data.textHist !== null && data.textHist !== undefined && data.textHist !== '') {
+            const textHistVal = new CreateTextValueAsString();
+            textHistVal.text = data.textHist;
+            props[this.wwOntology + 'hasTextHist'] = [
+                textHistVal
+            ];
+        }
+
+        if (data.mentionedIn !== null && data.mentionedIn !== undefined && data.mentionedIn.length > 0) {
+            const v: CreateLinkValue[] = [];
+            for (const mentionedIn of data.mentionedIn) {
+                if (mentionedIn.mentionedInIri !== '') {
+                    const mentionedInVal = new CreateLinkValue();
+                    mentionedInVal.linkedResourceIri = mentionedIn.mentionedInIri;
+                    v.push(mentionedInVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'isMentionedIn'] = v;
+            }
+        }
+
+        createResource.properties = props;
+
+        return this._knoraApiConnection.v2.res.createResource(createResource).pipe(
+            map((res: ReadResource) => res.id),
+            catchError((error: ApiResponseError) => of('error'))
+        );
+    }
+
     updateLabel(resId: string, resType: string, label: string) {
         const updateResourceMetadata = new UpdateResourceMetadata();
         updateResourceMetadata.id = resId;
