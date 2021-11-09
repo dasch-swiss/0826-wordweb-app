@@ -119,13 +119,13 @@ export class PassageData {
 export class BookData {
     constructor(
         public label: string,
-        public internalId: string, // hasBookInternalInfo (1) ->text
+        public internalId: string, // hasBookInternalId (1) ->text
         public title: string, // hasBookTitle (1) -> text
         public creationDate: DateValue, // hasCreationDate (1) ->date
         public edition: string, // hasEdition (1) ->text
         public genres: {genreIri: string}[], // hasGenre (1-n) ->list genre
         public language: {languageIri: string}, // hasLanguage (1) -> list language
-        public writtenBy:  {writtenByName: string; writtenByIri: string}[], // isWrittenBy (1-n) link ww:person
+        public writtenBy:  {writtenByName: string; writtenByIri: string}[], // isWrittenByValue (1-n) link ww:person
         public comment?: string, // hasBookComment (0-1) ->text
         public extraInfo?: string, // hasBookExtraInfo (0-1) ->text
         public editionHist?: string, // hasEditionHistory (0-1) ->text
@@ -133,10 +133,10 @@ export class BookData {
         public prefixTitle?: string, // hasPrefixBookTitle (0-1) ->text
         public pubdate?: DateValue, // hasPublicationDate (0-1) ->date
         public subjects?: {subjectIri: string}[], // hasSubject (0-n) -> list subject
-        public lexias?: {lexiaName: string; lexiaIri: string}[], // isLexiaBook (0-n) -> link ww:lexia
-        public performedBy?: {performedByName: string; performedByIri: string}[], // performedBy (0-n) link ww:company
-        public performedByActor?: {performedByActorName: string; performedByActorIri: string}[], // performedByActor (0-n) link ww:person
-        public performedIn?: {performedInName: string; performedInIri: string}[], // performedIn (0-n) link -> venue
+        public lexias?: {lexiaName: string; lexiaIri: string}[], // isLexiaBookValue (0-n) -> link ww:lexia
+        public performedBy?: {performedByName: string; performedByIri: string}[], // performedByValue (0-n) link ww:company
+        public performedByActor?: {performedByActorName: string; performedByActorIri: string}[], // performedByActorValue (0-n) link ww:person
+        public performedIn?: {performedInName: string; performedInIri: string}[], // performedInValue (0-n) link -> venue
     ) {}
 }
 

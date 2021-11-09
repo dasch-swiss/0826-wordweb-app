@@ -223,7 +223,7 @@ class PassageIds {
         </button>
         <br/>
 
-        <mat-form-field [style.width.px]=400>
+        <mat-form-field [style.width.px]=600>
           <textarea matInput text required
                  class="full-width tarows"
                  placeholder="Text"
@@ -413,7 +413,7 @@ class PassageIds {
         </button>
         <br/>
 
-        <mat-form-field [style.width.px]=400>
+        <mat-form-field [style.width.px]=600>
           <textarea matInput
                  class="full-width tarows"
                  placeholder="Text history"
@@ -466,6 +466,7 @@ class PassageIds {
             <mat-icon>add</mat-icon>
           </button>
         </div>
+        <div>&nbsp;</div>
       </mat-card-content>
 
       <mat-card-actions>
