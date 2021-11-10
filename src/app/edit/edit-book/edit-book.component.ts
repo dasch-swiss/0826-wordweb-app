@@ -555,6 +555,7 @@ export class EditBookComponent implements OnInit {
     this.inData = {};
     this.working = false;
     this.genreTypes = knoraService.genreTypes;
+    console.log(this.genreTypes);
     this.languageTypes = knoraService.languageTypes;
     this.subjectTypes = knoraService.subjectTypes;
     this.nGenres = 0;
@@ -813,7 +814,6 @@ export class EditBookComponent implements OnInit {
         genres: this.fb.array(gInitial),
         language: [this.data.language?.languageIri || this.languageTypes[0].iri, [Validators.required]],
         writtenBy: this.fb.array([
-          /*this.fb.group({containsName: '', containsIri: ''}),*/
         ]),
         comment: [this.data.comment, []],
         extraInfo: [this.data.extraInfo, []],
@@ -821,7 +821,7 @@ export class EditBookComponent implements OnInit {
         firstPerformance: [this.data.firstPerformance, []],
         prefixTitle: [this.data.prefixTitle, []],
         pubdate: [this.data.pubdate, []],
-        subjects: this.fb.array(sInitial),
+        subjects: this.fb.array([]), //this.fb.array(sInitial),
         lexias: this.fb.array([
           /*this.fb.group({containsName: '', containsIri: ''}),*/
         ]),
@@ -835,6 +835,7 @@ export class EditBookComponent implements OnInit {
           /*this.fb.group({containsName: '', containsIri: ''}),*/
         ]),
       });
+      this.addWrittenBy();
     });
   }
 
@@ -1086,7 +1087,7 @@ export class EditBookComponent implements OnInit {
         );
         break;
       case 'performedByActor':
-        const performedByActor = this.getPerformedBys();
+        const performedByActor = this.getPerformedByActors();
         const performedByActorName = performedByActor.value[index].performedByActorName;
 
         this.valIds.performedByActor[index].changed = true;
@@ -1099,7 +1100,7 @@ export class EditBookComponent implements OnInit {
         );
         break;
       case 'performedIn':
-        const performedIn = this.getPerformedBys();
+        const performedIn = this.getPerformedIns();
         const performedInName = performedIn.value[index].performedInName;
 
         this.valIds.performedIn[index].changed = true;
@@ -1407,8 +1408,70 @@ export class EditBookComponent implements OnInit {
   }
 
   save(): void {
-    //this.working = true;
+    this.working = true;
     console.log('this.value:', this.value);
+    if (this.inData.passageIri === undefined) {
+      this.knoraService.createBook(this.value).subscribe(
+          res => {
+            console.log('CREATE_RESULT:', res);
+            this.working = false;
+            this.location.back();
+          },
+          error => {
+            this.snackBar.open('Error storing the passage object!', 'OK');
+            console.log('EditCompany.save(): ERROR', error);
+            this.working = false;
+            this.location.back();
+          }
+      );
+    } else {
+      const obs: Array<Observable<string>> = [];
+
+      if (this.valIds.label.changed) {
+        const gaga: Observable<string> = this.knoraService.updateLabel(
+            this.resId,
+            this.knoraService.wwOntology + 'book',
+            this.form.value.label);
+        obs.push(gaga);
+      }
+
+      if (this.valIds.internalId.toBeDeleted && this.valIds.internalId.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'book',
+            this.valIds.internalId.id as string,
+            this.knoraService.wwOntology + 'hasBookInternalId');
+        obs.push(gaga);
+      } else if (this.valIds.internalId.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.internalId.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.knoraService.wwOntology + 'hasBookInternalId',
+              this.value.internalId);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.valIds.internalId.id as string,
+              this.knoraService.wwOntology + 'hasBookInternalId',
+              this.value.internalId);
+        }
+        obs.push(gaga);
+      }
+
+      forkJoin(obs).subscribe(res => {
+            this.working = false;
+            this.location.back();
+          },
+          error => {
+            this.snackBar.open('Fehler beim Speichern der Daten des book-Eintrags!', 'OK');
+            this.working = false;
+            this.location.back();
+          });
+
+    }
   }
 
   delete(): void {

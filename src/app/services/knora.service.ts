@@ -1304,6 +1304,328 @@ export class KnoraService {
         );
     }
 
+    createBook(data: BookData): Observable<string> {
+        const createResource = new CreateResource();
+        createResource.label = data.label;
+        createResource.type = this.wwOntology + 'book';
+        createResource.attachedToProject = 'http://rdfh.ch/projects/0826';
+
+        const props = {};
+
+        if (data.internalId !== null && data.internalId !== undefined && data.internalId !== '') {
+            const internalIdVal = new CreateTextValueAsString();
+            internalIdVal.text = data.internalId;
+            props[this.wwOntology + 'hasBookInternalId'] = [
+                internalIdVal
+            ];
+        }
+
+        if (data.title !== null && data.title !== undefined && data.title !== '') {
+            const titleVal = new CreateTextValueAsString();
+            titleVal.text = data.title;
+            props[this.wwOntology + 'hasBookTitle'] = [
+                titleVal
+            ];
+        }
+
+        const creationDate = new DateValue(
+            data.creationDate.calendar,
+            data.creationDate.timeSpan,
+            data.creationDate.startYear,
+            data.creationDate.startMonth,
+            data.creationDate.startDay,
+            data.creationDate.endYear,
+            data.creationDate.endMonth,
+            data.creationDate.endDay);
+        if (!creationDate.isEmpty()) {
+            const creationDateVal = new CreateDateValue();
+            creationDateVal.calendar = creationDate.calendar;
+            if (data.creationDate.startYear < 0) {
+                creationDateVal.startEra = 'BCE';
+                if (data.creationDate.calendar === DateCalendar.JULIAN) {
+                    creationDateVal.startYear = -creationDate.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                } else {
+                    creationDateVal.startYear = -creationDate.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                }
+            } else {
+                creationDateVal.startEra = 'CE';
+                creationDateVal.startYear = creationDate.startYear;
+            }
+            creationDateVal.startMonth = creationDate.startMonth;
+            creationDateVal.startDay = creationDate.startDay;
+            if (creationDate.endYear < 0) {
+                creationDateVal.endEra = 'BCE';
+                if (creationDate.calendar === DateCalendar.JULIAN) {
+                    creationDateVal.endYear = -creationDate.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                } else {
+                    creationDateVal.endYear = -creationDate.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                }
+            } else {
+                creationDateVal.endEra = 'CE';
+                creationDateVal.endYear = creationDate.endYear;
+            }
+            creationDateVal.endMonth = creationDate.endMonth;
+            creationDateVal.endDay = creationDate.endDay;
+            props[this.wwOntology + 'hasCreationDate'] = [
+                creationDateVal
+            ];
+        }
+
+        if (data.edition !== null && data.edition !== undefined && data.edition !== '') {
+            const editionVal = new CreateTextValueAsString();
+            editionVal.text = data.edition;
+            props[this.wwOntology + 'hasEdition'] = [
+                editionVal
+            ];
+        }
+
+        if (data.genres !== null && data.genres !== undefined && data.genres.length > 0) {
+            const v: CreateListValue[] = [];
+            for (const genre of data.genres) {
+                if (genre.genreIri !== '') {
+                    const genreVal = new CreateListValue();
+                    genreVal.listNode = genre.genreIri;
+                    v.push(genreVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'hasGenre'] = v;
+            }
+        }
+
+        if (data.language?.languageIri !== null && data.language?.languageIri !== undefined &&
+            data.language?.languageIri !== '') {
+            const languageIriVal = new CreateListValue();
+            languageIriVal.listNode = data.language.languageIri;
+            props[this.wwOntology + 'hasLanguage'] = [
+                languageIriVal
+            ];
+        }
+
+        if (data.writtenBy !== null && data.writtenBy !== undefined && data.writtenBy.length > 0) {
+            const v: CreateLinkValue[] = [];
+            for (const writtenBy of data.writtenBy) {
+                if (writtenBy.writtenByIri !== '') {
+                    const writtenByVal = new CreateLinkValue();
+                    writtenByVal.linkedResourceIri = writtenBy.writtenByIri;
+                    v.push(writtenByVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'isWrittenByValue'] = v;
+            }
+        }
+
+        if (data.comment !== null && data.comment !== undefined && data.comment !== '') {
+            const commentVal = new CreateTextValueAsString();
+            commentVal.text = data.comment;
+            props[this.wwOntology + 'hasBookComment'] = [
+                commentVal
+            ];
+        }
+
+        if (data.extraInfo !== null && data.extraInfo !== undefined && data.extraInfo !== '') {
+            const extraInfoVal = new CreateTextValueAsString();
+            extraInfoVal.text = data.extraInfo;
+            props[this.wwOntology + 'hasBookExtraInfo'] = [
+                extraInfoVal
+            ];
+        }
+
+        if (data.editionHist !== null && data.editionHist !== undefined && data.editionHist !== '') {
+            const editionHistVal = new CreateTextValueAsString();
+            editionHistVal.text = data.editionHist;
+            props[this.wwOntology + 'hasEditionHistory'] = [
+                editionHistVal
+            ];
+        }
+
+        const firstPerformance = new DateValue(
+            data.firstPerformance.calendar,
+            data.firstPerformance.timeSpan,
+            data.firstPerformance.startYear,
+            data.firstPerformance.startMonth,
+            data.firstPerformance.startDay,
+            data.firstPerformance.endYear,
+            data.firstPerformance.endMonth,
+            data.firstPerformance.endDay);
+        if (!firstPerformance.isEmpty()) {
+            const firstPerformanceVal = new CreateDateValue();
+            firstPerformanceVal.calendar = firstPerformance.calendar;
+            if (data.firstPerformance.startYear < 0) {
+                firstPerformanceVal.startEra = 'BCE';
+                if (data.firstPerformance.calendar === DateCalendar.JULIAN) {
+                    firstPerformanceVal.startYear = -firstPerformance.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                } else {
+                    firstPerformanceVal.startYear = -firstPerformance.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                }
+            } else {
+                firstPerformanceVal.startEra = 'CE';
+                firstPerformanceVal.startYear = firstPerformance.startYear;
+            }
+            firstPerformanceVal.startMonth = firstPerformance.startMonth;
+            firstPerformanceVal.startDay = firstPerformance.startDay;
+            if (firstPerformance.endYear < 0) {
+                firstPerformanceVal.endEra = 'BCE';
+                if (firstPerformance.calendar === DateCalendar.JULIAN) {
+                    firstPerformanceVal.endYear = -firstPerformance.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                } else {
+                    firstPerformanceVal.endYear = -firstPerformance.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                }
+            } else {
+                firstPerformanceVal.endEra = 'CE';
+                firstPerformanceVal.endYear = firstPerformance.endYear;
+            }
+            firstPerformanceVal.endMonth = firstPerformance.endMonth;
+            firstPerformanceVal.endDay = firstPerformance.endDay;
+            props[this.wwOntology + 'hasFirstPerformanceDate'] = [
+                firstPerformanceVal
+            ];
+        }
+
+        if (data.prefixTitle !== null && data.prefixTitle !== undefined && data.prefixTitle !== '') {
+            const prefixTitleVal = new CreateTextValueAsString();
+            prefixTitleVal.text = data.prefixTitle;
+            props[this.wwOntology + 'hasPrefixBookTitle'] = [
+                prefixTitleVal
+            ];
+        }
+
+        const pubdate = new DateValue(
+            data.pubdate.calendar,
+            data.pubdate.timeSpan,
+            data.pubdate.startYear,
+            data.pubdate.startMonth,
+            data.pubdate.startDay,
+            data.pubdate.endYear,
+            data.pubdate.endMonth,
+            data.pubdate.endDay);
+        if (!pubdate.isEmpty()) {
+            const pubdateVal = new CreateDateValue();
+            pubdateVal.calendar = pubdate.calendar;
+            if (data.pubdate.startYear < 0) {
+                pubdateVal.startEra = 'BCE';
+                if (data.pubdate.calendar === DateCalendar.JULIAN) {
+                    pubdateVal.startYear = -pubdate.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                } else {
+                    pubdateVal.startYear = -pubdate.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                }
+            } else {
+                pubdateVal.startEra = 'CE';
+                pubdateVal.startYear = pubdate.startYear;
+            }
+            pubdateVal.startMonth = pubdate.startMonth;
+            pubdateVal.startDay = pubdate.startDay;
+            if (pubdate.endYear < 0) {
+                pubdateVal.endEra = 'BCE';
+                if (pubdate.calendar === DateCalendar.JULIAN) {
+                    pubdateVal.endYear = -pubdate.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                } else {
+                    pubdateVal.endYear = -pubdate.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                }
+            } else {
+                pubdateVal.endEra = 'CE';
+                pubdateVal.endYear = pubdate.endYear;
+            }
+            pubdateVal.endMonth = pubdate.endMonth;
+            pubdateVal.endDay = pubdate.endDay;
+            props[this.wwOntology + 'hasPublicationDate'] = [
+                pubdateVal
+            ];
+        }
+
+        if (data.subjects !== null && data.subjects !== undefined && data.subjects.length > 0) {
+            const v: CreateListValue[] = [];
+            for (const subject of data.subjects) {
+                if (subject.subjectIri !== '') {
+                    const subjectVal = new CreateListValue();
+                    subjectVal.listNode = subject.subjectIri;
+                    v.push(subjectVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'hasSubject'] = v;
+            }
+        }
+
+        if (data.lexias !== null && data.lexias !== undefined && data.lexias.length > 0) {
+            const v: CreateLinkValue[] = [];
+            for (const lexia of data.lexias) {
+                if (lexia.lexiaIri !== '') {
+                    const lexiaVal = new CreateLinkValue();
+                    lexiaVal.linkedResourceIri = lexia.lexiaIri;
+                    v.push(lexiaVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'isLexiaBookValue'] = v;
+            }
+        }
+
+        if (data.lexias !== null && data.lexias !== undefined && data.lexias.length > 0) {
+            const v: CreateLinkValue[] = [];
+            for (const lexia of data.lexias) {
+                if (lexia.lexiaIri !== '') {
+                    const lexiaVal = new CreateLinkValue();
+                    lexiaVal.linkedResourceIri = lexia.lexiaIri;
+                    v.push(lexiaVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'isLexiaBookValue'] = v;
+            }
+        }
+
+        if (data.performedBy !== null && data.performedBy !== undefined && data.performedBy.length > 0) {
+            const v: CreateLinkValue[] = [];
+            for (const performedBy of data.performedBy) {
+                if (performedBy.performedByIri !== '') {
+                    const performedByVal = new CreateLinkValue();
+                    performedByVal.linkedResourceIri = performedBy.performedByIri;
+                    v.push(performedByVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'performedByValue'] = v;
+            }
+        }
+
+        if (data.performedByActor !== null && data.performedByActor !== undefined && data.performedByActor.length > 0) {
+            const v: CreateLinkValue[] = [];
+            for (const performedByActor of data.performedByActor) {
+                if (performedByActor.performedByActorIri !== '') {
+                    const performedByActorVal = new CreateLinkValue();
+                    performedByActorVal.linkedResourceIri = performedByActor.performedByActorIri;
+                    v.push(performedByActorVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'performedByActorValue'] = v;
+            }
+        }
+
+        if (data.performedIn !== null && data.performedIn !== undefined && data.performedIn.length > 0) {
+            const v: CreateLinkValue[] = [];
+            for (const performedIn of data.performedIn) {
+                if (performedIn.performedInIri !== '') {
+                    const performedInVal = new CreateLinkValue();
+                    performedInVal.linkedResourceIri = performedIn.performedInIri;
+                    v.push(performedInVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'performedInValue'] = v;
+            }
+        }
+
+        createResource.properties = props;
+
+        return this._knoraApiConnection.v2.res.createResource(createResource).pipe(
+            map((res: ReadResource) => res.id),
+            catchError((error: ApiResponseError) => of('error'))
+        );
+    }
+
     updateLabel(resId: string, resType: string, label: string) {
         const updateResourceMetadata = new UpdateResourceMetadata();
         updateResourceMetadata.id = resId;
