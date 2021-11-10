@@ -6,9 +6,10 @@ import {Location} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {DateAdapter} from '@angular/material/core';
-import {combineLatest, forkJoin, Observable, of} from 'rxjs';
+import {combineLatest, concat, forkJoin, Observable, of} from 'rxjs';
 import {ConfirmationComponent, ConfirmationResult} from '../confirmation/confirmation.component';
 import {DateValue, DateValueComponent} from '../date-value/date-value.component';
+import {toArray} from "rxjs/operators";
 
 interface ValInfo {
   id?: string;
@@ -586,7 +587,8 @@ export class EditPersonComponent implements OnInit {
         const gaga: Observable<string> = this.knoraService.updateLabel(
             this.resId,
             this.knoraService.wwOntology + 'company',
-            this.form.value.label);
+            this.form.value.label,
+            this.lastmod);
         obs.push(gaga);
       }
 
@@ -873,7 +875,7 @@ export class EditPersonComponent implements OnInit {
         index++;
       }
 
-      forkJoin(obs).subscribe(res => {
+      concat(...obs).pipe(toArray()).subscribe(res => {
             this.working = false;
             this.location.back();
           },

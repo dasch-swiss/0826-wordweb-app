@@ -1626,11 +1626,12 @@ export class KnoraService {
         );
     }
 
-    updateLabel(resId: string, resType: string, label: string) {
+    updateLabel(resId: string, resType: string, label: string, lastmod?: string) {
         const updateResourceMetadata = new UpdateResourceMetadata();
         updateResourceMetadata.id = resId;
         updateResourceMetadata.type = resType;
         updateResourceMetadata.label = label;
+        updateResourceMetadata.lastModificationDate = lastmod;
 
         return this._knoraApiConnection.v2.res.updateResourceMetadata(updateResourceMetadata).pipe(
             map((res: UpdateResourceMetadataResponse) => 'OK'),

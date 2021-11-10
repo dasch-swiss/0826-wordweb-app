@@ -9,7 +9,8 @@ import {
   Validators
 } from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
-import {combineLatest, forkJoin, Observable} from 'rxjs';
+import {combineLatest, forkJoin, concat, Observable} from 'rxjs';
+import {toArray} from 'rxjs/operators';
 import {
   CompanyData,
   KnoraService,
@@ -608,8 +609,8 @@ export class EditBookComponent implements OnInit {
     }
     return new BookData(
         this.form.controls.label.value,
-        this.form.controls.title.value,
         this.form.controls.internalId.value,
+        this.form.controls.title.value,
         this.form.controls.creationDate.value,
         this.form.controls.edition.value,
         genreIriValues,
@@ -1104,7 +1105,7 @@ export class EditBookComponent implements OnInit {
         const performedInName = performedIn.value[index].performedInName;
 
         this.valIds.performedIn[index].changed = true;
-        this.knoraService.getResourcesByLabel(performedInName, this.knoraService.wwOntology + 'person').subscribe(
+        this.knoraService.getResourcesByLabel(performedInName, this.knoraService.wwOntology + 'venue').subscribe(
             res => {
               this.options = res;
               this.form.value.performedIn[index].performedInName = res[0].label;
@@ -1134,8 +1135,8 @@ export class EditBookComponent implements OnInit {
         this.form.value.performedBy[index].performedByIri = res[0].id;
         break;
       case 'performedByActor':
-        this.form.value.performedByActor[index].performedByName = res[0].label;
-        this.form.value.performedByActor[index].performedByIri = res[0].id;
+        this.form.value.performedByActor[index].performedByActorName = res[0].label;
+        this.form.value.performedByActor[index].performedByActorIri = res[0].id;
         break;
       case 'performedIn':
         this.form.value.performedIn[index].performedInName = res[0].label;
@@ -1217,6 +1218,9 @@ export class EditBookComponent implements OnInit {
         break;
       case 'performedBy':
         this.valIds.performedBy[index].changed = true;
+        break;
+      case 'performedByActor':
+        this.valIds.performedByActor[index].changed = true;
         break;
       case 'performedIn':
         this.valIds.performedIn[index].changed = true;
@@ -1410,7 +1414,7 @@ export class EditBookComponent implements OnInit {
   save(): void {
     this.working = true;
     console.log('this.value:', this.value);
-    if (this.inData.passageIri === undefined) {
+    if (this.inData.bookIri === undefined) {
       this.knoraService.createBook(this.value).subscribe(
           res => {
             console.log('CREATE_RESULT:', res);
@@ -1431,7 +1435,8 @@ export class EditBookComponent implements OnInit {
         const gaga: Observable<string> = this.knoraService.updateLabel(
             this.resId,
             this.knoraService.wwOntology + 'book',
-            this.form.value.label);
+            this.form.value.label,
+            this.lastmod);
         obs.push(gaga);
       }
 
@@ -1461,7 +1466,544 @@ export class EditBookComponent implements OnInit {
         obs.push(gaga);
       }
 
-      forkJoin(obs).subscribe(res => {
+      if (this.valIds.title.toBeDeleted && this.valIds.title.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'book',
+            this.valIds.title.id as string,
+            this.knoraService.wwOntology + 'hasBookTitle');
+        obs.push(gaga);
+      } else if (this.valIds.title.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.title.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.knoraService.wwOntology + 'hasBookTitle',
+              this.value.title);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.valIds.title.id as string,
+              this.knoraService.wwOntology + 'hasBookTitle',
+              this.value.title);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.creationDate.toBeDeleted && this.valIds.creationDate.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteDateValue(
+            this.resId,
+            this.knoraService.wwOntology + 'book',
+            this.valIds.creationDate.id as string,
+            this.knoraService.wwOntology + 'hasCreationDate');
+        obs.push(gaga);
+      } else if (this.valIds.creationDate.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.creationDate.id === undefined) {
+          const creationDate = this.form.value.creationDate;
+          const creationDateValue = new DateValue(
+              creationDate.calendar,
+              creationDate.timeSpan,
+              creationDate.startYear,
+              creationDate.startMonth,
+              creationDate.startDay,
+              creationDate.endYear,
+              creationDate.endMonth,
+              creationDate.endDay);
+          gaga = this.knoraService.createDateValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.knoraService.wwOntology + 'hasCreationDate',
+              creationDateValue);
+          console.log('gaga:', gaga);
+        } else {
+          const creationDate = this.form.value.creationDate;
+          const creationDateValue = new DateValue(
+              creationDate.calendar,
+              creationDate.timeSpan,
+              creationDate.startYear,
+              creationDate.startMonth,
+              creationDate.startDay,
+              creationDate.endYear,
+              creationDate.endMonth,
+              creationDate.endDay);
+          console.log('CHANGED:', creationDateValue);
+          gaga = this.knoraService.updateDateValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.valIds.creationDate.id as string,
+              this.knoraService.wwOntology + 'hasCreationDate',
+              creationDateValue);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.edition.toBeDeleted && this.valIds.edition.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'book',
+            this.valIds.edition.id as string,
+            this.knoraService.wwOntology + 'hasEdition');
+        obs.push(gaga);
+      } else if (this.valIds.edition.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.edition.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.knoraService.wwOntology + 'hasEdition',
+              this.value.edition);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.valIds.edition.id as string,
+              this.knoraService.wwOntology + 'hasEdition',
+              this.value.edition);
+        }
+        obs.push(gaga);
+      }
+
+      let index = 0;
+      for (const valId of this.valIds.genres) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteListValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              valId.id as string,
+              this.knoraService.wwOntology + 'hasGenre');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createListValue(
+                this.resId,
+                this.knoraService.wwOntology + 'book',
+                this.knoraService.wwOntology + 'hasGenre',
+                this.value.genres[index].genreIri);
+          } else {
+            gaga = this.knoraService.updateListValue(
+                this.resId,
+                this.knoraService.wwOntology + 'book',
+                valId.id as string,
+                this.knoraService.wwOntology + 'hasGenre',
+                this.value.genres[index].genreIri);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
+
+      if (this.valIds.language.toBeDeleted && this.valIds.language.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteListValue(
+            this.resId,
+            this.knoraService.wwOntology + 'book',
+            this.valIds.language.id as string,
+            this.knoraService.wwOntology + 'hasLanguage');
+        obs.push(gaga);
+      } else if (this.valIds.language.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.language.id === undefined) {
+          gaga = this.knoraService.createListValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.knoraService.wwOntology + 'hasLanguage',
+              this.form.value.language);
+        } else {
+          gaga = this.knoraService.updateListValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.valIds.language.id as string,
+              this.knoraService.wwOntology + 'hasLanguage',
+              this.form.value.language);
+        }
+        obs.push(gaga);
+      }
+
+      index = 0;
+      for (const valId of this.valIds.writtenBy) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteLinkValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              valId.id as string,
+              this.knoraService.wwOntology + 'isWrittenByValue');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'book',
+                this.knoraService.wwOntology + 'isWrittenByValue',
+                this.value.writtenBy[index].writtenByIri);
+          } else {
+            gaga = this.knoraService.updateLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'book',
+                valId.id as string,
+                this.knoraService.wwOntology + 'isWrittenByValue',
+                this.value.writtenBy[index].writtenByIri);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
+
+      if (this.valIds.comment.toBeDeleted && this.valIds.comment.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'book',
+            this.valIds.comment.id as string,
+            this.knoraService.wwOntology + 'hasBookComment');
+        obs.push(gaga);
+      } else if (this.valIds.comment.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.comment.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.knoraService.wwOntology + 'hasBookComment',
+              this.value.comment);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.valIds.comment.id as string,
+              this.knoraService.wwOntology + 'hasBookComment',
+              this.value.comment);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.extraInfo.toBeDeleted && this.valIds.extraInfo.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'book',
+            this.valIds.extraInfo.id as string,
+            this.knoraService.wwOntology + 'hasBookExtraInfo');
+        obs.push(gaga);
+      } else if (this.valIds.extraInfo.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.extraInfo.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.knoraService.wwOntology + 'hasBookExtraInfo',
+              this.value.extraInfo);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.valIds.extraInfo.id as string,
+              this.knoraService.wwOntology + 'hasBookExtraInfo',
+              this.value.extraInfo);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.editionHist.toBeDeleted && this.valIds.editionHist.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'book',
+            this.valIds.editionHist.id as string,
+            this.knoraService.wwOntology + 'hasEditionHistory');
+        obs.push(gaga);
+      } else if (this.valIds.editionHist.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.editionHist.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.knoraService.wwOntology + 'hasEditionHistory',
+              this.value.editionHist);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.valIds.editionHist.id as string,
+              this.knoraService.wwOntology + 'hasEditionHistory',
+              this.value.editionHist);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.firstPerformance.toBeDeleted && this.valIds.firstPerformance.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteDateValue(
+            this.resId,
+            this.knoraService.wwOntology + 'book',
+            this.valIds.firstPerformance.id as string,
+            this.knoraService.wwOntology + 'hasFirstPerformanceDate');
+        obs.push(gaga);
+      } else if (this.valIds.firstPerformance.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.firstPerformance.id === undefined) {
+          const firstPerformance = this.form.value.firstPerformance;
+          const firstPerformanceValue = new DateValue(
+              firstPerformance.calendar,
+              firstPerformance.timeSpan,
+              firstPerformance.startYear,
+              firstPerformance.startMonth,
+              firstPerformance.startDay,
+              firstPerformance.endYear,
+              firstPerformance.endMonth,
+              firstPerformance.endDay);
+          gaga = this.knoraService.createDateValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.knoraService.wwOntology + 'hasFirstPerformanceDate',
+              firstPerformanceValue);
+          console.log('gaga:', gaga);
+        } else {
+          const firstPerformance = this.form.value.firstPerformance;
+          const firstPerformanceValue = new DateValue(
+              firstPerformance.calendar,
+              firstPerformance.timeSpan,
+              firstPerformance.startYear,
+              firstPerformance.startMonth,
+              firstPerformance.startDay,
+              firstPerformance.endYear,
+              firstPerformance.endMonth,
+              firstPerformance.endDay);
+          console.log('CHANGED:', firstPerformanceValue);
+          gaga = this.knoraService.updateDateValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.valIds.firstPerformance.id as string,
+              this.knoraService.wwOntology + 'hasFirstPerformanceDate',
+              firstPerformanceValue);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.prefixTitle.toBeDeleted && this.valIds.prefixTitle.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteTextValue(
+            this.resId,
+            this.knoraService.wwOntology + 'book',
+            this.valIds.prefixTitle.id as string,
+            this.knoraService.wwOntology + 'hasPrefixBookTitle');
+        obs.push(gaga);
+      } else if (this.valIds.prefixTitle.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.prefixTitle.id === undefined) {
+          gaga = this.knoraService.createTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.knoraService.wwOntology + 'hasPrefixBookTitle',
+              this.value.prefixTitle);
+        } else {
+          gaga = this.knoraService.updateTextValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.valIds.prefixTitle.id as string,
+              this.knoraService.wwOntology + 'hasPrefixBookTitle',
+              this.value.prefixTitle);
+        }
+        obs.push(gaga);
+      }
+
+      if (this.valIds.pubdate.toBeDeleted && this.valIds.pubdate.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteDateValue(
+            this.resId,
+            this.knoraService.wwOntology + 'book',
+            this.valIds.pubdate.id as string,
+            this.knoraService.wwOntology + 'hasPublicationDate');
+        obs.push(gaga);
+      } else if (this.valIds.pubdate.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.pubdate.id === undefined) {
+          const pubdate = this.form.value.pubdate;
+          const pubdateValue = new DateValue(
+              pubdate.calendar,
+              pubdate.timeSpan,
+              pubdate.startYear,
+              pubdate.startMonth,
+              pubdate.startDay,
+              pubdate.endYear,
+              pubdate.endMonth,
+              pubdate.endDay);
+          gaga = this.knoraService.createDateValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.knoraService.wwOntology + 'hasPublicationDate',
+              pubdateValue);
+          console.log('gaga:', gaga);
+        } else {
+          const pubdate = this.form.value.pubdate;
+          const pubdateValue = new DateValue(
+              pubdate.calendar,
+              pubdate.timeSpan,
+              pubdate.startYear,
+              pubdate.startMonth,
+              pubdate.startDay,
+              pubdate.endYear,
+              pubdate.endMonth,
+              pubdate.endDay);
+          console.log('CHANGED:', pubdateValue);
+          gaga = this.knoraService.updateDateValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              this.valIds.pubdate.id as string,
+              this.knoraService.wwOntology + 'hasPublicationDate',
+              pubdateValue);
+        }
+        obs.push(gaga);
+      }
+
+      index = 0;
+      for (const valId of this.valIds.subjects) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteListValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              valId.id as string,
+              this.knoraService.wwOntology + 'hasSubject');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createListValue(
+                this.resId,
+                this.knoraService.wwOntology + 'book',
+                this.knoraService.wwOntology + 'hasSubject',
+                this.value.subjects[index].subjectIri);
+          } else {
+            gaga = this.knoraService.updateListValue(
+                this.resId,
+                this.knoraService.wwOntology + 'book',
+                valId.id as string,
+                this.knoraService.wwOntology + 'hasSubject',
+                this.value.subjects[index].subjectIri);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
+
+      index = 0;
+      for (const valId of this.valIds.lexias) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteLinkValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              valId.id as string,
+              this.knoraService.wwOntology + 'isLexiaBookValue');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'book',
+                this.knoraService.wwOntology + 'isLexiaBookValue',
+                this.value.lexias[index].lexiaIri);
+          } else {
+            gaga = this.knoraService.updateLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'book',
+                valId.id as string,
+                this.knoraService.wwOntology + 'isLexiaBookValue',
+                this.value.lexias[index].lexiaIri);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
+
+      index = 0;
+      for (const valId of this.valIds.performedBy) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteLinkValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              valId.id as string,
+              this.knoraService.wwOntology + 'performedByValue');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'book',
+                this.knoraService.wwOntology + 'performedByValue',
+                this.value.performedBy[index].performedByIri);
+          } else {
+            gaga = this.knoraService.updateLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'book',
+                valId.id as string,
+                this.knoraService.wwOntology + 'performedByValue',
+                this.value.performedBy[index].performedByIri);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
+
+      index = 0;
+      for (const valId of this.valIds.performedByActor) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteLinkValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              valId.id as string,
+              this.knoraService.wwOntology + 'performedByActorValue');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'book',
+                this.knoraService.wwOntology + 'performedByActorValue',
+                this.value.performedByActor[index].performedByActorIri);
+          } else {
+            gaga = this.knoraService.updateLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'book',
+                valId.id as string,
+                this.knoraService.wwOntology + 'performedByActorValue',
+                this.value.performedByActor[index].performedByActorIri);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
+
+      index = 0;
+      for (const valId of this.valIds.performedIn) {
+        if (valId.toBeDeleted && valId.id !== undefined) {
+          const gaga: Observable<string> = this.knoraService.deleteLinkValue(
+              this.resId,
+              this.knoraService.wwOntology + 'book',
+              valId.id as string,
+              this.knoraService.wwOntology + 'performedInValue');
+          obs.push(gaga);
+        } else if (valId.changed) {
+          let gaga: Observable<string>;
+          if (valId.id === undefined) {
+            gaga = this.knoraService.createLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'book',
+                this.knoraService.wwOntology + 'performedInValue',
+                this.value.performedIn[index].performedInIri);
+          } else {
+            gaga = this.knoraService.updateLinkValue(
+                this.resId,
+                this.knoraService.wwOntology + 'book',
+                valId.id as string,
+                this.knoraService.wwOntology + 'performedInValue',
+                this.value.performedIn[index].performedInIri);
+          }
+          obs.push(gaga);
+        }
+        index++;
+      }
+
+      //forkJoin(obs).subscribe(res => {
+      concat(...obs).pipe(toArray()).subscribe(res => {
             this.working = false;
             this.location.back();
           },
@@ -1470,7 +2012,6 @@ export class EditBookComponent implements OnInit {
             this.working = false;
             this.location.back();
           });
-
     }
   }
 

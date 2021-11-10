@@ -9,12 +9,13 @@ import {
   Validators
 } from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
-import {combineLatest, forkJoin, Observable} from "rxjs";
+import {combineLatest, concat, forkJoin, Observable} from "rxjs";
 import {CompanyData, KnoraService} from '../../services/knora.service';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Location} from '@angular/common';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {ConfirmationComponent, ConfirmationResult} from "../confirmation/confirmation.component";
+import {toArray} from "rxjs/operators";
 
 
 interface ValInfo {
@@ -511,7 +512,8 @@ export class EditCompanyComponent implements OnInit {
         const gaga: Observable<string> = this.knoraService.updateLabel(
             this.resId,
             this.knoraService.wwOntology + 'company',
-            this.form.value.label);
+            this.form.value.label,
+            this.lastmod);
         obs.push(gaga);
       }
 
@@ -654,7 +656,7 @@ export class EditCompanyComponent implements OnInit {
         index++;
       }
 
-      forkJoin(obs).subscribe(res => {
+      concat(...obs).pipe(toArray()).subscribe(res => {
             this.working = false;
             this.location.back();
           },
