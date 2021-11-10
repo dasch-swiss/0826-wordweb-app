@@ -51,7 +51,7 @@ class PersonIds {
       <mat-card-title>Person Editor</mat-card-title>
       <mat-card-content [formGroup]="form">
         <mat-form-field [style.width.px]=600>
-          <input matInput
+          <input matInput required
                  class="full-width"
                  placeholder="Label"
                  formControlName="label"
@@ -65,7 +65,7 @@ class PersonIds {
         <br/>
 
         <mat-form-field [style.width.px]=600>
-          <input matInput
+          <input matInput required
                  class="full-width"
                  placeholder="Internal ID"
                  formControlName="internalId"
@@ -94,7 +94,7 @@ class PersonIds {
         <br/>
 
         <mat-form-field [style.width.px]=600>
-          <input matInput
+          <input matInput required
                  class="full-width"
                  placeholder="Lastname"
                  formControlName="lastName"
@@ -122,7 +122,7 @@ class PersonIds {
         <br/>
 
         <mat-form-field [style.width.px]=600>
-          <input matInput
+          <input matInput required
                  class="full-width"
                  placeholder="Description"
                  formControlName="description"
@@ -202,9 +202,14 @@ class PersonIds {
             <button *ngIf="valIds.lexias[i].changed" mat-mini-fab (click)="_handleUndo('lexias', i)">
               <mat-icon color="warn">cached</mat-icon>
             </button>
-            <button *ngIf="valIds.lexias[i].id !== undefined" mat-mini-fab (click)="_handleDelete('lexias', i)">
+            <button *ngIf="valIds.lexias[i].id !== undefined"
+                    mat-mini-fab (click)="_handleDelete('lexias', i)">
               <mat-icon *ngIf="!valIds.lexias[i].toBeDeleted" color="basic">delete</mat-icon>
               <mat-icon *ngIf="valIds.lexias[i].toBeDeleted" color="warn">delete</mat-icon>
+            </button>
+            <button *ngIf="valIds.lexias[i].id === undefined"
+                    mat-mini-fab (click)="_handleDelete('lexias', i)">
+              <mat-icon *ngIf="!valIds.lexias[i].toBeDeleted" color="basic">delete</mat-icon>
             </button>
 
           </div>
@@ -235,6 +240,7 @@ export class EditPersonComponent implements OnInit {
   lastmod: string;
   data: PersonData = new PersonData('', '', '', '', '',
       '', new DateValue(), new DateValue(), '', []);
+  nLexias: number;
   working: boolean;
   public valIds: PersonIds = new PersonIds();
   public genderTypes: Array<OptionType>;
@@ -252,6 +258,7 @@ export class EditPersonComponent implements OnInit {
     this.inData = {};
     this.working = false;
     this.genderTypes = knoraService.genderTypes;
+    this.nLexias = 0;
   }
 
   @Input()
@@ -401,6 +408,15 @@ export class EditPersonComponent implements OnInit {
       this.data.lexias.push({lexiaName: lexia.lexiaName, lexiaIri: lexia.lexiaIri});
       this.valIds.lexias.push({id: lexia.lexiaIri, changed: false, toBeDeleted: false});
     }
+    this.nLexias++;
+  }
+
+  removeLexia(index: number): void {
+    const tmp = this.getLexias();
+    tmp.removeAt(index);
+    this.valIds.lexias.splice(index, 1);
+    this.data.lexias.splice(index, 1);
+    this.nLexias--;
   }
 
   onChange = (_: any) => {};
@@ -412,13 +428,15 @@ export class EditPersonComponent implements OnInit {
         const lexiaName = lexias.value[index].lexiaName;
 
         this.valIds.lexias[index].changed = true;
-        this.knoraService.getResourcesByLabel(lexiaName, this.knoraService.wwOntology + 'lexia').subscribe(
-            res => {
-              this.options = res;
-              this.form.value.lexias[index].lexiaName = res[0].label;
-              this.form.value.lexias[index].lexiaIri =  res[0].id;
-            }
-        );
+        if (lexiaName.length >= 3) {
+          this.knoraService.getResourcesByLabel(lexiaName, this.knoraService.wwOntology + 'lexia').subscribe(
+              res => {
+                this.options = res;
+                this.form.value.lexias[index].lexiaName = res[0].label;
+                this.form.value.lexias[index].lexiaIri =  res[0].id;
+              }
+          );
+        }
         break;
     }
   }
@@ -448,6 +466,7 @@ export class EditPersonComponent implements OnInit {
         );
         break;
     }
+    this.options = [];
   }
 
   _handleInput(what: string, index?: number): void {
@@ -505,7 +524,16 @@ export class EditPersonComponent implements OnInit {
         console.log('_handleDelete("extraInfo")');
         break;
       case 'lexias':
-        this.valIds.lexias[index].toBeDeleted = !this.valIds.lexias[index].toBeDeleted;
+        if (this.valIds.lexias[index].id !== undefined) {
+          this.valIds.lexias[index].toBeDeleted = !this.valIds.lexias[index].toBeDeleted;
+          if (this.valIds.lexias[index].toBeDeleted) {
+            this.nLexias--;
+          } else {
+            this.nLexias++;
+          }
+        } else {
+          this.removeLexia(index);
+        }
         break;
     }
 
@@ -552,8 +580,6 @@ export class EditPersonComponent implements OnInit {
         this.valIds.extraInfo.changed = false;
         break;
       case 'lexias':
-        console.log(this.data.lexias);
-        console.log('== index:', index);
         this.getLexias().controls[index].setValue(this.data.lexias[index]);
         this.valIds.lexias[index].changed = false;
         break;
@@ -564,7 +590,6 @@ export class EditPersonComponent implements OnInit {
     this.working = true;
     console.log('this.value:', this.value);
     if (this.inData.personIri === undefined) {
-      console.log('---!!!hoppla!!!---');
       this.knoraService.createPerson(this.value).subscribe(
           res => {
             console.log('CREATE_RESULT:', res);

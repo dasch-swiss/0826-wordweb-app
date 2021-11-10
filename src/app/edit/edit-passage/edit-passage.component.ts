@@ -903,37 +903,43 @@ export class EditPassageComponent implements OnInit {
       case 'occursIn':
         const occursInName = this.form.controls.occursInName.value;
         this.valIds.occursIn.changed = true;
-        this.knoraService.getResourcesByLabel(occursInName, this.knoraService.wwOntology + 'book').subscribe(
-            res => {
-              this.options = res;
-              this.form.value.occursInName = res[0].label;
-              this.form.value.occursInIri =  res[0].id;
-            }
-        );
+        if (occursInName.length >= 3) {
+          this.knoraService.getResourcesByLabel(occursInName, this.knoraService.wwOntology + 'book').subscribe(
+              res => {
+                this.options = res;
+                this.form.value.occursInName = res[0].label;
+                this.form.value.occursInIri =  res[0].id;
+              }
+          );
+        }
         break;
       case 'contributedBy':
         const contributedByName = this.form.controls.contributedByName.value;
         this.valIds.contributedBy.changed = true;
-        this.knoraService.getResourcesByLabel(contributedByName, this.knoraService.wwOntology + 'person').subscribe(
-            res => {
-              this.options = res;
-              this.form.value.contributedByName = res[0].label;
-              this.form.value.contributedByIri =  res[0].id;
-            }
-        );
+        if (contributedByName.length >= 3) {
+          this.knoraService.getResourcesByLabel(contributedByName, this.knoraService.wwOntology + 'person').subscribe(
+              res => {
+                this.options = res;
+                this.form.value.contributedByName = res[0].label;
+                this.form.value.contributedByIri =  res[0].id;
+              }
+          );
+        }
         break;
       case 'contains':
         const contains = this.getContains();
         const containsName = contains.value[index].containsName;
 
         this.valIds.contains[index].changed = true;
-        this.knoraService.getResourcesByLabel(containsName, this.knoraService.wwOntology + 'lexia').subscribe(
-            res => {
-              this.options = res;
-              this.form.value.contains[index].containsName = res[0].label;
-              this.form.value.contains[index].containsIri =  res[0].id;
-            }
-        );
+        if (containsName >= 3) {
+          this.knoraService.getResourcesByLabel(containsName, this.knoraService.wwOntology + 'lexia').subscribe(
+              res => {
+                this.options = res;
+                this.form.value.contains[index].containsName = res[0].label;
+                this.form.value.contains[index].containsIri =  res[0].id;
+              }
+          );
+        }
         break;
       case 'mentionedIn':
         const mentionedIn = this.getMentionedIn();
@@ -995,6 +1001,7 @@ export class EditPassageComponent implements OnInit {
         this.form.value.textHist,
         this.form.value.mentionedIn
     );
+    this.options = [];
   }
 
   _handleInput(what: string, index?: number): void {

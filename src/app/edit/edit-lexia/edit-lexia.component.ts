@@ -93,7 +93,7 @@ class LexiaIds {
       <br/>
 
       <div formArrayName="formalClasses">
-        <mat-label>Formal class</mat-label>
+        <mat-label>Formal class *</mat-label>
         <div *ngFor="let formalClassItem of getFormalClasses().controls; let i=index">
           <mat-form-field [formGroup]="formalClassItem" [style.width.px]=300>
             <mat-select matInput
@@ -158,7 +158,7 @@ class LexiaIds {
       </div>
       <br/>
       <div>&nbsp;</div>
-      
+
       <mat-form-field [style.width.px]=400>
         <input matInput
                class="full-width"
@@ -342,6 +342,7 @@ export class EditLexiaComponent implements OnInit {
             formalClassIri: [this.formalClassTypes[0].iri, [Validators.required]]
           })
         ];
+        this.nFormalClasses++;
       } else {
         fcInitial = [];
       }

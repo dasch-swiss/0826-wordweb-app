@@ -244,7 +244,7 @@ class BookIds {
                  (input)="_handleInput('comment')">
         </mat-form-field>
         <button *ngIf="valIds.comment.changed" mat-mini-fab (click)="_handleUndo('comment')">
-          <mat-icon>cached</mat-icon>
+          <mat-icon color="warn">cached</mat-icon>
         </button>
         <button *ngIf="valIds.comment.id !== undefined" mat-mini-fab (click)="_handleDelete('comment')">
           <mat-icon *ngIf="!valIds.comment.toBeDeleted">delete</mat-icon>
@@ -260,7 +260,7 @@ class BookIds {
                  (input)="_handleInput('extraInfo')">
         </mat-form-field>
         <button *ngIf="valIds.extraInfo.changed" mat-mini-fab (click)="_handleUndo('extraInfo')">
-          <mat-icon>cached</mat-icon>
+          <mat-icon color="warn">cached</mat-icon>
         </button>
         <button *ngIf="valIds.extraInfo.id !== undefined" mat-mini-fab (click)="_handleDelete('extraInfo')">
           <mat-icon *ngIf="!valIds.extraInfo.toBeDeleted">delete</mat-icon>
@@ -275,7 +275,7 @@ class BookIds {
                                 (ngModelChange)="_handleInput('firstPerformance')"></app-knora-date-value>
         </mat-form-field>
         <button *ngIf="valIds.firstPerformance.changed" mat-mini-fab (click)="_handleUndo('firstPerformance')">
-          <mat-icon>cached</mat-icon>
+          <mat-icon color="warn">cached</mat-icon>
         </button>
         <button *ngIf="valIds.firstPerformance.id !== undefined" mat-mini-fab (click)="_handleDelete('firstPerformance')">
           <mat-icon *ngIf="!valIds.firstPerformance.toBeDeleted">delete</mat-icon>
@@ -291,7 +291,7 @@ class BookIds {
                  (input)="_handleInput('prefixTitle')">
         </mat-form-field>
         <button *ngIf="valIds.prefixTitle.changed" mat-mini-fab (click)="_handleUndo('prefixTitle')">
-          <mat-icon>cached</mat-icon>
+          <mat-icon color="warn">cached</mat-icon>
         </button>
         <button *ngIf="valIds.prefixTitle.id !== undefined" mat-mini-fab (click)="_handleDelete('prefixTitle')">
           <mat-icon *ngIf="!valIds.prefixTitle.toBeDeleted">delete</mat-icon>
@@ -306,7 +306,7 @@ class BookIds {
                                 (ngModelChange)="_handleInput('pubdate')"></app-knora-date-value>
         </mat-form-field>
         <button *ngIf="valIds.pubdate.changed" mat-mini-fab (click)="_handleUndo('pubdate')">
-          <mat-icon>cached</mat-icon>
+          <mat-icon color="warn">cached</mat-icon>
         </button>
         <button *ngIf="valIds.pubdate.id !== undefined" mat-mini-fab (click)="_handleDelete('pubdate')">
           <mat-icon *ngIf="!valIds.pubdate.toBeDeleted">delete</mat-icon>
@@ -321,7 +321,7 @@ class BookIds {
               <mat-select matInput
                           placeholder="Subject"
                           formControlName="subjectIri"
-                          (selectionChange)="_handleInput('subject', i)">
+                          (selectionChange)="_handleInput('subjects', i)">
                 <mat-option *ngFor="let lt of subjectTypes" [value]="lt.iri">
                   {{lt.name}}
                 </mat-option>
@@ -795,16 +795,16 @@ export class EditBookComponent implements OnInit {
       } else {
         gInitial = [];
       }
-      let sInitial;
+      let wbInitial;
       if (this.inData.bookIri === undefined) {
-        this.valIds.subjects[0] = {id: this.subjectTypes[0].iri, changed: false, toBeDeleted: false};
-        sInitial = [
+        this.valIds.writtenBy[0] = {id: '', changed: false, toBeDeleted: false};
+        wbInitial = [
           this.fb.group({
-            subjectIri: [this.subjectTypes[0].iri, [Validators.required]]
+            writtenByIri: ['', [Validators.required]], writtenByName: [, []]
           })
         ];
       } else {
-        sInitial = [];
+        wbInitial = [];
       }
       this.form = this.fb.group({
         label: [this.data.label, [Validators.required, Validators.minLength(5)]],
@@ -814,8 +814,7 @@ export class EditBookComponent implements OnInit {
         edition: [this.data.edition, [Validators.required]],
         genres: this.fb.array(gInitial),
         language: [this.data.language?.languageIri || this.languageTypes[0].iri, [Validators.required]],
-        writtenBy: this.fb.array([
-        ]),
+        writtenBy: this.fb.array(wbInitial),
         comment: [this.data.comment, []],
         extraInfo: [this.data.extraInfo, []],
         editionHist: [this.data.editionHist, []],
@@ -836,7 +835,7 @@ export class EditBookComponent implements OnInit {
           /*this.fb.group({containsName: '', containsIri: ''}),*/
         ]),
       });
-      this.addWrittenBy();
+      //this.addWrittenBy();
     });
   }
 
@@ -1053,65 +1052,75 @@ export class EditBookComponent implements OnInit {
         const writtenByName = writtenBy.value[index].writtenByName;
 
         this.valIds.writtenBy[index].changed = true;
-        this.knoraService.getResourcesByLabel(writtenByName, this.knoraService.wwOntology + 'person').subscribe(
-            res => {
-              this.options = res;
-              this.form.value.writtenBy[index].writtenByName = res[0].label;
-              this.form.value.writtenBy[index].writtenByIri =  res[0].id;
-            }
-        );
-        break;
+        if (writtenByName.length >= 3) {
+          this.knoraService.getResourcesByLabel(writtenByName, this.knoraService.wwOntology + 'person').subscribe(
+              res => {
+                this.options = res;
+                this.form.value.writtenBy[index].writtenByName = res[0].label;
+                this.form.value.writtenBy[index].writtenByIri =  res[0].id;
+              }
+          );
+          break;
+        }
       case 'lexias':
         const lexias = this.getLexias();
         const lexiaName = lexias.value[index].lexiaName;
 
         this.valIds.lexias[index].changed = true;
-        this.knoraService.getResourcesByLabel(lexiaName, this.knoraService.wwOntology + 'lexia').subscribe(
-            res => {
-              this.options = res;
-              this.form.value.lexias[index].lexiaName = res[0].label;
-              this.form.value.lexias[index].lexiaIri =  res[0].id;
-            }
-        );
+        if (lexiaName.length >= 3) {
+          this.knoraService.getResourcesByLabel(lexiaName, this.knoraService.wwOntology + 'lexia').subscribe(
+              res => {
+                this.options = res;
+                this.form.value.lexias[index].lexiaName = res[0].label;
+                this.form.value.lexias[index].lexiaIri =  res[0].id;
+              }
+          );
+        }
         break;
       case 'performedBy':
         const performedBy = this.getPerformedBys();
         const performedByName = performedBy.value[index].performedByName;
 
         this.valIds.performedBy[index].changed = true;
-        this.knoraService.getResourcesByLabel(performedByName, this.knoraService.wwOntology + 'company').subscribe(
-            res => {
-              this.options = res;
-              this.form.value.performedBy[index].performedByName = res[0].label;
-              this.form.value.performedBy[index].performedByIri =  res[0].id;
-            }
-        );
+        if (performedByName.length >= 3) {
+          this.knoraService.getResourcesByLabel(performedByName, this.knoraService.wwOntology + 'company').subscribe(
+              res => {
+                this.options = res;
+                this.form.value.performedBy[index].performedByName = res[0].label;
+                this.form.value.performedBy[index].performedByIri =  res[0].id;
+              }
+          );
+        }
         break;
       case 'performedByActor':
         const performedByActor = this.getPerformedByActors();
         const performedByActorName = performedByActor.value[index].performedByActorName;
 
         this.valIds.performedByActor[index].changed = true;
-        this.knoraService.getResourcesByLabel(performedByActorName, this.knoraService.wwOntology + 'person').subscribe(
-            res => {
-              this.options = res;
-              this.form.value.performedByActor[index].performedByActorName = res[0].label;
-              this.form.value.performedByActor[index].performedByActorIri =  res[0].id;
-            }
-        );
+        if (performedByActorName.length >= 3) {
+          this.knoraService.getResourcesByLabel(performedByActorName, this.knoraService.wwOntology + 'person').subscribe(
+              res => {
+                this.options = res;
+                this.form.value.performedByActor[index].performedByActorName = res[0].label;
+                this.form.value.performedByActor[index].performedByActorIri =  res[0].id;
+              }
+          );
+        }
         break;
       case 'performedIn':
         const performedIn = this.getPerformedIns();
         const performedInName = performedIn.value[index].performedInName;
 
         this.valIds.performedIn[index].changed = true;
-        this.knoraService.getResourcesByLabel(performedInName, this.knoraService.wwOntology + 'venue').subscribe(
-            res => {
-              this.options = res;
-              this.form.value.performedIn[index].performedInName = res[0].label;
-              this.form.value.performedIn[index].performedInIri =  res[0].id;
-            }
-        );
+        if (performedInName >= 3) {
+          this.knoraService.getResourcesByLabel(performedInName, this.knoraService.wwOntology + 'venue').subscribe(
+              res => {
+                this.options = res;
+                this.form.value.performedIn[index].performedInName = res[0].label;
+                this.form.value.performedIn[index].performedInIri =  res[0].id;
+              }
+          );
+        }
         break;
     }
   }
@@ -1145,6 +1154,7 @@ export class EditBookComponent implements OnInit {
     }
     this.value = new BookData(
         this.form.value.label,
+        this.form.value.internalId,
         this.form.value.title,
         this.form.value.creationDate,
         this.form.value.edition,
@@ -1163,6 +1173,7 @@ export class EditBookComponent implements OnInit {
         this.form.value.performedByActor,
         this.form.value.performedIn
     );
+    this.options = [];
   }
 
   _handleInput(what: string, index?: number): void {
@@ -2002,7 +2013,6 @@ export class EditBookComponent implements OnInit {
         index++;
       }
 
-      //forkJoin(obs).subscribe(res => {
       concat(...obs).pipe(toArray()).subscribe(res => {
             this.working = false;
             this.location.back();

@@ -49,7 +49,7 @@ class CompanyIds {
       <mat-card-title>Company Editor</mat-card-title>
       <mat-card-content [formGroup]="form">
           <mat-form-field [style.width.px]=400>
-            <input matInput
+            <input matInput required
                    class="full-width"
                    placeholder="Label"
                    formControlName="label"
@@ -63,7 +63,7 @@ class CompanyIds {
           <br/>
       
           <mat-form-field [style.width.px]=400>
-            <input matInput
+            <input matInput required
                    class="full-width"
                    placeholder="Title"
                    formControlName="title"
@@ -77,7 +77,7 @@ class CompanyIds {
           <br/>
       
           <mat-form-field [style.width.px]=400>
-            <input matInput
+            <input matInput required
                    class="full-width"
                    placeholder="Internald id"
                    formControlName="internalId"
@@ -127,9 +127,14 @@ class CompanyIds {
               <button *ngIf="valIds.members[i].changed" mat-mini-fab (click)="_handleUndo('members', i)">
                 <mat-icon color="warn">cached</mat-icon>
               </button>
-              <button *ngIf="valIds.members[i].id !== undefined" mat-mini-fab (click)="_handleDelete('members', i)">
+              <button *ngIf="valIds.members[i].id !== undefined"
+                      mat-mini-fab (click)="_handleDelete('members', i)">
                 <mat-icon *ngIf="!valIds.members[i].toBeDeleted" color="basic">delete</mat-icon>
                 <mat-icon *ngIf="valIds.members[i].toBeDeleted" color="warn">delete</mat-icon>
+              </button>
+              <button *ngIf="valIds.members[i].id === undefined"
+                      mat-mini-fab (click)="_handleDelete('members', i)">
+                <mat-icon *ngIf="!valIds.members[i].toBeDeleted" color="basic">delete</mat-icon>
               </button>
 
             </div>
@@ -161,9 +166,14 @@ class CompanyIds {
             <button *ngIf="valIds.lexias[i].changed" mat-mini-fab (click)="_handleUndo('lexias', i)">
               <mat-icon color="warn">cached</mat-icon>
             </button>
-            <button *ngIf="valIds.lexias[i].id !== undefined" mat-mini-fab (click)="_handleDelete('lexias', i)">
+            <button *ngIf="valIds.lexias[i].id !== undefined"
+                    mat-mini-fab (click)="_handleDelete('lexias', i)">
               <mat-icon *ngIf="!valIds.lexias[i].toBeDeleted" color="basic">delete</mat-icon>
               <mat-icon *ngIf="valIds.lexias[i].toBeDeleted" color="warn">delete</mat-icon>
+            </button>
+            <button *ngIf="valIds.lexias[i].id === undefined"
+                    mat-mini-fab (click)="_handleDelete('lexias', i)">
+              <mat-icon *ngIf="!valIds.lexias[i].toBeDeleted" color="basic">delete</mat-icon>
             </button>
 
           </div>
@@ -198,6 +208,8 @@ export class EditCompanyComponent implements OnInit {
   lastmod: string;
   data: CompanyData = new CompanyData('', '', '', '',
       [], []);
+  nMembers: number;
+  nLexias: number;
   working: boolean;
   public valIds: CompanyIds = new CompanyIds();
 
@@ -210,6 +222,8 @@ export class EditCompanyComponent implements OnInit {
               @Optional() @Self() public ngControl: NgControl) {
     this.inData = {};
     this.working = false;
+    this.nMembers = 0;
+    this.nLexias = 0;
   }
 
   @Input()
@@ -326,7 +340,16 @@ export class EditCompanyComponent implements OnInit {
       this.data.members.push({memberName: member.memberName, memberIri: member.memberIri});
       this.valIds.members.push({id: member.memberIri, changed: false, toBeDeleted: false});
     }
+    this.nMembers++;
     console.log('addMember::', this.data.members);
+  }
+
+  removeMembers(index: number): void {
+    const tmp = this.getMembers();
+    tmp.removeAt(index);
+    this.valIds.members.splice(index, 1);
+    this.data.members.splice(index, 1);
+    this.nMembers--;
   }
 
   getLexias() {
@@ -345,6 +368,15 @@ export class EditCompanyComponent implements OnInit {
       this.data.lexias.push({lexiaName: lexia.lexiaName, lexiaIri: lexia.lexiaIri});
       this.valIds.lexias.push({id: lexia.lexiaIri, changed: false, toBeDeleted: false});
     }
+    this.nLexias++;
+  }
+
+  removeLexia(index: number): void {
+    const tmp = this.getLexias();
+    tmp.removeAt(index);
+    this.valIds.lexias.splice(index, 1);
+    this.data.lexias.splice(index, 1);
+    this.nLexias--;
   }
 
 
@@ -360,26 +392,30 @@ export class EditCompanyComponent implements OnInit {
         const memberName = members.value[index].memberName;
 
         this.valIds.members[index].changed = true;
-        this.knoraService.getResourcesByLabel(memberName, this.knoraService.wwOntology + 'person').subscribe(
-            res => {
-              this.options = res;
-              this.form.value.members[index].memberName = res[0].label;
-              this.form.value.members[index].memberIri =  res[0].id;
-            }
-        );
+        if (memberName.length >= 3) {
+          this.knoraService.getResourcesByLabel(memberName, this.knoraService.wwOntology + 'person').subscribe(
+              res => {
+                this.options = res;
+                this.form.value.members[index].memberName = res[0].label;
+                this.form.value.members[index].memberIri =  res[0].id;
+              }
+          );
+        }
         break;
       case 'lexias':
         const lexias = this.getLexias();
         const lexiaName = lexias.value[index].lexiaName;
 
         this.valIds.lexias[index].changed = true;
-        this.knoraService.getResourcesByLabel(lexiaName, this.knoraService.wwOntology + 'lexia').subscribe(
-            res => {
-              this.options = res;
-              this.form.value.lexias[index].lexiaName = res[0].label;
-              this.form.value.lexias[index].lexiaIri =  res[0].id;
-            }
-        );
+        if (lexiaName.length >= 3) {
+          this.knoraService.getResourcesByLabel(lexiaName, this.knoraService.wwOntology + 'lexia').subscribe(
+              res => {
+                this.options = res;
+                this.form.value.lexias[index].lexiaName = res[0].label;
+                this.form.value.lexias[index].lexiaIri =  res[0].id;
+              }
+          );
+        }
         break;
     }
   }
@@ -415,6 +451,7 @@ export class EditCompanyComponent implements OnInit {
         );
         break;
     }
+    this.options = [];
   }
 
   _handleInput(what: string, index?: number): void {
@@ -447,10 +484,28 @@ export class EditCompanyComponent implements OnInit {
         this.valIds.extraInfo.toBeDeleted = !this.valIds.extraInfo.toBeDeleted;
         break;
       case 'members':
-        this.valIds.members[index].toBeDeleted = !this.valIds.members[index].toBeDeleted;
+        if (this.valIds.members[index].id !== undefined) {
+          this.valIds.members[index].toBeDeleted = !this.valIds.members[index].toBeDeleted;
+          if (this.valIds.members[index].toBeDeleted) {
+            this.nMembers--;
+          } else {
+            this.nMembers++;
+          }
+        } else {
+          this.removeMembers(index);
+        }
         break;
       case 'lexias':
-        this.valIds.lexias[index].toBeDeleted = !this.valIds.lexias[index].toBeDeleted;
+        if (this.valIds.lexias[index].id !== undefined) {
+          this.valIds.lexias[index].toBeDeleted = !this.valIds.lexias[index].toBeDeleted;
+          if (this.valIds.lexias[index].toBeDeleted) {
+            this.nLexias--;
+          } else {
+            this.nLexias++;
+          }
+        } else {
+          this.removeLexia(index);
+        }
         break;
     }
   }

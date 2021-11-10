@@ -57,11 +57,11 @@ export interface OptionType {
 export class CompanyData {
     constructor(
         public label: string,
-        public title: string,
-        public internalId: string,
-        public extraInfo?: string,
-        public members?: {memberName: string; memberIri: string}[],
-        public lexias?: {lexiaName: string; lexiaIri: string}[],
+        public title: string, // hasCompanyTitle (1)
+        public internalId: string, //hasCompanyInternalId (1)
+        public extraInfo?: string, // hasCompanyExtraInfo (0-1)
+        public members?: {memberName: string; memberIri: string}[], // hasMamber (0-n)
+        public lexias?: {lexiaName: string; lexiaIri: string}[], // isLexiaCompany (0-n)
     ) {}
 }
 
