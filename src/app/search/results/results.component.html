@@ -25,6 +25,7 @@
                                [queryParams]="{res: 'author', letter: author.hasLastName[0].value[0], id:author.id}">
                                 {{author | authors}}<span *ngIf="!last">,</span>
                             </a>
+                            <button *ngIf="_knoraService.loggedin" [routerLink]="['/edit/person', author.id]">Edit</button>
                         </div>
                     </div>
                     <a class="title-link" [routerLink]="['/search/browsing']"
@@ -32,6 +33,7 @@
                         <span class="title" [innerHTML]="passage | title"></span>
                         <span class="year">{{passage | year}}</span>
                     </a>
+                    <button *ngIf="_knoraService.loggedin" [routerLink]="['/edit/book', passage.occursIn[0].id]">Edit</button>
                 </div>
                 <div class="text"
                      [innerHTML]="passage.original ? passage.hasTextHist[0].value : passage.hasText[0].value"></div>
@@ -39,12 +41,14 @@
                     <div class="lexia" *ngFor="let lexia of passage.contains">
                         <a [routerLink]="['/search/browsing']"
                            [queryParams]="{res: 'lexia', letter: lexia.hasLexiaTitle[0].value[0], id:lexia.id}">{{lexia.hasLexiaTitle[0].value}}</a><br>
+                        <button *ngIf="_knoraService.loggedin" [routerLink]="['/edit/lexia', lexia.id]">Edit</button>
                     </div>
                 </div>
                 <div class="expand-btn">
                     <button [disabled]="false" (click)="expandOrClose(passage)">{{expandBtnText(passage)}}</button>
                     <button *ngIf="passage.hasTextHist"
                             (click)="originalOrNormalized(passage)">{{spellingBtnText(passage)}}</button>
+                    <button *ngIf="_knoraService.loggedin" [routerLink]="['/edit/passage', passage.id]">Edit</button>
                 </div>
             </div>
 
