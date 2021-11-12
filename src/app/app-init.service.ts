@@ -11,7 +11,6 @@ export interface IAppConfig {
     env: {
         name: string;
     };
-    ontologyIRI: string;
     apiURL: string;
     externalApiURL: string;
     iiifURL: string;
@@ -38,12 +37,12 @@ export class AppInitService {
         private _gsBuilder: GravsearchBuilderService) {
     }
 
-    Init() {
+    Init(): Promise<any> {
 
         return new Promise<void>((resolve, reject) => {
             // do your initialisation stuff here
             // console.log("AppInitService.init() called");
-            AppInitService.settings = window["tempConfigStorage"] as IAppConfig;
+            AppInitService.settings = window['tempConfigStorage'] as IAppConfig;
 
             this._gsBuilder.apiURL = AppInitService.settings.apiURL;
 
@@ -51,9 +50,9 @@ export class AppInitService {
 
             // console.log(AppInitService.settings, AppInitService.settings.email, AppInitService.settings.pwd);
 
-            this._knoraService.login("root@example.com", "test")
+            this._knoraService.login('root@example.com', 'test')
                 .pipe(
-                    mergeMap(() => this._knoraService.getAllLists("http://rdfh.ch/projects/0826")),
+                    mergeMap(() => this._knoraService.getAllLists('http://rdfh.ch/projects/0826')),
                     mergeMap((lists: ListNodeInfo[]) => forkJoin<Observable<List>>(lists.map((list: ListNodeInfo) => this._knoraService.getList(list.id))))
                 )
                 .subscribe((fullList: List[]) => {
@@ -63,7 +62,7 @@ export class AppInitService {
                 }, (error: ApiResponseError) => {
                     // Creates the error message
                     const errorMsgElement = document.querySelector('.errorMsgElement');
-                    let message = "Application initialization failed";
+                    let message = 'Application initialization failed';
                     if (error) {
                         message = error.error ? `${message}: ${error.error}` : `${message}: ${error}`;
                     }
@@ -71,4 +70,13 @@ export class AppInitService {
                 });
         });
     }
+
+    public gugus() {
+        console.log('GUGUS');
+    }
+
+    public gaga(): IAppConfig {
+        return AppInitService.settings;
+    }
+
 }

@@ -26,6 +26,14 @@ import {ExpertSearchComponent} from "./search/expert-search/expert-search.compon
 import {BrowsingComponent} from "./search/browsing/browsing.component";
 import {ResourceComponent} from "./resource/resource.component";
 
+import {EditComponent} from "./edit/edit.component";
+import {EditCompanyComponent} from "./edit/edit-company/edit-company.component";
+import {EditPersonComponent} from "./edit/edit-person/edit-person.component";
+import {EditLexiaComponent} from "./edit/edit-lexia/edit-lexia.component";
+import {EditPassageComponent} from "./edit/edit-passage/edit-passage.component";
+import {EditBookComponent} from "./edit/edit-book/edit-book.component";
+import {EditVenueComponent} from "./edit/edit-venue/edit-venue.component";
+
 const routes: Routes = [
   {path: "", redirectTo: "search", pathMatch: "full"},
   {
@@ -63,6 +71,24 @@ const routes: Routes = [
       {path: "venue", component: VenueComponent},
       {path: "", component: PageNotFoundComponent}
     ]
+  },
+  {path: "edit", component: EditComponent},
+  {
+    path: "edit",
+    children: [
+      {path: "company/:iri", component: EditCompanyComponent},
+      {path: "company", component: EditCompanyComponent},
+      {path: "person/:iri", component: EditPersonComponent},
+      {path: "person", component: EditPersonComponent},
+      {path: "lexia/:iri", component: EditLexiaComponent},
+      {path: "lexia", component: EditLexiaComponent},
+      {path: "passage/:iri", component: EditPassageComponent},
+      {path: "passage", component: EditPassageComponent},
+      {path: "book/:iri", component: EditBookComponent},
+      {path: "book", component: EditBookComponent},
+      {path: "venue/:iri", component: EditVenueComponent},
+      {path: "venue", component: EditVenueComponent}
+    ],
   },
   {path: "**", component: PageNotFoundComponent}
 ];

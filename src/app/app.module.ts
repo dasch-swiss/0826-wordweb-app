@@ -95,6 +95,21 @@ import {AppInitService} from "./app-init.service";
 import {KnoraService} from "./services/knora.service";
 import {ListService} from "./services/list.service";
 import {GravsearchBuilderService} from "./services/gravsearch-builder.service";
+import { EditCompanyComponent } from './edit/edit-company/edit-company.component';
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { EditComponent } from './edit/edit.component';
+import { ConfirmationComponent } from './edit/confirmation/confirmation.component';
+import { EditPersonComponent } from './edit/edit-person/edit-person.component';
+import {DatePipe} from '@angular/common';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from '@angular/material/core';
+import { DateValueComponent } from './edit/date-value/date-value.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
+import { EditLexiaComponent } from './edit/edit-lexia/edit-lexia.component';
+import { EditPassageComponent } from './edit/edit-passage/edit-passage.component';
+import { EditBookComponent } from './edit/edit-book/edit-book.component';
+import { EditVenueComponent } from './edit/edit-venue/edit-venue.component';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -157,6 +172,15 @@ export function initializeApp(appInitService: AppInitService) {
         LexiasPipe,
         AuthorsPipe,
         YearPipe,
+        EditCompanyComponent,
+        EditComponent,
+        ConfirmationComponent,
+        EditPersonComponent,
+        DateValueComponent,
+        EditLexiaComponent,
+        EditPassageComponent,
+        EditBookComponent,
+        EditVenueComponent,
     ],
     imports: [
         BrowserModule,
@@ -187,12 +211,18 @@ export function initializeApp(appInitService: AppInitService) {
         MatTabsModule,
         MatButtonToggleModule,
         MatDialogModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        MatProgressBarModule,
+        MatAutocompleteModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatTooltipModule,
     ],
     providers: [
         AppInitService,
         ListService,
         GravsearchBuilderService,
+        DatePipe,
         {
             provide: APP_INITIALIZER,
             useFactory: initializeApp,
