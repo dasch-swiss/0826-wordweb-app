@@ -148,6 +148,33 @@ import {Router} from "@angular/router";
                 (click)="editBook()">Edit</button>
       </mat-card-content>
     </mat-card>
+
+    <mat-card>
+      <mat-card-title>Venue</mat-card-title>
+      <mat-card-content>
+        <button mat-raised-button (click)="createVenue()">New</button><br><br>
+        <mat-form-field>
+          <input matInput
+                 placeholder="Select Venue"
+                 aria-label="Value"
+                 [matAutocomplete]="autoVenue"
+                 [(ngModel)]="venue"
+                 (change)="_handleInput('venue')"
+                 (input)="_handleLinkInput('venue')">
+          <input matInput [(ngModel)]="venueIri" [hidden]="true">
+          <mat-autocomplete #autoVenue="matAutocomplete"
+                            (optionSelected)="_optionSelected($event.option.value,
+                            'venue')">
+            <mat-option *ngFor="let option of options" [value]="option.label">
+              {{ option.label }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-raised-button
+                [disabled]="venueEditDisabled"
+                (click)="editVenue()">Edit</button>
+      </mat-card-content>
+    </mat-card>
   `,
   styles: [
   ]
@@ -168,6 +195,9 @@ export class EditComponent implements OnInit {
   book = '';
   bookIri = '';
   bookEditDisabled = true;
+  venue = '';
+  venueIri = '';
+  venueEditDisabled = true;
   options: Array<{id: string; label: string}> = [];
 
   constructor(public knoraService: KnoraService,
@@ -200,6 +230,10 @@ export class EditComponent implements OnInit {
         this.onChange(this.book);
         this.onChange(this.bookIri);
         break;
+      case 'venue':
+        this.onChange(this.book);
+        this.onChange(this.bookIri);
+        break;
     }
   }
 
@@ -210,65 +244,84 @@ export class EditComponent implements OnInit {
           this.companyIri = '';
         }
         this.companyEditDisabled = true;
-        console.log(this.company);
-        this.knoraService.getResourcesByLabel(this.company, this.knoraService.wwOntology + 'company').subscribe(
-            res => {
-              this.options = res;
-              console.log('_handleLinkInput:res=', res);
-            }
-        );
+        if (this.company.length >= 3) {
+          this.knoraService.getResourcesByLabel(this.company, this.knoraService.wwOntology + 'company').subscribe(
+              res => {
+                this.options = res;
+                console.log('_handleLinkInput:res=', res);
+              }
+          );
+        }
         break;
       case 'person':
         if (this.personIri !== '') {
           this.personIri = '';
         }
         this.personEditDisabled = true;
-        console.log(this.person);
-        this.knoraService.getResourcesByLabel(this.person, this.knoraService.wwOntology + 'person').subscribe(
-            res => {
-              this.options = res;
-              console.log('_handleLinkInput:res=', res);
-            }
-        );
+        if (this.person.length >= 3) {
+          this.knoraService.getResourcesByLabel(this.person, this.knoraService.wwOntology + 'person').subscribe(
+              res => {
+                this.options = res;
+                console.log('_handleLinkInput:res=', res);
+              }
+          );
+        }
         break;
       case 'lexia':
         if (this.lexiaIri !== '') {
           this.lexiaIri = '';
         }
         this.lexiaEditDisabled = true;
-        console.log(this.lexia);
-        this.knoraService.getResourcesByLabel(this.lexia, this.knoraService.wwOntology + 'lexia').subscribe(
-            res => {
-              this.options = res;
-              console.log('_handleLinkInput:res=', res);
-            }
-        );
+        if (this.lexia.length >= 3) {
+          this.knoraService.getResourcesByLabel(this.lexia, this.knoraService.wwOntology + 'lexia').subscribe(
+              res => {
+                this.options = res;
+                console.log('_handleLinkInput:res=', res);
+              }
+          );
+        }
         break;
       case 'passage':
         if (this.passageIri !== '') {
           this.passageIri = '';
         }
         this.passageEditDisabled = true;
-        console.log(this.passage);
-        this.knoraService.getResourcesByLabel(this.passage, this.knoraService.wwOntology + 'passage').subscribe(
-            res => {
-              this.options = res;
-              console.log('_handleLinkInput:res=', res);
-            }
-        );
+        if (this.passage.length >= 3) {
+          this.knoraService.getResourcesByLabel(this.passage, this.knoraService.wwOntology + 'passage').subscribe(
+              res => {
+                this.options = res;
+                console.log('_handleLinkInput:res=', res);
+              }
+          );
+        }
         break;
       case 'book':
         if (this.bookIri !== '') {
           this.bookIri = '';
         }
         this.bookEditDisabled = true;
-        console.log(this.book);
-        this.knoraService.getResourcesByLabel(this.book, this.knoraService.wwOntology + 'book').subscribe(
-            res => {
-              this.options = res;
-              console.log('_handleLinkInput:res=', res);
-            }
-        );
+        if (this.book.length >= 0) {
+          this.knoraService.getResourcesByLabel(this.book, this.knoraService.wwOntology + 'book').subscribe(
+              res => {
+                this.options = res;
+                console.log('_handleLinkInput:res=', res);
+              }
+          );
+        }
+        break;
+      case 'venue':
+        if (this.venueIri !== '') {
+          this.venueIri = '';
+        }
+        this.venueEditDisabled = true;
+        if (this.venue.length >= 3) {
+          this.knoraService.getResourcesByLabel(this.venue, this.knoraService.wwOntology + 'venue').subscribe(
+              res => {
+                this.options = res;
+                console.log('_handleLinkInput:res=', res);
+              }
+          );
+        }
         break;
     }
   }
@@ -301,8 +354,12 @@ export class EditComponent implements OnInit {
         this.bookIri = res[0].id;
         this.bookEditDisabled = false;
         break;
+      case 'venue':
+        this.venue = res[0].label;
+        this.venueIri = res[0].id;
+        this.venueEditDisabled = false;
+        break;
     }
-    console.log('_optionSelected:res', res);
   }
 
   editCompany(): void {
@@ -344,4 +401,13 @@ export class EditComponent implements OnInit {
   createBook(): void {
     this.router.navigate(['/edit/book']);
   }
+
+  editVenue(): void {
+    this.router.navigate(['/edit/venue', this.venueIri]);
+  }
+
+  createVenue(): void {
+    this.router.navigate(['/edit/venue']);
+  }
+
 }

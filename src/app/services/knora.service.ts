@@ -143,7 +143,7 @@ export class BookData {
 export class VenueData {
     constructor(
         public label: string,
-        public internalId: string, // hassVenueInternalId (1) ->text
+        public internalId: string, // hasVenueInternalId (1) ->text
         public place: {placeIri: string}, // hasPlaceVenue (1) -> List place
         public extraInfo?: string, // hasVenueExtraInfo (0-1) ->text
         public lexias?: {lexiaName: string; lexiaIri: string}[], // isLexiaVenueValue (0-n) -> link ww:lexia
@@ -1648,7 +1648,7 @@ export class KnoraService {
         if (data.internalId !== null && data.internalId !== undefined && data.internalId !== '') {
             const internalIdVal = new CreateTextValueAsString();
             internalIdVal.text = data.internalId;
-            props[this.wwOntology + 'hassVenueInternalId'] = [
+            props[this.wwOntology + 'hasVenueInternalId'] = [
                 internalIdVal
             ];
         }

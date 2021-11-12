@@ -242,7 +242,7 @@ export class EditVenueComponent implements OnInit {
             this.data.label = data.label;
             for (const ele of data.properties) {
               switch (ele.propname) {
-                case this.knoraService.wwOntology + 'hassVenueInternalId': {
+                case this.knoraService.wwOntology + 'hasVenueInternalId': {
                   this.form.controls.internalId.setValue(ele.values[0]);
                   this.valIds.internalId = {id: ele.ids[0], changed: false, toBeDeleted: false};
                   this.data.internalId = ele.values[0];
@@ -324,13 +324,15 @@ export class EditVenueComponent implements OnInit {
         const lexiaName = lexias.value[index].lexiaName;
 
         this.valIds.lexias[index].changed = true;
-        this.knoraService.getResourcesByLabel(lexiaName, this.knoraService.wwOntology + 'lexia').subscribe(
-            res => {
-              this.options = res;
-              this.form.value.lexias[index].lexiaName = res[0].label;
-              this.form.value.lexias[index].lexiaIri =  res[0].id;
-            }
-        );
+        if (lexiaName.length >= 3) {
+          this.knoraService.getResourcesByLabel(lexiaName, this.knoraService.wwOntology + 'lexia').subscribe(
+              res => {
+                this.options = res;
+                this.form.value.lexias[index].lexiaName = res[0].label;
+                this.form.value.lexias[index].lexiaIri =  res[0].id;
+              }
+          );
+        }
         break;
     }
   }
@@ -456,7 +458,7 @@ export class EditVenueComponent implements OnInit {
             this.resId,
             this.knoraService.wwOntology + 'venue',
             this.valIds.internalId.id as string,
-            this.knoraService.wwOntology + 'hassVenueInternalId');
+            this.knoraService.wwOntology + 'hasVenueInternalId');
         obs.push(gaga);
       } else if (this.valIds.internalId.changed) {
         let gaga: Observable<string>;
@@ -464,14 +466,14 @@ export class EditVenueComponent implements OnInit {
           gaga = this.knoraService.createTextValue(
               this.resId,
               this.knoraService.wwOntology + 'venue',
-              this.knoraService.wwOntology + 'hassVenueInternalId',
+              this.knoraService.wwOntology + 'hasVenueInternalId',
               this.value.internalId);
         } else {
           gaga = this.knoraService.updateTextValue(
               this.resId,
               this.knoraService.wwOntology + 'venue',
               this.valIds.internalId.id as string,
-              this.knoraService.wwOntology + 'hassVenueInternalId',
+              this.knoraService.wwOntology + 'hasVenueInternalId',
               this.value.internalId);
         }
         obs.push(gaga);

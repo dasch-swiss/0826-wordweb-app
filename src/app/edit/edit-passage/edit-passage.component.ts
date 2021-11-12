@@ -931,7 +931,7 @@ export class EditPassageComponent implements OnInit {
         const containsName = contains.value[index].containsName;
 
         this.valIds.contains[index].changed = true;
-        if (containsName >= 3) {
+        if (containsName.length >= 3) {
           this.knoraService.getResourcesByLabel(containsName, this.knoraService.wwOntology + 'lexia').subscribe(
               res => {
                 this.options = res;
@@ -946,13 +946,15 @@ export class EditPassageComponent implements OnInit {
         const mentionedInName = mentionedIn.value[index].mentionedInName;
 
         this.valIds.mentionedIn[index].changed = true;
-        this.knoraService.getResourcesByLabel(mentionedInName, this.knoraService.wwOntology + 'passage').subscribe(
-            res => {
-              this.options = res;
-              this.form.value.mentionedIn[index].mentionedInName = res[0].label;
-              this.form.value.mentionedIn[index].mentionedInIri =  res[0].id;
-            }
-        );
+        if (mentionedIn.length >= 3) {
+          this.knoraService.getResourcesByLabel(mentionedInName, this.knoraService.wwOntology + 'passage').subscribe(
+              res => {
+                this.options = res;
+                this.form.value.mentionedIn[index].mentionedInName = res[0].label;
+                this.form.value.mentionedIn[index].mentionedInIri =  res[0].id;
+              }
+          );
+        }
         break;
     }
   }
