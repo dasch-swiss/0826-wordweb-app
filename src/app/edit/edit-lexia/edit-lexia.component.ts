@@ -158,7 +158,7 @@ class LexiaIds {
       </div>
       <br/>
       <div>&nbsp;</div>
-      
+
       <mat-form-field [style.width.px]=400>
         <input matInput
                class="full-width"
@@ -342,6 +342,7 @@ export class EditLexiaComponent implements OnInit {
             formalClassIri: [this.formalClassTypes[0].iri, [Validators.required]]
           })
         ];
+        this.nFormalClasses++;
       } else {
         fcInitial = [];
       }
