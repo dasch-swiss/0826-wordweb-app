@@ -47,6 +47,7 @@ class PersonIds {
 @Component({
   selector: 'app-edit-person',
   template: `
+    <div *ngIf="knoraService.loggedin" class="container">
     <mat-card  class="maxw" >
       <mat-card-title>Person Editor</mat-card-title>
       <mat-card-content [formGroup]="form">
@@ -226,6 +227,10 @@ class PersonIds {
         <mat-progress-bar *ngIf="working" mode="indeterminate"></mat-progress-bar>
       </mat-card-actions>
     </mat-card>
+    </div>
+    <div *ngIf="!knoraService.loggedin" class="container">
+      <mat-card><mat-card-title>No access!</mat-card-title></mat-card>
+    </div>
   `,
   styles: [
     '.maxw { min-width: 500px; max-width: 1000px; }',

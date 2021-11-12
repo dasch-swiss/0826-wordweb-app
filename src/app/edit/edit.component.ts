@@ -14,8 +14,9 @@ import {Router} from "@angular/router";
 @Component({
   selector: 'app-edit',
   template: `
+    <div *ngIf="knoraService.loggedin" class="container">
     <mat-card>
-      <mat-card-title>Company</mat-card-title>
+      <mat-card-title>Company {{knoraService.loggedin}}</mat-card-title>
       <mat-card-content>
         <button mat-raised-button (click)="createCompany()">New</button><br><br>
         <mat-form-field>
@@ -175,6 +176,10 @@ import {Router} from "@angular/router";
                 (click)="editVenue()">Edit</button>
       </mat-card-content>
     </mat-card>
+    </div>
+    <div *ngIf="!knoraService.loggedin" class="container">
+      <mat-card><mat-card-title>No access!</mat-card-title></mat-card>
+    </div>
   `,
   styles: [
   ]
