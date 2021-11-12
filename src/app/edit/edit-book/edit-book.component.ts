@@ -149,10 +149,10 @@ class BookIds {
         <br/>
 
         <div formArrayName="genres">
-          <mat-label>Genres</mat-label>
+          <mat-label>Genres *</mat-label>
           <div *ngFor="let genreItem of getGenres().controls; let i=index">
             <mat-form-field [formGroup]="genreItem" [style.width.px]=300>
-              <mat-select matInput
+              <mat-select matInput required
                           placeholder="Genre"
                           formControlName="genreIri"
                           (selectionChange)="_handleInput('genres', i)">
@@ -198,10 +198,10 @@ class BookIds {
         <br/>
 
         <div formArrayName="writtenBy">
-          <mat-label>Written by (person)</mat-label>
+          <mat-label>Written by &rarr; (person) *</mat-label>
           <div *ngFor="let writtenByItem of getWrittenBys().controls; let i=index">
             <mat-form-field [formGroup]="writtenByItem">
-              <input matInput [matAutocomplete]="autoWrittenBy"
+              <input matInput [matAutocomplete]="autoWrittenBy" required
                      formControlName="writtenByName"
                      class="knora-link-input-element klnkie-val full-width"
                      placeholder="Written by (person)"
@@ -349,10 +349,10 @@ class BookIds {
         <div>&nbsp;</div>
 
         <div formArrayName="lexias">
-          <mat-label>Is Lexia (lexia)</mat-label>
+          <mat-label>Is Lexia &rarr; (lexia)</mat-label>
           <div *ngFor="let lexiaItem of getLexias().controls; let i=index">
             <mat-form-field [formGroup]="lexiaItem">
-              <input matInput [matAutocomplete]="autoLexia"
+              <input matInput [matAutocomplete]="autoLexia" required
                      formControlName="lexiaName"
                      class="knora-link-input-element klnkie-val full-width"
                      placeholder="Mentioned in (passage)"
@@ -391,10 +391,10 @@ class BookIds {
           <mat-label>Performed by (company)</mat-label>
           <div *ngFor="let performedByItem of getPerformedBys().controls; let i=index">
             <mat-form-field [formGroup]="performedByItem">
-              <input matInput [matAutocomplete]="autoPerformedBy"
+              <input matInput [matAutocomplete]="autoPerformedBy" required
                      formControlName="performedByName"
                      class="knora-link-input-element klnkie-val full-width"
-                     placeholder="Performed by (company)"
+                     placeholder="Performed by &rarr; (company)"
                      aria-label="Value"
                      (change)="_handleInput('performedBy', i)"
                      (input)="_handleLinkInput('performedBy', i)">
@@ -430,10 +430,10 @@ class BookIds {
           <mat-label>Performed by actor (person)</mat-label>
           <div *ngFor="let performedByActorItem of getPerformedByActors().controls; let i=index">
             <mat-form-field [formGroup]="performedByActorItem">
-              <input matInput [matAutocomplete]="autoPerformedByActor"
+              <input matInput [matAutocomplete]="autoPerformedByActor" required
                      formControlName="performedByActorName"
                      class="knora-link-input-element klnkie-val full-width"
-                     placeholder="Performed by actor (person)"
+                     placeholder="Performed by actor &rarr; (person)"
                      aria-label="Value"
                      (change)="_handleInput('performedByActor', i)"
                      (input)="_handleLinkInput('performedByActor', i)">
@@ -469,10 +469,10 @@ class BookIds {
           <mat-label>Performed in (venue)</mat-label>
           <div *ngFor="let performedInItem of getPerformedIns().controls; let i=index">
             <mat-form-field [formGroup]="performedInItem">
-              <input matInput [matAutocomplete]="autoPerformedIn"
+              <input matInput [matAutocomplete]="autoPerformedIn" required
                      formControlName="performedInName"
                      class="knora-link-input-element klnkie-val full-width"
-                     placeholder="Performed in (venue)"
+                     placeholder="Performed in &rarr; (venue)"
                      aria-label="Value"
                      (change)="_handleInput('performedIn', i)"
                      (input)="_handleLinkInput('performedIn', i)">
@@ -1370,6 +1370,10 @@ export class EditBookComponent implements OnInit {
       case 'comment':
         this.form.controls.comment.setValue(this.data.comment);
         this.valIds.comment.changed = false;
+        break;
+      case 'extraInfo':
+        this.form.controls.extraInfo.setValue(this.data.extraInfo);
+        this.valIds.extraInfo.changed = false;
         break;
       case 'editionHist':
         this.form.controls.editionHist.setValue(this.data.editionHist);

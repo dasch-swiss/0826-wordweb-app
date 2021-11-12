@@ -51,7 +51,7 @@ class PersonIds {
       <mat-card-title>Person Editor</mat-card-title>
       <mat-card-content [formGroup]="form">
         <mat-form-field [style.width.px]=600>
-          <input matInput
+          <input matInput required
                  class="full-width"
                  placeholder="Label"
                  formControlName="label"
@@ -65,7 +65,7 @@ class PersonIds {
         <br/>
 
         <mat-form-field [style.width.px]=600>
-          <input matInput
+          <input matInput required
                  class="full-width"
                  placeholder="Internal ID"
                  formControlName="internalId"
@@ -94,7 +94,7 @@ class PersonIds {
         <br/>
 
         <mat-form-field [style.width.px]=600>
-          <input matInput
+          <input matInput required
                  class="full-width"
                  placeholder="Lastname"
                  formControlName="lastName"
@@ -122,7 +122,7 @@ class PersonIds {
         <br/>
 
         <mat-form-field [style.width.px]=600>
-          <input matInput
+          <input matInput required
                  class="full-width"
                  placeholder="Description"
                  formControlName="description"
@@ -148,7 +148,7 @@ class PersonIds {
           <mat-icon *ngIf="valIds.birthDate.toBeDeleted" color="warn">delete</mat-icon>
         </button>
         <br/>
-        
+
         <mat-form-field appearance="fill"  [style.width.px]=600>
           <mat-label>Deathdate</mat-label>
           <app-knora-date-value matInput
@@ -172,7 +172,7 @@ class PersonIds {
                  (input)="_handleInput('extraInfo')">
         </mat-form-field>
         <button *ngIf="valIds.extraInfo.changed" mat-mini-fab (click)="_handleUndo('extraInfo')">
-          <mat-icon>cached</mat-icon>
+          <mat-icon color="warn">cached</mat-icon>
         </button>
         <button *ngIf="valIds.extraInfo.id !== undefined" mat-mini-fab (click)="_handleDelete('extraInfo')">
           <mat-icon *ngIf="!valIds.extraInfo.toBeDeleted">delete</mat-icon>
@@ -181,7 +181,7 @@ class PersonIds {
         <br/>
 
         <div formArrayName="lexias">
-          <mat-label>Lexias</mat-label>
+          <mat-label>Lexias &rarr; (lexia)</mat-label>
           <div *ngFor="let lexiaItem of getLexias().controls; let i=index">
             <mat-form-field [formGroup]="lexiaItem"  [style.width.px]=600>
               <input matInput [matAutocomplete]="autoLexia"
@@ -213,6 +213,7 @@ class PersonIds {
           </button>
         </div>
       </mat-card-content>
+      
       <mat-card-actions>
         <button appBackButton class="mat-raised-button" matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
         <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Save</button>

@@ -110,7 +110,7 @@ class PassageIds {
         <br/>
 
         <mat-form-field [style.width.px]=400>
-          <input matInput
+          <input matInput required
                  class="full-width"
                  placeholder="Displayed Title"
                  formControlName="displayedTitle"
@@ -126,7 +126,7 @@ class PassageIds {
         <br/>
 
         <div formArrayName="functionVoices">
-          <mat-label>Function voices</mat-label>
+          <mat-label>Function voices *</mat-label>
           <div *ngFor="let functionVoiceItem of getFunctionVoices().controls; let i=index">
             <mat-form-field [formGroup]="functionVoiceItem" [style.width.px]=300>
               <mat-select matInput
@@ -161,7 +161,7 @@ class PassageIds {
         <div>&nbsp;</div>
 
         <div formArrayName="markings">
-          <mat-label>Markings</mat-label>
+          <mat-label>Markings *</mat-label>
           <div *ngFor="let markingItem of getMarkings().controls; let i=index">
             <mat-form-field [formGroup]="markingItem" [style.width.px]=300>
               <mat-select matInput
@@ -242,7 +242,7 @@ class PassageIds {
                  required
                  formControlName="occursInName"
                  class="knora-link-input-element klnkie-val full-width"
-                 placeholder="Occurs in (book)"
+                 placeholder="Occurs in &rarr; (book)"
                  aria-label="Value"
                  (change)="_handleInput('occursIn')"
                  (input)="_handleLinkInput('occursIn')">
@@ -263,7 +263,7 @@ class PassageIds {
                  required
                  formControlName="contributedByName"
                  class="knora-link-input-element klnkie-val full-width"
-                 placeholder="Contributed by (person)"
+                 placeholder="Contributed by &rarr; (person)"
                  aria-label="Value"
                  (change)="_handleInput('contributedBy')"
                  (input)="_handleLinkInput('contributedBy')">
@@ -280,7 +280,7 @@ class PassageIds {
         <br/>
 
         <div formArrayName="contains">
-          <mat-label>Contains (lexias)</mat-label>
+          <mat-label>Contains &rarr; (lexias)</mat-label>
           <div *ngFor="let containsItem of getContains().controls; let i=index">
             <mat-form-field [formGroup]="containsItem">
               <input matInput [matAutocomplete]="autoContains"
@@ -437,7 +437,7 @@ class PassageIds {
               <input matInput [matAutocomplete]="autoMentionedIn"
                      formControlName="mentionedInName"
                      class="knora-link-input-element klnkie-val full-width"
-                     placeholder="Mentioned in (passage)"
+                     placeholder="Mentioned in &rarr; (passage)"
                      aria-label="Value"
                      (change)="_handleInput('mentionedIn', i)"
                      (input)="_handleLinkInput('mentionedIn', i)">

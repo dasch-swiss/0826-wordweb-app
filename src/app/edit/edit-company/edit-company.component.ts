@@ -97,7 +97,7 @@ class CompanyIds {
                    (input)="_handleInput('extraInfo')">
           </mat-form-field>
           <button *ngIf="valIds.extraInfo.changed" mat-mini-fab (click)="_handleUndo('extraInfo')">
-            <mat-icon>cached</mat-icon>
+            <mat-icon color="warn">cached</mat-icon>
           </button>
           <button *ngIf="valIds.extraInfo.id !== undefined" mat-mini-fab (click)="_handleDelete('extraInfo')">
             <mat-icon *ngIf="!valIds.extraInfo.toBeDeleted">delete</mat-icon>
@@ -106,7 +106,7 @@ class CompanyIds {
           <br/>
 
           <div formArrayName="members">
-            <mat-label>Members</mat-label>
+            <mat-label>Members &rarr; (person)</mat-label>
             <div *ngFor="let memberItem of getMembers().controls; let i=index">
               <mat-form-field [formGroup]="memberItem">
                 <input matInput [matAutocomplete]="autoMember"
@@ -139,7 +139,7 @@ class CompanyIds {
           </div>
 
         <div formArrayName="lexias">
-          <mat-label>Lexias</mat-label>
+          <mat-label>Lexias &rarr; (lexia)</mat-label>
           <div *ngFor="let lexiaItem of getLexias().controls; let i=index">
             <mat-form-field [formGroup]="lexiaItem">
               <input matInput [matAutocomplete]="autoLexia"

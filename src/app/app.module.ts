@@ -109,6 +109,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import { EditLexiaComponent } from './edit/edit-lexia/edit-lexia.component';
 import { EditPassageComponent } from './edit/edit-passage/edit-passage.component';
 import { EditBookComponent } from './edit/edit-book/edit-book.component';
+import { EditVenueComponent } from './edit/edit-venue/edit-venue.component';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => appInitService.Init();
@@ -179,6 +180,7 @@ export function initializeApp(appInitService: AppInitService) {
         EditLexiaComponent,
         EditPassageComponent,
         EditBookComponent,
+        EditVenueComponent,
     ],
     imports: [
         BrowserModule,

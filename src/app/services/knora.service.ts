@@ -140,6 +140,17 @@ export class BookData {
     ) {}
 }
 
+export class VenueData {
+    constructor(
+        public label: string,
+        public internalId: string, // hassVenueInternalId (1) ->text
+        public place: {placeIri: string}, // hasPlaceVenue (1) -> List place
+        public extraInfo?: string, // hasVenueExtraInfo (0-1) ->text
+        public lexias?: {lexiaName: string; lexiaIri: string}[], // isLexiaVenueValue (0-n) -> link ww:lexia
+    ) {
+    }
+}
+
 export class LangString {
     data: {[index: string]: string};
 
@@ -1624,6 +1635,62 @@ export class KnoraService {
             map((res: ReadResource) => res.id),
             catchError((error: ApiResponseError) => of('error'))
         );
+    }
+
+    createVenue(data: VenueData): Observable<string> {
+        const createResource = new CreateResource();
+        createResource.label = data.label;
+        createResource.type = this.wwOntology + 'venue';
+        createResource.attachedToProject = 'http://rdfh.ch/projects/0826';
+
+        const props = {};
+
+        if (data.internalId !== null && data.internalId !== undefined && data.internalId !== '') {
+            const internalIdVal = new CreateTextValueAsString();
+            internalIdVal.text = data.internalId;
+            props[this.wwOntology + 'hassVenueInternalId'] = [
+                internalIdVal
+            ];
+        }
+
+        if (data.place?.placeIri !== null && data.place?.placeIri !== undefined &&
+            data.place?.placeIri !== '') {
+            const placeIriVal = new CreateListValue();
+            placeIriVal.listNode = data.place.placeIri;
+            props[this.wwOntology + 'hasPlaceVenue'] = [
+                placeIriVal
+            ];
+        }
+
+        if (data.extraInfo !== null && data.extraInfo !== undefined && data.extraInfo !== '') {
+            const extraInfoIdVal = new CreateTextValueAsString();
+            extraInfoIdVal.text = data.extraInfo;
+            props[this.wwOntology + 'hasVenueExtraInfo'] = [
+                extraInfoIdVal
+            ];
+        }
+
+        if (data.lexias !== null && data.lexias !== undefined && data.lexias.length > 0) {
+            const v: CreateLinkValue[] = [];
+            for (const lexia of data.lexias) {
+                if (lexia.lexiaIri !== '') {
+                    const lexiaVal = new CreateLinkValue();
+                    lexiaVal.linkedResourceIri = lexia.lexiaIri;
+                    v.push(lexiaVal);
+                }
+            }
+            if (v.length > 0) {
+                props[this.wwOntology + 'isLexiaVenueValue'] = v;
+            }
+        }
+
+        createResource.properties = props;
+
+        return this._knoraApiConnection.v2.res.createResource(createResource).pipe(
+            map((res: ReadResource) => res.id),
+            catchError((error: ApiResponseError) => of('error'))
+        );
+
     }
 
     updateLabel(resId: string, resType: string, label: string, lastmod?: string) {

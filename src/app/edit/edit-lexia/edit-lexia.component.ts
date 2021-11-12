@@ -80,7 +80,7 @@ class LexiaIds {
       <br/>
 
       <mat-form-field [style.width.px]=400>
-        <input matInput
+        <input matInput required
                class="full-width"
                placeholder="Internald id"
                formControlName="internalId"
@@ -93,7 +93,7 @@ class LexiaIds {
       <br/>
 
       <div formArrayName="formalClasses">
-        <mat-label>Formal class</mat-label>
+        <mat-label>Formal class *</mat-label>
         <div *ngFor="let formalClassItem of getFormalClasses().controls; let i=index">
           <mat-form-field [formGroup]="formalClassItem" [style.width.px]=300>
             <mat-select matInput
