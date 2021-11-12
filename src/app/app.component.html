@@ -12,6 +12,9 @@
                 <a href="http://wordweb-idem.ch/portfolio.html" mat-list-item>PUBLICATIONS</a>
                 <a href="http://wordweb-idem.ch/contact.html" mat-list-item>CONTACT</a>
                 <a href="http://wordweb-idem.ch/ui-elements.html" mat-list-item>READING</a>
+                <a *ngIf="knoraService.loggedin" href="http://wordweb-idem.ch/ui-elements.html" mat-list-item>EDIT</a>
+                <button  *ngIf="!knoraService.loggedin" mat-icon-button matTooltip="Benutzer an- und abmelden" (click)="account()"><mat-icon >account_box</mat-icon></button>
+                <button  *ngIf="knoraService.loggedin" color="warn" mat-icon-button [matTooltip]="knoraService.useremail + ' (abmelden...)'" (click)="account()" ><mat-icon >account_box</mat-icon></button>
             </mat-nav-list>
         </mat-sidenav>
 
@@ -29,6 +32,9 @@
                         <a href="http://wordweb-idem.ch/portfolio.html" mat-button>PUBLICATIONS</a>
                         <a href="http://wordweb-idem.ch/contact.html" mat-button>CONTACT</a>
                         <a href="http://wordweb-idem.ch/ui-elements.html" mat-button>READING</a>
+                        <a *ngIf="knoraService.loggedin" routerLink="edit" mat-button>EDIT</a>
+                        <button  *ngIf="!knoraService.loggedin" mat-icon-button matTooltip="Benutzer an- und abmelden" (click)="account()"><mat-icon >account_box</mat-icon></button>
+                        <button  *ngIf="knoraService.loggedin" color="warn" mat-icon-button [matTooltip]="knoraService.useremail + ' (abmelden...)'" (click)="account()" ><mat-icon >account_box</mat-icon></button>
                     </div>
                 </mat-toolbar-row>
             </mat-toolbar>

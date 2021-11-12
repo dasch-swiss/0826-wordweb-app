@@ -78,6 +78,7 @@ class PassageIds {
 @Component({
   selector: 'app-edit-passage',
   template: `
+    <div *ngIf="knoraService.loggedin" class="container">
     <mat-card>
       <mat-card-title>Passage Editor</mat-card-title>
       <mat-card-content [formGroup]="form">
@@ -478,6 +479,10 @@ class PassageIds {
       </mat-card-actions>
 
     </mat-card>
+    </div>
+    <div *ngIf="!knoraService.loggedin" class="container">
+      <mat-card><mat-card-title>No access!</mat-card-title></mat-card>
+    </div>
   `,
   styles: [
       '.maxw { min-width: 500px; max-width: 1000px; }',

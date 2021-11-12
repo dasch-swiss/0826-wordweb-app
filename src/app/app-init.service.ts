@@ -50,7 +50,7 @@ export class AppInitService {
 
             // console.log(AppInitService.settings, AppInitService.settings.email, AppInitService.settings.pwd);
 
-            this._knoraService.login('root@example.com', 'test')
+            this._knoraService.appLogin('root@example.com', 'test')
                 .pipe(
                     mergeMap(() => this._knoraService.getAllLists('http://rdfh.ch/projects/0826')),
                     mergeMap((lists: ListNodeInfo[]) => forkJoin<Observable<List>>(lists.map((list: ListNodeInfo) => this._knoraService.getList(list.id))))

@@ -21,7 +21,7 @@ import {
     ListAdminCache, ListNode,
     ListNodeInfo,
     ListResponse,
-    ListsResponse,
+    ListsResponse, LoginResponse, LogoutResponse,
     ReadDateValue,
     ReadIntValue,
     ReadLinkValue,
@@ -48,6 +48,10 @@ import {DateValue} from '../edit/date-value/date-value.component';
 import {DateCalendar} from '../classes/calendar';
 
 //---- BEGIN LUKAS ---------------------------------------------------------------------------------------------------
+export interface UserData {
+    user: string;
+    token: string;
+}
 
 export interface OptionType {
     iri: string;
@@ -282,6 +286,9 @@ export interface ResourceData {
 export class KnoraService {
     public _knoraApiConnection: KnoraApiConnection;
     wwOntology: string;
+    loggedin: boolean;
+    useremail: string;
+    token?: string;
     listAdminCache: ListAdminCache;
 
     researchFieldListIri: string;
@@ -325,8 +332,66 @@ export class KnoraService {
         this.getListTypes();
     }
 
-    login(email: string, password: string): any {
+    appLogin(email: string, password: string): any {
         return this._knoraApiConnection.v2.auth.login('email', email, password);
+    }
+
+    login(email: string, password: string): Observable<{ success: boolean, token: string, user: string }> {
+        return this._knoraApiConnection.v2.auth.login('email', email, password)
+            .pipe(
+                catchError((err) => {
+                    return of(err.error.response['knora-api:error']);
+                }),
+                map((response) => {
+                    if (response instanceof ApiResponseData) {
+                        const apiResponse = response as ApiResponseData<LoginResponse>;
+                        this.loggedin = true;
+                        this.useremail = email;
+                        this.token = apiResponse.body.token;
+                        sessionStorage.setItem('useremail', email);
+                        sessionStorage.setItem('token', apiResponse.body.token);
+                        return {success: true, token: apiResponse.body.token, user: email};
+                    } else {
+                        return {success: false, token: response, user: '-'};
+                    }
+                }));
+    }
+
+    logout(): Observable<string> {
+        return this._knoraApiConnection.v2.auth.logout().pipe(
+            catchError((err) => {
+                return of(err.error.response['knora-api:error']);
+            }),
+            map((response) => {
+                if (response instanceof ApiResponseData) {
+                    const apiResponse = response as ApiResponseData<LogoutResponse>;
+                    this.loggedin = false;
+                    this.useremail = '';
+                    this.token = undefined;
+                    sessionStorage.removeItem('useremail');
+                    sessionStorage.removeItem('token');
+                    return apiResponse.body.message;
+                } else {
+                    return response;
+                }
+            }));
+    }
+
+    restoreToken(): UserData | undefined {
+        const user = sessionStorage.getItem('useremail');
+        if (user === null) {
+            return undefined;
+        }
+        const token = sessionStorage.getItem('token');
+        if (token === null) {
+            return undefined;
+        }
+        this._knoraApiConnection.v2.auth.jsonWebToken = token;
+        this.loggedin = true;
+        this.useremail = user;
+        this.token = token;
+
+        return {user, token};
     }
 
     gravseachQuery(structure: IMainClass, priority: number, offset?: number): Observable<any> {
