@@ -308,7 +308,9 @@ export class DateValue {
       <input hidden matInput type="number" formControlName="endJd">
      </div>
   `,
-  providers: [{provide: MatFormFieldControl, useExisting: DateValueComponent},],
+  providers: [
+      {provide: MatFormFieldControl, useExisting: DateValueComponent},
+  ],
   styles: [
       '.bg {background-color: lightgrey;}',
       '.calsel {width: 120px; padding-left: 2px; padding-right: 2px;}',
@@ -355,8 +357,9 @@ export class DateValueComponent
               private focusMonitor: FocusMonitor,
               private snackBar: MatSnackBar,
               private elementRef: ElementRef<HTMLElement>,
+              @Optional() @Self() public ngControl: NgControl,
               @Optional() @Inject(MAT_FORM_FIELD) public formField: MatFormField,
-              @Optional() @Self() public ngControl: NgControl) {
+              ) {
     this.parts = this.formBuilder.group({
       calendar: ['GREGORIAN', []],
       timeSpan: false,
@@ -375,7 +378,6 @@ export class DateValueComponent
       // the providers) to avoid running into a circular import.
       this.ngControl.valueAccessor = this;
     }
-    this.ngControl.valueAccessor = this;
 
     focusMonitor.monitor(elementRef, true).subscribe(origin => {
       if (this.focused && !origin) {
@@ -1042,7 +1044,9 @@ console.log('1>', sY, sM, sD, '|', eY, eM, eD);
         this.parts.controls.endYear.value, this.parts.controls.endMonth.value, this.parts.controls.endDay.value);
     this.parts.controls.startJd.setValue(dval.startJd);
     this.parts.controls.endJd.setValue(dval.endJd);
-    this.onChange(this.parts.value);
+    this.value = dval;
+    //this.onChange(this.parts.value);
+    this.onChange(this.value);
   }
 
   // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/member-ordering
