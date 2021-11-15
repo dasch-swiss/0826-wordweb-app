@@ -1529,7 +1529,9 @@ export class EditBookComponent implements OnInit {
               this.knoraService.wwOntology + 'hasCreationDate',
               creationDateValue);
         } else {
+          console.log('**********> UPDATE KNORA started...');
           const creationDateValue = this.form.controls.creationDate.value;
+          console.log('**********> UPDATE KNORA TO DATE:', creationDateValue);
           gaga = this.knoraService.updateDateValue(
               this.resId,
               this.knoraService.wwOntology + 'book',

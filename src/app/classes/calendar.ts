@@ -374,6 +374,7 @@ export class Calendar {
         const month = Math.floor((((yearday + leapadj) * 12) + 373) / 367);
         const day = (wjd - Calendar.gregorian_to_jd(year, month, 1)) + 1;
 
+        // KNORA HAS NO YEAR ZERO IN GREGORIAN CALENDAR!!!! HISTORIC NOTATION
         return [year, month, day];
     }
 
@@ -796,6 +797,7 @@ export class Calendar {
         return [year, month, day];
     }
 
+    // NOTE!!!! This function assumes the historic numbering without year 0: ..., -2, -1, 1, 2,...
     public static daycnt(cal: string, year: number, month: number): number {
         year = Math.floor(year);
         month = Math.floor(month);
@@ -806,14 +808,14 @@ export class Calendar {
         switch (cal) {
             case 'GREGORIAN':
             case 'gregorian': {
-                dc1 = Math.round(Calendar.gregorian_to_jd(year, month, 1));
+                dc1 = Math.round(Calendar.gregorian_to_jd(year < 1 ? year + 1 : year, month, 1));
                 if ((month + 1) > 12) {
                     month = 1;
                     year++;
-                    dc2 = Math.round(Calendar.gregorian_to_jd(year, month, 1));
+                    dc2 = Math.round(Calendar.gregorian_to_jd(year < 1 ? year + 1 : year, month, 1));
                 }
                 else {
-                    dc2 = Math.round(Calendar.gregorian_to_jd(year, month + 1, 1));
+                    dc2 = Math.round(Calendar.gregorian_to_jd(year < 1 ? year + 1 : year, month + 1, 1));
                 }
                 days = dc2 - dc1;
                 break;
