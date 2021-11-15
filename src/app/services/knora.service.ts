@@ -447,7 +447,9 @@ export class KnoraService {
                             {
                                 id: propValue.id,
                                 start: propValue.date.start.year,
-                                end: propValue.date.end.year
+                                sEra: propValue.date.start.era,
+                                end: propValue.date.end.year,
+                                eEra: propValue.date.end.era,
                             } :
                             {
                                 id: propValue.id,
@@ -1890,10 +1892,6 @@ export class KnoraService {
     }
 
     updateListValue(resId: string, resType: string, valId: string, property: string, nodeIri: string): Observable<string> {
-        console.log('resId:', resId);
-        console.log('resType:', resType);
-        console.log('valId:', valId);
-        console.log('nodeIri:', nodeIri);
         const updateListVal = new UpdateListValue();
         updateListVal.id = valId;
         updateListVal.listNode = nodeIri;
