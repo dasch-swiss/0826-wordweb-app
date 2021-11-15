@@ -1522,34 +1522,16 @@ export class EditBookComponent implements OnInit {
       } else if (this.valIds.creationDate.changed) {
         let gaga: Observable<string>;
         if (this.valIds.creationDate.id === undefined) {
-          const creationDate = this.form.value.creationDate;
-          const creationDateValue = new DateValue(
-              creationDate.calendar,
-              creationDate.timeSpan,
-              creationDate.startYear,
-              creationDate.startMonth,
-              creationDate.startDay,
-              creationDate.endYear,
-              creationDate.endMonth,
-              creationDate.endDay);
+          const creationDateValue = this.form.controls.creationDate.value;
           gaga = this.knoraService.createDateValue(
               this.resId,
               this.knoraService.wwOntology + 'book',
               this.knoraService.wwOntology + 'hasCreationDate',
               creationDateValue);
-          console.log('gaga:', gaga);
         } else {
-          const creationDate = this.form.value.creationDate;
-          const creationDateValue = new DateValue(
-              creationDate.calendar,
-              creationDate.timeSpan,
-              creationDate.startYear,
-              creationDate.startMonth,
-              creationDate.startDay,
-              creationDate.endYear,
-              creationDate.endMonth,
-              creationDate.endDay);
-          console.log('CHANGED:', creationDateValue);
+          console.log('**********> UPDATE KNORA started...');
+          const creationDateValue = this.form.controls.creationDate.value;
+          console.log('**********> UPDATE KNORA TO DATE:', creationDateValue);
           gaga = this.knoraService.updateDateValue(
               this.resId,
               this.knoraService.wwOntology + 'book',
@@ -1760,34 +1742,14 @@ export class EditBookComponent implements OnInit {
       } else if (this.valIds.firstPerformance.changed) {
         let gaga: Observable<string>;
         if (this.valIds.firstPerformance.id === undefined) {
-          const firstPerformance = this.form.value.firstPerformance;
-          const firstPerformanceValue = new DateValue(
-              firstPerformance.calendar,
-              firstPerformance.timeSpan,
-              firstPerformance.startYear,
-              firstPerformance.startMonth,
-              firstPerformance.startDay,
-              firstPerformance.endYear,
-              firstPerformance.endMonth,
-              firstPerformance.endDay);
+          const firstPerformanceValue = this.form.controls.firstPerformance.value;
           gaga = this.knoraService.createDateValue(
               this.resId,
               this.knoraService.wwOntology + 'book',
               this.knoraService.wwOntology + 'hasFirstPerformanceDate',
               firstPerformanceValue);
-          console.log('gaga:', gaga);
         } else {
-          const firstPerformance = this.form.value.firstPerformance;
-          const firstPerformanceValue = new DateValue(
-              firstPerformance.calendar,
-              firstPerformance.timeSpan,
-              firstPerformance.startYear,
-              firstPerformance.startMonth,
-              firstPerformance.startDay,
-              firstPerformance.endYear,
-              firstPerformance.endMonth,
-              firstPerformance.endDay);
-          console.log('CHANGED:', firstPerformanceValue);
+          const firstPerformanceValue = this.form.controls.firstPerformance.value;
           gaga = this.knoraService.updateDateValue(
               this.resId,
               this.knoraService.wwOntology + 'book',
@@ -1834,16 +1796,7 @@ export class EditBookComponent implements OnInit {
       } else if (this.valIds.pubdate.changed) {
         let gaga: Observable<string>;
         if (this.valIds.pubdate.id === undefined) {
-          const pubdate = this.form.value.pubdate;
-          const pubdateValue = new DateValue(
-              pubdate.calendar,
-              pubdate.timeSpan,
-              pubdate.startYear,
-              pubdate.startMonth,
-              pubdate.startDay,
-              pubdate.endYear,
-              pubdate.endMonth,
-              pubdate.endDay);
+          const pubdateValue = this.form.controls.pubdate.value;
           gaga = this.knoraService.createDateValue(
               this.resId,
               this.knoraService.wwOntology + 'book',
@@ -1851,16 +1804,7 @@ export class EditBookComponent implements OnInit {
               pubdateValue);
           console.log('gaga:', gaga);
         } else {
-          const pubdate = this.form.value.pubdate;
-          const pubdateValue = new DateValue(
-              pubdate.calendar,
-              pubdate.timeSpan,
-              pubdate.startYear,
-              pubdate.startMonth,
-              pubdate.startDay,
-              pubdate.endYear,
-              pubdate.endMonth,
-              pubdate.endDay);
+          const pubdateValue = this.form.controls.pubdate.value;
           console.log('CHANGED:', pubdateValue);
           gaga = this.knoraService.updateDateValue(
               this.resId,

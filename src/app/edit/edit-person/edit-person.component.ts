@@ -763,16 +763,7 @@ export class EditPersonComponent implements OnInit {
       } else if (this.valIds.birthDate.changed) {
         let gaga: Observable<string>;
         if (this.valIds.birthDate.id === undefined) {
-          const birthDate = this.form.value.birthDate;
-          const birthDateValue = new DateValue(
-              birthDate.calendar,
-              birthDate.timeSpan,
-              birthDate.startYear,
-              birthDate.startMonth,
-              birthDate.startDay,
-              birthDate.endYear,
-              birthDate.endMonth,
-              birthDate.endDay);
+          const birthDateValue = this.form.controls.birthDate.value;
           gaga = this.knoraService.createDateValue(
               this.resId,
               this.knoraService.wwOntology + 'person',
@@ -780,16 +771,7 @@ export class EditPersonComponent implements OnInit {
               birthDateValue);
           console.log('gaga:', gaga);
         } else {
-          const birthDate = this.form.value.birthDate;
-          const birthDateValue = new DateValue(
-              birthDate.calendar,
-              birthDate.timeSpan,
-              birthDate.startYear,
-              birthDate.startMonth,
-              birthDate.startDay,
-              birthDate.endYear,
-              birthDate.endMonth,
-              birthDate.endDay);
+          const birthDateValue = this.form.controls.birthDate.value;
           console.log('CHANGED:', birthDateValue);
           gaga = this.knoraService.updateDateValue(
               this.resId,
@@ -811,34 +793,15 @@ export class EditPersonComponent implements OnInit {
       } else if (this.valIds.deathDate.changed) {
         let gaga: Observable<string>;
         if (this.valIds.deathDate.id === undefined) {
-          const deathDate = this.form.value.deathDate;
-          const deathDateValue = new DateValue(
-              deathDate.calendar,
-              deathDate.timeSpan,
-              deathDate.startYear,
-              deathDate.startMonth,
-              deathDate.startDay,
-              deathDate.endYear,
-              deathDate.endMonth,
-              deathDate.endDay);
+          const deathDateValue = this.form.controls.deathDate.value;
           gaga = this.knoraService.createDateValue(
               this.resId,
               this.knoraService.wwOntology + 'person',
               this.knoraService.wwOntology + 'hasDeathDate',
               deathDateValue);
-          console.log('gaga:', gaga);
         } else {
           const deathDate = this.form.value.deathDate;
-          const deathDateValue = new DateValue(
-              deathDate.calendar,
-              deathDate.timeSpan,
-              deathDate.startYear,
-              deathDate.startMonth,
-              deathDate.startDay,
-              deathDate.endYear,
-              deathDate.endMonth,
-              deathDate.endDay);
-          console.log('CHANGED:', deathDateValue);
+          const deathDateValue = this.form.controls.deathDate.value;
           gaga = this.knoraService.updateDateValue(
               this.resId,
               this.knoraService.wwOntology + 'person',

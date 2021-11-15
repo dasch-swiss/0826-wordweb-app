@@ -447,7 +447,9 @@ export class KnoraService {
                             {
                                 id: propValue.id,
                                 start: propValue.date.start.year,
-                                end: propValue.date.end.year
+                                sEra: propValue.date.start.era,
+                                end: propValue.date.end.year,
+                                eEra: propValue.date.end.era,
                             } :
                             {
                                 id: propValue.id,
@@ -1890,10 +1892,6 @@ export class KnoraService {
     }
 
     updateListValue(resId: string, resType: string, valId: string, property: string, nodeIri: string): Observable<string> {
-        console.log('resId:', resId);
-        console.log('resType:', resType);
-        console.log('valId:', valId);
-        console.log('nodeIri:', nodeIri);
         const updateListVal = new UpdateListValue();
         updateListVal.id = valId;
         updateListVal.listNode = nodeIri;
@@ -1933,15 +1931,32 @@ export class KnoraService {
         const createDateVal = new CreateDateValue();
 
         createDateVal.calendar = value.calendar;
-        createDateVal.startYear = value.startYear;
+        if (value.startYear < 0) {
+            createDateVal.startEra = 'BCE';
+            if (value.calendar === DateCalendar.JULIAN) {
+                createDateVal.startYear = -value.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+            } else {
+                createDateVal.startYear = -value.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+            }
+        } else {
+            createDateVal.startEra = 'CE';
+            createDateVal.startYear = value.startYear;
+        }
         createDateVal.startMonth = value.startMonth;
         createDateVal.startDay = value.startDay;
-        createDateVal.endYear = value.endYear;
+        if (value.endYear < 0) {
+            createDateVal.endEra = 'BCE';
+            if (value.calendar === DateCalendar.JULIAN) {
+                createDateVal.endYear = -value.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+            } else {
+                createDateVal.endYear = -value.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+            }
+        } else {
+            createDateVal.endEra = 'CE';
+            createDateVal.endYear = value.startYear;
+        }
         createDateVal.endMonth = value.endMonth;
         createDateVal.endDay = value.endDay;
-
-        createDateVal.startEra = 'CE';
-        createDateVal.endEra = 'CE';
 
         const createResource = new UpdateResource<CreateValue>();
         createResource.id = resId;
@@ -1960,15 +1975,32 @@ export class KnoraService {
         const updateDateVal = new UpdateDateValue();
         updateDateVal.id = valId;
         updateDateVal.calendar = value.calendar;
-        updateDateVal.startYear = value.startYear;
+        if (value.startYear < 0) {
+            updateDateVal.startEra = 'BCE';
+            if (value.calendar === DateCalendar.JULIAN) {
+                updateDateVal.startYear = -value.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+            } else {
+                updateDateVal.startYear = -value.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+            }
+        } else {
+            updateDateVal.startEra = 'CE';
+            updateDateVal.startYear = value.startYear;
+        }
         updateDateVal.startMonth = value.startMonth;
         updateDateVal.startDay = value.startDay;
-        updateDateVal.endYear = value.endYear;
+        if (value.endYear < 0) {
+            updateDateVal.endEra = 'BCE';
+            if (value.calendar === DateCalendar.JULIAN) {
+                updateDateVal.endYear = -value.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+            } else {
+                updateDateVal.endYear = -value.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+            }
+        } else {
+            updateDateVal.endEra = 'CE';
+            updateDateVal.endYear = value.startYear;
+        }
         updateDateVal.endMonth = value.endMonth;
         updateDateVal.endDay = value.endDay;
-
-        updateDateVal.startEra = 'CE';
-        updateDateVal.endEra = 'CE';
 
         const updateResource = new UpdateResource<UpdateValue>();
         updateResource.id = resId;
