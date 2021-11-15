@@ -443,7 +443,6 @@ export class KnoraService {
                         return propValue.linkedResource ? this.processRes(propValue.linkedResource) : {};
                     }
                     case (propValue instanceof ReadDateValue): {
-                        console.log('propValue:', propValue);
                         return (propValue.date instanceof KnoraPeriod) ?
                             {
                                 id: propValue.id,
