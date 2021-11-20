@@ -350,15 +350,9 @@ export class EditVenueComponent implements OnInit {
       case 'lexias':
         this.form.value.lexias[index].lexiaName = res[0].label;
         this.form.value.lexias[index].lexiaIri = res[0].id;
+        this.value.lexias = this.form.value.lexias;
         break;
     }
-    this.value = new VenueData(
-        this.form.value.label,
-        this.form.value.title,
-        this.form.value.place,
-        this.form.value.extraInfo,
-        this.form.value.lexias
-    );
   }
 
   _handleInput(what: string, index?: number): void {

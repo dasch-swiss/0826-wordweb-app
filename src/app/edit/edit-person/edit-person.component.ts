@@ -109,7 +109,7 @@ class PersonIds {
 
         <mat-form-field [style.width.px]=600>
           <mat-select matInput required
-                      placeholder="Geschlecht"
+                      placeholder="Gender"
                       formControlName="genderIri"
                       (selectionChange)="_handleInput('gender')">
             <mat-option *ngFor="let lt of genderTypes" [value]="lt.iri">
@@ -456,20 +456,7 @@ export class EditPersonComponent implements OnInit {
       case 'lexias':
         this.form.value.lexias[index].lexiaName = res[0].label;
         this.form.value.lexias[index].lexiaIri =  res[0].id;
-        this.value = new PersonData(
-            this.form.value.label,
-            this.form.value.internalId,
-            this.form.value.firstName,
-            this.form.value.lastName,
-            this.form.value.gender,
-            this.form.value.description,
-            this.form.value.birthDate,
-            //this.form.value.birthDateEnd,
-            this.form.value.deathDate,
-            //this.form.value.deathDateEnd,
-            this.form.value.extraInfo,
-            this.form.value.lexias,
-        );
+        this.value.lexias = this.form.value.lexias;
         break;
     }
     this.options = [];

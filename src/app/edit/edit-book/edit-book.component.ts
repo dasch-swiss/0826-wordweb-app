@@ -850,7 +850,7 @@ export class EditBookComponent implements OnInit {
 
   addGenre(genre?: { id: string; iri: string }): void {
     const genres = this.getGenres();
-    if (genre?.iri === undefined) {
+    if (genre === undefined) {
       genres.push(this.fb.group({genreIri: this.genreTypes[0].iri}));
       this.data.genres.push({genreIri: this.genreTypes[0].iri});
       this.valIds.genres.push({id: undefined, changed: false, toBeDeleted: false});
@@ -902,7 +902,7 @@ export class EditBookComponent implements OnInit {
 
   addSubject(subject?: { id: string; iri: string }): void {
     const subjects = this.getSubjects();
-    if (subject?.iri === undefined) {
+    if (subject === undefined) {
       subjects.push(this.fb.group({subjectIri: this.subjectTypes[0].iri}));
       this.data.subjects.push({subjectIri: this.subjectTypes[0].iri});
       this.valIds.subjects.push({id: undefined, changed: false, toBeDeleted: false});
@@ -1139,49 +1139,34 @@ export class EditBookComponent implements OnInit {
       case 'writtenBy':
         this.form.value.writtenBy[index].writtenByName = res[0].label;
         this.form.value.writtenBy[index].writtenByIri = res[0].id;
+        this.value.writtenBy = this.form.value.writtenBy;
         break;
       case 'lexias':
         this.form.value.lexias[index].lexiaName = res[0].label;
         this.form.value.lexias[index].lexiaIri = res[0].id;
+        this.value.lexias = this.form.value.lexias;
         break;
       case 'performedBy':
         this.form.value.performedBy[index].performedByName = res[0].label;
         this.form.value.performedBy[index].performedByIri = res[0].id;
+        this.value.performedBy = this.form.value.performedBy;
         break;
       case 'performedByActor':
         this.form.value.performedByActor[index].performedByActorName = res[0].label;
         this.form.value.performedByActor[index].performedByActorIri = res[0].id;
+        this.value.performedByActor = this.form.value.performedByActor;
         break;
       case 'performedIn':
         this.form.value.performedIn[index].performedInName = res[0].label;
         this.form.value.performedIn[index].performedInIri = res[0].id;
+        this.value.performedIn = this.form.value.performedIn;
         break;
     }
-    this.value = new BookData(
-        this.form.value.label,
-        this.form.value.internalId,
-        this.form.value.title,
-        this.form.value.creationDate,
-        this.form.value.edition,
-        this.form.value.genres,
-        this.form.value.language,
-        this.form.value.writtenBy,
-        this.form.value.comment,
-        this.form.value.extraInfo,
-        this.form.value.editionHist,
-        this.form.value.firstPerformance,
-        this.form.value.prefixTitle,
-        this.form.value.pubdate,
-        this.form.value.subjects,
-        this.form.value.lexias,
-        this.form.value.performedBy,
-        this.form.value.performedByActor,
-        this.form.value.performedIn
-    );
     this.options = [];
   }
 
   _handleInput(what: string, index?: number): void {
+    console.log('_handleInput', what, index);
     this.onChange(this.form.value);
     switch (what) {
       case 'label':
@@ -1450,6 +1435,7 @@ export class EditBookComponent implements OnInit {
       );
     } else {
       const obs: Array<Observable<string>> = [];
+      console.log('this.valIds:', this.valIds);
 
       if (this.valIds.label.changed) {
         const gaga: Observable<string> = this.knoraService.updateLabel(

@@ -797,7 +797,7 @@ export class EditPassageComponent implements OnInit {
 
   addFunctionVoice(functionVoice?: {id: string; iri: string }): void {
     const functionVoices = this.getFunctionVoices();
-    if (functionVoice.iri === undefined) {
+    if (functionVoice === undefined) {
       functionVoices.push(this.fb.group({functionVoiceIri: this.functionVoiceTypes[0].iri}));
       this.data.functionVoices.push({functionVoiceIri: this.functionVoiceTypes[0].iri});
       this.valIds.functionVoices.push({id: undefined, changed: false, toBeDeleted: false});
@@ -823,7 +823,7 @@ export class EditPassageComponent implements OnInit {
 
   addMarking(marking?: {id: string; iri: string }): void {
     const markings = this.getMarkings();
-    if (marking.iri === undefined) {
+    if (marking === undefined) {
       markings.push(this.fb.group({markingIri: this.markingTypes[0].iri}));
       this.data.markings.push({markingIri: this.markingTypes[0].iri});
       this.valIds.markings.push({id: undefined, changed: false, toBeDeleted: false});
@@ -973,41 +973,30 @@ export class EditPassageComponent implements OnInit {
       case 'occursIn':
         this.form.value.occursInName = res[0].label;
         this.form.value.occursInIri =  res[0].id;
+        this.value.occursIn = {
+          occursInName: this.form.value.occursInName,
+          occursInIri: this.form.value.occursInIri
+        };
         break;
       case 'contributedBy':
         this.form.value.contributedByName = res[0].label;
         this.form.value.contributedByIri =  res[0].id;
+        this.value.contributedBy = {
+          contributedByName: this.form.value.contributedByName,
+          contributedByIri: this.form.value.contributedByIri
+        };
         break;
       case 'contains':
         this.form.value.contains[index].containsName = res[0].label;
         this.form.value.contains[index].containsIri = res[0].id;
+        this.value.contains = this.form.value.contains;
         break;
       case 'mentionedIn':
         this.form.value.mentionedIn[index].mentionedInName = res[0].label;
         this.form.value.mentionedIn[index].mentionedInIri = res[0].id;
+        this.value.mentionedIn = this.form.value.mentionedIn;
         break;
     }
-    this.value = new PassageData(
-        this.form.value.label,
-        this.form.value.internalId,
-        this.form.value.displayedTitle,
-        this.form.value.functionVoices,
-        this.form.value.markings,
-        this.form.value.researchField,
-        this.form.value.status,
-        this.form.value.text,
-        {occursInName: this.form.value.occursInName, occursInIri: this.form.value.occursInIri},
-        {contributedByName: this.form.value.contributedByName, contributedByIri: this.form.value.contributedByIri},
-        this.form.value.contains,
-        this.form.value.internalComment,
-        this.form.value.page,
-        this.form.value.pageHist,
-        this.form.value.comment,
-        this.form.value.extraInfo,
-        this.form.value.prefixTitle,
-        this.form.value.textHist,
-        this.form.value.mentionedIn
-    );
     this.options = [];
   }
 

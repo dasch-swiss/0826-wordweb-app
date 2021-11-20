@@ -434,26 +434,12 @@ export class EditCompanyComponent implements OnInit {
       case 'members':
         this.form.value.members[index].memberName = res[0].label;
         this.form.value.members[index].memberIri =  res[0].id;
-        this.value = new CompanyData(
-            this.form.value.label,
-            this.form.value.title,
-            this.form.value.internalId,
-            this.form.value.extraInfo,
-            this.form.value.members,
-            this.form.value.lexias,
-        );
+        this.value.members = this.form.value.members;
         break;
       case 'lexias':
         this.form.value.lexias[index].lexiaName = res[0].label;
         this.form.value.lexias[index].lexiaIri =  res[0].id;
-        this.value = new CompanyData(
-            this.form.value.label,
-            this.form.value.title,
-            this.form.value.internalId,
-            this.form.value.extraInfo,
-            this.form.value.members,
-            this.form.value.lexias,
-        );
+        this.value.lexias = this.form.value.lexias;
         break;
     }
     this.options = [];
