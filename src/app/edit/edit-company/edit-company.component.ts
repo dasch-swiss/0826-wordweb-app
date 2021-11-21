@@ -389,6 +389,10 @@ export class EditCompanyComponent implements OnInit {
 
   onTouched = () => {};
 
+  onSubmit() {
+
+  }
+
   _handleLinkInput(what: string, index?: number): void {
     switch(what) {
       case 'members':
@@ -536,21 +540,27 @@ export class EditCompanyComponent implements OnInit {
 
   save(): void {
     this.working = true;
-    console.log('this.value:', this.value);
     if (this.inData.companyIri === undefined) {
-      this.knoraService.createCompany(this.value).subscribe(
-          res => {
-            console.log('CREATE_RESULT:', res);
-            this.working = false;
-            this.location.back();
-          },
-          error => {
-            this.snackBar.open('Error storing the company object!', 'OK');
-            console.log('EditCompany.save(): ERROR', error);
-            this.working = false;
-            this.location.back();
-          }
-      );
+      if (this.form.valid) {
+        this.knoraService.createCompany(this.value).subscribe(
+            res => {
+              console.log('CREATE_RESULT:', res);
+              this.working = false;
+              this.location.back();
+            },
+            error => {
+              this.snackBar.open('Error storing the company object!', 'OK');
+              console.log('EditCompany.save(): ERROR', error);
+              this.working = false;
+              this.location.back();
+            }
+        );
+      } else {
+        this.snackBar.open('Invalid/incomplete data in form – Please check!',
+            'OK',
+            {duration: 10000});
+        this.working = false;
+      }
     } else {
       const obs: Array<Observable<string>> = [];
 
