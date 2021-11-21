@@ -15,170 +15,184 @@ import {Router} from "@angular/router";
   selector: 'app-edit',
   template: `
     <div *ngIf="knoraService.loggedin" class="container">
-    <mat-card>
-      <mat-card-title>Company {{knoraService.loggedin}}</mat-card-title>
-      <mat-card-content>
-        <button mat-raised-button (click)="createCompany()">New</button><br><br>
-        <mat-form-field>
-          <input matInput
-                 placeholder="Select company"
-                 aria-label="Value"
-                 [matAutocomplete]="autoCompany"
-                 [(ngModel)]="company"
-                 (change)="_handleInput('company')"
-                 (input)="_handleLinkInput('company')">
-          <input matInput [(ngModel)]="companyIri" [hidden]="true">
-          <mat-autocomplete #autoCompany="matAutocomplete"
-                            (optionSelected)="_optionSelected($event.option.value,
-                          'company')">
-            <mat-option *ngFor="let option of options" [value]="option.label">
-              {{ option.label }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-        <button mat-raised-button
-                [disabled]="companyEditDisabled"
-                (click)="editCompany()">Edit</button>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card>
-      <mat-card-title>Person</mat-card-title>
-      <mat-card-content>
-        <button mat-raised-button (click)="createPerson()">New</button><br><br>
-        <mat-form-field>
-          <input matInput
-                 placeholder="Select Person"
-                 aria-label="Value"
-                 [matAutocomplete]="autoPerson"
-                 [(ngModel)]="person"
-                 (change)="_handleInput('person')"
-                 (input)="_handleLinkInput('person')">
-          <input matInput [(ngModel)]="personIri" [hidden]="true">
-          <mat-autocomplete #autoPerson="matAutocomplete"
-                            (optionSelected)="_optionSelected($event.option.value,
+      <mat-card>
+        <mat-card-title>Person</mat-card-title>
+        <mat-card-content>
+          <button mat-raised-button (click)="createPerson()">New</button>
+          <br><br>
+          <mat-form-field>
+            <input matInput
+                   placeholder="Select Person"
+                   aria-label="Value"
+                   [matAutocomplete]="autoPerson"
+                   [(ngModel)]="person"
+                   (change)="_handleInput('person')"
+                   (input)="_handleLinkInput('person')">
+            <input matInput [(ngModel)]="personIri" [hidden]="true">
+            <mat-autocomplete #autoPerson="matAutocomplete"
+                              (optionSelected)="_optionSelected($event.option.value,
                           'person')">
-            <mat-option *ngFor="let option of options" [value]="option.label">
-              {{ option.label }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-        <button mat-raised-button
-                [disabled]="personEditDisabled"
-                (click)="editPerson()">Edit</button>
-      </mat-card-content>
-    </mat-card>
+              <mat-option *ngFor="let option of options" [value]="option.label">
+                {{ option.label }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <button mat-raised-button
+                  [disabled]="personEditDisabled"
+                  (click)="editPerson()">Edit
+          </button>
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card>
-      <mat-card-title>Lexia</mat-card-title>
-      <mat-card-content>
-        <button mat-raised-button (click)="createLexia()">New</button><br><br>
-        <mat-form-field>
-          <input matInput
-                 placeholder="Select Lexia"
-                 aria-label="Value"
-                 [matAutocomplete]="autoLexia"
-                 [(ngModel)]="lexia"
-                 (change)="_handleInput('lexia')"
-                 (input)="_handleLinkInput('lexia')">
-          <input matInput [(ngModel)]="lexiaIri" [hidden]="true">
-          <mat-autocomplete #autoLexia="matAutocomplete"
-                            (optionSelected)="_optionSelected($event.option.value,
-                            'lexia')">
-            <mat-option *ngFor="let option of options" [value]="option.label">
-              {{ option.label }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-        <button mat-raised-button
-                [disabled]="lexiaEditDisabled"
-                (click)="editLexia()">Edit</button>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card>
-      <mat-card-title>Passage</mat-card-title>
-      <mat-card-content>
-        <button mat-raised-button (click)="createPassage()">New</button><br><br>
-        <mat-form-field>
-          <input matInput
-                 placeholder="Select Passage"
-                 aria-label="Value"
-                 [matAutocomplete]="autoPassage"
-                 [(ngModel)]="passage"
-                 (change)="_handleInput('passage')"
-                 (input)="_handleLinkInput('passage')">
-          <input matInput [(ngModel)]="passageIri" [hidden]="true">
-          <mat-autocomplete #autoPassage="matAutocomplete"
-                            (optionSelected)="_optionSelected($event.option.value,
-                            'passage')">
-            <mat-option *ngFor="let option of options" [value]="option.label">
-              {{ option.label }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-        <button mat-raised-button
-                [disabled]="passageEditDisabled"
-                (click)="editPassage()">Edit</button>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card>
-      <mat-card-title>Book</mat-card-title>
-      <mat-card-content>
-        <button mat-raised-button (click)="createBook()">New</button><br><br>
-        <mat-form-field>
-          <input matInput
-                 placeholder="Select Book"
-                 aria-label="Value"
-                 [matAutocomplete]="autoBook"
-                 [(ngModel)]="book"
-                 (change)="_handleInput('book')"
-                 (input)="_handleLinkInput('book')">
-          <input matInput [(ngModel)]="bookIri" [hidden]="true">
-          <mat-autocomplete #autoBook="matAutocomplete"
-                            (optionSelected)="_optionSelected($event.option.value,
+      <mat-card>
+        <mat-card-title>Book</mat-card-title>
+        <mat-card-content>
+          <button mat-raised-button (click)="createBook()">New</button>
+          <br><br>
+          <mat-form-field>
+            <input matInput
+                   placeholder="Select Book"
+                   aria-label="Value"
+                   [matAutocomplete]="autoBook"
+                   [(ngModel)]="book"
+                   (change)="_handleInput('book')"
+                   (input)="_handleLinkInput('book')">
+            <input matInput [(ngModel)]="bookIri" [hidden]="true">
+            <mat-autocomplete #autoBook="matAutocomplete"
+                              (optionSelected)="_optionSelected($event.option.value,
                             'book')">
-            <mat-option *ngFor="let option of options" [value]="option.label">
-              {{ option.label }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-        <button mat-raised-button
-                [disabled]="bookEditDisabled"
-                (click)="editBook()">Edit</button>
-      </mat-card-content>
-    </mat-card>
+              <mat-option *ngFor="let option of options" [value]="option.label">
+                {{ option.label }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <button mat-raised-button
+                  [disabled]="bookEditDisabled"
+                  (click)="editBook()">Edit
+          </button>
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card>
-      <mat-card-title>Venue</mat-card-title>
-      <mat-card-content>
-        <button mat-raised-button (click)="createVenue()">New</button><br><br>
-        <mat-form-field>
-          <input matInput
-                 placeholder="Select Venue"
-                 aria-label="Value"
-                 [matAutocomplete]="autoVenue"
-                 [(ngModel)]="venue"
-                 (change)="_handleInput('venue')"
-                 (input)="_handleLinkInput('venue')">
-          <input matInput [(ngModel)]="venueIri" [hidden]="true">
-          <mat-autocomplete #autoVenue="matAutocomplete"
-                            (optionSelected)="_optionSelected($event.option.value,
+      <mat-card>
+        <mat-card-title>Lexia</mat-card-title>
+        <mat-card-content>
+          <button mat-raised-button (click)="createLexia()">New</button>
+          <br><br>
+          <mat-form-field>
+            <input matInput
+                   placeholder="Select Lexia"
+                   aria-label="Value"
+                   [matAutocomplete]="autoLexia"
+                   [(ngModel)]="lexia"
+                   (change)="_handleInput('lexia')"
+                   (input)="_handleLinkInput('lexia')">
+            <input matInput [(ngModel)]="lexiaIri" [hidden]="true">
+            <mat-autocomplete #autoLexia="matAutocomplete"
+                              (optionSelected)="_optionSelected($event.option.value,
+                            'lexia')">
+              <mat-option *ngFor="let option of options" [value]="option.label">
+                {{ option.label }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <button mat-raised-button
+                  [disabled]="lexiaEditDisabled"
+                  (click)="editLexia()">Edit
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-title>Passage</mat-card-title>
+        <mat-card-content>
+          <button mat-raised-button (click)="createPassage()">New</button>
+          <br><br>
+          <mat-form-field>
+            <input matInput
+                   placeholder="Select Passage"
+                   aria-label="Value"
+                   [matAutocomplete]="autoPassage"
+                   [(ngModel)]="passage"
+                   (change)="_handleInput('passage')"
+                   (input)="_handleLinkInput('passage')">
+            <input matInput [(ngModel)]="passageIri" [hidden]="true">
+            <mat-autocomplete #autoPassage="matAutocomplete"
+                              (optionSelected)="_optionSelected($event.option.value,
+                            'passage')">
+              <mat-option *ngFor="let option of options" [value]="option.label">
+                {{ option.label }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <button mat-raised-button
+                  [disabled]="passageEditDisabled"
+                  (click)="editPassage()">Edit
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-title>Company {{knoraService.loggedin}}</mat-card-title>
+        <mat-card-content>
+          <button mat-raised-button (click)="createCompany()">New</button>
+          <br><br>
+          <mat-form-field>
+            <input matInput
+                   placeholder="Select company"
+                   aria-label="Value"
+                   [matAutocomplete]="autoCompany"
+                   [(ngModel)]="company"
+                   (change)="_handleInput('company')"
+                   (input)="_handleLinkInput('company')">
+            <input matInput [(ngModel)]="companyIri" [hidden]="true">
+            <mat-autocomplete #autoCompany="matAutocomplete"
+                              (optionSelected)="_optionSelected($event.option.value,
+                          'company')">
+              <mat-option *ngFor="let option of options" [value]="option.label">
+                {{ option.label }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <button mat-raised-button
+                  [disabled]="companyEditDisabled"
+                  (click)="editCompany()">Edit
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-title>Venue</mat-card-title>
+        <mat-card-content>
+          <button mat-raised-button (click)="createVenue()">New</button>
+          <br><br>
+          <mat-form-field>
+            <input matInput
+                   placeholder="Select Venue"
+                   aria-label="Value"
+                   [matAutocomplete]="autoVenue"
+                   [(ngModel)]="venue"
+                   (change)="_handleInput('venue')"
+                   (input)="_handleLinkInput('venue')">
+            <input matInput [(ngModel)]="venueIri" [hidden]="true">
+            <mat-autocomplete #autoVenue="matAutocomplete"
+                              (optionSelected)="_optionSelected($event.option.value,
                             'venue')">
-            <mat-option *ngFor="let option of options" [value]="option.label">
-              {{ option.label }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-        <button mat-raised-button
-                [disabled]="venueEditDisabled"
-                (click)="editVenue()">Edit</button>
-      </mat-card-content>
-    </mat-card>
+              <mat-option *ngFor="let option of options" [value]="option.label">
+                {{ option.label }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <button mat-raised-button
+                  [disabled]="venueEditDisabled"
+                  (click)="editVenue()">Edit
+          </button>
+        </mat-card-content>
+      </mat-card>
     </div>
     <div *ngIf="!knoraService.loggedin" class="container">
-      <mat-card><mat-card-title>No access!</mat-card-title></mat-card>
+      <mat-card>
+        <mat-card-title>No access!</mat-card-title>
+      </mat-card>
     </div>
   `,
   styles: [

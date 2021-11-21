@@ -389,6 +389,10 @@ export class EditCompanyComponent implements OnInit {
 
   onTouched = () => {};
 
+  onSubmit() {
+
+  }
+
   _handleLinkInput(what: string, index?: number): void {
     switch(what) {
       case 'members':
@@ -434,26 +438,12 @@ export class EditCompanyComponent implements OnInit {
       case 'members':
         this.form.value.members[index].memberName = res[0].label;
         this.form.value.members[index].memberIri =  res[0].id;
-        this.value = new CompanyData(
-            this.form.value.label,
-            this.form.value.title,
-            this.form.value.internalId,
-            this.form.value.extraInfo,
-            this.form.value.members,
-            this.form.value.lexias,
-        );
+        this.value.members = this.form.value.members;
         break;
       case 'lexias':
         this.form.value.lexias[index].lexiaName = res[0].label;
         this.form.value.lexias[index].lexiaIri =  res[0].id;
-        this.value = new CompanyData(
-            this.form.value.label,
-            this.form.value.title,
-            this.form.value.internalId,
-            this.form.value.extraInfo,
-            this.form.value.members,
-            this.form.value.lexias,
-        );
+        this.value.lexias = this.form.value.lexias;
         break;
     }
     this.options = [];
@@ -550,21 +540,27 @@ export class EditCompanyComponent implements OnInit {
 
   save(): void {
     this.working = true;
-    console.log('this.value:', this.value);
     if (this.inData.companyIri === undefined) {
-      this.knoraService.createCompany(this.value).subscribe(
-          res => {
-            console.log('CREATE_RESULT:', res);
-            this.working = false;
-            this.location.back();
-          },
-          error => {
-            this.snackBar.open('Error storing the company object!', 'OK');
-            console.log('EditCompany.save(): ERROR', error);
-            this.working = false;
-            this.location.back();
-          }
-      );
+      if (this.form.valid) {
+        this.knoraService.createCompany(this.value).subscribe(
+            res => {
+              console.log('CREATE_RESULT:', res);
+              this.working = false;
+              this.location.back();
+            },
+            error => {
+              this.snackBar.open('Error storing the company object!', 'OK');
+              console.log('EditCompany.save(): ERROR', error);
+              this.working = false;
+              this.location.back();
+            }
+        );
+      } else {
+        this.snackBar.open('Invalid/incomplete data in form – Please check!',
+            'OK',
+            {duration: 10000});
+        this.working = false;
+      }
     } else {
       const obs: Array<Observable<string>> = [];
 

@@ -350,15 +350,9 @@ export class EditVenueComponent implements OnInit {
       case 'lexias':
         this.form.value.lexias[index].lexiaName = res[0].label;
         this.form.value.lexias[index].lexiaIri = res[0].id;
+        this.value.lexias = this.form.value.lexias;
         break;
     }
-    this.value = new VenueData(
-        this.form.value.label,
-        this.form.value.title,
-        this.form.value.place,
-        this.form.value.extraInfo,
-        this.form.value.lexias
-    );
   }
 
   _handleInput(what: string, index?: number): void {
@@ -430,21 +424,27 @@ export class EditVenueComponent implements OnInit {
 
   save(): void {
     this.working = true;
-    console.log('this.value:', this.value);
     if (this.inData.venueIri === undefined) {
-      this.knoraService.createVenue(this.value).subscribe(
-          res => {
-            console.log('CREATE_RESULT:', res);
-            this.working = false;
-            this.location.back();
-          },
-          error => {
-            this.snackBar.open('Error storing the venue object!', 'OK');
-            console.log('EditVenue.save(): ERROR', error);
-            this.working = false;
-            this.location.back();
-          }
-      );
+      if (this.form.valid) {
+        this.knoraService.createVenue(this.value).subscribe(
+            res => {
+              console.log('CREATE_RESULT:', res);
+              this.working = false;
+              this.location.back();
+            },
+            error => {
+              this.snackBar.open('Error storing the venue object!', 'OK');
+              console.log('EditVenue.save(): ERROR', error);
+              this.working = false;
+              this.location.back();
+            }
+        );
+      } else {
+        this.snackBar.open('Invalid/incomplete data in form – Please check!',
+            'OK',
+            {duration: 10000});
+        this.working = false;
+      }
     } else {
       const obs: Array<Observable<string>> = [];
 
