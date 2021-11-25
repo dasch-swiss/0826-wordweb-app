@@ -430,10 +430,14 @@ export class EditVenueComponent implements OnInit {
             res => {
               console.log('CREATE_RESULT:', res);
               this.working = false;
-              this.location.back();
+              if (res === 'error') {
+                this.snackBar.open('Error storing the venue object!', 'OK', {duration: 10000});
+              } else {
+                this.location.back();
+              }
             },
             error => {
-              this.snackBar.open('Error storing the venue object!', 'OK');
+              this.snackBar.open('Error storing the venue object!', 'OK', {duration: 10000});
               console.log('EditVenue.save(): ERROR', error);
               this.working = false;
               this.location.back();
@@ -571,7 +575,7 @@ export class EditVenueComponent implements OnInit {
             this.location.back();
           },
           error => {
-            this.snackBar.open('Fehler beim Speichern der Daten des venue-Eintrags!', 'OK');
+            this.snackBar.open('Fehler beim Speichern der Daten des venue-Eintrags!', 'OK', {duration: 10000});
             this.working = false;
             this.location.back();
           });
@@ -595,10 +599,13 @@ export class EditVenueComponent implements OnInit {
         this.knoraService.deleteResource(this.resId, 'venue', this.lastmod, data.comment).subscribe(
             res => {
               this.working = false;
+              if (res === 'error') {
+                this.snackBar.open('Error while deleting the venue entry!', 'OK', {duration: 10000});
+              }
               this.location.back();
             },
             error => {
-              this.snackBar.open('Error while deleting the venue entry!', 'OK');
+              this.snackBar.open('Error while deleting the venue entry!', 'OK', {duration: 10000});
               console.log('deleteResource:ERROR:: ', error);
               this.working = false;
               this.location.back();

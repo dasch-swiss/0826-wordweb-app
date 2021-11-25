@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {KnoraService} from "../services/knora.service";
+import {KnoraService} from '../services/knora.service';
 import {
   ControlValueAccessor,
   FormArray,
@@ -9,7 +9,7 @@ import {
   NgControl,
   Validators
 } from '@angular/forms';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-edit',

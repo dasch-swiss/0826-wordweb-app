@@ -79,6 +79,7 @@ export class PersonData {
         public description: string, // hasDescription (1)
         public birthDate?: DateValue, // hasBirthDate (0-1)
         public deathDate?: DateValue, // hasDeathDate (0-1)
+        public activeDate?: DateValue, // hasActiveDate (0-1)
         public extraInfo?: string, // hasPersonExtraInfo (0-1)
         public lexias?: {lexiaName: string; lexiaIri: string}[], // isLexiaPersonValue (0-n)
     ) {}
@@ -1089,6 +1090,49 @@ export class KnoraService {
             deathDateVal.endDay = deathVal.endDay;
             props[this.wwOntology + 'hasDeathDate'] = [
                 deathDateVal
+            ];
+        }
+
+        const activeVal = new DateValue(
+            data.activeDate.calendar,
+            data.activeDate.timeSpan,
+            data.activeDate.startYear,
+            data.activeDate.startMonth,
+            data.activeDate.startDay,
+            data.activeDate.endYear,
+            data.activeDate.endMonth,
+            data.activeDate.endDay);
+        if (!activeVal.isEmpty()) {
+            const activeDateVal = new CreateDateValue();
+            activeDateVal.calendar = activeVal.calendar;
+            if (activeVal.startYear < 0) {
+                activeDateVal.startEra = 'BCE';
+                if (activeVal.calendar === DateCalendar.JULIAN) {
+                    activeDateVal.startYear = -activeVal.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                } else {
+                    activeDateVal.startYear = -activeVal.startYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                }
+            } else {
+                activeDateVal.startEra = 'CE';
+                activeDateVal.startYear = activeVal.startYear;
+            }
+            activeDateVal.startMonth = activeVal.startMonth;
+            activeDateVal.startDay = activeVal.startDay;
+            if (activeVal.endYear < 0) {
+                activeDateVal.endEra = 'BCE';
+                if (activeVal.calendar === DateCalendar.JULIAN) {
+                    activeDateVal.endYear = -activeVal.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                } else {
+                    activeDateVal.endYear = -activeVal.endYear; // Todo: depending on handling of year 0 in Knora +/- 1
+                }
+            } else {
+                activeDateVal.endEra = 'CE';
+                activeDateVal.endYear = activeVal.endYear;
+            }
+            activeDateVal.endMonth = activeVal.endMonth;
+            activeDateVal.endDay = activeVal.endDay;
+            props[this.wwOntology + 'hasActiveDate'] = [
+                activeDateVal
             ];
         }
 
