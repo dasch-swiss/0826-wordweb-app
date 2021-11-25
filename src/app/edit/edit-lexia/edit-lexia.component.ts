@@ -15,7 +15,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {Location} from '@angular/common';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {ConfirmationComponent, ConfirmationResult} from '../confirmation/confirmation.component';
-import {toArray} from "rxjs/operators";
+import {toArray} from 'rxjs/operators';
 
 
 interface ValInfo {
@@ -376,7 +376,7 @@ export class EditLexiaComponent implements OnInit {
     if (formalClassIri === undefined) {
       formalClasses.push(this.fb.group({formalClassIri: this.formalClassTypes[0].iri}));
       this.data.formalClassIris.push(this.formalClassTypes[0].iri);
-      this.valIds.formalClasses.push({id: undefined, changed: false, toBeDeleted: false});
+      this.valIds.formalClasses.push({id: undefined, changed: true, toBeDeleted: false});
     } else {
       formalClasses.push(this.fb.group({formalClassIri}));
       this.data.formalClassIris.push(formalClassIri);
@@ -526,12 +526,16 @@ export class EditLexiaComponent implements OnInit {
   save(): void {
     this.working = true;
     if (this.inData.lexiaIri === undefined) {
-      if (this.form.valid) {
+      if (this.form.valid && this.value.formalClassIris[0]) {
         this.knoraService.createLexia(this.value).subscribe(
             res => {
               console.log('CREATE_RESULT:', res);
               this.working = false;
-              this.location.back();
+              if (res === 'error') {
+                this.snackBar.open('Error storing the lexia object!', 'OK');
+              } else {
+                this.location.back();
+              }
             },
             error => {
               this.snackBar.open('Error storing the lexia object!', 'OK');

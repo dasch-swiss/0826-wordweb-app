@@ -130,7 +130,7 @@ class PassageIds {
           <mat-label>Function voices *</mat-label>
           <div *ngFor="let functionVoiceItem of getFunctionVoices().controls; let i=index">
             <mat-form-field [formGroup]="functionVoiceItem" [style.width.px]=300>
-              <mat-select matInput
+              <mat-select matInput required
                           placeholder="functionVoices"
                           formControlName="functionVoiceIri"
                           (selectionChange)="_handleInput('functionVoices', i)">
@@ -165,7 +165,7 @@ class PassageIds {
           <mat-label>Markings *</mat-label>
           <div *ngFor="let markingItem of getMarkings().controls; let i=index">
             <mat-form-field [formGroup]="markingItem" [style.width.px]=300>
-              <mat-select matInput
+              <mat-select matInput required
                           placeholder="marking"
                           formControlName="markingIri"
                           (selectionChange)="_handleInput('markings', i)">
@@ -597,6 +597,7 @@ export class EditPassageComponent implements OnInit {
         [{containsName: '', containsIri: ''}], '',
         '', '', '', '', '', '',
         [{mentionedInName: '', mentionedInIri: ''}]);
+
     this.form.setValue({label, internalId, displayedTitle, functionVoices, markings, researchField,
       status, text, occursInName: occursIn.occursInName, occursInIri: occursIn.occursInIri,
       contributedByName: contributedBy.contributedByName, contributedByIri: contributedBy.contributedByIri,
@@ -800,7 +801,7 @@ export class EditPassageComponent implements OnInit {
     if (functionVoice === undefined) {
       functionVoices.push(this.fb.group({functionVoiceIri: this.functionVoiceTypes[0].iri}));
       this.data.functionVoices.push({functionVoiceIri: this.functionVoiceTypes[0].iri});
-      this.valIds.functionVoices.push({id: undefined, changed: false, toBeDeleted: false});
+      this.valIds.functionVoices.push({id: undefined, changed: true, toBeDeleted: false});
     } else {
       functionVoices.push(this.fb.group({functionVoiceIri: functionVoice.iri}));
       this.data.functionVoices.push({functionVoiceIri: functionVoice.iri});
@@ -826,7 +827,7 @@ export class EditPassageComponent implements OnInit {
     if (marking === undefined) {
       markings.push(this.fb.group({markingIri: this.markingTypes[0].iri}));
       this.data.markings.push({markingIri: this.markingTypes[0].iri});
-      this.valIds.markings.push({id: undefined, changed: false, toBeDeleted: false});
+      this.valIds.markings.push({id: undefined, changed: true, toBeDeleted: false});
     } else {
       markings.push(this.fb.group({markingIri: marking.iri}));
       this.data.markings.push({markingIri: marking.iri});
@@ -949,9 +950,10 @@ export class EditPassageComponent implements OnInit {
       case 'mentionedIn':
         const mentionedIn = this.getMentionedIn();
         const mentionedInName = mentionedIn.value[index].mentionedInName;
+        console.log('mentionedIn', mentionedInName);
 
         this.valIds.mentionedIn[index].changed = true;
-        if (mentionedIn.length >= 3) {
+        if (mentionedInName.length >= 3) {
           this.knoraService.getResourcesByLabel(mentionedInName, this.knoraService.wwOntology + 'passage').subscribe(
               res => {
                 this.options = res;
@@ -971,19 +973,21 @@ export class EditPassageComponent implements OnInit {
     }
     switch(what) {
       case 'occursIn':
+        this.form.controls.occursInIri.setValue(res[0].id); // must be for unknown reasons
         this.form.value.occursInName = res[0].label;
         this.form.value.occursInIri =  res[0].id;
         this.value.occursIn = {
-          occursInName: this.form.value.occursInName,
-          occursInIri: this.form.value.occursInIri
+          occursInName: res[0].label,
+          occursInIri: res[0].id
         };
         break;
       case 'contributedBy':
+        this.form.controls.contributedByIri.setValue(res[0].id); // must be for unknown reasons
         this.form.value.contributedByName = res[0].label;
         this.form.value.contributedByIri =  res[0].id;
         this.value.contributedBy = {
-          contributedByName: this.form.value.contributedByName,
-          contributedByIri: this.form.value.contributedByIri
+          contributedByName: res[0].label,
+          contributedByIri: res[0].id
         };
         break;
       case 'contains':
@@ -1001,6 +1005,7 @@ export class EditPassageComponent implements OnInit {
   }
 
   _handleInput(what: string, index?: number): void {
+    console.log('_handleInput');
     this.onChange(this.form.value);
     switch (what) {
       case 'label':
@@ -1224,22 +1229,28 @@ export class EditPassageComponent implements OnInit {
 
   save(): void {
     this.working = true;
+    console.log('this.value:', this.value);
     if (this.inData.passageIri === undefined) {
-      if (this.form.valid) {
+      if (this.form.valid && this.value.occursIn.occursInIri && this.value.contributedBy.contributedByIri) {
         this.knoraService.createPassage(this.value).subscribe(
             res => {
               console.log('CREATE_RESULT:', res);
               this.working = false;
-              this.location.back();
+              if (res === 'error') {
+                this.snackBar.open('Error storing the passage object!', 'OK', {duration: 10000});
+              } else {
+                this.location.back();
+              }
             },
             error => {
-              this.snackBar.open('Error storing the passage object!', 'OK');
+              this.snackBar.open('Error storing the passage object!', 'OK', {duration: 10000});
               console.log('EditCompany.save(): ERROR', error);
               this.working = false;
               this.location.back();
             }
         );
       } else {
+        console.log('Incomplete:', this.value);
         this.snackBar.open('Invalid/incomplete data in form – Please check!',
             'OK',
             {duration: 10000});
@@ -1746,7 +1757,7 @@ export class EditPassageComponent implements OnInit {
             this.location.back();
           },
           error => {
-            this.snackBar.open('Fehler beim Speichern der Daten des company-Eintrags!', 'OK');
+            this.snackBar.open('Fehler beim Speichern der Daten des company-Eintrags!', 'OK', {duration: 10000});
             this.working = false;
             this.location.back();
           });
@@ -1772,10 +1783,13 @@ export class EditPassageComponent implements OnInit {
         this.knoraService.deleteResource(this.resId, 'passage', this.lastmod, data.comment).subscribe(
             res => {
               this.working = false;
+              if (res === 'error') {
+                this.snackBar.open('Error while deleting the passage entry!', 'OK', {duration: 10000});
+              }
               this.location.back();
             },
             error => {
-              this.snackBar.open('Error while deleting the passage entry!', 'OK');
+              this.snackBar.open('Error while deleting the passage entry!', 'OK', {duration: 10000});
               console.log('deleteResource:ERROR:: ', error);
               this.working = false;
               this.location.back();

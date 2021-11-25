@@ -26,6 +26,7 @@ class PersonIds {
   public description: ValInfo;
   public birthDate: ValInfo;
   public deathDate: ValInfo;
+  public activeDate: ValInfo;
   public extraInfo: ValInfo;
   public lexias: ValInfo[];
 
@@ -38,6 +39,7 @@ class PersonIds {
     this.description = {id: undefined, changed: false, toBeDeleted: false};
     this.birthDate = {id: undefined, changed: false, toBeDeleted: false};
     this.deathDate = {id: undefined, changed: false, toBeDeleted: false};
+    this.activeDate = {id: undefined, changed: false, toBeDeleted: false};
     this.extraInfo = {id: undefined, changed: false, toBeDeleted: false};
     this.lexias = [];
   }
@@ -136,7 +138,7 @@ class PersonIds {
         <br/>
         &nbsp;
         <mat-form-field appearance="fill"  [style.width.px]=600>
-          <mat-label>Birthdate</mat-label>
+          <mat-label>Birth date</mat-label>
           <app-knora-date-value matInput
                                 formControlName="birthDate"
                                 (ngModelChange)="_handleInput('birthDate')"></app-knora-date-value>
@@ -151,7 +153,7 @@ class PersonIds {
         <br/>
 
         <mat-form-field appearance="fill"  [style.width.px]=600>
-          <mat-label>Deathdate</mat-label>
+          <mat-label>Death date</mat-label>
           <app-knora-date-value matInput
                                 formControlName="deathDate"
                                 (ngModelChange)="_handleInput('deathDate')"></app-knora-date-value>
@@ -162,6 +164,21 @@ class PersonIds {
         <button *ngIf="valIds.deathDate.id !== undefined" mat-mini-fab (click)="_handleDelete('deathDate')">
           <mat-icon *ngIf="!valIds.deathDate.toBeDeleted">delete</mat-icon>
           <mat-icon *ngIf="valIds.deathDate.toBeDeleted" color="warn">delete</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field appearance="fill"  [style.width.px]=600>
+          <mat-label>Active date</mat-label>
+          <app-knora-date-value matInput
+                                formControlName="activeDate"
+                                (ngModelChange)="_handleInput('activeDate')"></app-knora-date-value>
+        </mat-form-field>&nbsp;
+        <button *ngIf="valIds.activeDate.changed" mat-mini-fab (click)="_handleUndo('activeDate')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <button *ngIf="valIds.activeDate.id !== undefined" mat-mini-fab (click)="_handleDelete('activeDate')">
+          <mat-icon *ngIf="!valIds.activeDate.toBeDeleted">delete</mat-icon>
+          <mat-icon *ngIf="valIds.activeDate.toBeDeleted" color="warn">delete</mat-icon>
         </button>
         <br/>
 
@@ -219,7 +236,7 @@ class PersonIds {
           </button>
         </div>
       </mat-card-content>
-      
+
       <mat-card-actions>
         <button appBackButton class="mat-raised-button" matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
         <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Save</button>
@@ -245,7 +262,7 @@ export class EditPersonComponent implements OnInit {
   resId: string;
   lastmod: string;
   data: PersonData = new PersonData('', '', '', '', '',
-      '', new DateValue(), new DateValue(), '', []);
+      '', new DateValue(), new DateValue(), new DateValue(), '', []);
   nLexias: number;
   working: boolean;
   public valIds: PersonIds = new PersonIds();
@@ -283,6 +300,7 @@ export class EditPersonComponent implements OnInit {
         this.form.controls.description.value,
         this.form.controls.birthDate.value,
         this.form.controls.deathDate.value,
+        this.form.controls.activeDate.value,
         this.form.controls.extraInfo.value,
         lexiaValues,
     );
@@ -290,12 +308,12 @@ export class EditPersonComponent implements OnInit {
 
   set value(knoraVal: PersonData | null) {
     const {
-      label, internalId, firstName, lastName, genderIri, description, birthDate, deathDate, extraInfo, lexias
+      label, internalId, firstName, lastName, genderIri, description, birthDate, deathDate, activeDate, extraInfo, lexias
     }
         = knoraVal || new PersonData('', '', '', '', '',
-        '', new DateValue(), new DateValue(), '', [{lexiaName: '', lexiaIri: ''}]);
+        '', new DateValue(), new DateValue(), new DateValue(), '', [{lexiaName: '', lexiaIri: ''}]);
     this.form.setValue({
-      label, internalId, firstName, lastName, genderIri, description, birthDate, deathDate, extraInfo, lexias
+      label, internalId, firstName, lastName, genderIri, description, birthDate, deathDate, activeDate, extraInfo, lexias
     });
   }
 
@@ -362,6 +380,13 @@ export class EditPersonComponent implements OnInit {
                   this.data.deathDate = dateValue;
                   break;
                 }
+                case this.knoraService.wwOntology + 'hasActiveDate': {
+                  const dateValue = DateValue.parseDateValueFromKnora(ele.values[0]);
+                  this.form.controls.activeDate.setValue(dateValue);
+                  this.valIds.activeDate = {id: ele.ids[0], changed: false, toBeDeleted: false};
+                  this.data.activeDate = dateValue;
+                  break;
+                }
                 case this.knoraService.wwOntology + 'hasPersonExtraInfo': {
                   this.form.controls.extraInfo.setValue(ele.values[0]);
                   this.valIds.extraInfo = {id: ele.ids[0], changed: false, toBeDeleted: false};
@@ -385,10 +410,11 @@ export class EditPersonComponent implements OnInit {
         label: [this.data.label, [Validators.required, Validators.minLength(5)]],
         firstName: [this.data.firstName, []],
         lastName: [this.data.lastName, [Validators.required]],
-        genderIri: [this.data.genderIri, [Validators.required]],
+        genderIri:  [this.data.genderIri || this.genderTypes[0].iri, [Validators.required]],
         description: [this.data.description, [Validators.required]],
         birthDate: [this.data.birthDate, []],
         deathDate: [this.data.deathDate, []],
+        activeDate: [this.data.activeDate, []],
         internalId: [this.data.internalId, [Validators.required]],
         extraInfo: this.data.extraInfo,
         lexias: this.fb.array([
@@ -489,6 +515,9 @@ export class EditPersonComponent implements OnInit {
       case 'deathDate':
         this.valIds.deathDate.changed = true;
         break;
+      case 'activeDate':
+        this.valIds.activeDate.changed = true;
+        break;
       case 'extraInfo':
         this.valIds.extraInfo.changed = true;
         break;
@@ -512,6 +541,10 @@ export class EditPersonComponent implements OnInit {
         this.valIds.deathDate.toBeDeleted = !this.valIds.deathDate.toBeDeleted;
         console.log('_handleDelete("deathDate")');
         break;
+      case 'activeDate':
+        this.valIds.activeDate.toBeDeleted = !this.valIds.activeDate.toBeDeleted;
+        console.log('_handleDelete("activeDate")');
+        break;
       case 'extraInfo':
         this.valIds.extraInfo.toBeDeleted = !this.valIds.extraInfo.toBeDeleted;
         console.log('_handleDelete("extraInfo")');
@@ -529,7 +562,6 @@ export class EditPersonComponent implements OnInit {
         }
         break;
     }
-
   }
 
   _handleUndo(what: string, index?: number): void {
@@ -568,6 +600,11 @@ export class EditPersonComponent implements OnInit {
         //this.form.controls.deathDateEnd.setValue(this.data.deathDateEnd);
         this.valIds.deathDate.changed = false;
         break;
+      case 'activeDate':
+        this.form.controls.activeDate.setValue(this.data.activeDate);
+        //this.form.controls.activeDateEnd.setValue(this.data.activeDateEnd);
+        this.valIds.activeDate.changed = false;
+        break;
       case 'extraInfo':
         this.form.controls.extraInfo.setValue(this.data.extraInfo);
         this.valIds.extraInfo.changed = false;
@@ -582,15 +619,21 @@ export class EditPersonComponent implements OnInit {
   save(): void {
     this.working = true;
     if (this.inData.personIri === undefined) {
-      if (this.form.valid) {
+      const ok1 = this.value.activeDate.isEmpty() && (!this.value.birthDate.isEmpty() || !this.value.deathDate.isEmpty());
+      const ok2 = !this.value.activeDate.isEmpty() && (this.value.birthDate.isEmpty() && this.value.deathDate.isEmpty());
+      if (this.form.valid && (ok1 || ok2)) {
         this.knoraService.createPerson(this.value).subscribe(
             res => {
               console.log('CREATE_RESULT:', res);
               this.working = false;
-              this.location.back();
+              if (res === 'error') {
+                this.snackBar.open('Error storing the person object!', 'OK', {duration: 10000});
+              } else {
+                this.location.back();
+              }
             },
             error => {
-              this.snackBar.open('Error storing the person object!', 'OK');
+              this.snackBar.open('Error storing the person object!', 'OK', {duration: 10000});
               console.log('EditPerson.save(): ERROR', error);
               this.working = false;
               this.location.back();
@@ -803,7 +846,35 @@ export class EditPersonComponent implements OnInit {
         obs.push(gaga);
       }
 
-      console.log('this.valIds.extraInfo:', this.valIds.extraInfo);
+      if (this.valIds.activeDate.toBeDeleted && this.valIds.activeDate.id !== undefined) {
+        const gaga: Observable<string> = this.knoraService.deleteDateValue(
+            this.resId,
+            this.knoraService.wwOntology + 'person',
+            this.valIds.activeDate.id as string,
+            this.knoraService.wwOntology + 'hasActiveDate');
+        obs.push(gaga);
+      } else if (this.valIds.activeDate.changed) {
+        let gaga: Observable<string>;
+        if (this.valIds.activeDate.id === undefined) {
+          const activeDateValue = this.form.controls.activeDate.value;
+          gaga = this.knoraService.createDateValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.knoraService.wwOntology + 'hasActiveDate',
+              activeDateValue);
+        } else {
+          const activeDate = this.form.value.activeDate;
+          const activeDateValue = this.form.controls.activeDate.value;
+          gaga = this.knoraService.updateDateValue(
+              this.resId,
+              this.knoraService.wwOntology + 'person',
+              this.valIds.deathDate.id as string,
+              this.knoraService.wwOntology + 'hasActiveDate',
+              activeDateValue);
+        }
+        obs.push(gaga);
+      }
+
       if (this.valIds.extraInfo.toBeDeleted && this.valIds.extraInfo.id !== undefined) {
         const gaga: Observable<string> = this.knoraService.deleteTextValue(
             this.resId,
@@ -865,7 +936,7 @@ export class EditPersonComponent implements OnInit {
             this.location.back();
           },
           error => {
-            this.snackBar.open('Fehler beim Speichern der Daten des person-Eintrags!', 'OK');
+            this.snackBar.open('Fehler beim Speichern der Daten des person-Eintrags!', 'OK', {duration: 10000});
             this.working = false;
             this.location.back();
           });
@@ -879,7 +950,7 @@ export class EditPersonComponent implements OnInit {
     confirmationConfig.disableClose = true;
     confirmationConfig.data = {
       title: 'Delete company',
-      text: 'Do You really want to delete this comapany?'
+      text: 'Do You really want to delete this person?'
     };
 
     const dialogRef = this.dialog.open(ConfirmationComponent, confirmationConfig);
@@ -890,16 +961,18 @@ export class EditPersonComponent implements OnInit {
         this.knoraService.deleteResource(this.resId, 'person', this.lastmod, data.comment).subscribe(
             res => {
               this.working = false;
+              if (res === 'error') {
+                this.snackBar.open('Error while deleting the person entry!', 'OK', {duration: 10000});
+              }
               this.location.back();
             },
             error => {
-              this.snackBar.open('Error while deleting the company entry!', 'OK');
+              this.snackBar.open('Error while deleting the person entry!', 'OK', {duration: 10000});
               console.log('deleteResource:ERROR:: ', error);
               this.working = false;
               this.location.back();
             });
       }
     });
-
   }
 }

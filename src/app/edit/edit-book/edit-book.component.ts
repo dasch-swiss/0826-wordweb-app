@@ -202,7 +202,8 @@ class BookIds {
           <mat-label>Written by &rarr; (person) *</mat-label>
           <div *ngFor="let writtenByItem of getWrittenBys().controls; let i=index">
             <mat-form-field [formGroup]="writtenByItem">
-              <input matInput [matAutocomplete]="autoWrittenBy" required
+              <input matInput required
+                     [matAutocomplete]="autoWrittenBy"
                      formControlName="writtenByName"
                      class="knora-link-input-element klnkie-val full-width"
                      placeholder="Written by (person)"
@@ -353,7 +354,7 @@ class BookIds {
           <mat-label>Is Lexia &rarr; (lexia)</mat-label>
           <div *ngFor="let lexiaItem of getLexias().controls; let i=index">
             <mat-form-field [formGroup]="lexiaItem">
-              <input matInput [matAutocomplete]="autoLexia" required
+              <input matInput [matAutocomplete]="autoLexia"
                      formControlName="lexiaName"
                      class="knora-link-input-element klnkie-val full-width"
                      placeholder="Mentioned in (passage)"
@@ -392,7 +393,7 @@ class BookIds {
           <mat-label>Performed by (company)</mat-label>
           <div *ngFor="let performedByItem of getPerformedBys().controls; let i=index">
             <mat-form-field [formGroup]="performedByItem">
-              <input matInput [matAutocomplete]="autoPerformedBy" required
+              <input matInput [matAutocomplete]="autoPerformedBy"
                      formControlName="performedByName"
                      class="knora-link-input-element klnkie-val full-width"
                      placeholder="Performed by &rarr; (company)"
@@ -431,7 +432,7 @@ class BookIds {
           <mat-label>Performed by actor (person)</mat-label>
           <div *ngFor="let performedByActorItem of getPerformedByActors().controls; let i=index">
             <mat-form-field [formGroup]="performedByActorItem">
-              <input matInput [matAutocomplete]="autoPerformedByActor" required
+              <input matInput [matAutocomplete]="autoPerformedByActor"
                      formControlName="performedByActorName"
                      class="knora-link-input-element klnkie-val full-width"
                      placeholder="Performed by actor &rarr; (person)"
@@ -470,7 +471,7 @@ class BookIds {
           <mat-label>Performed in (venue)</mat-label>
           <div *ngFor="let performedInItem of getPerformedIns().controls; let i=index">
             <mat-form-field [formGroup]="performedInItem">
-              <input matInput [matAutocomplete]="autoPerformedIn" required
+              <input matInput [matAutocomplete]="autoPerformedIn"
                      formControlName="performedInName"
                      class="knora-link-input-element klnkie-val full-width"
                      placeholder="Performed in &rarr; (venue)"
@@ -805,7 +806,7 @@ export class EditBookComponent implements OnInit {
         this.valIds.writtenBy[0] = {id: '', changed: false, toBeDeleted: false};
         wbInitial = [
           this.fb.group({
-            writtenByIri: ['', [Validators.required]], writtenByName: [, []]
+            writtenByIri: ['', []], writtenByName: [, []]
           })
         ];
       } else {
@@ -905,7 +906,7 @@ export class EditBookComponent implements OnInit {
     if (subject === undefined) {
       subjects.push(this.fb.group({subjectIri: this.subjectTypes[0].iri}));
       this.data.subjects.push({subjectIri: this.subjectTypes[0].iri});
-      this.valIds.subjects.push({id: undefined, changed: false, toBeDeleted: false});
+      this.valIds.subjects.push({id: undefined, changed: true, toBeDeleted: false});
     } else {
       subjects.push(this.fb.group({subjectIri: subject.iri}));
       this.data.subjects.push({subjectIri: subject.iri});
@@ -1115,9 +1116,10 @@ export class EditBookComponent implements OnInit {
       case 'performedIn':
         const performedIn = this.getPerformedIns();
         const performedInName = performedIn.value[index].performedInName;
+        console.log('performedIn', index, performedInName);
 
         this.valIds.performedIn[index].changed = true;
-        if (performedInName >= 3) {
+        if (performedInName.length >= 3) {
           this.knoraService.getResourcesByLabel(performedInName, this.knoraService.wwOntology + 'venue').subscribe(
               res => {
                 this.options = res;
@@ -1420,18 +1422,23 @@ export class EditBookComponent implements OnInit {
     this.working = true;
     console.log('this.value:', this.value);
     if (this.inData.bookIri === undefined) {
-      if (this.form.valid) {
+      if (this.form.valid
+          && this.value.genres[0].genreIri
+          && this.value.writtenBy[0].writtenByIri
+          && !this.value.creationDate.isEmpty()) {
         this.knoraService.createBook(this.value).subscribe(
             res => {
               console.log('CREATE_RESULT:', res);
               this.working = false;
-              this.location.back();
+              if (res === 'error') {
+                this.snackBar.open('Error storing the book object!', 'OK', {duration: 10000});
+              } else {
+                this.location.back();
+              }
             },
             error => {
-              this.snackBar.open('Error storing the passage object!', 'OK');
               console.log('EditCompany.save(): ERROR', error);
               this.working = false;
-              this.location.back();
             }
         );
       } else {
@@ -1520,9 +1527,7 @@ export class EditBookComponent implements OnInit {
               this.knoraService.wwOntology + 'hasCreationDate',
               creationDateValue);
         } else {
-          console.log('**********> UPDATE KNORA started...');
           const creationDateValue = this.form.controls.creationDate.value;
-          console.log('**********> UPDATE KNORA TO DATE:', creationDateValue);
           gaga = this.knoraService.updateDateValue(
               this.resId,
               this.knoraService.wwOntology + 'book',
@@ -1962,7 +1967,7 @@ export class EditBookComponent implements OnInit {
             this.location.back();
           },
           error => {
-            this.snackBar.open('Fehler beim Speichern der Daten des book-Eintrags!', 'OK');
+            this.snackBar.open('Fehler beim Speichern der Daten des book-Eintrags!', 'OK', {duration: 10000});
             this.working = false;
             this.location.back();
           });
@@ -1986,10 +1991,13 @@ export class EditBookComponent implements OnInit {
         this.knoraService.deleteResource(this.resId, 'book', this.lastmod, data.comment).subscribe(
             res => {
               this.working = false;
+              if (res === 'error') {
+                this.snackBar.open('Error while deleting the book entry!', 'OK', {duration: 10000});
+              }
               this.location.back();
             },
             error => {
-              this.snackBar.open('Error while deleting the book entry!', 'OK');
+              this.snackBar.open('Error while deleting the book entry!', 'OK', {duration: 10000});
               console.log('deleteResource:ERROR:: ', error);
               this.working = false;
               this.location.back();

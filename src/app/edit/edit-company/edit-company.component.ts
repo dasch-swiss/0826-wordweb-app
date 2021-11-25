@@ -546,10 +546,14 @@ export class EditCompanyComponent implements OnInit {
             res => {
               console.log('CREATE_RESULT:', res);
               this.working = false;
-              this.location.back();
+              if (res === 'error') {
+                this.snackBar.open('Error storing the company object!', 'OK', {duration: 10000});
+              } else {
+                this.location.back();
+              }
             },
             error => {
-              this.snackBar.open('Error storing the company object!', 'OK');
+              this.snackBar.open('Error storing the company object!', 'OK', {duration: 10000});
               console.log('EditCompany.save(): ERROR', error);
               this.working = false;
               this.location.back();
@@ -717,7 +721,7 @@ export class EditCompanyComponent implements OnInit {
             this.location.back();
           },
           error => {
-            this.snackBar.open('Fehler beim Speichern der Daten des company-Eintrags!', 'OK');
+            this.snackBar.open('Fehler beim Speichern der Daten des company-Eintrags!', 'OK', {duration: 10000});
             this.working = false;
             this.location.back();
           });
@@ -742,10 +746,13 @@ export class EditCompanyComponent implements OnInit {
         this.knoraService.deleteResource(this.resId, 'company', this.lastmod, data.comment).subscribe(
             res => {
               this.working = false;
+              if (res === 'error') {
+                this.snackBar.open('Error while deleting the company entry!', 'OK', {duration: 10000});
+              }
               this.location.back();
             },
             error => {
-              this.snackBar.open('Error while deleting the company entry!', 'OK');
+              this.snackBar.open('Error while deleting the company entry!', 'OK', {duration: 10000});
               console.log('deleteResource:ERROR:: ', error);
               this.working = false;
               this.location.back();
