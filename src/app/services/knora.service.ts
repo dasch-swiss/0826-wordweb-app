@@ -397,6 +397,7 @@ export class KnoraService {
 
     gravseachQuery(structure: IMainClass, priority: number, offset?: number): Observable<any> {
         const gravsearch = this._gsBuilder.getQuery(structure, priority, offset);
+        console.log('gravseachQuery: ', gravsearch);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
                 tap(data => console.log(data)),

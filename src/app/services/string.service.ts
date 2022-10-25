@@ -35,6 +35,7 @@ export class StringService {
         plays_help: "We focus on plays but include some passages from nondramatic works that were written or " +
             "referenced by Renaissance dramatists.<br>" +
             "Use this switch to include or exclude poems, treatises, letters, the Bible etc. from your searches.",
+        swissBritNet_help: "Display only entries that are related to the planned SwissBritNet project.",
         marking_help: "This is our term for the way in which authors signal the use of somebody else's " +
             "words. Marking includes" +
             "<ul>" +

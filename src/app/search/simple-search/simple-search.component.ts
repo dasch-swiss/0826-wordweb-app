@@ -20,103 +20,106 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
 
     private readonly _DIALOG_WIDTH = "650px";
     private readonly _ALL_DRAMA = "ALL DRAMA";
+    private readonly _STATUS = "Status";
+    private readonly _UNEDITED = 'unedited';
+    private readonly _PUBLIC = 'public';
 
     myPassage: IMainClass = {
         name: "passage",
         mainClass: {name: "passage", variable: "passage"},
         props: [
-            {
+            { // [0]
                 name: "hasText",
                 priority: 0,
                 res: null
             },
-            {
+            { // [1]
                 name: "hasTextHist",
                 priority: 0,
                 res: null
             },
-            {
+            { // [2]
                 name: "hasPrefixDisplayedTitle",
                 priority: 0,
                 res: null
             },
-            {
+            { // [3]
                 name: "hasDisplayedTitle",
                 priority: 0,
                 res: null
             },
-            {
+            { // [4]
                 name: "hasPage",
                 priority: 1,
                 res: null
             },
-            {
+            { // [5]
                 name: "hasPageHist",
                 priority: 1,
                 res: null
             },
-            {
+            { // [6]
                 name: "hasResearchField",
                 priority: 1,
                 res: null
             },
-            {
+            { // [7]
                 name: "hasFunctionVoice",
                 priority: 1,
                 res: null
             },
-            {
+            { // [8]
                 name: "hasMarking",
                 priority: 1,
                 res: null
             },
-            {
+            { // [9]
                 name: "hasStatus",
                 priority: 1,
                 res: null
             },
-            {
+            { // [10]
                 name: "hasInternalComment",
                 priority: 1,
                 res: null
             },
-            {
+            { // [11]
                 name: "hasPassageComment",
                 priority: 1,
                 res: null
             },
-            {
+            { // [12]
                 name: "occursIn",
                 priority: 0,
                 res: {
                     name: "book",
                     props: [
-                        {
+                        { // [12] [0]
                             name: "hasPrefixBookTitle",
                             priority: 0,
                             res: null
                         },
-                        {
+                        { // [12] [1]
                             name: "hasBookTitle",
                             priority: 0,
                             res: null
                         },
-                        {
+                        { // [12] [2]
                             name: "hasEdition",
                             priority: 1,
                             res: null
                         },
-                        {
+                        { // [12] [3]
                             name: "hasEditionHist",
                             priority: 1,
                             res: null
                         },
-                        {
+                        { // [12] [4]
                             name: "hasGenre",
                             priority: 0,
                             res: null
                         },
-                        {
+                        { // [12] [5]
                             name: "hasCreationDate",
                             valVar: "creationDate",
                             // searchVal1: "1500",
@@ -124,22 +127,22 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
                             priority: 0,
                             res: null
                         },
-                        {
+                        { // [12] [6]
                             name: "hasPublicationDate",
                             priority: 1,
                             res: null
                         },
-                        {
+                        { // [12] [7]
                             name: "hasFirstPerformanceDate",
                             priority: 1,
                             res: null
                         },
-                        {
+                        { // [12] [8]
                             name: "hasBookComment",
                             priority: 1,
                             res: null
                         },
-                        {
+                        { // [12] [9]
                             name: "isWrittenBy",
                             priority: 0,
                             res: {
@@ -159,7 +162,7 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
                                 ]
                             }
                         },
-                        {
+                        { // [12] [10]
                             name: "performedBy",
                             priority: 1,
                             res: {
@@ -173,7 +176,7 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
                                 ]
                             }
                         },
-                        {
+                        { // [12] [11]
                             name: "performedIn",
                             priority: 1,
                             res: {
@@ -190,7 +193,7 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
                     ]
                 }
             },
-            {
+            { // [13]
                 name: "isMentionedIn",
                 priority: 1,
                 res: {
@@ -320,6 +323,7 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
     authorLastNameRef: IDisplayedProperty = this.myPassage.props[12].res.props[9].res.props[1];
     bookTitleRef: IDisplayedProperty = this.myPassage.props[12].res.props[1];
     genreRef: IDisplayedProperty = this.myPassage.props[12].res.props[4];
+    statusRef: IDisplayedProperty = this.myPassage.props[9];
     lexiaRef: IDisplayedProperty = this.myPassage.props[15].res.props[0];
     dateRef: IDisplayedProperty = this.myPassage.props[12].res.props[5];
 
@@ -341,7 +345,8 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
             bookTitle: new FormControl("", []),
             lexia: new FormControl("", []),
             date: new FormControl("", [CustomValidators.correctDate]),
-            plays: new FormControl(false, [])
+            plays: new FormControl(false, []),
+            swissBritNet: new FormControl(false, [])
         });
     }
 
@@ -383,6 +388,13 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
                     startSearch = true;
                 }
 
+                if (data.swissBritNet === "true") {
+                    this.form.get("swissBritNet").setValue(true);
+                    this.statusRef.searchVal1 = this._listService.getIdOfNode(this._UNEDITED);
+                    //this.genreRef.searchVal1 = this._listService.getIdOfNode(this._ALL_DRAMA);
+                    startSearch = true;
+                }
+
                 if (data.date) {
                     const REGEX = /^(\d{1,4})(-(\d{1,4}))?$/;
                     const arr = data.date.match(REGEX);
@@ -404,6 +416,7 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
                 }
 
                 if (startSearch) {
+                    console.log('myPassage: ', this.myPassage);
                     this.resultBox.search(this.myPassage);
                 }
             });
@@ -497,6 +510,13 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
             this.genreRef.searchVal1 = null;
         }
 
+        if (this.form.get("swissBritNet").value) {
+            this.statusRef.searchVal1 = this._listService.getIdOfNode(this._UNEDITED);
+            params["swissBritNet"] = "true";
+        } else {
+            this.statusRef.searchVal1 = null;
+        }
+
         if (params) {
             this._router.navigate(["search/simple"], { queryParams: params});
         }
@@ -528,6 +548,11 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
                 this.openHelpDialog(this._stringService.getString("plays_help"), this._stringService.getString("default_title"));
                 break;
             }
+            case ("swissBritNet"): {
+                this.openHelpDialog(this._stringService.getString("swissBritNet_help"), this._stringService.getString("default_title"));
+                break;
+            }
+
         }
     }
 
@@ -543,6 +568,8 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
         this.form.get("lexia").reset("");
         this.form.get("date").reset("");
         this.form.get("plays").setValue(false);
+        this.form.get("swissBritNet").setValue(false);
+
         // Resets all the values in the structure
         this.textRef.searchVal1 = null;
         this.bookTitleRef.searchVal1 = null;

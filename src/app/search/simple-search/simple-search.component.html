@@ -98,6 +98,16 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td class="swiss-brit-net-toggle">
+                            <mat-slide-toggle formControlName="swissBritNet" [color]="'warn'">
+                                Show only SiwssBritNet entries
+                            </mat-slide-toggle>
+                        </td>
+                        <td class="min">
+                            <mat-icon matSuffix (click)="getHelpText('swissBritNet')">help</mat-icon>
+                        </td>
+                    </tr>
                 </table>
 
                 <div class="buttons">
