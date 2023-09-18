@@ -8,8 +8,9 @@ describe('EditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditComponent ]
-    })
+    declarations: [EditComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   });
 

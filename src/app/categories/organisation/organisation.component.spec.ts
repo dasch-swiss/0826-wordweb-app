@@ -8,8 +8,9 @@ describe("OrganisationComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [OrganisationComponent]
-        })
+    declarations: [OrganisationComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

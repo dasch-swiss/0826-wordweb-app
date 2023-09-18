@@ -8,8 +8,9 @@ describe("BrowsingComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [BrowsingComponent]
-        })
+    declarations: [BrowsingComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

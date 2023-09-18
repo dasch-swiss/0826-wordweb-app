@@ -8,8 +8,9 @@ describe("FunctionVoiceComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [FunctionVoiceComponent]
-        })
+    declarations: [FunctionVoiceComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

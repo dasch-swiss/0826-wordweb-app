@@ -8,8 +8,9 @@ describe("PassageComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [PassageComponent]
-        })
+    declarations: [PassageComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

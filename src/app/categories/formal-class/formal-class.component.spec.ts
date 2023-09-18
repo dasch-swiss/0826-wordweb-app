@@ -8,8 +8,9 @@ describe("FormalClassComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [FormalClassComponent]
-        })
+    declarations: [FormalClassComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

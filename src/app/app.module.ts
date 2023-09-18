@@ -233,28 +233,10 @@ export function initializeApp(appInitService: AppInitService) {
         },
         {
             provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
-            useValue: {duration: 2000}
+            useValue: { duration: 2000 }
         }
     ],
-    bootstrap: [AppComponent],
-    entryComponents: [
-        CreateUpdateAuthorComponent,
-        CreateUpdateBookComponent,
-        CreateUpdateContributorComponent,
-        CreateUpdateLanguageComponent,
-        CreateUpdateLexiaComponent,
-        CreateUpdateOrganisationComponent,
-        CreateUpdatePassageComponent,
-        CreateUpdateVenueComponent,
-        CreateUpdateGenderComponent,
-        CreateUpdateStatusComponent,
-        CreateUpdateGenreComponent,
-        AuthorRefComponent,
-        BookRefComponent,
-        TreeRefComponent,
-        CategoryRefComponent,
-        HelpComponent
-    ]
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }
