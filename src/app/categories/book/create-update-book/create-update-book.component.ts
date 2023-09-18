@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {Author, Genre, Lexia, Organisation, Subject, Venue} from "../../../model/model";
 import {ApiService} from "../../../services/api.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
@@ -15,7 +15,7 @@ import {TreeRefComponent} from "../../../dialog/tree-ref/tree-ref.component";
 export class CreateUpdateBookComponent implements OnInit {
     readonly MAX_CHIPS: number = 4;
     book: any;
-    form: FormGroup;
+    form: UntypedFormGroup;
     authorList: Author[];
     venueList: Venue[];
     organisationList: Organisation[];
@@ -38,35 +38,35 @@ export class CreateUpdateBookComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            internalID: new FormControl(this.book ? this.book.internalID : "", [Validators.required]),
-            title: new FormControl(this.book ? this.book.title : "", [Validators.required]),
-            edition: new FormControl(this.book ? this.book.edition : "", []),
-            editionHist: new FormControl(this.book ? this.book.editionHist : "", []),
-            language: new FormControl(this.book ? this.book.language.id : "", [Validators.required]),
-            createdCheck: new FormControl(this.book ? this.book.createdStartDate : "", []),
-            created: new FormGroup({
-                createdStartDate: new FormControl(this.book ? this.book.createdStartDate : "", [Validators.required]),
-                createdEndDate: new FormControl(this.book ? this.book.createdEndDate : "", [Validators.required])
+        this.form = new UntypedFormGroup({
+            internalID: new UntypedFormControl(this.book ? this.book.internalID : "", [Validators.required]),
+            title: new UntypedFormControl(this.book ? this.book.title : "", [Validators.required]),
+            edition: new UntypedFormControl(this.book ? this.book.edition : "", []),
+            editionHist: new UntypedFormControl(this.book ? this.book.editionHist : "", []),
+            language: new UntypedFormControl(this.book ? this.book.language.id : "", [Validators.required]),
+            createdCheck: new UntypedFormControl(this.book ? this.book.createdStartDate : "", []),
+            created: new UntypedFormGroup({
+                createdStartDate: new UntypedFormControl(this.book ? this.book.createdStartDate : "", [Validators.required]),
+                createdEndDate: new UntypedFormControl(this.book ? this.book.createdEndDate : "", [Validators.required])
             }, [CustomValidators.correctYearSpan("createdStartDate", "createdEndDate")]),
-            publishedCheck: new FormControl(this.book ? this.book.publishedStartDate : "", []),
-            published: new FormGroup({
-                publishedStartDate: new FormControl(this.book ? this.book.publishedStartDate : "", [Validators.required]),
-                publishedEndDate: new FormControl(this.book ? this.book.publishedEndDate : "", [Validators.required])
+            publishedCheck: new UntypedFormControl(this.book ? this.book.publishedStartDate : "", []),
+            published: new UntypedFormGroup({
+                publishedStartDate: new UntypedFormControl(this.book ? this.book.publishedStartDate : "", [Validators.required]),
+                publishedEndDate: new UntypedFormControl(this.book ? this.book.publishedEndDate : "", [Validators.required])
             }, [CustomValidators.correctYearSpan("publishedStartDate", "publishedEndDate")]),
-            licensedCheck: new FormControl(this.book ? this.book.licenseStartDate : "", []),
-            licensed: new FormGroup({
-                licenseStartDate: new FormControl(this.book ? this.book.licenseStartDate : "", [Validators.required]),
-                licenseEndDate: new FormControl(this.book ? this.book.licenseEndDate : "", [Validators.required])
+            licensedCheck: new UntypedFormControl(this.book ? this.book.licenseStartDate : "", []),
+            licensed: new UntypedFormGroup({
+                licenseStartDate: new UntypedFormControl(this.book ? this.book.licenseStartDate : "", [Validators.required]),
+                licenseEndDate: new UntypedFormControl(this.book ? this.book.licenseEndDate : "", [Validators.required])
             }, [CustomValidators.correctYearSpan("licenseStartDate", "licenseEndDate")]),
-            firstPerformedCheck: new FormControl(this.book ? this.book.firstPerformedStartDate : "", []),
-            firstPerformed: new FormGroup({
-                firstPerformedStartDate: new FormControl(this.book ? this.book.firstPerformedStartDate : "", [Validators.required]),
-                firstPerformedEndDate: new FormControl(this.book ? this.book.firstPerformedEndDate : "", [Validators.required])
+            firstPerformedCheck: new UntypedFormControl(this.book ? this.book.firstPerformedStartDate : "", []),
+            firstPerformed: new UntypedFormGroup({
+                firstPerformedStartDate: new UntypedFormControl(this.book ? this.book.firstPerformedStartDate : "", [Validators.required]),
+                firstPerformedEndDate: new UntypedFormControl(this.book ? this.book.firstPerformedEndDate : "", [Validators.required])
             }, [CustomValidators.correctYearSpan("firstPerformedStartDate", "firstPerformedEndDate")]),
-            publicComment: new FormControl(this.book ? this.book.publicComment : "", []),
-            internalComment: new FormControl(this.book ? this.book.internalComment : "", []),
-            order: new FormControl(this.book ? this.book.order : 0, [])
+            publicComment: new UntypedFormControl(this.book ? this.book.publicComment : "", []),
+            internalComment: new UntypedFormControl(this.book ? this.book.internalComment : "", []),
+            order: new UntypedFormControl(this.book ? this.book.order : 0, [])
         });
 
         if (this.book) {

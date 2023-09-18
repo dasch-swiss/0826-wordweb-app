@@ -1,10 +1,10 @@
 import {Component, Input, OnInit, Optional, Self} from '@angular/core';
 import {
   ControlValueAccessor,
-  FormArray,
-  FormBuilder,
+  UntypedFormArray,
+  UntypedFormBuilder,
   FormControl,
-  FormGroup,
+  UntypedFormGroup,
   NgControl,
   Validators
 } from '@angular/forms';
@@ -532,7 +532,7 @@ class BookIds {
 export class EditBookComponent implements OnInit {
   controlType = 'EditBook';
   inData: any;
-  form: FormGroup;
+  form: UntypedFormGroup;
   options: Array<{ id: string; label: string }> = [];
   resId: string;
   lastmod: string;
@@ -553,7 +553,7 @@ export class EditBookComponent implements OnInit {
   public subjectTypes: Array<OptionType>;
 
   constructor(public knoraService: KnoraService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               public route: ActivatedRoute,
               public location: Location,
               private snackBar: MatSnackBar,
@@ -576,39 +576,39 @@ export class EditBookComponent implements OnInit {
 
   @Input()
   get value(): BookData | null {
-    const genres: FormArray = this.getGenres();
+    const genres: UntypedFormArray = this.getGenres();
     const genreIriValues: { genreIri: string }[] = [];
     for (const x of genres.controls) {
-      const y = x as FormGroup;
+      const y = x as UntypedFormGroup;
       genreIriValues.push({genreIri: y.controls.genreIri.value});
     }
-    const writtenBys: FormArray = this.getWrittenBys();
+    const writtenBys: UntypedFormArray = this.getWrittenBys();
     const writtenByValues: { writtenByName: string; writtenByIri: string }[] = [];
     for (const x of writtenBys.controls) {
       writtenByValues.push(x.value);
     }
-    const subjects: FormArray = this.getSubjects();
+    const subjects: UntypedFormArray = this.getSubjects();
     const subjectIriValues: { subjectIri: string }[] = [];
     for (const x of subjects.controls) {
-      const y = x as FormGroup;
+      const y = x as UntypedFormGroup;
       subjectIriValues.push({subjectIri: y.controls.subjectIri.value});
     }
-    const lexias: FormArray = this.getLexias();
+    const lexias: UntypedFormArray = this.getLexias();
     const lexiaValues: { lexiaName: string; lexiaIri: string }[] = [];
     for (const x of lexias.controls) {
       lexiaValues.push(x.value);
     }
-    const performedBys: FormArray = this.getPerformedBys();
+    const performedBys: UntypedFormArray = this.getPerformedBys();
     const performedByValues: { performedByName: string; performedByIri: string }[] = [];
     for (const x of performedBys.controls) {
       performedByValues.push(x.value);
     }
-    const performedByActors: FormArray = this.getPerformedByActors();
+    const performedByActors: UntypedFormArray = this.getPerformedByActors();
     const performedByActorValues: { performedByActorName: string; performedByActorIri: string }[] = [];
     for (const x of performedByActors.controls) {
       performedByActorValues.push(x.value);
     }
-    const performedIns: FormArray = this.getPerformedIns();
+    const performedIns: UntypedFormArray = this.getPerformedIns();
     const performedInValues: { performedInName: string; performedInIri: string }[] = [];
     for (const x of performedIns.controls) {
       performedInValues.push(x.value);
@@ -845,8 +845,8 @@ export class EditBookComponent implements OnInit {
     });
   }
 
-  getGenres(): FormArray {
-    return this.form.controls.genres as FormArray;
+  getGenres(): UntypedFormArray {
+    return this.form.controls.genres as UntypedFormArray;
   }
 
   addGenre(genre?: { id: string; iri: string }): void {
@@ -872,7 +872,7 @@ export class EditBookComponent implements OnInit {
   }
 
   getWrittenBys() {
-    return this.form.controls.writtenBy as FormArray;
+    return this.form.controls.writtenBy as UntypedFormArray;
   }
 
   addWrittenBy(writtenBy?: { writtenByName: string; writtenByIri: string }) {
@@ -897,8 +897,8 @@ export class EditBookComponent implements OnInit {
     this.nWrittenBy--;
   }
 
-  getSubjects(): FormArray {
-    return this.form.controls.subjects as FormArray;
+  getSubjects(): UntypedFormArray {
+    return this.form.controls.subjects as UntypedFormArray;
   }
 
   addSubject(subject?: { id: string; iri: string }): void {
@@ -924,7 +924,7 @@ export class EditBookComponent implements OnInit {
   }
 
   getLexias() {
-    return this.form.controls.lexias as FormArray;
+    return this.form.controls.lexias as UntypedFormArray;
   }
 
   addLexia(lexia?: { lexiaName: string; lexiaIri: string }) {
@@ -950,7 +950,7 @@ export class EditBookComponent implements OnInit {
   }
 
   getPerformedBys() {
-    return this.form.controls.performedBy as FormArray;
+    return this.form.controls.performedBy as UntypedFormArray;
   }
 
   addPerformedBy(performedBy?: { performedByName: string; performedByIri: string }) {
@@ -982,7 +982,7 @@ export class EditBookComponent implements OnInit {
   }
 
   getPerformedByActors() {
-    return this.form.controls.performedByActor as FormArray;
+    return this.form.controls.performedByActor as UntypedFormArray;
   }
 
   addPerformedByActor(performedByActor?: { performedByActorName: string; performedByActorIri: string }) {
@@ -1014,7 +1014,7 @@ export class EditBookComponent implements OnInit {
   }
 
   getPerformedIns() {
-    return this.form.controls.performedIn as FormArray;
+    return this.form.controls.performedIn as UntypedFormArray;
   }
 
   addPerformedIn(performedIn?: { performedInName: string; performedInIri: string }) {
@@ -1362,7 +1362,7 @@ export class EditBookComponent implements OnInit {
         this.valIds.edition.changed = false;
         break;
       case 'genres':
-        const genres = this.getGenres().controls[index] as FormGroup;
+        const genres = this.getGenres().controls[index] as UntypedFormGroup;
         genres.controls.genreIri.setValue(this.data.genres[index].genreIri);
         this.valIds.genres[index].changed = false;
         break;
@@ -1395,7 +1395,7 @@ export class EditBookComponent implements OnInit {
         this.valIds.pubdate.changed = false;
         break;
       case 'subjects':
-        const subjects = this.getSubjects().controls[index] as FormGroup;
+        const subjects = this.getSubjects().controls[index] as UntypedFormGroup;
         subjects.controls.subjectIri.setValue(this.data.subjects[index].subjectIri);
         this.valIds.subjects[index].changed = false;
         break;

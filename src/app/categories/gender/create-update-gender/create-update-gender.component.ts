@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ApiService} from "../../../services/api.service";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 
 @Component({
     selector: "app-create-update-gender",
@@ -10,15 +10,15 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class CreateUpdateGenderComponent implements OnInit {
     gender: any;
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     constructor(private dialogRef: MatDialogRef<CreateUpdateGenderComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.gender = JSON.parse(JSON.stringify(data.resource));
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            name: new FormControl(this.gender ? this.gender.name : "", [Validators.required])
+        this.form = new UntypedFormGroup({
+            name: new UntypedFormControl(this.gender ? this.gender.name : "", [Validators.required])
         });
     }
 

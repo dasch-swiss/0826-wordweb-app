@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {ApiService} from "../../../services/api.service";
@@ -15,7 +15,7 @@ import {CategoryRefComponent} from "../../../dialog/category-ref.component";
 export class CreateUpdateAuthorComponent implements OnInit {
     readonly MAX_CHIPS: number = 4;
     author: any;
-    form: FormGroup;
+    form: UntypedFormGroup;
     genders: any;
     lexiaList: Lexia[];
 
@@ -30,26 +30,26 @@ export class CreateUpdateAuthorComponent implements OnInit {
     ngOnInit() {
         this.genders = this.apiService.getGenders();
 
-        this.form = new FormGroup({
-            internalID: new FormControl(this.author ? this.author.internalID : "", [Validators.required]),
-            firstName: new FormControl(this.author ? this.author.firstName : "", [Validators.required]),
-            lastName: new FormControl(this.author ? this.author.lastName : "", [Validators.required]),
-            description: new FormControl(this.author ? this.author.description : "", []),
-            gender: new FormControl(this.author ? this.author.gender.id : "", [Validators.required]),
-            birthCheck: new FormControl(this.author && this.author.birthStartDate, []),
-            birth: new FormGroup({
-                birthStartDate: new FormControl(this.author ? this.author.birthStartDate : "", [Validators.required]),
-                birthEndDate: new FormControl(this.author ? this.author.birthEndDate : "", [Validators.required]),
+        this.form = new UntypedFormGroup({
+            internalID: new UntypedFormControl(this.author ? this.author.internalID : "", [Validators.required]),
+            firstName: new UntypedFormControl(this.author ? this.author.firstName : "", [Validators.required]),
+            lastName: new UntypedFormControl(this.author ? this.author.lastName : "", [Validators.required]),
+            description: new UntypedFormControl(this.author ? this.author.description : "", []),
+            gender: new UntypedFormControl(this.author ? this.author.gender.id : "", [Validators.required]),
+            birthCheck: new UntypedFormControl(this.author && this.author.birthStartDate, []),
+            birth: new UntypedFormGroup({
+                birthStartDate: new UntypedFormControl(this.author ? this.author.birthStartDate : "", [Validators.required]),
+                birthEndDate: new UntypedFormControl(this.author ? this.author.birthEndDate : "", [Validators.required]),
             }, [CustomValidators.correctYearSpan("birthStartDate", "birthEndDate")]),
-            deathCheck: new FormControl(this.author && this.author.deathStartDate, []),
-            death: new FormGroup({
-                deathStartDate: new FormControl(this.author ? this.author.deathStartDate : "", [Validators.required]),
-                deathEndDate: new FormControl(this.author ? this.author.deathEndDate : "", [Validators.required]),
+            deathCheck: new UntypedFormControl(this.author && this.author.deathStartDate, []),
+            death: new UntypedFormGroup({
+                deathStartDate: new UntypedFormControl(this.author ? this.author.deathStartDate : "", [Validators.required]),
+                deathEndDate: new UntypedFormControl(this.author ? this.author.deathEndDate : "", [Validators.required]),
             }, [CustomValidators.correctYearSpan("deathStartDate", "deathEndDate")]),
-            flCheck: new FormControl(this.author && this.author.flStartDate, []),
-            fl: new FormGroup({
-                flStartDate: new FormControl(this.author ? this.author.flStartDate : "", [Validators.required]),
-                flEndDate: new FormControl(this.author ? this.author.flEndDate : "", [Validators.required])
+            flCheck: new UntypedFormControl(this.author && this.author.flStartDate, []),
+            fl: new UntypedFormGroup({
+                flStartDate: new UntypedFormControl(this.author ? this.author.flStartDate : "", [Validators.required]),
+                flEndDate: new UntypedFormControl(this.author ? this.author.flEndDate : "", [Validators.required])
             }, [CustomValidators.correctYearSpan("flStartDate", "flEndDate")])
         });
 

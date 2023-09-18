@@ -4,7 +4,7 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {CreateUpdateOrganisationComponent} from "./create-update-organisation/create-update-organisation.component";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {KnoraService} from "../../services/knora.service";
 import {forkJoin, Observable} from "rxjs";
@@ -69,7 +69,7 @@ export class OrganisationComponent implements OnInit {
     displayedColumns: string[] = ["row", "hasCompanyInternalId", "hasCompanyTitle", "action"];
     dataSource: MatTableDataSource<any>;
     value: string;
-    form: FormGroup;
+    form: UntypedFormGroup;
     members: any[];
 
     static customFilter(item: any, filterValue: string): boolean {
@@ -97,12 +97,12 @@ export class OrganisationComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            internalId: new FormControl("", []),
-            companyTitle: new FormControl("", []),
-            memberNull: new FormControl(false, []),
-            member: new FormGroup({
-                mem: new FormControl("", [])
+        this.form = new UntypedFormGroup({
+            internalId: new UntypedFormControl("", []),
+            companyTitle: new UntypedFormControl("", []),
+            memberNull: new UntypedFormControl(false, []),
+            member: new UntypedFormGroup({
+                mem: new UntypedFormControl("", [])
             }),
             // extraNull: new FormControl("", []),
             // extra: new FormGroup({

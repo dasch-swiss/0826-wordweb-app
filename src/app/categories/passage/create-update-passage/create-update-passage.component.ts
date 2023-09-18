@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {ApiService} from "../../../services/api.service";
 import {Book, Contributor, FunctionVoice, Lexia, Marking, Passage, ResearchField} from "../../../model/model";
@@ -13,7 +13,7 @@ import {CategoryRefComponent} from "../../../dialog/category-ref.component";
 export class CreateUpdatePassageComponent implements OnInit {
     readonly MAX_CHIPS: number = 4;
     passage: any;
-    form: FormGroup;
+    form: UntypedFormGroup;
     statuses: any;
     lexiaList: Lexia[];
     passageList: Passage[];
@@ -34,12 +34,12 @@ export class CreateUpdatePassageComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            text: new FormControl(this.passage ? this.passage.text : "", []),
-            textHist: new FormControl(this.passage ? this.passage.textHist : "", []),
-            page: new FormControl(this.passage ? this.passage.page : "", []),
-            pageHist: new FormControl(this.passage ? this.passage.pageHist : "", []),
-            status: new FormControl(this.passage ? this.passage.status.id : "", [])
+        this.form = new UntypedFormGroup({
+            text: new UntypedFormControl(this.passage ? this.passage.text : "", []),
+            textHist: new UntypedFormControl(this.passage ? this.passage.textHist : "", []),
+            page: new UntypedFormControl(this.passage ? this.passage.page : "", []),
+            pageHist: new UntypedFormControl(this.passage ? this.passage.pageHist : "", []),
+            status: new UntypedFormControl(this.passage ? this.passage.status.id : "", [])
         });
 
         this.statuses = this.apiService.getStatuses();

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, Optional, Self} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, NgControl, Validators} from '@angular/forms';
+import {UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, NgControl, Validators} from '@angular/forms';
 import {CompanyData, KnoraService, ListPropertyData, OptionType, PersonData} from '../../services/knora.service';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
@@ -257,7 +257,7 @@ class PersonIds {
 export class EditPersonComponent implements OnInit {
   controlType = 'EditPerson';
   inData: any;
-  form: FormGroup;
+  form: UntypedFormGroup;
   options: Array<{ id: string; label: string }> = [];
   resId: string;
   lastmod: string;
@@ -270,7 +270,7 @@ export class EditPersonComponent implements OnInit {
 
 
   constructor(public knoraService: KnoraService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               public route: ActivatedRoute,
               private dateAdapter: DateAdapter<Date>,
               public location: Location,
@@ -286,7 +286,7 @@ export class EditPersonComponent implements OnInit {
 
   @Input()
   get value(): PersonData | null {
-    const lexias: FormArray = this.getLexias();
+    const lexias: UntypedFormArray = this.getLexias();
     const lexiaValues: { lexiaName: string; lexiaIri: string }[] = [];
     for (const x of lexias.controls) {
       lexiaValues.push(x.value);
@@ -426,7 +426,7 @@ export class EditPersonComponent implements OnInit {
   }
 
   getLexias() {
-    return this.form.controls.lexias as FormArray;
+    return this.form.controls.lexias as UntypedFormArray;
   }
 
   addLexia(lexia?: { lexiaName: string; lexiaIri: string }) {

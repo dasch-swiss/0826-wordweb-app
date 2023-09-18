@@ -7,7 +7,7 @@ import {KnoraService} from "../../services/knora.service";
 import {ListService} from "../../services/list.service";
 import {Clipboard} from "@angular/cdk/clipboard";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 
 @Component({
     selector: "app-results",
@@ -19,7 +19,7 @@ export class ResultsComponent implements OnInit {
     readonly MAX_RESOURCE_PER_RESULT = 25;
 
     structure: IMainClass;
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     nPassages: Observable<number>;
     passages: Array<any>;
@@ -175,8 +175,8 @@ export class ResultsComponent implements OnInit {
             }
         ];
         // Form for sorting
-        this.form = new FormGroup({
-            sorting: new FormControl("Date: Oldest", [])
+        this.form = new UntypedFormGroup({
+            sorting: new UntypedFormControl("Date: Oldest", [])
         });
     }
 

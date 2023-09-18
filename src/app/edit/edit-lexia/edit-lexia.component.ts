@@ -1,10 +1,10 @@
 import {Component, Input, OnInit, Optional, Self} from '@angular/core';
 import {
   ControlValueAccessor,
-  FormArray,
-  FormBuilder,
+  UntypedFormArray,
+  UntypedFormBuilder,
   FormControl,
-  FormGroup,
+  UntypedFormGroup,
   NgControl,
   Validators
 } from '@angular/forms';
@@ -219,7 +219,7 @@ class LexiaIds {
 export class EditLexiaComponent implements OnInit {
   controlType = 'EditLexia';
   inData: any;
-  form: FormGroup;
+  form: UntypedFormGroup;
   options: Array<{ id: string; label: string }> = [];
   resId: string;
   lastmod: string;
@@ -233,7 +233,7 @@ export class EditLexiaComponent implements OnInit {
   public imageTypes: Array<OptionType>;
 
   constructor(public knoraService: KnoraService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               public route: ActivatedRoute,
               public location: Location,
               private snackBar: MatSnackBar,
@@ -249,16 +249,16 @@ export class EditLexiaComponent implements OnInit {
 
   @Input()
   get value(): LexiaData | null {
-    const formalClasses: FormArray = this.getFormalClasses();
+    const formalClasses: UntypedFormArray = this.getFormalClasses();
     const formalClassIriValues: string[] = [];
     for (const x of formalClasses.controls) {
-      const y = x as FormGroup;
+      const y = x as UntypedFormGroup;
       formalClassIriValues.push(y.controls.formalClassIri.value);
     }
-    const images: FormArray = this.getImages();
+    const images: UntypedFormArray = this.getImages();
     const imagesIriValues: string[] = [];
     for (const x of images.controls) {
-      const y = x as FormGroup;
+      const y = x as UntypedFormGroup;
       imagesIriValues.push(y.controls.imageIri.value);
     }
     return new LexiaData(
@@ -367,8 +367,8 @@ export class EditLexiaComponent implements OnInit {
     });
   }
 
-  getFormalClasses(): FormArray {
-    return this.form.controls.formalClasses as FormArray;
+  getFormalClasses(): UntypedFormArray {
+    return this.form.controls.formalClasses as UntypedFormArray;
   }
 
   addFormalClass(formalClassIri?: string): void {
@@ -393,8 +393,8 @@ export class EditLexiaComponent implements OnInit {
     this.nFormalClasses--;
   }
 
-  getImages(): FormArray {
-    return this.form.controls.images as FormArray;
+  getImages(): UntypedFormArray {
+    return this.form.controls.images as UntypedFormArray;
   }
 
   addImage(imageIri?: string): void {
@@ -503,12 +503,12 @@ export class EditLexiaComponent implements OnInit {
         this.valIds.title.changed = false;
         break;
       case 'formalClasses':
-        const formalClasses = this.getFormalClasses().controls[index] as FormGroup;
+        const formalClasses = this.getFormalClasses().controls[index] as UntypedFormGroup;
         formalClasses.controls.formalClassIri.setValue(this.data.formalClassIris[index]);
         this.valIds.formalClasses[index].changed = false;
         break;
       case 'images':
-        const images = this.getImages().controls[index] as FormGroup;
+        const images = this.getImages().controls[index] as UntypedFormGroup;
         images.controls.imageIri.setValue(this.data.imageIris[index]);
         this.valIds.images[index].changed = false;
         break;
