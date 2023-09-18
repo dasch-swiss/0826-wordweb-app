@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {ApiService} from "../../../services/api.service";
 import {Lexia} from "../../../model/model";
@@ -13,7 +13,7 @@ import {CategoryRefComponent} from "../../../dialog/category-ref.component";
 export class CreateUpdateVenueComponent implements OnInit {
     readonly MAX_CHIPS: number = 4;
     venue: any;
-    form: FormGroup;
+    form: UntypedFormGroup;
     lexiaList: Lexia[];
 
     constructor(private lexiaDialog: MatDialog,
@@ -24,10 +24,10 @@ export class CreateUpdateVenueComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            internalID: new FormControl(this.venue ? this.venue.internalID : "", []),
-            name: new FormControl(this.venue ? this.venue.name : "", [Validators.required]),
-            place: new FormControl(this.venue ? this.venue.place : "", [])
+        this.form = new UntypedFormGroup({
+            internalID: new UntypedFormControl(this.venue ? this.venue.internalID : "", []),
+            name: new UntypedFormControl(this.venue ? this.venue.name : "", [Validators.required]),
+            place: new UntypedFormControl(this.venue ? this.venue.place : "", [])
         });
 
         this.lexiaList = this.venue ? this.venue.venueAsLexia  ? [this.venue.venueAsLexia] : [] : [];

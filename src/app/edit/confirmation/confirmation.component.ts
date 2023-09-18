@@ -1,6 +1,6 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup} from "@angular/forms";
 
 export interface ConfirmationData {
   title: string;
@@ -35,12 +35,12 @@ export interface ConfirmationResult {
   ]
 })
 export class ConfirmationComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   title: string;
   text: string;
   comment = '';
 
-  constructor(private fb: FormBuilder,
+  constructor(private fb: UntypedFormBuilder,
               private dialogRef: MatDialogRef<ConfirmationComponent>,
               @Inject(MAT_DIALOG_DATA) data: ConfirmationData) {
     this.title = data.title;

@@ -4,7 +4,7 @@ import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {Book} from "../../model/model";
 import {CreateUpdateBookComponent} from "./create-update-book/create-update-book.component";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
 import {forkJoin, Observable} from "rxjs";
@@ -185,7 +185,7 @@ export class BookComponent implements OnInit {
     dataSource: MatTableDataSource<any>;
 
     value: string;
-    form: FormGroup;
+    form: UntypedFormGroup;
     languages: IListNode[];
     genres: IListNode[];
     subjects: IListNode[];
@@ -236,49 +236,49 @@ export class BookComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            internalId: new FormControl("", []),
-            prefBookTitleNull: new FormControl(false, []),
-            prefBookTitle: new FormGroup({
-                prefbt: new FormControl("", []),
+        this.form = new UntypedFormGroup({
+            internalId: new UntypedFormControl("", []),
+            prefBookTitleNull: new UntypedFormControl(false, []),
+            prefBookTitle: new UntypedFormGroup({
+                prefbt: new UntypedFormControl("", []),
             }),
-            bookTitle: new FormControl("", []),
-            edition: new FormControl("", []),
-            editionHistNull: new FormControl(false, []),
-            editionHist: new FormGroup({
-                eh: new FormControl("", []),
+            bookTitle: new UntypedFormControl("", []),
+            edition: new UntypedFormControl("", []),
+            editionHistNull: new UntypedFormControl(false, []),
+            editionHist: new UntypedFormGroup({
+                eh: new UntypedFormControl("", []),
             }),
-            language: new FormControl("", []),
-            genre: new FormControl("", []),
-            subjectNull: new FormControl(false, []),
-            subject: new FormGroup({
-                sub: new FormControl("", []),
+            language: new UntypedFormControl("", []),
+            genre: new UntypedFormControl("", []),
+            subjectNull: new UntypedFormControl(false, []),
+            subject: new UntypedFormGroup({
+                sub: new UntypedFormControl("", []),
             }),
-            creationDate: new FormControl("", []),
-            publicNull: new FormControl(false, []),
-            public: new FormGroup({
-                pdate: new FormControl("", [])
+            creationDate: new UntypedFormControl("", []),
+            publicNull: new UntypedFormControl(false, []),
+            public: new UntypedFormGroup({
+                pdate: new UntypedFormControl("", [])
             }),
-            firstPerNull: new FormControl(false, []),
-            firstPer: new FormGroup({
-                fpdate: new FormControl("", [])
+            firstPerNull: new UntypedFormControl(false, []),
+            firstPer: new UntypedFormGroup({
+                fpdate: new UntypedFormControl("", [])
             }),
-            bookCommentNull: new FormControl(false, []),
-            bookComment: new FormGroup({
-                bc: new FormControl("", [])
+            bookCommentNull: new UntypedFormControl(false, []),
+            bookComment: new UntypedFormGroup({
+                bc: new UntypedFormControl("", [])
             }),
-            authorName: new FormControl("", []),
-            performedNull: new FormControl(false, []),
-            performed: new FormGroup({
-                perf: new FormControl("", [])
+            authorName: new UntypedFormControl("", []),
+            performedNull: new UntypedFormControl(false, []),
+            performed: new UntypedFormGroup({
+                perf: new UntypedFormControl("", [])
             }),
-            performedActorNull: new FormControl(false, []),
-            performedActor: new FormGroup({
-                perfA: new FormControl("", [])
+            performedActorNull: new UntypedFormControl(false, []),
+            performedActor: new UntypedFormGroup({
+                perfA: new UntypedFormControl("", [])
             }),
-            performedInNull: new FormControl(false, []),
-            performedIn: new FormGroup({
-                perfI: new FormControl("", [])
+            performedInNull: new UntypedFormControl(false, []),
+            performedIn: new UntypedFormGroup({
+                perfI: new UntypedFormControl("", [])
             }),
             // extraNull: new FormControl(false, []),
             // extra: new FormGroup({

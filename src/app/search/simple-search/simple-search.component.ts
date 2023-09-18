@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from "@angular/core";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {HelpComponent} from "../dialog/help/help.component";
@@ -323,7 +323,7 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
     lexiaRef: IDisplayedProperty = this.myPassage.props[15].res.props[0];
     dateRef: IDisplayedProperty = this.myPassage.props[12].res.props[5];
 
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     constructor(private _route: ActivatedRoute,
                 private _router: Router,
@@ -335,13 +335,13 @@ export class SimpleSearchComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            text: new FormControl("", []),
-            author: new FormControl("", []),
-            bookTitle: new FormControl("", []),
-            lexia: new FormControl("", []),
-            date: new FormControl("", [CustomValidators.correctDate]),
-            plays: new FormControl(false, [])
+        this.form = new UntypedFormGroup({
+            text: new UntypedFormControl("", []),
+            author: new UntypedFormControl("", []),
+            bookTitle: new UntypedFormControl("", []),
+            lexia: new UntypedFormControl("", []),
+            date: new UntypedFormControl("", [CustomValidators.correctDate]),
+            plays: new UntypedFormControl(false, [])
         });
     }
 

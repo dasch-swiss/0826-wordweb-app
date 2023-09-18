@@ -1,9 +1,9 @@
-import {FormControl, FormGroup, ValidatorFn} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, ValidatorFn} from "@angular/forms";
 
 export class CustomValidators {
 
     static correctYearSpan(controlName1: string, controlName2: string): ValidatorFn {
-        return (formGroup: FormGroup): { [key: string]: any } | null => {
+        return (formGroup: UntypedFormGroup): { [key: string]: any } | null => {
             const control1 = formGroup.get(controlName1);
             const control2 = formGroup.get(controlName2);
             if (control1.value > control2.value) {
@@ -20,7 +20,7 @@ export class CustomValidators {
         };
     }
 
-    static correctDate(controlName: FormControl): { [key: string]: any } | null {
+    static correctDate(controlName: UntypedFormControl): { [key: string]: any } | null {
         const REGEX = /^(\d{1,4})(-(\d{1,4}))?$/;
         const arr = controlName.value.match(REGEX);
 

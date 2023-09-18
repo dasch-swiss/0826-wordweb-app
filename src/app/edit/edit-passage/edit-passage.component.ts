@@ -1,10 +1,10 @@
 import {Component, Input, OnInit, Optional, Self} from '@angular/core';
 import {
   ControlValueAccessor,
-  FormArray,
-  FormBuilder,
+  UntypedFormArray,
+  UntypedFormBuilder,
   FormControl,
-  FormGroup,
+  UntypedFormGroup,
   NgControl,
   Validators
 } from '@angular/forms';
@@ -497,7 +497,7 @@ class PassageIds {
 export class EditPassageComponent implements OnInit {
   controlType = 'EditPassage';
   inData: any;
-  form: FormGroup;
+  form: UntypedFormGroup;
   options: Array<{ id: string; label: string }> = [];
   resId: string;
   lastmod: string;
@@ -517,7 +517,7 @@ export class EditPassageComponent implements OnInit {
   public statusTypes: Array<OptionType>;
 
   constructor(public knoraService: KnoraService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               public route: ActivatedRoute,
               public location: Location,
               private snackBar: MatSnackBar,
@@ -537,24 +537,24 @@ export class EditPassageComponent implements OnInit {
 
   @Input()
   get value(): PassageData | null {
-    const functionVoices: FormArray = this.getFunctionVoices();
+    const functionVoices: UntypedFormArray = this.getFunctionVoices();
     const functionVoiceIriValues: {functionVoiceIri: string }[] = [];
     for (const x of functionVoices.controls) {
-      const y = x as FormGroup;
+      const y = x as UntypedFormGroup;
       functionVoiceIriValues.push({functionVoiceIri: y.controls.functionVoiceIri.value});
     }
-    const markings: FormArray = this.getMarkings();
+    const markings: UntypedFormArray = this.getMarkings();
     const markingIriValues: {markingIri: string}[] = [];
     for (const x of markings.controls) {
-      const y = x as FormGroup;
+      const y = x as UntypedFormGroup;
       markingIriValues.push({markingIri: y.controls.markingIri.value});
     }
-    const tmpContains: FormArray = this.getContains();
+    const tmpContains: UntypedFormArray = this.getContains();
     const containsValues: {containsName: string; containsIri: string}[] = [];
     for (const x of tmpContains.controls) {
       containsValues.push(x.value);
     }
-    const tmpMentionedIn: FormArray = this.getMentionedIn();
+    const tmpMentionedIn: UntypedFormArray = this.getMentionedIn();
     const mentionedInValues: {mentionedInName: string; mentionedInIri: string}[] = [];
     for (const x of tmpMentionedIn.controls) {
       mentionedInValues.push(x.value);
@@ -792,8 +792,8 @@ export class EditPassageComponent implements OnInit {
      });
   }
 
-  getFunctionVoices(): FormArray {
-    return this.form.controls.functionVoices as FormArray;
+  getFunctionVoices(): UntypedFormArray {
+    return this.form.controls.functionVoices as UntypedFormArray;
   }
 
   addFunctionVoice(functionVoice?: {id: string; iri: string }): void {
@@ -818,8 +818,8 @@ export class EditPassageComponent implements OnInit {
     this.nFunctionVoices--;
   }
 
-  getMarkings(): FormArray {
-    return this.form.controls.markings as FormArray;
+  getMarkings(): UntypedFormArray {
+    return this.form.controls.markings as UntypedFormArray;
   }
 
   addMarking(marking?: {id: string; iri: string }): void {
@@ -845,7 +845,7 @@ export class EditPassageComponent implements OnInit {
   }
 
   getContains() {
-    return this.form.controls.contains as FormArray;
+    return this.form.controls.contains as UntypedFormArray;
   }
 
   addContains(contains?: {containsName: string; containsIri: string}) {
@@ -872,7 +872,7 @@ export class EditPassageComponent implements OnInit {
   }
 
   getMentionedIn() {
-    return this.form.controls.mentionedIn as FormArray;
+    return this.form.controls.mentionedIn as UntypedFormArray;
   }
 
   addMentionedIn(mentionedIn?: {mentionedInName: string; mentionedInIri: string}) {
@@ -1157,12 +1157,12 @@ export class EditPassageComponent implements OnInit {
         this.valIds.displayedTitle.changed = false;
         break;
       case 'functionVoices':
-        const functionVoices = this.getFunctionVoices().controls[index] as FormGroup;
+        const functionVoices = this.getFunctionVoices().controls[index] as UntypedFormGroup;
         functionVoices.controls.functionVoiceIri.setValue(this.data.functionVoices[index].functionVoiceIri);
         this.valIds.functionVoices[index].changed = false;
         break;
       case 'markings':
-        const markings = this.getMarkings().controls[index] as FormGroup;
+        const markings = this.getMarkings().controls[index] as UntypedFormGroup;
         markings.controls.markingIri.setValue(this.data.markings[index].markingIri);
         this.valIds.markings[index].changed = false;
         break;

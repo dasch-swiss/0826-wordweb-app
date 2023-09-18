@@ -1,10 +1,10 @@
 import {Component, Input, OnInit, Optional, Self} from '@angular/core';
 import {
   ControlValueAccessor,
-  FormArray,
-  FormBuilder,
+  UntypedFormArray,
+  UntypedFormBuilder,
   FormControl,
-  FormGroup,
+  UntypedFormGroup,
   NgControl,
   Validators
 } from '@angular/forms';
@@ -179,7 +179,7 @@ class VenueIds {
 export class EditVenueComponent implements OnInit {
   controlType = 'EditVenue';
   inData: any;
-  form: FormGroup;
+  form: UntypedFormGroup;
   options: Array<{ id: string; label: string }> = [];
   resId: string;
   lastmod: string;
@@ -190,7 +190,7 @@ export class EditVenueComponent implements OnInit {
   public placeTypes: Array<OptionType>;
 
   constructor(public knoraService: KnoraService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               public route: ActivatedRoute,
               public location: Location,
               private snackBar: MatSnackBar,
@@ -204,7 +204,7 @@ export class EditVenueComponent implements OnInit {
 
   @Input()
   get value(): VenueData | null {
-    const lexias: FormArray = this.getLexias();
+    const lexias: UntypedFormArray = this.getLexias();
     const lexiaValues: { lexiaName: string; lexiaIri: string }[] = [];
     for (const x of lexias.controls) {
       lexiaValues.push(x.value);
@@ -290,7 +290,7 @@ export class EditVenueComponent implements OnInit {
   }
 
   getLexias() {
-    return this.form.controls.lexias as FormArray;
+    return this.form.controls.lexias as UntypedFormArray;
   }
 
   addLexia(lexia?: { lexiaName: string; lexiaIri: string }) {

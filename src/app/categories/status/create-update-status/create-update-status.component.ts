@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ApiService} from "../../../services/api.service";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 
 @Component({
     selector: "app-create-update-status",
@@ -10,15 +10,15 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class CreateUpdateStatusComponent implements OnInit {
     status: any;
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     constructor(private dialogRef: MatDialogRef<CreateUpdateStatusComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.status = JSON.parse(JSON.stringify(data.resource));
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            name: new FormControl(this.status ? this.status.name : "", [Validators.required])
+        this.form = new UntypedFormGroup({
+            name: new UntypedFormControl(this.status ? this.status.name : "", [Validators.required])
         });
     }
 

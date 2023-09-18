@@ -4,7 +4,7 @@ import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {Passage} from "../../model/model";
 import {CreateUpdatePassageComponent} from "./create-update-passage/create-update-passage.component";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {KnoraService} from "../../services/knora.service";
 import {ListService} from "../../services/list.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
@@ -222,7 +222,7 @@ export class PassageComponent implements OnInit {
     displayedColumns: string[] = ["row", "hasDisplayedTitle", "hasText", "hasTextHist", "contains", "action"];
     dataSource: MatTableDataSource<any>;
     value: string;
-    form: FormGroup;
+    form: UntypedFormGroup;
     researchFields: IListNode[];
     functionVoices: IListNode[];
     markings: IListNode[];
@@ -260,46 +260,46 @@ export class PassageComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            text: new FormControl("", []),
-            textHistNull: new FormControl(false, []),
-            textHist: new FormGroup({
-                txh: new FormControl("", [])
+        this.form = new UntypedFormGroup({
+            text: new UntypedFormControl("", []),
+            textHistNull: new UntypedFormControl(false, []),
+            textHist: new UntypedFormGroup({
+                txh: new UntypedFormControl("", [])
             }),
-            prefDisplayedTitleNull: new FormControl(false, []),
-            prefDisplayedTitle: new FormGroup({
-                prefdistit: new FormControl("", []),
+            prefDisplayedTitleNull: new UntypedFormControl(false, []),
+            prefDisplayedTitle: new UntypedFormGroup({
+                prefdistit: new UntypedFormControl("", []),
             }),
-            displayedTitle: new FormControl("", []),
-            pageNull: new FormControl(false, []),
-            page: new FormGroup({
-                pg: new FormControl("", [])
+            displayedTitle: new UntypedFormControl("", []),
+            pageNull: new UntypedFormControl(false, []),
+            page: new UntypedFormGroup({
+                pg: new UntypedFormControl("", [])
             }),
-            pagHistNull: new FormControl(false, []),
-            pageHist: new FormGroup({
-                pgh: new FormControl("", [])
+            pagHistNull: new UntypedFormControl(false, []),
+            pageHist: new UntypedFormGroup({
+                pgh: new UntypedFormControl("", [])
             }),
-            research: new FormControl("", []),
-            function: new FormControl("", []),
-            marking: new FormControl("", []),
-            status: new FormControl("", []),
-            intCommentNull: new FormControl(false, []),
-            intComment: new FormGroup({
-                intc: new FormControl("", [])
+            research: new UntypedFormControl("", []),
+            function: new UntypedFormControl("", []),
+            marking: new UntypedFormControl("", []),
+            status: new UntypedFormControl("", []),
+            intCommentNull: new UntypedFormControl(false, []),
+            intComment: new UntypedFormGroup({
+                intc: new UntypedFormControl("", [])
             }),
-            passCommentNull: new FormControl(false, []),
-            passComment: new FormGroup({
-                pc: new FormControl("", [])
+            passCommentNull: new UntypedFormControl(false, []),
+            passComment: new UntypedFormGroup({
+                pc: new UntypedFormControl("", [])
             }),
-            bookTitle: new FormControl("", []),
-            secBookTitleNull: new FormControl(false, []),
-            secBookTitle: new FormGroup({
-                secbt: new FormControl("", [])
+            bookTitle: new UntypedFormControl("", []),
+            secBookTitleNull: new UntypedFormControl(false, []),
+            secBookTitle: new UntypedFormGroup({
+                secbt: new UntypedFormControl("", [])
             }),
-            contributor: new FormControl("", []),
-            lexiaNull: new FormControl(false, []),
-            lexia: new FormGroup({
-                lex: new FormControl("", [])
+            contributor: new UntypedFormControl("", []),
+            lexiaNull: new UntypedFormControl(false, []),
+            lexia: new UntypedFormGroup({
+                lex: new UntypedFormControl("", [])
             }),
             // extraNull: new FormControl( false, []),
             // extra: new FormGroup({

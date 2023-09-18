@@ -6,7 +6,7 @@ import {Contributor} from "../../model/model";
 import {CreateUpdateContributorComponent} from "./create-update-contributor/create-update-contributor.component";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {Observable} from "rxjs";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {IListNode} from "../../model/listModel";
 import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
@@ -78,7 +78,7 @@ export class ContributorComponent implements OnInit {
     displayedColumns: string[] = ["row", "hasPersonInternalId", "hasFirstName", "hasLastName", "hasDescription", "hasGender", "action"];
     dataSource: MatTableDataSource<any>;
     value: string;
-    form: FormGroup;
+    form: UntypedFormGroup;
     genders: IListNode[];
 
     constructor(public listService: ListService,
@@ -113,15 +113,15 @@ export class ContributorComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            internalId: new FormControl("", []),
-            firstNameNull: new FormControl(false, []),
-            firstName: new FormGroup({
-                fn: new FormControl("", []),
+        this.form = new UntypedFormGroup({
+            internalId: new UntypedFormControl("", []),
+            firstNameNull: new UntypedFormControl(false, []),
+            firstName: new UntypedFormGroup({
+                fn: new UntypedFormControl("", []),
             }),
-            lastName: new FormControl("", []),
-            description: new FormControl("", []),
-            gender: new FormControl("", []),
+            lastName: new UntypedFormControl("", []),
+            description: new UntypedFormControl("", []),
+            gender: new UntypedFormControl("", []),
             // extraNull: new FormControl(false, []),
             // extra: new FormGroup({
             //     ex: new FormControl("", [])

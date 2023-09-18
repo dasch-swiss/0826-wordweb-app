@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {ApiService} from "../../../services/api.service";
 import {Lexia} from "../../../model/model";
@@ -13,7 +13,7 @@ import {CategoryRefComponent} from "../../../dialog/category-ref.component";
 export class CreateUpdateOrganisationComponent implements OnInit {
     readonly MAX_CHIPS: number = 4;
     organisation: any;
-    form: FormGroup;
+    form: UntypedFormGroup;
     lexiaList: Lexia[];
 
     constructor(private lexiaDialog: MatDialog,
@@ -23,9 +23,9 @@ export class CreateUpdateOrganisationComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            internalID: new FormControl(this.organisation ? this.organisation.internalID : "", []),
-            name: new FormControl(this.organisation ? this.organisation.name : "", [Validators.required])
+        this.form = new UntypedFormGroup({
+            internalID: new UntypedFormControl(this.organisation ? this.organisation.internalID : "", []),
+            name: new UntypedFormControl(this.organisation ? this.organisation.name : "", [Validators.required])
         });
 
         this.lexiaList = this.organisation ? this.organisation.organisationAsLexia  ? [this.organisation.organisationAsLexia] : [] : [];
