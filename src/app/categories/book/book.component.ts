@@ -503,7 +503,6 @@ export class BookComponent implements OnInit {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
-            type: "ball-spin-clockwise",
             size: "medium"
         });
 
@@ -692,7 +691,6 @@ export class BookComponent implements OnInit {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
-            type: "ball-spin-clockwise",
             size: "medium"
         });
         this.searchStarted = true;
