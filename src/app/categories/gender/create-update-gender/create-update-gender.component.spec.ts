@@ -8,8 +8,9 @@ describe("CreateUpdateGenderComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [CreateUpdateGenderComponent]
-        })
+    declarations: [CreateUpdateGenderComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

@@ -54,7 +54,7 @@
 
             <div class="details" [class.opened]="passage.expanded">
                 <div *ngIf="!detailPassages[passage.id]" class="spinner-container">
-                    <ngx-spinner name="spinner-{{passage.id}}"></ngx-spinner>
+                    <ngx-spinner name="spinner-{{passage.id}}" type="ball-spin-clockwise"></ngx-spinner>
                 </div>
                 <div *ngIf="detailPassages[passage.id]; let detailPas">
                     <div class="comments" [innerHTML]="detailPas | comments: listService"></div>
@@ -88,7 +88,7 @@
         </div>
 
         <div class="spinner-small" *ngIf="searchStarted && passages.length !== 0">
-            <ngx-spinner name="spinner-small"></ngx-spinner>
+            <ngx-spinner name="spinner-small" type="ball-spin-clockwise"></ngx-spinner>
         </div>
 
     </div>
@@ -104,7 +104,7 @@
     </div>
 
     <div class="spinner-big" *ngIf="!passages && searchStarted">
-        <ngx-spinner name="spinner-big"></ngx-spinner>
+        <ngx-spinner name="spinner-big" type="ball-spin-clockwise"></ngx-spinner>
     </div>
 
 </div>

@@ -8,8 +8,9 @@ describe("CreateUpdatePassageComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [CreateUpdatePassageComponent]
-        })
+    declarations: [CreateUpdatePassageComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

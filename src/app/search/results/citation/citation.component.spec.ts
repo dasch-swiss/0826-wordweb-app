@@ -8,8 +8,9 @@ describe('CitationComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CitationComponent ]
-    })
+    declarations: [CitationComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

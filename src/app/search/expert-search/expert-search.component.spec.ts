@@ -8,8 +8,9 @@ describe("ExpertSearchComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [ExpertSearchComponent]
-        })
+    declarations: [ExpertSearchComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

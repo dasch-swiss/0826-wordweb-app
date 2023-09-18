@@ -8,8 +8,9 @@ describe('DateValueComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DateValueComponent ]
-    })
+    declarations: [DateValueComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   });
 

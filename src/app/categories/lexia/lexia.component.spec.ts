@@ -8,8 +8,9 @@ describe("LexiaComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [LexiaComponent]
-        })
+    declarations: [LexiaComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

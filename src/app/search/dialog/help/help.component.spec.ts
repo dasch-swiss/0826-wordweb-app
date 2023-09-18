@@ -8,8 +8,9 @@ describe("HelpComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [HelpComponent]
-        })
+    declarations: [HelpComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

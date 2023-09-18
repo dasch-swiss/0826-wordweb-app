@@ -8,8 +8,9 @@ describe("AdvancedSearchComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [AdvancedSearchComponent]
-        })
+    declarations: [AdvancedSearchComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

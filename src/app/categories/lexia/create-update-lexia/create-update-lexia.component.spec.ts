@@ -8,8 +8,9 @@ describe("CreateUpdateLexiaComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [CreateUpdateLexiaComponent]
-        })
+    declarations: [CreateUpdateLexiaComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

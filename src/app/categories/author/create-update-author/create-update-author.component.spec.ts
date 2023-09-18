@@ -8,8 +8,9 @@ describe("CreateEditAuthorComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [CreateUpdateAuthorComponent]
-        })
+    declarations: [CreateUpdateAuthorComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

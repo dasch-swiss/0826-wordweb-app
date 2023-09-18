@@ -8,8 +8,9 @@ describe("BookRefComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [BookRefComponent]
-        })
+    declarations: [BookRefComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

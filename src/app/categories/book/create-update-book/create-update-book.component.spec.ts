@@ -8,8 +8,9 @@ describe("CreateUpdateBookComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [CreateUpdateBookComponent]
-        })
+    declarations: [CreateUpdateBookComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

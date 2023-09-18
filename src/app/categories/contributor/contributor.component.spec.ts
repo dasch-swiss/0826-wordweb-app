@@ -8,8 +8,9 @@ describe("ContributorComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [ContributorComponent]
-        })
+    declarations: [ContributorComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 
