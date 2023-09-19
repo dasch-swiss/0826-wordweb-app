@@ -9,7 +9,7 @@ import {
   Self,
   ViewChild
 } from '@angular/core';
-import {MAT_FORM_FIELD, MatFormField, MatFormFieldControl} from '@angular/material/form-field';
+import {MAT_LEGACY_FORM_FIELD as MAT_FORM_FIELD, MatLegacyFormField as MatFormField, MatLegacyFormFieldControl as MatFormFieldControl} from '@angular/material/legacy-form-field';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -22,7 +22,7 @@ import {Subject} from 'rxjs';
 import {KnoraService} from '../../services/knora.service';
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {Calendar, DateCalendar} from '../../classes/calendar';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatLegacySnackBar as MatSnackBar} from '@angular/material/legacy-snack-bar';
 //import {timestamp} from 'rxjs/operators';
 
 // https://material.angular.io/guide/creating-a-custom-form-field-control

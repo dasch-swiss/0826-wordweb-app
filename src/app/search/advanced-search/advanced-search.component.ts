@@ -2,7 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from "@a
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {KnoraService} from "../../services/knora.service";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig} from "@angular/material/legacy-dialog";
 import {HelpComponent} from "../dialog/help/help.component";
 import {StringService} from "../../services/string.service";
 import {CustomValidators} from "../../customValidators";

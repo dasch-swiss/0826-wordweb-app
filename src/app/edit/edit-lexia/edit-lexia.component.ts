@@ -11,9 +11,9 @@ import {
 import {ActivatedRoute} from '@angular/router';
 import {combineLatest, concat, forkJoin, Observable} from 'rxjs';
 import {CompanyData, KnoraService, LexiaData, ListPropertyData, OptionType} from "../../services/knora.service";
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatLegacySnackBar as MatSnackBar} from '@angular/material/legacy-snack-bar';
 import {Location} from '@angular/common';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig} from '@angular/material/legacy-dialog';
 import {ConfirmationComponent, ConfirmationResult} from '../confirmation/confirmation.component';
 import {toArray} from 'rxjs/operators';
 

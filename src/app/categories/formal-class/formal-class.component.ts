@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {TreeTableService} from "../../services/tree-table.service";
-import {MatTableDataSource} from "@angular/material/table";
+import {MatLegacyTableDataSource as MatTableDataSource} from "@angular/material/legacy-table";
 import {ListService} from "../../services/list.service";
 import {ExportService} from "../../services/export.service";
 import {ITreeTableNode} from "../../model/listModel";

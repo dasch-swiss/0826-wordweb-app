@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {Language} from "../../model/model";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {MatTableDataSource} from "@angular/material/table";
+import {MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig} from "@angular/material/legacy-dialog";
+import {MatLegacyTableDataSource as MatTableDataSource} from "@angular/material/legacy-table";
 import {TreeTableService} from "../../services/tree-table.service";
 import {CreateUpdateGenreComponent} from "./create-update-genre/create-update-genre.component";
 import {ListService} from "../../services/list.service";
