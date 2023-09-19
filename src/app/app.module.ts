@@ -96,7 +96,7 @@ import {KnoraService} from "./services/knora.service";
 import {ListService} from "./services/list.service";
 import {GravsearchBuilderService} from "./services/gravsearch-builder.service";
 import { EditCompanyComponent } from './edit/edit-company/edit-company.component';
-import {MatLegacyProgressBarModule as MatProgressBarModule} from "@angular/material/legacy-progress-bar";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatLegacyAutocompleteModule as MatAutocompleteModule} from "@angular/material/legacy-autocomplete";
 import { EditComponent } from './edit/edit.component';
 import { ConfirmationComponent } from './edit/confirmation/confirmation.component';
