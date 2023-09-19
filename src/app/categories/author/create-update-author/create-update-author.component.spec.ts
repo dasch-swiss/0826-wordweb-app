@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import {CreateUpdateAuthorComponent} from "./create-edit-author.component";
+import {CreateUpdateAuthorComponent} from "./create-update-author.component";
 
 describe("CreateEditAuthorComponent", () => {
     let component: CreateUpdateAuthorComponent;
