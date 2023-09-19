@@ -35,7 +35,7 @@ import {MatLegacyListModule as MatListModule} from "@angular/material/legacy-lis
 import {MatLegacyTabsModule as MatTabsModule} from "@angular/material/legacy-tabs";
 import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
 import {MatCardModule} from "@angular/material/card";
-import {MatLegacyCheckboxModule as MatCheckboxModule} from "@angular/material/legacy-checkbox";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatLegacyChipsModule as MatChipsModule} from "@angular/material/legacy-chips";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatDividerModule} from "@angular/material/divider";
