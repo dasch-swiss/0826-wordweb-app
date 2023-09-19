@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig} from "@angular/material/legacy-dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatLegacyTableDataSource as MatTableDataSource} from "@angular/material/legacy-table";
 import {Language} from "../../model/model";
 import {CreateUpdateLanguageComponent} from "./create-update-language/create-update-language.component";

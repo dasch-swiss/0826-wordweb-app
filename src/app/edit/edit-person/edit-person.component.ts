@@ -4,7 +4,7 @@ import {CompanyData, KnoraService, ListPropertyData, OptionType, PersonData} fro
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {MatLegacySnackBar as MatSnackBar} from '@angular/material/legacy-snack-bar';
-import {MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig} from '@angular/material/legacy-dialog';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {DateAdapter} from '@angular/material/core';
 import {combineLatest, concat, forkJoin, Observable, of} from 'rxjs';
 import {ConfirmationComponent, ConfirmationResult} from '../confirmation/confirmation.component';

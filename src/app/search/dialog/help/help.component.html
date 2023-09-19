@@ -1,8 +1,8 @@
+<h2 mat-dialog-title>{{title}}</h2>
 <mat-dialog-content>
-    <h3>{{title}}</h3>
     <div [innerHTML]="text"></div>
 </mat-dialog-content>
 
-<mat-dialog-actions>
+<mat-dialog-actions align="end">
     <button type="button" mat-button (click)="close()">Close</button>
 </mat-dialog-actions>

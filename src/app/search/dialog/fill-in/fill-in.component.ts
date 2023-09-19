@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef} from "@angular/material/legacy-dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
     selector: "app-fill-in",
@@ -12,7 +12,6 @@ export class FillInComponent implements OnInit {
 
     constructor(private _dialogRef: MatDialogRef<FillInComponent>,
                 @Inject(MAT_DIALOG_DATA) data) {
-        console.log(data);
         this.title = data.title;
         this.text = data.text;
     }

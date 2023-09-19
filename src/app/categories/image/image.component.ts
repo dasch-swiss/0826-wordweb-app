@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {MatLegacyTableDataSource as MatTableDataSource} from "@angular/material/legacy-table";
 import {TreeTableService} from "../../services/tree-table.service";
 import {ListService} from "../../services/list.service";
-import {MatLegacyDialog as MatDialog} from "@angular/material/legacy-dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {ITreeTableNode} from "../../model/listModel";
 import {ExportService} from "../../services/export.service";
 
