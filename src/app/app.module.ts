@@ -31,7 +31,7 @@ import {MatLegacyFormFieldModule as MatFormFieldModule} from "@angular/material/
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSidenavModule} from "@angular/material/sidenav";
-import {MatLegacyListModule as MatListModule} from "@angular/material/legacy-list";
+import {MatListModule} from "@angular/material/list";
 import {MatLegacyTabsModule as MatTabsModule} from "@angular/material/legacy-tabs";
 import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
 import {MatCardModule} from "@angular/material/card";
