@@ -6,7 +6,7 @@ import {mergeMap, toArray, map} from "rxjs/operators";
 import {KnoraService} from "../../services/knora.service";
 import {ListService} from "../../services/list.service";
 import {Clipboard} from "@angular/cdk/clipboard";
-import {MatLegacySnackBar as MatSnackBar} from "@angular/material/legacy-snack-bar";
+import {MatSnackBar} from "@angular/material/snack-bar";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 
 @Component({

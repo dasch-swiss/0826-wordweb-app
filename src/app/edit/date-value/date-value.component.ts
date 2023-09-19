@@ -22,7 +22,7 @@ import {Subject} from 'rxjs';
 import {KnoraService} from '../../services/knora.service';
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {Calendar, DateCalendar} from '../../classes/calendar';
-import {MatLegacySnackBar as MatSnackBar} from '@angular/material/legacy-snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 //import {timestamp} from 'rxjs/operators';
 
 // https://material.angular.io/guide/creating-a-custom-form-field-control
