@@ -157,9 +157,9 @@ class VenueIds {
       </mat-card-content>
       
       <mat-card-actions>
-        <button appBackButton class="mat-raised-button" matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
-        <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Save</button>
-        <button *ngIf="inData.venueIri" type="submit" class="mat-raised-button" (click)="delete()">Delete</button>
+        <button appBackButton mat-raised-button matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
+        <button type="submit" mat-raised-button color="primary" (click)="save()">Save</button>
+        <button *ngIf="inData.venueIri" type="submit" mat-raised-button color="warn" (click)="delete()">Delete</button>
         <mat-progress-bar *ngIf="working" mode="indeterminate"></mat-progress-bar>
       </mat-card-actions>
     </mat-card>

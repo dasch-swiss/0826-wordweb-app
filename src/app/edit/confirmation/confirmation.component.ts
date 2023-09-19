@@ -28,7 +28,7 @@ export interface ConfirmationResult {
     </mat-dialog-content>
     <mat-dialog-actions>
       <button type="button" mat-raised-button color="warn" (click)="yes()">Yes</button>
-      <button type="submit" mat-raised-button mat-primary color="primary" (click)="no()">No</button>
+      <button type="submit" mat-raised-button color="primary" (click)="no()">No</button>
     </mat-dialog-actions>
   `,
   styles: [
