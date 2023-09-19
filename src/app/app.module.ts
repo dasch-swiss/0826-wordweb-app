@@ -45,7 +45,7 @@ import {MatLegacySelectModule as MatSelectModule} from "@angular/material/legacy
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatLegacySnackBarModule as MatSnackBarModule} from "@angular/material/legacy-snack-bar";
 import {MatSortModule} from "@angular/material/sort";
-import {MatLegacyTableModule as MatTableModule} from "@angular/material/legacy-table";
+import {MatTableModule} from "@angular/material/table";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 import {NgxSpinnerModule} from "ngx-spinner";

@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
-import {MatLegacyTableDataSource as MatTableDataSource} from "@angular/material/legacy-table";
+import {MatTableDataSource} from "@angular/material/table";
 import {Venue} from "../../model/model";
 import {CreateUpdateVenueComponent} from "./create-update-venue/create-update-venue.component";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";

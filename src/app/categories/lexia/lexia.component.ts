@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
-import {MatLegacyTableDataSource as MatTableDataSource} from "@angular/material/legacy-table";
+import {MatTableDataSource} from "@angular/material/table";
 import {Lexia} from "../../model/model";
 import {CreateUpdateLexiaComponent} from "./create-update-lexia/create-update-lexia.component";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";

@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {MatLegacyTableDataSource as MatTableDataSource} from "@angular/material/legacy-table";
+import {MatTableDataSource} from "@angular/material/table";
 import {Gender} from "../../model/model";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {CreateUpdateGenderComponent} from "./create-update-gender/create-update-gender.component";

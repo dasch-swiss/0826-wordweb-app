@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {MatSort} from "@angular/material/sort";
-import {MatLegacyTableDataSource as MatTableDataSource} from "@angular/material/legacy-table";
+import {MatTableDataSource} from "@angular/material/table";
 import {Contributor} from "../../model/model";
 import {CreateUpdateContributorComponent} from "./create-update-contributor/create-update-contributor.component";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
