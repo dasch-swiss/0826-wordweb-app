@@ -1,20 +1,16 @@
 import {Component, Input, OnInit, Optional, Self} from '@angular/core';
 import {
-  ControlValueAccessor,
   UntypedFormArray,
   UntypedFormBuilder,
-  FormControl,
   UntypedFormGroup,
   NgControl,
   Validators
 } from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
-import {combineLatest, forkJoin, concat, Observable} from 'rxjs';
+import {combineLatest, concat, Observable} from 'rxjs';
 import {toArray} from 'rxjs/operators';
 import {
-  CompanyData,
   KnoraService,
-  LexiaData,
   ListPropertyData,
   OptionType,
   BookData
