@@ -105,7 +105,7 @@ import {DatePipe} from '@angular/common';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from '@angular/material/core';
 import { DateValueComponent } from './edit/date-value/date-value.component';
-import {MatLegacyTooltipModule as MatTooltipModule} from "@angular/material/legacy-tooltip";
+import {MatTooltipModule} from "@angular/material/tooltip";
 import { EditLexiaComponent } from './edit/edit-lexia/edit-lexia.component';
 import { EditPassageComponent } from './edit/edit-passage/edit-passage.component';
 import { EditBookComponent } from './edit/edit-book/edit-book.component';
