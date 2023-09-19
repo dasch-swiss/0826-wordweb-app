@@ -42,7 +42,7 @@ import {MatDividerModule} from "@angular/material/divider";
 import {MatIconModule} from "@angular/material/icon";
 import {MatLegacyInputModule as MatInputModule} from "@angular/material/legacy-input";
 import {MatLegacySelectModule as MatSelectModule} from "@angular/material/legacy-select";
-import {MatLegacySlideToggleModule as MatSlideToggleModule} from "@angular/material/legacy-slide-toggle";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatLegacySnackBarModule as MatSnackBarModule} from "@angular/material/legacy-snack-bar";
 import {MatSortModule} from "@angular/material/sort";
 import {MatLegacyTableModule as MatTableModule} from "@angular/material/legacy-table";
