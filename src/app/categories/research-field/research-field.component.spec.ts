@@ -8,8 +8,9 @@ describe("ResearchFieldComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [ResearchFieldComponent]
-        })
+    declarations: [ResearchFieldComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

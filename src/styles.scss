@@ -1,5 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+@include mat.legacy-core();
+@include mat.core();
+
+//@include mat.legacy-form-field-density(-2)
+
 
 html, body {
     height: 100%;

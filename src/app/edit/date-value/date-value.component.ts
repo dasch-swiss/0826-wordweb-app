@@ -1,7 +1,6 @@
 import {
   Component,
   ElementRef,
-  forwardRef,
   Inject,
   Input,
   OnDestroy,
@@ -14,9 +13,8 @@ import {MAT_FORM_FIELD, MatFormField, MatFormFieldControl} from '@angular/materi
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormBuilder,
-  FormGroup,
-  NG_VALUE_ACCESSOR,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   NgControl
 } from '@angular/forms';
 import {BooleanInput, coerceBooleanProperty} from '@angular/cdk/coercion';
@@ -63,7 +61,7 @@ export class DateValue {
     }
 
     //
-    // we fill the structure that we can calcalulate the period start and end using JD
+    // we fill the structure that we can calculate the period start and end using JD
     //
     this.startYear = typeof startYear === 'string' ? parseInt(startYear, 10) : startYear;
     if (isNaN(this.startYear)) {
@@ -312,6 +310,7 @@ export class DateValue {
   ],
   styles: [
       '.bg {background-color: lightgrey;}',
+      '.datecontainer {padding-top: 1rem;}',
       '.calsel {width: 120px; padding-left: 2px; padding-right: 2px;}',
       '.rangesel {width: 80px; padding-left: 2px; padding-right: 2px;}',
       '.yearsel {width: 80px; padding-left: 2px; padding-right: 2px;}',
@@ -339,7 +338,7 @@ export class DateValueComponent
   sMonths: [string,boolean][] = [];
   eMonths: [string,boolean][] = [];
 
-  parts: FormGroup;
+  parts: UntypedFormGroup;
   stateChanges = new Subject<void>();
   focused = false;
   touched = false;
@@ -351,7 +350,7 @@ export class DateValueComponent
   private requiredL = false;
   private disabledL = false;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
               private knoraService: KnoraService,
               private focusMonitor: FocusMonitor,
               private snackBar: MatSnackBar,

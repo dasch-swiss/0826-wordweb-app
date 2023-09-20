@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, Optional, Self} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, NgControl, Validators} from '@angular/forms';
+import {UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, NgControl, Validators} from '@angular/forms';
 import {CompanyData, KnoraService, ListPropertyData, OptionType, PersonData} from '../../services/knora.service';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
@@ -238,9 +238,9 @@ class PersonIds {
       </mat-card-content>
 
       <mat-card-actions>
-        <button appBackButton class="mat-raised-button" matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
-        <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Save</button>
-        <button *ngIf="inData.personIri" type="submit" class="mat-raised-button" (click)="delete()">Delete</button>
+        <button appBackButton mat-raised-button matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
+        <button type="submit" mat-raised-button color="primary" (click)="save()">Save</button>
+        <button *ngIf="inData.personIri" type="submit" mat-raised-button color="warn" (click)="delete()">Delete</button>
         <mat-progress-bar *ngIf="working" mode="indeterminate"></mat-progress-bar>
       </mat-card-actions>
     </mat-card>
@@ -257,7 +257,7 @@ class PersonIds {
 export class EditPersonComponent implements OnInit {
   controlType = 'EditPerson';
   inData: any;
-  form: FormGroup;
+  form: UntypedFormGroup;
   options: Array<{ id: string; label: string }> = [];
   resId: string;
   lastmod: string;
@@ -270,7 +270,7 @@ export class EditPersonComponent implements OnInit {
 
 
   constructor(public knoraService: KnoraService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               public route: ActivatedRoute,
               private dateAdapter: DateAdapter<Date>,
               public location: Location,
@@ -286,7 +286,7 @@ export class EditPersonComponent implements OnInit {
 
   @Input()
   get value(): PersonData | null {
-    const lexias: FormArray = this.getLexias();
+    const lexias: UntypedFormArray = this.getLexias();
     const lexiaValues: { lexiaName: string; lexiaIri: string }[] = [];
     for (const x of lexias.controls) {
       lexiaValues.push(x.value);
@@ -426,7 +426,7 @@ export class EditPersonComponent implements OnInit {
   }
 
   getLexias() {
-    return this.form.controls.lexias as FormArray;
+    return this.form.controls.lexias as UntypedFormArray;
   }
 
   addLexia(lexia?: { lexiaName: string; lexiaIri: string }) {

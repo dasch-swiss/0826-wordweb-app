@@ -8,8 +8,9 @@ describe("GenreComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [GenreComponent]
-        })
+    declarations: [GenreComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

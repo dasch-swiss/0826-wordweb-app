@@ -8,8 +8,9 @@ describe("MarkingComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [MarkingComponent]
-        })
+    declarations: [MarkingComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

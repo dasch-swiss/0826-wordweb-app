@@ -8,8 +8,9 @@ describe("CreateUpdateGenreComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [CreateUpdateGenreComponent]
-        })
+    declarations: [CreateUpdateGenreComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

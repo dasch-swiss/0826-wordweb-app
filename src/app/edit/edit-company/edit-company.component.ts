@@ -1,10 +1,10 @@
 import {Component, Input, OnInit, Optional, Self} from '@angular/core';
 import {
   ControlValueAccessor,
-  FormArray,
-  FormBuilder,
+  UntypedFormArray,
+  UntypedFormBuilder,
   FormControl,
-  FormGroup,
+  UntypedFormGroup,
   NgControl,
   Validators
 } from '@angular/forms';
@@ -185,9 +185,9 @@ class CompanyIds {
       </mat-card-content>
 
       <mat-card-actions>
-        <button appBackButton class="mat-raised-button" matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
-        <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Save</button>
-        <button *ngIf="inData.companyIri" type="submit" class="mat-raised-button" (click)="delete()">Delete</button>
+        <button appBackButton mat-raised-button matTooltip="Zurück ohne zu sichern" (click)="location.back()">Cancel</button>
+        <button type="submit" mat-raised-button color="mat-primary" (click)="save()">Save</button>
+        <button *ngIf="inData.companyIri" type="submit" mat-raised-button color="warn" (click)="delete()">Delete</button>
         <mat-progress-bar *ngIf="working" mode="indeterminate"></mat-progress-bar>
       </mat-card-actions>
     </mat-card>
@@ -207,7 +207,7 @@ class CompanyIds {
 export class EditCompanyComponent implements OnInit {
   controlType = 'EditCompany';
   inData: any;
-  form: FormGroup;
+  form: UntypedFormGroup;
   options: Array<{id: string; label: string}> = [];
   resId: string;
   lastmod: string;
@@ -219,7 +219,7 @@ export class EditCompanyComponent implements OnInit {
   public valIds: CompanyIds = new CompanyIds();
 
   constructor(public knoraService: KnoraService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               public route: ActivatedRoute,
               public location: Location,
               private snackBar: MatSnackBar,
@@ -233,12 +233,12 @@ export class EditCompanyComponent implements OnInit {
 
   @Input()
   get value(): CompanyData | null {
-    const members: FormArray = this.getMembers();
+    const members: UntypedFormArray = this.getMembers();
     const memberValues: {memberName: string; memberIri: string}[] = [];
     for (const x of members.controls) {
       memberValues.push(x.value);
     }
-    const lexias: FormArray = this.getLexias();
+    const lexias: UntypedFormArray = this.getLexias();
     const lexiaValues: {lexiaName: string; lexiaIri: string}[] = [];
     for (const x of lexias.controls) {
       lexiaValues.push(x.value);
@@ -330,7 +330,7 @@ export class EditCompanyComponent implements OnInit {
   }
 
   getMembers() {
-    return this.form.controls.members as FormArray;
+    return this.form.controls.members as UntypedFormArray;
   }
 
   addMember(member?: {memberName: string; memberIri: string}) {
@@ -358,7 +358,7 @@ export class EditCompanyComponent implements OnInit {
   }
 
   getLexias() {
-    return this.form.controls.lexias as FormArray;
+    return this.form.controls.lexias as UntypedFormArray;
   }
 
   addLexia(lexia?: {lexiaName: string; lexiaIri: string}) {

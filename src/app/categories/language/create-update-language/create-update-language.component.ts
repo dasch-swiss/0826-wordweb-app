@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ApiService} from "../../../services/api.service";
 
@@ -10,15 +10,15 @@ import {ApiService} from "../../../services/api.service";
 })
 export class CreateUpdateLanguageComponent implements OnInit {
     language: any;
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     constructor(private dialogRef: MatDialogRef<CreateUpdateLanguageComponent>, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService) {
         this.language = JSON.parse(JSON.stringify(data.resource));
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            name: new FormControl(this.language ? this.language.name : "", [Validators.required])
+        this.form = new UntypedFormGroup({
+            name: new UntypedFormControl(this.language ? this.language.name : "", [Validators.required])
         });
     }
 

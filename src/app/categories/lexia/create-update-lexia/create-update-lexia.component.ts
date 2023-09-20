@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from "@angular/core";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ApiService} from "../../../services/api.service";
 import {FormalClass, Image, Passage} from "../../../model/model";
@@ -12,7 +12,7 @@ import {FormalClass, Image, Passage} from "../../../model/model";
 export class CreateUpdateLexiaComponent implements OnInit {
     readonly MAX_CHIPS: number = 4;
     lexia: any;
-    form: FormGroup;
+    form: UntypedFormGroup;
     passageList: Passage[];
     formalClassList: FormalClass[];
     imageList: Image[];
@@ -22,9 +22,9 @@ export class CreateUpdateLexiaComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            internalID: new FormControl(this.lexia ? this.lexia.internalID : "", []),
-            name: new FormControl(this.lexia ? this.lexia.name : "", [Validators.required])
+        this.form = new UntypedFormGroup({
+            internalID: new UntypedFormControl(this.lexia ? this.lexia.internalID : "", []),
+            name: new UntypedFormControl(this.lexia ? this.lexia.name : "", [Validators.required])
         });
 
         this.passageList = this.lexia ? this.lexia.usedIn : [];

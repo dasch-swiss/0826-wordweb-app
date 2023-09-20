@@ -8,8 +8,9 @@ describe("LanguageRefComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [TreeRefComponent]
-        })
+    declarations: [TreeRefComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

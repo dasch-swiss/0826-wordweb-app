@@ -2,12 +2,12 @@ import {Component, OnInit} from "@angular/core";
 import {IMainClass} from "../../model/displayModel";
 import {NgxSpinnerService} from "ngx-spinner";
 import {forkJoin, Observable, from, of} from "rxjs";
-import {mergeMap, toArray, map, tap} from "rxjs/operators";
+import {mergeMap, toArray, map} from "rxjs/operators";
 import {KnoraService} from "../../services/knora.service";
 import {ListService} from "../../services/list.service";
 import {Clipboard} from "@angular/cdk/clipboard";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 
 @Component({
     selector: "app-results",
@@ -19,7 +19,7 @@ export class ResultsComponent implements OnInit {
     readonly MAX_RESOURCE_PER_RESULT = 25;
 
     structure: IMainClass;
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     nPassages: Observable<number>;
     passages: Array<any>;
@@ -175,8 +175,8 @@ export class ResultsComponent implements OnInit {
             }
         ];
         // Form for sorting
-        this.form = new FormGroup({
-            sorting: new FormControl("Date: Oldest", [])
+        this.form = new UntypedFormGroup({
+            sorting: new UntypedFormControl("Date: Oldest", [])
         });
     }
 
@@ -193,7 +193,6 @@ export class ResultsComponent implements OnInit {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
-            type: "ball-spin-clockwise",
             size: "medium"
         });
 
@@ -235,7 +234,6 @@ export class ResultsComponent implements OnInit {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
-            type: "ball-spin-clockwise",
             size: "small"
         });
 
@@ -284,7 +282,6 @@ export class ResultsComponent implements OnInit {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
-            type: "ball-spin-clockwise",
             size: "small"
         });
 
@@ -412,13 +409,12 @@ export class ResultsComponent implements OnInit {
                             )
                             .subscribe(extraData => {
                                 data.isMentionedIn = extraData;
-                                console.log("All details: ", data);
+
                                 this.detailPassages[passage.id] = data;
                                 this.detailStarted = false;
                                 this._spinner.hide(`spinner-${passage.id}`);
                             });
                     } else {
-                        console.log("All details: ", data);
                         this.detailPassages[passage.id] = data;
                         this.detailStarted = false;
                         this._spinner.hide(`spinner-${passage.id}`);

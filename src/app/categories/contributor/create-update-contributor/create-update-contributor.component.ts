@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {ApiService} from "../../../services/api.service";
 import {Contributor, Lexia} from "../../../model/model";
 import {CategoryRefComponent} from "../../../dialog/category-ref.component";
@@ -13,7 +13,7 @@ import {CategoryRefComponent} from "../../../dialog/category-ref.component";
 export class CreateUpdateContributorComponent implements OnInit {
     readonly MAX_CHIPS: number = 4;
     contributor: any;
-    form: FormGroup;
+    form: UntypedFormGroup;
     lexiaList: Lexia[];
     genders: any;
 
@@ -26,12 +26,12 @@ export class CreateUpdateContributorComponent implements OnInit {
     ngOnInit() {
         this.genders = this.apiService.getGenders();
 
-        this.form = new FormGroup({
-            internalID: new FormControl(this.contributor ? this.contributor.internalID : "", [Validators.required]),
-            firstName: new FormControl(this.contributor ? this.contributor.firstName : "", [Validators.required]),
-            lastName: new FormControl(this.contributor ? this.contributor.lastName : "", [Validators.required]),
-            gender: new FormControl(this.contributor ? this.contributor.gender.id : "", [Validators.required]),
-            email: new FormControl(this.contributor ? this.contributor.email : "", [])
+        this.form = new UntypedFormGroup({
+            internalID: new UntypedFormControl(this.contributor ? this.contributor.internalID : "", [Validators.required]),
+            firstName: new UntypedFormControl(this.contributor ? this.contributor.firstName : "", [Validators.required]),
+            lastName: new UntypedFormControl(this.contributor ? this.contributor.lastName : "", [Validators.required]),
+            gender: new UntypedFormControl(this.contributor ? this.contributor.gender.id : "", [Validators.required]),
+            email: new UntypedFormControl(this.contributor ? this.contributor.email : "", [])
         });
 
         this.lexiaList = this.contributor ? this.contributor.humanAsLexia  ? [this.contributor.humanAsLexia] : [] : [];

@@ -1,5 +1,5 @@
 import {BrowserModule} from "@angular/platform-browser";
-import {APP_INITIALIZER, NgModule} from "@angular/core";
+import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
 
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
@@ -32,7 +32,6 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
-import {MatTabsModule} from "@angular/material/tabs";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
 import {MatCheckboxModule} from "@angular/material/checkbox";
@@ -210,7 +209,6 @@ export function initializeApp(appInitService: AppInitService) {
         MatToolbarModule,
         MatSidenavModule,
         MatListModule,
-        MatTabsModule,
         MatButtonToggleModule,
         MatDialogModule,
         NgxSpinnerModule,
@@ -220,6 +218,7 @@ export function initializeApp(appInitService: AppInitService) {
         MatNativeDateModule,
         MatTooltipModule,
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [
         AppInitService,
         ListService,
@@ -233,28 +232,10 @@ export function initializeApp(appInitService: AppInitService) {
         },
         {
             provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
-            useValue: {duration: 2000}
+            useValue: { duration: 2000 }
         }
     ],
-    bootstrap: [AppComponent],
-    entryComponents: [
-        CreateUpdateAuthorComponent,
-        CreateUpdateBookComponent,
-        CreateUpdateContributorComponent,
-        CreateUpdateLanguageComponent,
-        CreateUpdateLexiaComponent,
-        CreateUpdateOrganisationComponent,
-        CreateUpdatePassageComponent,
-        CreateUpdateVenueComponent,
-        CreateUpdateGenderComponent,
-        CreateUpdateStatusComponent,
-        CreateUpdateGenreComponent,
-        AuthorRefComponent,
-        BookRefComponent,
-        TreeRefComponent,
-        CategoryRefComponent,
-        HelpComponent
-    ]
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

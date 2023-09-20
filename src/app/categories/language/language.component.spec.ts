@@ -8,8 +8,9 @@ describe("LanguageComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [LanguageComponent]
-        })
+    declarations: [LanguageComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

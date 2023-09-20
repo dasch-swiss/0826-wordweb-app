@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from "@angular/core";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {KnoraService} from "../../services/knora.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
@@ -380,7 +380,7 @@ export class AdvancedSearchComponent implements OnInit, AfterViewInit {
     venues: any[];
     actors: any[];
 
-    form: FormGroup;
+    form: UntypedFormGroup;
     searchStarted = false;
 
     constructor(private _route: ActivatedRoute,
@@ -403,20 +403,20 @@ export class AdvancedSearchComponent implements OnInit, AfterViewInit {
         this.functionVoices = this._listService.getFlattenList("functionVoice");
         this.markings = this._listService.getFlattenList("marking");
 
-        this.form = new FormGroup({
-            text: new FormControl("", []),
-            author: new FormControl("", []),
-            bookTitle: new FormControl("", []),
-            genre: new FormControl("", []),
-            lexia: new FormControl("", []),
-            language: new FormControl("", []),
-            function: new FormControl("", []),
-            marking: new FormControl("", []),
-            createdDate: new FormControl("", [CustomValidators.correctDate]),
-            performedCompany: new FormControl("", []),
-            performedVenue: new FormControl("", []),
-            performedActor: new FormControl("", []),
-            plays: new FormControl(false, [])
+        this.form = new UntypedFormGroup({
+            text: new UntypedFormControl("", []),
+            author: new UntypedFormControl("", []),
+            bookTitle: new UntypedFormControl("", []),
+            genre: new UntypedFormControl("", []),
+            lexia: new UntypedFormControl("", []),
+            language: new UntypedFormControl("", []),
+            function: new UntypedFormControl("", []),
+            marking: new UntypedFormControl("", []),
+            createdDate: new UntypedFormControl("", [CustomValidators.correctDate]),
+            performedCompany: new UntypedFormControl("", []),
+            performedVenue: new UntypedFormControl("", []),
+            performedActor: new UntypedFormControl("", []),
+            plays: new UntypedFormControl(false, [])
         });
     }
 

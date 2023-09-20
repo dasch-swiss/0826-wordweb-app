@@ -8,8 +8,9 @@ describe("AuthorRefComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [AuthorRefComponent]
-        })
+    declarations: [AuthorRefComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

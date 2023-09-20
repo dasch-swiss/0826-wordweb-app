@@ -42,7 +42,7 @@ import {
 } from "@dasch-swiss/dsp-js";
 import {GravsearchBuilderService} from './gravsearch-builder.service';
 import {IMainClass} from '../model/displayModel';
-import {catchError, map, tap} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {Observable, of, throwError} from 'rxjs';
 import {DateValue} from '../edit/date-value/date-value.component';
 import {DateCalendar} from '../classes/calendar';
@@ -399,7 +399,6 @@ export class KnoraService {
         const gravsearch = this._gsBuilder.getQuery(structure, priority, offset);
         return this._knoraApiConnection.v2.search.doExtendedSearch(gravsearch)
             .pipe(
-                tap(data => console.log(data)),
                 map((sequence: ReadResourceSequence) =>
                     // Error found in person res without last names
                     // resources.map(resource => {

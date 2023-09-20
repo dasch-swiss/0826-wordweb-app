@@ -5,7 +5,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {Author} from "../../model/model";
 import {CreateUpdateAuthorComponent} from "./create-update-author/create-update-author.component";
 import {KnoraService} from "../../services/knora.service";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {ListService} from "../../services/list.service";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {Observable} from "rxjs";
@@ -97,7 +97,7 @@ export class AuthorComponent implements OnInit {
     displayedColumns: string[] = ["row", "hasPersonInternalId", "hasFirstName", "hasLastName", "hasDescription", "hasGender", "hasBirthDate", "hasDeathDate", "hasActiveDate", "action"];
     dataSource: MatTableDataSource<any>;
     value: string;
-    form: FormGroup;
+    form: UntypedFormGroup;
     genders: IListNode[];
 
     constructor(public listService: ListService,
@@ -142,27 +142,27 @@ export class AuthorComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            internalId: new FormControl("", []),
-            firstNameNull: new FormControl(false, []),
-            firstName: new FormGroup({
-                fn: new FormControl("", []),
+        this.form = new UntypedFormGroup({
+            internalId: new UntypedFormControl("", []),
+            firstNameNull: new UntypedFormControl(false, []),
+            firstName: new UntypedFormGroup({
+                fn: new UntypedFormControl("", []),
             }),
-            lastName: new FormControl("", []),
-            description: new FormControl("", []),
-            birthNull: new FormControl(false, []),
-            birth: new FormGroup({
-                bdate: new FormControl("", [])
+            lastName: new UntypedFormControl("", []),
+            description: new UntypedFormControl("", []),
+            birthNull: new UntypedFormControl(false, []),
+            birth: new UntypedFormGroup({
+                bdate: new UntypedFormControl("", [])
             }),
-            deathNull: new FormControl(false, []),
-            death: new FormGroup({
-                ddate: new FormControl("", [])
+            deathNull: new UntypedFormControl(false, []),
+            death: new UntypedFormGroup({
+                ddate: new UntypedFormControl("", [])
             }),
-            activeNull: new FormControl(false, []),
-            active: new FormGroup({
-                adate: new FormControl("", [])
+            activeNull: new UntypedFormControl(false, []),
+            active: new UntypedFormGroup({
+                adate: new UntypedFormControl("", [])
             }),
-            gender: new FormControl("", []),
+            gender: new UntypedFormControl("", []),
             // extraNull: new FormControl(false, []),
             // extra: new FormGroup({
             //     ex: new FormControl("", [])
@@ -210,11 +210,11 @@ export class AuthorComponent implements OnInit {
     }
 
     create() {
-        // this.createOrEditResource(false);
+        this.createOrEditResource(false);
     }
 
     edit(author: Author) {
-        // this.createOrEditResource(true, author);
+        this.createOrEditResource(true, author);
     }
 
     createOrEditResource(editMod: boolean, resource: Author = null) {
@@ -266,7 +266,6 @@ export class AuthorComponent implements OnInit {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
-            type: "ball-spin-clockwise",
             size: "medium"
         });
 
@@ -367,7 +366,6 @@ export class AuthorComponent implements OnInit {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
-            type: "ball-spin-clockwise",
             size: "medium"
         });
         this.searchStarted = true;

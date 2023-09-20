@@ -12,7 +12,6 @@ export class FillInComponent implements OnInit {
 
     constructor(private _dialogRef: MatDialogRef<FillInComponent>,
                 @Inject(MAT_DIALOG_DATA) data) {
-        console.log(data);
         this.title = data.title;
         this.text = data.text;
     }

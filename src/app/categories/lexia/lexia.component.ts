@@ -4,7 +4,7 @@ import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {Lexia} from "../../model/model";
 import {CreateUpdateLexiaComponent} from "./create-update-lexia/create-update-lexia.component";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
@@ -69,7 +69,7 @@ export class LexiaComponent implements OnInit {
     displayedColumns: string[] = ["row", "hasLexiaInternalId", "hasLexiaTitle", "hasFormalClass", "action"];
     dataSource: MatTableDataSource<any>;
     value: string;
-    form: FormGroup;
+    form: UntypedFormGroup;
     formalClasses: IListNode[];
     images: IListNode[];
 
@@ -99,17 +99,17 @@ export class LexiaComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            internalId: new FormControl("", []),
-            lexiaTitle: new FormControl("", []),
-            displayedTitleNull: new FormControl(false, []),
-            displayedTitle: new FormGroup({
-                distit: new FormControl("", []),
+        this.form = new UntypedFormGroup({
+            internalId: new UntypedFormControl("", []),
+            lexiaTitle: new UntypedFormControl("", []),
+            displayedTitleNull: new UntypedFormControl(false, []),
+            displayedTitle: new UntypedFormGroup({
+                distit: new UntypedFormControl("", []),
             }),
-            formalClass: new FormControl("", []),
-            imageNull: new FormControl(false, []),
-            image: new FormGroup({
-                img: new FormControl("", []),
+            formalClass: new UntypedFormControl("", []),
+            imageNull: new UntypedFormControl(false, []),
+            image: new UntypedFormGroup({
+                img: new UntypedFormControl("", []),
             }),
             // extraNull: new FormControl(false, []),
             // extra: new FormGroup({
@@ -152,11 +152,11 @@ export class LexiaComponent implements OnInit {
     }
 
     create() {
-        // this.createOrEditResource(false);
+        this.createOrEditResource(false);
     }
 
     edit(lexia: Lexia) {
-        // this.createOrEditResource(true, lexia);
+        this.createOrEditResource(true, lexia);
     }
 
     createOrEditResource(editMod: boolean, resource: Lexia = null) {
@@ -198,7 +198,6 @@ export class LexiaComponent implements OnInit {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
-            type: "ball-spin-clockwise",
             size: "medium"
         });
 
@@ -270,7 +269,6 @@ export class LexiaComponent implements OnInit {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
-            type: "ball-spin-clockwise",
             size: "medium"
         });
         this.searchStarted = true;

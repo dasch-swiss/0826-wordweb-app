@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 
 export interface LoginData {
   email: string;
@@ -26,8 +26,8 @@ export interface LoginData {
       </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button type="button" mat-primary class="mat-raised-button" (click)="close()">Cancel</button>
-      <button type="submit" class="mat-raised-button mat-primary" (click)="save()">Login</button>
+      <button type="button" mat-raised-button (click)="close()">Cancel</button>
+      <button type="submit" mat-raised-button color="primary" (click)="save()">Login</button>
     </mat-dialog-actions>
   `,
   styles: [
@@ -36,11 +36,11 @@ export interface LoginData {
   ]
 })
 export class LoginComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   email: string;
   password: string;
 
-  constructor(private fb: FormBuilder,
+  constructor(private fb: UntypedFormBuilder,
               private dialogRef: MatDialogRef<LoginComponent>,
               @Inject(MAT_DIALOG_DATA) data: LoginData) { }
 

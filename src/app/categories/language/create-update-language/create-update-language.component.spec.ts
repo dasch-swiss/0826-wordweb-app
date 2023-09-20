@@ -8,8 +8,9 @@ describe("CreateUpdateLanguageComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [CreateUpdateLanguageComponent]
-        })
+    declarations: [CreateUpdateLanguageComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

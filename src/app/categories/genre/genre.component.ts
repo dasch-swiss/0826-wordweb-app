@@ -36,11 +36,11 @@ export class GenreComponent implements OnInit {
     }
 
     create() {
-        // this.createOrEditResource(false);
+        this.createOrEditResource(false);
     }
 
     edit(language: Language) {
-        // this.createOrEditResource(true, language);
+        this.createOrEditResource(true, language);
     }
 
     createOrEditResource(editMod: boolean, resource: Language = null) {

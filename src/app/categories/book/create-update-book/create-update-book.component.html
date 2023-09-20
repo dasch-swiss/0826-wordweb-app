@@ -1,6 +1,6 @@
 <div class="container">
     <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="languages | async as lang; else loading;">
-        <div mat-dialog-title>{{getTitle()}}</div>
+        <h2 mat-dialog-title>{{getTitle()}}</h2>
 
         <mat-dialog-content>
             <table>
@@ -43,26 +43,26 @@
                 <tr class="reference">
                     <td class="title-column">Authors:</td>
                     <td>
-                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="authorList.length<MAX_CHIPS">
-                            <mat-chip *ngFor="let author of authorList">
+                        <mat-chip-listbox class="mat-chip-list-stacked" *ngIf="authorList.length<MAX_CHIPS">
+                            <mat-chip-option *ngFor="let author of authorList">
                                 <mat-chip-avatar>
                                     <mat-icon>account_circle</mat-icon>
                                 </mat-chip-avatar>
                                 {{author.firstName}} {{author.lastName}}
                                 <mat-icon matChipRemove (click)="removeAuthor(author)">cancel</mat-icon>
-                            </mat-chip>
-                        </mat-chip-list>
-                        <mat-chip-list *ngIf="authorList.length>=MAX_CHIPS">
-                            <mat-chip (click)="addAuthor()">
+                            </mat-chip-option>
+                        </mat-chip-listbox>
+                        <mat-chip-listbox *ngIf="authorList.length>=MAX_CHIPS">
+                            <mat-chip-option (click)="addAuthor()">
                                 <mat-chip-avatar>
                                     <mat-icon>account_circle</mat-icon>
                                 </mat-chip-avatar>
                                 {{authorList.length}} ausgewählt ...
-                            </mat-chip>
-                        </mat-chip-list>
+                            </mat-chip-option>
+                        </mat-chip-listbox>
                     </td>
                     <td>
-                        <button mat-button mat-icon-button type="button" color="accent" (click)="addAuthor()">
+                        <button mat-button type="button" color="accent" (click)="addAuthor()">
                             <mat-icon>{{addOrEdit(authorList)}}</mat-icon>
                         </button>
                     </td>
@@ -71,26 +71,26 @@
                 <tr class="reference">
                     <td class="title-column">Venues:</td>
                     <td>
-                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="venueList.length<MAX_CHIPS">
-                            <mat-chip *ngFor="let venue of venueList">
+                        <mat-chip-listbox class="mat-chip-list-stacked" *ngIf="venueList.length<MAX_CHIPS">
+                            <mat-chip-option *ngFor="let venue of venueList">
                                 <mat-chip-avatar>
                                     <mat-icon>theaters</mat-icon>
                                 </mat-chip-avatar>
                                 {{venue.name}}, {{venue.place}}
                                 <mat-icon matChipRemove (click)="removeVenue(venue)">cancel</mat-icon>
-                            </mat-chip>
-                        </mat-chip-list>
-                        <mat-chip-list *ngIf="venueList.length>=MAX_CHIPS">
-                            <mat-chip (click)="addVenue()">
+                            </mat-chip-option>
+                        </mat-chip-listbox>
+                        <mat-chip-listbox *ngIf="venueList.length>=MAX_CHIPS">
+                            <mat-chip-option (click)="addVenue()">
                                 <mat-chip-avatar>
                                     <mat-icon>theaters</mat-icon>
                                 </mat-chip-avatar>
                                 {{venueList.length}} ausgewählt ...
-                            </mat-chip>
-                        </mat-chip-list>
+                            </mat-chip-option>
+                        </mat-chip-listbox>
                     </td>
                     <td>
-                        <button mat-button mat-icon-button type="button" color="accent" (click)="addVenue()">
+                        <button mat-button type="button" color="accent" (click)="addVenue()">
                             <mat-icon>{{addOrEdit(venueList)}}</mat-icon>
                         </button>
                     </td>
@@ -99,26 +99,26 @@
                 <tr class="reference">
                     <td class="title-column">Company:</td>
                     <td>
-                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="organisationList.length<MAX_CHIPS">
-                            <mat-chip *ngFor="let organisation of organisationList">
+                        <mat-chip-listbox class="mat-chip-list-stacked" *ngIf="organisationList.length<MAX_CHIPS">
+                            <mat-chip-option *ngFor="let organisation of organisationList">
                                 <mat-chip-avatar>
                                     <mat-icon>business</mat-icon>
                                 </mat-chip-avatar>
                                 {{organisation.name}}
                                 <mat-icon matChipRemove (click)="removeOrganisation(organisation)">cancel</mat-icon>
-                            </mat-chip>
-                        </mat-chip-list>
-                        <mat-chip-list *ngIf="organisationList.length>=MAX_CHIPS">
-                            <mat-chip (click)="addOrganisation()">
+                            </mat-chip-option>
+                        </mat-chip-listbox>
+                        <mat-chip-listbox *ngIf="organisationList.length>=MAX_CHIPS">
+                            <mat-chip-option (click)="addOrganisation()">
                                 <mat-chip-avatar>
                                     <mat-icon>business</mat-icon>
                                 </mat-chip-avatar>
                                 {{organisationList.length}} ausgewählt ...
-                            </mat-chip>
-                        </mat-chip-list>
+                            </mat-chip-option>
+                        </mat-chip-listbox>
                     </td>
                     <td class="last-row">
-                        <button mat-button mat-icon-button type="button" color="accent" (click)="addOrganisation()">
+                        <button mat-button type="button" color="accent" (click)="addOrganisation()">
                             <mat-icon>{{addOrEdit(organisationList)}}</mat-icon>
                         </button>
                     </td>
@@ -127,26 +127,26 @@
                 <tr class="reference">
                     <td class="title-column">Subjects:</td>
                     <td>
-                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="subjectList.length<MAX_CHIPS">
-                            <mat-chip *ngFor="let subject of subjectList">
+                        <mat-chip-listbox class="mat-chip-list-stacked" *ngIf="subjectList.length<MAX_CHIPS">
+                            <mat-chip-option *ngFor="let subject of subjectList">
                                 <mat-chip-avatar>
                                     <mat-icon>subject</mat-icon>
                                 </mat-chip-avatar>
                                 {{subject.name}}
                                 <mat-icon matChipRemove (click)="removeSubject(subject)">cancel</mat-icon>
-                            </mat-chip>
-                        </mat-chip-list>
-                        <mat-chip-list *ngIf="subjectList.length>=MAX_CHIPS">
-                            <mat-chip (click)="addSubject()">
+                            </mat-chip-option>
+                        </mat-chip-listbox>
+                        <mat-chip-listbox *ngIf="subjectList.length>=MAX_CHIPS">
+                            <mat-chip-option (click)="addSubject()">
                                 <mat-chip-avatar>
                                     <mat-icon>subject</mat-icon>
                                 </mat-chip-avatar>
                                 {{subjectList.length}} ausgewählt ...
-                            </mat-chip>
-                        </mat-chip-list>
+                            </mat-chip-option>
+                        </mat-chip-listbox>
                     </td>
                     <td class="last-row">
-                        <button mat-button mat-icon-button type="button" color="accent" (click)="addSubject()">
+                        <button mat-button type="button" color="accent" (click)="addSubject()">
                             <mat-icon>{{addOrEdit(subjectList)}}</mat-icon>
                         </button>
                     </td>
@@ -155,26 +155,26 @@
                 <tr class="reference">
                     <td class="title-column">Genres:</td>
                     <td>
-                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="genreList.length<MAX_CHIPS">
-                            <mat-chip *ngFor="let genre of genreList">
+                        <mat-chip-listbox class="mat-chip-list-stacked" *ngIf="genreList.length<MAX_CHIPS">
+                            <mat-chip-option *ngFor="let genre of genreList">
                                 <mat-chip-avatar>
                                     <mat-icon>mood</mat-icon>
                                 </mat-chip-avatar>
                                 {{genre.name}}
                                 <mat-icon matChipRemove (click)="removeGenre(genre)">cancel</mat-icon>
-                            </mat-chip>
-                        </mat-chip-list>
-                        <mat-chip-list *ngIf="genreList.length>=MAX_CHIPS">
-                            <mat-chip (click)="addGenre()">
+                            </mat-chip-option>
+                        </mat-chip-listbox>
+                        <mat-chip-listbox *ngIf="genreList.length>=MAX_CHIPS">
+                            <mat-chip-option (click)="addGenre()">
                                 <mat-chip-avatar>
                                     <mat-icon>mood</mat-icon>
                                 </mat-chip-avatar>
                                 {{genreList.length}} ausgewählt ...
-                            </mat-chip>
-                        </mat-chip-list>
+                            </mat-chip-option>
+                        </mat-chip-listbox>
                     </td>
                     <td>
-                        <button mat-button mat-icon-button type="button" color="accent" (click)="addGenre()">
+                        <button mat-button type="button" color="accent" (click)="addGenre()">
                             <mat-icon>{{addOrEdit(genreList)}}</mat-icon>
                         </button>
                     </td>
@@ -183,26 +183,26 @@
                 <tr class="reference">
                     <td class="title-column">Is Lexia:</td>
                     <td>
-                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="lexiaList.length<MAX_CHIPS">
-                            <mat-chip *ngFor="let lexia of lexiaList">
+                        <mat-chip-listbox class="mat-chip-list-stacked" *ngIf="lexiaList.length<MAX_CHIPS">
+                            <mat-chip-option *ngFor="let lexia of lexiaList">
                                 <mat-chip-avatar>
                                     <mat-icon>short_text</mat-icon>
                                 </mat-chip-avatar>
                                 {{lexia.name}}
                                 <mat-icon matChipRemove (click)="removeLexia(lexia)">cancel</mat-icon>
-                            </mat-chip>
-                        </mat-chip-list>
-                        <mat-chip-list *ngIf="lexiaList.length>=MAX_CHIPS">
-                            <mat-chip (click)="addLexia()">
+                            </mat-chip-option>
+                        </mat-chip-listbox>
+                        <mat-chip-listbox *ngIf="lexiaList.length>=MAX_CHIPS">
+                            <mat-chip-option (click)="addLexia()">
                                 <mat-chip-avatar>
                                     <mat-icon>short_text</mat-icon>
                                 </mat-chip-avatar>
                                 {{lexiaList.length}} ausgewählt ...
-                            </mat-chip>
-                        </mat-chip-list>
+                            </mat-chip-option>
+                        </mat-chip-listbox>
                     </td>
                     <td class="last-row">
-                        <button mat-button mat-icon-button type="button" color="accent" (click)="addLexia()">
+                        <button mat-button type="button" color="accent" (click)="addLexia()">
                             <mat-icon>{{addOrEdit(lexiaList)}}</mat-icon>
                         </button>
                     </td>
@@ -336,8 +336,8 @@
             </table>
         </mat-dialog-content>
 
-        <mat-dialog-actions>
-            <button mat-button type="button" color="primary" (click)="cancel()">ABBRECHEN</button>
+        <mat-dialog-actions align="end">
+            <button mat-button type="button" color="primary" (click)="cancel()">CANCEL</button>
             <button [disabled]="form.invalid" mat-flat-button type="submit" color="primary">{{getButtonText()}}</button>
         </mat-dialog-actions>
     </form>

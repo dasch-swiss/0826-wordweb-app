@@ -4,7 +4,7 @@ import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
 import {Venue} from "../../model/model";
 import {CreateUpdateVenueComponent} from "./create-update-venue/create-update-venue.component";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {IDisplayedProperty, IMainClass} from "../../model/displayModel";
 import {ListService} from "../../services/list.service";
 import {KnoraService} from "../../services/knora.service";
@@ -51,7 +51,7 @@ export class VenueComponent implements OnInit {
     displayedColumns: string[] = ["row", "hasVenueInternalId", "hasPlaceVenue", "action"];
     dataSource: MatTableDataSource<Venue>;
     value: string;
-    form: FormGroup;
+    form: UntypedFormGroup;
     placeVenues: IListNode[];
 
     static customFilter(item: any, filterValue: string): boolean {
@@ -75,9 +75,9 @@ export class VenueComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            internalId: new FormControl("", []),
-            placeVenue: new FormControl("", []),
+        this.form = new UntypedFormGroup({
+            internalId: new UntypedFormControl("", []),
+            placeVenue: new UntypedFormControl("", []),
             // extraNull: new FormControl("", []),
             // extra: new FormGroup({
             //     ex: new FormControl("", [])
@@ -111,11 +111,11 @@ export class VenueComponent implements OnInit {
     }
 
     create() {
-        // this.createOrEditResource(false);
+        this.createOrEditResource(false);
     }
 
     edit(venue: Venue) {
-        // this.createOrEditResource(true, venue);
+        this.createOrEditResource(true, venue);
     }
 
     createOrEditResource(editMod: boolean, resource: Venue = null) {
@@ -153,7 +153,6 @@ export class VenueComponent implements OnInit {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
-            type: "ball-spin-clockwise",
             size: "medium"
         });
 
@@ -195,7 +194,6 @@ export class VenueComponent implements OnInit {
             fullScreen: false,
             bdColor: "rgba(255, 255, 255, 0)",
             color: "rgb(159, 11, 11)",
-            type: "ball-spin-clockwise",
             size: "medium"
         });
         this.searchStarted = true;

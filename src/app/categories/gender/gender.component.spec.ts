@@ -8,8 +8,9 @@ describe("GenderComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [GenderComponent]
-        })
+    declarations: [GenderComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 
