@@ -9,7 +9,7 @@ import {
   Self,
   ViewChild
 } from '@angular/core';
-import {MAT_LEGACY_FORM_FIELD as MAT_FORM_FIELD, MatLegacyFormField as MatFormField, MatLegacyFormFieldControl as MatFormFieldControl} from '@angular/material/legacy-form-field';
+import {MAT_FORM_FIELD, MatFormField, MatFormFieldControl} from '@angular/material/form-field';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -310,6 +310,7 @@ export class DateValue {
   ],
   styles: [
       '.bg {background-color: lightgrey;}',
+      '.datecontainer {padding-top: 1rem;}',
       '.calsel {width: 120px; padding-left: 2px; padding-right: 2px;}',
       '.rangesel {width: 80px; padding-left: 2px; padding-right: 2px;}',
       '.yearsel {width: 80px; padding-left: 2px; padding-right: 2px;}',
