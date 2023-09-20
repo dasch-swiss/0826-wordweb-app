@@ -107,7 +107,7 @@
 
                 <mat-form-field>
                     <input [(ngModel)]="value" matInput (input)="applyFilter($event.target.value)" placeholder="Filter">
-                    <button *ngIf="value" mat-button matSuffix mat-icon-button (click)="clearFilter()">
+                    <button *ngIf="value" mat-button matSuffix (click)="clearFilter()">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
@@ -151,7 +151,7 @@
                         <th mat-header-cell *matHeaderCellDef>Detail</th>
                         <td mat-cell *matCellDef="let element">
                             <div class="action-btn-container">
-                                <button class="edit-btn" mat-button mat-icon-button color="primary" (click)="edit(element)">
+                                <button class="edit-btn" mat-button color="primary" (click)="edit(element)">
                                     <mat-icon>navigate_next</mat-icon>
                                 </button>
                             </div>

@@ -26,26 +26,26 @@
                 <tr class="reference">
                     <td class="title-column">Is Lexia:</td>
                     <td>
-                        <mat-chip-list class="mat-chip-list-stacked" *ngIf="lexiaList.length<MAX_CHIPS">
-                            <mat-chip *ngFor="let lexia of lexiaList">
+                        <mat-chip-listbox class="mat-chip-list-stacked" *ngIf="lexiaList.length<MAX_CHIPS">
+                            <mat-chip-option *ngFor="let lexia of lexiaList">
                                 <mat-chip-avatar>
                                     <mat-icon>short_text</mat-icon>
                                 </mat-chip-avatar>
                                 {{lexia.name}}
                                 <mat-icon matChipRemove (click)="removeLexia(lexia)">cancel</mat-icon>
-                            </mat-chip>
-                        </mat-chip-list>
-                        <mat-chip-list *ngIf="lexiaList.length>=MAX_CHIPS">
-                            <mat-chip (click)="addLexia()">
+                            </mat-chip-option>
+                        </mat-chip-listbox>
+                        <mat-chip-listbox *ngIf="lexiaList.length>=MAX_CHIPS">
+                            <mat-chip-option (click)="addLexia()">
                                 <mat-chip-avatar>
                                     <mat-icon>short_text</mat-icon>
                                 </mat-chip-avatar>
                                 {{lexiaList.length}} ausgewählt ...
-                            </mat-chip>
-                        </mat-chip-list>
+                            </mat-chip-option>
+                        </mat-chip-listbox>
                     </td>
                     <td class="last-row">
-                        <button mat-button mat-icon-button type="button" color="accent" (click)="addLexia()">
+                        <button mat-button type="button" color="accent" (click)="addLexia()">
                             <mat-icon>{{addOrEdit(lexiaList)}}</mat-icon>
                         </button>
                     </td>

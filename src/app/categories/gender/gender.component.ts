@@ -35,11 +35,11 @@ export class GenderComponent implements OnInit {
     }
 
     create() {
-        // this.createOrEditResource(false);
+        this.createOrEditResource(false);
     }
 
     edit(gender: Gender) {
-        // this.createOrEditResource(true, gender);
+        this.createOrEditResource(true, gender);
     }
 
     createOrEditResource(editMod: boolean, resource: Gender = null) {

@@ -171,11 +171,11 @@ export class OrganisationComponent implements OnInit {
     }
 
     create() {
-        // this.createOrEditResource(false);
+        this.createOrEditResource(false);
     }
 
     edit(organisation: Organisation) {
-        // this.createOrEditResource(true, organisation);
+        this.createOrEditResource(true, organisation);
     }
 
     createOrEditResource(editMod: boolean, resource: Organisation = null) {

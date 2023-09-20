@@ -28,7 +28,7 @@
             <td mat-cell *matCellDef="let element">
                 <div class="list-name-container" *ngIf="element.isVisible">
                     <div [innerHTML]="formatIndentation(element)"></div>
-                    <button class="expand-btn" [ngStyle]="{'visibility': element.nodes.length ? 'visible' : 'hidden'}" mat-button mat-icon-button color="primary" (click)="nodeClick(element)">
+                    <button class="expand-btn" [ngStyle]="{'visibility': element.nodes.length ? 'visible' : 'hidden'}" mat-button color="primary" (click)="nodeClick(element)">
                         <mat-icon>
                             {{element.isExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}}
                         </mat-icon>
@@ -43,7 +43,7 @@
             <th mat-header-cell *matHeaderCellDef>Action</th>
             <td mat-cell *matCellDef="let element">
                 <div class="action-btn-container">
-                    <button class="edit-btn" mat-button mat-icon-button color="primary" (click)="edit(element)">
+                    <button class="edit-btn" mat-button color="primary" (click)="edit(element)">
                         <mat-icon>edit</mat-icon>
                     </button>
                 </div>

@@ -152,11 +152,11 @@ export class LexiaComponent implements OnInit {
     }
 
     create() {
-        // this.createOrEditResource(false);
+        this.createOrEditResource(false);
     }
 
     edit(lexia: Lexia) {
-        // this.createOrEditResource(true, lexia);
+        this.createOrEditResource(true, lexia);
     }
 
     createOrEditResource(editMod: boolean, resource: Lexia = null) {

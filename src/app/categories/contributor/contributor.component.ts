@@ -160,11 +160,11 @@ export class ContributorComponent implements OnInit {
     }
 
     create() {
-        // this.createOrEditResource(false);
+        this.createOrEditResource(false);
     }
 
     edit(contributor: Contributor) {
-        // this.createOrEditResource(true, contributor);
+        this.createOrEditResource(true, contributor);
     }
 
     createOrEditResource(editMod: boolean, resource: Contributor = null) {

@@ -210,11 +210,11 @@ export class AuthorComponent implements OnInit {
     }
 
     create() {
-        // this.createOrEditResource(false);
+        this.createOrEditResource(false);
     }
 
     edit(author: Author) {
-        // this.createOrEditResource(true, author);
+        this.createOrEditResource(true, author);
     }
 
     createOrEditResource(editMod: boolean, resource: Author = null) {

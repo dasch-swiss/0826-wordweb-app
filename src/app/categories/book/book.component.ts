@@ -439,11 +439,11 @@ export class BookComponent implements OnInit {
     }
 
     create() {
-        // this.createOrEditResource(false);
+        this.createOrEditResource(false);
     }
 
     edit(book: Book) {
-        // this.createOrEditResource(true, book);
+        this.createOrEditResource(true, book);
     }
 
     createOrEditResource(editMod: boolean, resource: Book = null) {

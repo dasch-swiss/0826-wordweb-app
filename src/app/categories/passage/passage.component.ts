@@ -367,11 +367,11 @@ export class PassageComponent implements OnInit {
     }
 
     create() {
-        // this.createOrEditResource(false);
+        this.createOrEditResource(false);
     }
 
     edit(passage: Passage) {
-        // this.createOrEditResource(true, passage);
+        this.createOrEditResource(true, passage);
     }
 
     createOrEditResource(editMod: boolean, resource: Passage = null) {

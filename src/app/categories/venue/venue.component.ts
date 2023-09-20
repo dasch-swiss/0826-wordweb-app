@@ -111,11 +111,11 @@ export class VenueComponent implements OnInit {
     }
 
     create() {
-        // this.createOrEditResource(false);
+        this.createOrEditResource(false);
     }
 
     edit(venue: Venue) {
-        // this.createOrEditResource(true, venue);
+        this.createOrEditResource(true, venue);
     }
 
     createOrEditResource(editMod: boolean, resource: Venue = null) {
