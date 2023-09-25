@@ -1,12 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
+@use '@material/textfield';
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
-@include mat.legacy-core();
 @include mat.core();
+@include mat.private-form-field-density(-4);
+@include mat.icon-button-density(-4);
 
-//@include mat.legacy-form-field-density(-2)
+// floating of the label0
+.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-floating-label { display: inline; }
 
+// size of the icon
+button > .mat-icon {
+    transform: scale(0.8);
+}
+
+// background color of the text field
+.mdc-text-field--filled:not(.mdc-text-field--disabled){
+    background-color: transparent;
+}
 
 html, body {
     height: 100%;

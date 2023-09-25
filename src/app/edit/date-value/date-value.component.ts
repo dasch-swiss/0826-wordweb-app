@@ -309,8 +309,7 @@ export class DateValue {
       {provide: MatFormFieldControl, useExisting: DateValueComponent},
   ],
   styles: [
-      '.bg {background-color: lightgrey;}',
-      '.datecontainer {padding-top: 1rem;}',
+      '.datecontainer {padding-top: 1.5rem;}',
       '.calsel {width: 120px; padding-left: 2px; padding-right: 2px;}',
       '.rangesel {width: 80px; padding-left: 2px; padding-right: 2px;}',
       '.yearsel {width: 80px; padding-left: 2px; padding-right: 2px;}',
