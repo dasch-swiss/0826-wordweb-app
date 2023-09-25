@@ -28,7 +28,6 @@
     "jdnconvertiblecalendar": "^0.0.7",
     "json2typescript": "^1.4.1",
     "jsonld": "^1.8.1",
-    "ngx-spinner": "^15.0.1",
     "rxjs": "~6.6.2",
     "semver": "^6.3.0",
     "tslib": "^2.0.0",
