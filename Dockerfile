@@ -1,7 +1,7 @@
 ### STAGE 1: Build ###
 
 # We label our stage as 'builder'
-FROM node:16-stretch as builder
+FROM node:18-stretch as builder
 
 LABEL maintainer="ivan.subotic@unibas.ch"
 
@@ -31,7 +31,7 @@ RUN npm run build-prod
 
 ### STAGE 2: Setup ###
 
-FROM dhlabbasel/nginx-server:v1.0.1
+FROM daschswiss/nginx-server:v1.1.2
 
 LABEL maintainer="400790+subotic@users.noreply.github.com"
 
