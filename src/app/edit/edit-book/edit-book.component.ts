@@ -109,6 +109,22 @@ class BookIds {
         <br/>
 
         <mat-form-field [style.width.px]=400>
+          <input matInput
+                 class="full-width"
+                 placeholder="Prefix title"
+                 formControlName="prefixTitle"
+                 (input)="_handleInput('prefixTitle')">
+        </mat-form-field>
+        <button *ngIf="valIds.prefixTitle.changed" mat-mini-fab (click)="_handleUndo('prefixTitle')">
+          <mat-icon color="warn">cached</mat-icon>
+        </button>
+        <button *ngIf="valIds.prefixTitle.id !== undefined" mat-mini-fab (click)="_handleDelete('prefixTitle')">
+          <mat-icon *ngIf="!valIds.prefixTitle.toBeDeleted">delete</mat-icon>
+          <mat-icon *ngIf="valIds.prefixTitle.toBeDeleted" color="warn">delete</mat-icon>
+        </button>
+        <br/>
+
+        <mat-form-field [style.width.px]=400>
           <input matInput required
                  class="full-width"
                  placeholder="Title"
@@ -278,22 +294,6 @@ class BookIds {
         <button *ngIf="valIds.firstPerformance.id !== undefined" mat-mini-fab (click)="_handleDelete('firstPerformance')">
           <mat-icon *ngIf="!valIds.firstPerformance.toBeDeleted">delete</mat-icon>
           <mat-icon *ngIf="valIds.firstPerformance.toBeDeleted" color="warn">delete</mat-icon>
-        </button>
-        <br/>
-
-        <mat-form-field [style.width.px]=400>
-          <input matInput
-                 class="full-width"
-                 placeholder="Prefix title"
-                 formControlName="prefixTitle"
-                 (input)="_handleInput('prefixTitle')">
-        </mat-form-field>
-        <button *ngIf="valIds.prefixTitle.changed" mat-mini-fab (click)="_handleUndo('prefixTitle')">
-          <mat-icon color="warn">cached</mat-icon>
-        </button>
-        <button *ngIf="valIds.prefixTitle.id !== undefined" mat-mini-fab (click)="_handleDelete('prefixTitle')">
-          <mat-icon *ngIf="!valIds.prefixTitle.toBeDeleted">delete</mat-icon>
-          <mat-icon *ngIf="valIds.prefixTitle.toBeDeleted" color="warn">delete</mat-icon>
         </button>
         <br/>
 
