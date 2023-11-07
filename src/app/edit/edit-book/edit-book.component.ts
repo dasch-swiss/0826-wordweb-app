@@ -518,6 +518,7 @@ class BookIds {
     </div>
   `,
   styles: [
+    'mat-card { margin: 1rem; padding: 1rem;}',
     '.maxw { min-width: 500px; max-width: 1000px; }',
     '.wide { width: 100%; }',
     '.ck-editor__editable_inline { min-height: 500px; }',

@@ -1,20 +1,16 @@
 import {Component, Input, OnInit, Optional, Self} from '@angular/core';
 import {
-  ControlValueAccessor,
   UntypedFormArray,
   UntypedFormBuilder,
-  FormControl,
   UntypedFormGroup,
   NgControl,
   Validators
 } from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
-import {combineLatest, forkJoin, concat, Observable} from 'rxjs';
+import {combineLatest, concat, Observable} from 'rxjs';
 import {toArray} from 'rxjs/operators';
 import {
-  CompanyData,
   KnoraService,
-  LexiaData,
   ListPropertyData,
   OptionType,
   VenueData
@@ -169,6 +165,7 @@ class VenueIds {
     </div>
   `,
   styles: [
+    'mat-card { margin: 1rem; padding: 1rem;}',
     '.maxw { min-width: 500px; max-width: 1000px; }',
     '.wide { width: 100%; }',
     '.ck-editor__editable_inline { min-height: 500px; }',
