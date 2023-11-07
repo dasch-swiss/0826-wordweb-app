@@ -310,9 +310,9 @@ export class DateValue {
   ],
   styles: [
       '.datecontainer {padding-top: 1.5rem;}',
-      '.calsel {width: 120px; padding-left: 2px; padding-right: 2px;}',
+      '.calsel {padding-left: 2px; padding-right: 2px;}',
       '.rangesel {width: 80px; padding-left: 2px; padding-right: 2px;}',
-      '.yearsel {width: 80px; padding-left: 2px; padding-right: 2px;}',
+      '.yearsel {width: 100px; padding-left: 2px; padding-right: 2px;}',
       '.erasel {width: 80px; padding-left: 2px; padding-right: 2px;}',
   ]
 })

@@ -1,14 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {KnoraService} from '../services/knora.service';
-import {
-  ControlValueAccessor,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  NgControl,
-  Validators
-} from '@angular/forms';
 import {Router} from '@angular/router';
 
 @Component({
@@ -196,6 +187,8 @@ import {Router} from '@angular/router';
     </div>
   `,
   styles: [
+      '.container { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); grid-gap: 1rem; margin: 2rem;}',
+      'mat-card { padding: 1rem;}'
   ]
 })
 export class EditComponent implements OnInit {

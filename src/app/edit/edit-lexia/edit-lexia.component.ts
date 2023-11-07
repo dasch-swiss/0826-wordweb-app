@@ -1,16 +1,14 @@
 import {Component, Input, OnInit, Optional, Self} from '@angular/core';
 import {
-  ControlValueAccessor,
   UntypedFormArray,
   UntypedFormBuilder,
-  FormControl,
   UntypedFormGroup,
   NgControl,
   Validators
 } from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
-import {combineLatest, concat, forkJoin, Observable} from 'rxjs';
-import {CompanyData, KnoraService, LexiaData, ListPropertyData, OptionType} from "../../services/knora.service";
+import {combineLatest, concat, Observable} from 'rxjs';
+import {KnoraService, LexiaData, ListPropertyData, OptionType} from "../../services/knora.service";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Location} from '@angular/common';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
@@ -209,6 +207,7 @@ class LexiaIds {
   </div>
   `,
   styles: [
+    'mat-card { margin: 2rem; padding: 1rem;}',
     '.maxw { min-width: 500px; max-width: 1000px; }',
     '.wide { width: 100%; }',
     '.ck-editor__editable_inline { min-height: 500px; }',
