@@ -250,7 +250,7 @@ class PersonIds {
     </div>
   `,
   styles: [
-    'mat-card { margin: 1rem; padding: 1rem;}',
+    'mat-card { margin: 2rem; padding: 1rem;}',
     '.maxw { min-width: 500px; max-width: 1000px; }',
   ]
 })
