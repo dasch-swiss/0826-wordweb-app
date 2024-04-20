@@ -235,7 +235,6 @@ export class EditVenueComponent implements OnInit {
       if (this.inData.venueIri !== undefined) {
         this.knoraService.getResource(this.inData.venueIri).subscribe((data) => {
           if (this.inData.venueIri !== undefined) {
-            console.log('DATA: ', data);
             this.resId = data.id;
             this.lastmod = data.lastmod;
             this.form.controls.label.setValue(data.label);
@@ -425,7 +424,6 @@ export class EditVenueComponent implements OnInit {
       if (this.form.valid) {
         this.knoraService.createVenue(this.value).subscribe(
             res => {
-              console.log('CREATE_RESULT:', res);
               this.working = false;
               if (res === 'error') {
                 this.snackBar.open('Error storing the venue object!', 'OK', {duration: 10000});
@@ -592,7 +590,6 @@ export class EditVenueComponent implements OnInit {
     this.working = true;
     dialogRef.afterClosed().subscribe((data: ConfirmationResult) => {
       if (data.status) {
-        console.log('lastmod', this.lastmod);
         this.knoraService.deleteResource(this.resId, 'venue', this.lastmod, data.comment).subscribe(
             res => {
               this.working = false;

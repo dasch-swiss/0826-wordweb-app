@@ -610,7 +610,6 @@ export class EditPassageComponent implements OnInit {
       if (this.inData.passageIri !== undefined) {
         this.knoraService.getResource(this.inData.passageIri).subscribe((data) => {
           if (this.inData.passageIri !== undefined) {
-            console.log('DATA: ', data);
             this.resId = data.id;
             this.lastmod = data.lastmod;
             this.form.controls.label.setValue(data.label);
@@ -947,7 +946,6 @@ export class EditPassageComponent implements OnInit {
       case 'mentionedIn':
         const mentionedIn = this.getMentionedIn();
         const mentionedInName = mentionedIn.value[index].mentionedInName;
-        console.log('mentionedIn', mentionedInName);
 
         this.valIds.mentionedIn[index].changed = true;
         if (mentionedInName.length >= 3) {
@@ -1226,12 +1224,10 @@ export class EditPassageComponent implements OnInit {
 
   save(): void {
     this.working = true;
-    console.log('this.value:', this.value);
     if (this.inData.passageIri === undefined) {
       if (this.form.valid && this.value.occursIn.occursInIri && this.value.contributedBy.contributedByIri) {
         this.knoraService.createPassage(this.value).subscribe(
             res => {
-              console.log('CREATE_RESULT:', res);
               this.working = false;
               if (res === 'error') {
                 this.snackBar.open('Error storing the passage object!', 'OK', {duration: 10000});
@@ -1247,7 +1243,6 @@ export class EditPassageComponent implements OnInit {
             }
         );
       } else {
-        console.log('Incomplete:', this.value);
         this.snackBar.open('Invalid/incomplete data in form – Please check!',
             'OK',
             {duration: 10000});
@@ -1776,7 +1771,6 @@ export class EditPassageComponent implements OnInit {
     this.working = true;
     dialogRef.afterClosed().subscribe((data: ConfirmationResult) => {
       if (data.status) {
-        console.log('lastmod', this.lastmod);
         this.knoraService.deleteResource(this.resId, 'passage', this.lastmod, data.comment).subscribe(
             res => {
               this.working = false;

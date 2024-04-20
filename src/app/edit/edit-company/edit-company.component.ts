@@ -268,7 +268,6 @@ export class EditCompanyComponent implements OnInit {
       if (this.inData.companyIri !== undefined) {
         this.knoraService.getResource(this.inData.companyIri).subscribe((data) => {
           if (this.inData.companyIri !== undefined) {
-            console.log('DATA: ', data);
             this.resId = data.id;
             this.lastmod = data.lastmod;
             this.form.controls.label.setValue(data.label);
@@ -324,7 +323,6 @@ export class EditCompanyComponent implements OnInit {
           /*this.fb.group({lexiaName: '', lexiaIri: ''}),*/
         ]),
       });
-      console.log(this.form);
     });
   }
 
@@ -345,7 +343,6 @@ export class EditCompanyComponent implements OnInit {
       this.valIds.members.push({id: member.memberIri, changed: false, toBeDeleted: false});
     }
     this.nMembers++;
-    console.log('addMember::', this.data.members);
   }
 
   removeMembers(index: number): void {
@@ -523,14 +520,10 @@ export class EditCompanyComponent implements OnInit {
         this.valIds.extraInfo.changed = false;
         break;
       case 'members':
-        console.log(this.data.members);
-        console.log('== index:', index);
         this.getMembers().controls[index].setValue(this.data.members[index]);
         this.valIds.members[index].changed = false;
         break;
       case 'lexias':
-        console.log(this.data.lexias);
-        console.log('== index:', index);
         this.getLexias().controls[index].setValue(this.data.lexias[index]);
         this.valIds.lexias[index].changed = false;
         break;
@@ -543,7 +536,6 @@ export class EditCompanyComponent implements OnInit {
       if (this.form.valid) {
         this.knoraService.createCompany(this.value).subscribe(
             res => {
-              console.log('CREATE_RESULT:', res);
               this.working = false;
               if (res === 'error') {
                 this.snackBar.open('Error storing the company object!', 'OK', {duration: 10000});
@@ -628,7 +620,6 @@ export class EditCompanyComponent implements OnInit {
         obs.push(gaga);
       }
 
-      console.log('this.valIds.extraInfo:', this.valIds.extraInfo);
       if (this.valIds.extraInfo.toBeDeleted && this.valIds.extraInfo.id !== undefined) {
         const gaga: Observable<string> = this.knoraService.deleteTextValue(
             this.resId,
@@ -741,7 +732,6 @@ export class EditCompanyComponent implements OnInit {
     this.working = true;
     dialogRef.afterClosed().subscribe((data: ConfirmationResult) => {
       if (data.status) {
-        console.log('lastmod', this.lastmod);
         this.knoraService.deleteResource(this.resId, 'company', this.lastmod, data.comment).subscribe(
             res => {
               this.working = false;

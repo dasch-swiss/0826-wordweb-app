@@ -287,7 +287,6 @@ export class EditLexiaComponent implements OnInit {
       if (this.inData.lexiaIri !== undefined) {
         this.knoraService.getResource(this.inData.lexiaIri).subscribe((data) => {
           if (this.inData.lexiaIri !== undefined) {
-            console.log('DATA: ', data);
             this.resId = data.id;
             this.lastmod = data.lastmod;
             this.form.controls.label.setValue(data.label);
@@ -362,7 +361,6 @@ export class EditLexiaComponent implements OnInit {
         displayedTitle: [this.data.displayedTitle, []],
         extraInfo: [this.data.extraInfo, []],
       });
-      console.log('this.form:', this.form);
     });
   }
 
@@ -528,7 +526,6 @@ export class EditLexiaComponent implements OnInit {
       if (this.form.valid && this.value.formalClassIris[0]) {
         this.knoraService.createLexia(this.value).subscribe(
             res => {
-              console.log('CREATE_RESULT:', res);
               this.working = false;
               if (res === 'error') {
                 this.snackBar.open('Error storing the lexia object!', 'OK');
@@ -751,7 +748,6 @@ export class EditLexiaComponent implements OnInit {
     this.working = true;
     dialogRef.afterClosed().subscribe((data: ConfirmationResult) => {
       if (data.status) {
-        console.log('lastmod', this.lastmod);
         this.knoraService.deleteResource(this.resId, 'lexia', this.lastmod, data.comment).subscribe(
             res => {
               this.working = false;

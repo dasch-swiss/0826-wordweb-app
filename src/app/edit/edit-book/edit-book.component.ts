@@ -559,7 +559,6 @@ export class EditBookComponent implements OnInit {
     this.inData = {};
     this.working = false;
     this.genreTypes = knoraService.genreTypes;
-    console.log(this.genreTypes);
     this.languageTypes = knoraService.languageTypes;
     this.subjectTypes = knoraService.subjectTypes;
     this.nGenres = 0;
@@ -660,7 +659,6 @@ export class EditBookComponent implements OnInit {
       if (this.inData.bookIri !== undefined) {
         this.knoraService.getResource(this.inData.bookIri).subscribe((data) => {
           if (this.inData.bookIri !== undefined) {
-              console.log('DATA: ', data);
               this.resId = data.id;
               this.lastmod = data.lastmod;
               this.form.controls.label.setValue(data.label);
@@ -1113,7 +1111,6 @@ export class EditBookComponent implements OnInit {
       case 'performedIn':
         const performedIn = this.getPerformedIns();
         const performedInName = performedIn.value[index].performedInName;
-        console.log('performedIn', index, performedInName);
 
         this.valIds.performedIn[index].changed = true;
         if (performedInName.length >= 3) {
@@ -1165,7 +1162,6 @@ export class EditBookComponent implements OnInit {
   }
 
   _handleInput(what: string, index?: number): void {
-    console.log('_handleInput', what, index);
     this.onChange(this.form.value);
     switch (what) {
       case 'label':
@@ -1417,7 +1413,6 @@ export class EditBookComponent implements OnInit {
 
   save(): void {
     this.working = true;
-    console.log('this.value:', this.value);
     if (this.inData.bookIri === undefined) {
       if (this.form.valid
           && this.value.genres[0].genreIri
@@ -1425,7 +1420,6 @@ export class EditBookComponent implements OnInit {
           && !this.value.creationDate.isEmpty()) {
         this.knoraService.createBook(this.value).subscribe(
             res => {
-              console.log('CREATE_RESULT:', res);
               this.working = false;
               if (res === 'error') {
                 this.snackBar.open('Error storing the book object!', 'OK', {duration: 10000});
@@ -1795,7 +1789,6 @@ export class EditBookComponent implements OnInit {
               this.knoraService.wwOntology + 'book',
               this.knoraService.wwOntology + 'hasPublicationDate',
               pubdateValue);
-          console.log('gaga:', gaga);
         } else {
           const pubdateValue = this.form.controls.pubdate.value;
           console.log('CHANGED:', pubdateValue);
@@ -1984,7 +1977,6 @@ export class EditBookComponent implements OnInit {
     this.working = true;
     dialogRef.afterClosed().subscribe((data: ConfirmationResult) => {
       if (data.status) {
-        console.log('lastmod', this.lastmod);
         this.knoraService.deleteResource(this.resId, 'book', this.lastmod, data.comment).subscribe(
             res => {
               this.working = false;

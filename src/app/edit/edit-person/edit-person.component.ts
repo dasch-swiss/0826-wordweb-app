@@ -368,7 +368,6 @@ export class EditPersonComponent implements OnInit {
                 }
                 case this.knoraService.wwOntology + 'hasBirthDate': {
                   const dateValue = DateValue.parseDateValueFromKnora(ele.values[0]);
-                  console.log('dateValue', dateValue);
                   this.form.controls.birthDate.setValue(dateValue);
                   this.valIds.birthDate = {id: ele.ids[0], changed: false, toBeDeleted: false};
                   this.data.birthDate = dateValue;
@@ -422,7 +421,6 @@ export class EditPersonComponent implements OnInit {
           /*this.fb.group({lexiaName: '', lexiaIri: ''}),*/
         ]),
       });
-      console.log(this.form);
     });
   }
 
@@ -625,7 +623,6 @@ export class EditPersonComponent implements OnInit {
       if (this.form.valid && (ok1 || ok2)) {
         this.knoraService.createPerson(this.value).subscribe(
             res => {
-              console.log('CREATE_RESULT:', res);
               this.working = false;
               if (res === 'error') {
                 this.snackBar.open('Error storing the person object!', 'OK', {duration: 10000});
@@ -804,10 +801,8 @@ export class EditPersonComponent implements OnInit {
               this.knoraService.wwOntology + 'person',
               this.knoraService.wwOntology + 'hasBirthDate',
               birthDateValue);
-          console.log('gaga:', gaga);
         } else {
           const birthDateValue = this.form.controls.birthDate.value;
-          console.log('CHANGED:', birthDateValue);
           gaga = this.knoraService.updateDateValue(
               this.resId,
               this.knoraService.wwOntology + 'person',
@@ -958,7 +953,6 @@ export class EditPersonComponent implements OnInit {
     this.working = true;
     dialogRef.afterClosed().subscribe((data: ConfirmationResult) => {
       if (data.status) {
-        console.log('lastmod', this.lastmod);
         this.knoraService.deleteResource(this.resId, 'person', this.lastmod, data.comment).subscribe(
             res => {
               this.working = false;
