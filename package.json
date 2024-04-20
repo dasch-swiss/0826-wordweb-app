@@ -1,6 +1,6 @@
 {
   "name": "0826-wordweb-app",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -27,7 +27,7 @@
     "file-saver-es": "^2.0.5",
     "jdnconvertiblecalendar": "^0.0.7",
     "json2typescript": "^1.4.1",
-    "jsonld": "^1.8.1",
+    "jsonld": "^8.3.2",
     "ngx-spinner": "^16.0.2",
     "rxjs": "~6.6.2",
     "semver": "^6.3.0",
@@ -55,7 +55,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
-    "protractor": "~7.0.0",
+    "protractor": "^7.0.0",
     "ts-node": "~7.0.0",
     "typescript": "~4.9.5"
   }
