@@ -46,6 +46,7 @@ import {catchError, map} from 'rxjs/operators';
 import {Observable, of, throwError} from 'rxjs';
 import {DateValue} from '../edit/date-value/date-value.component';
 import {DateCalendar} from '../classes/calendar';
+import {AppInitService} from "../app-init.service";
 
 //---- BEGIN LUKAS ---------------------------------------------------------------------------------------------------
 export interface UserData {
@@ -660,7 +661,7 @@ export class KnoraService {
     // EDITING BY LUKAS //----------------------------------------------------------------------------------------------
 
     getAllLists2(): Observable<Array<ListData>> {
-        return this._knoraApiConnection.admin.listsEndpoint.getListsInProject('http://rdfh.ch/projects/0826').pipe(
+        return this._knoraApiConnection.admin.listsEndpoint.getListsInProject(AppInitService.settings.projectIRI).pipe(
             map((res: ApiResponseData<ListsResponse>) => {
                 const result: Array<ListData> = [];
                 for (const list of res.body.lists) {

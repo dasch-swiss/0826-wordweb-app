@@ -2,11 +2,11 @@
   "env": {
     "name": "prod"
   },
-  "apiURL": "https://api.0826-test-server.dasch.swiss",
-  "iiifURL": "https://iiif.0826-test-server.dasch.swiss",
-  "appURL": "https://0826-test-server.dasch.swiss",
+  "apiURL": "https://api.dasch.swiss",
+  "iiifURL": "https://iiif.dasch.swiss",
+  "appURL": "https://app.dasch.swiss",
   "appName": "wordweb",
-  "email": "root@example.com",
-  "pwd": "test",
-  "projectIRI": "http://rdfh.ch/projects/0826"
+  "email": "app@wordweb.ch",
+  "pwd": "2bon2btitq",
+  "projectIRI": "http://rdfh.ch/projects/qhOve-cKTmSkiIU81W0lDQ"
 }
