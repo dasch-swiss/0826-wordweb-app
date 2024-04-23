@@ -286,7 +286,7 @@ export interface ResourceData {
     providedIn: 'root'
 })
 export class KnoraService {
-    static readonly PROJECT_IRI = 'http://rdfh.ch/projects/qhOve-cKTmSkiIU81W0lDQ';
+    private _projectIRI = '';
     public _knoraApiConnection: KnoraApiConnection;
     wwOntology: string;
     loggedin: boolean;
@@ -319,6 +319,10 @@ export class KnoraService {
 
 
     constructor(private _gsBuilder: GravsearchBuilderService) {
+    }
+
+    set projectIRI(projectIRI: string) {
+        this._projectIRI = projectIRI;
     }
 
     set knoraApiConnection(url: string) {
@@ -662,7 +666,7 @@ export class KnoraService {
     // EDITING BY LUKAS //----------------------------------------------------------------------------------------------
 
     getAllLists2(): Observable<Array<ListData>> {
-        return this._knoraApiConnection.admin.listsEndpoint.getListsInProject(KnoraService.PROJECT_IRI).pipe(
+        return this._knoraApiConnection.admin.listsEndpoint.getListsInProject(this._projectIRI).pipe(
             map((res: ApiResponseData<ListsResponse>) => {
                 const result: Array<ListData> = [];
                 for (const list of res.body.lists) {
@@ -894,7 +898,7 @@ export class KnoraService {
         const createResource = new CreateResource();
         createResource.label = data.label;
         createResource.type = this.wwOntology + 'company';
-        createResource.attachedToProject = KnoraService.PROJECT_IRI;
+        createResource.attachedToProject = this._projectIRI;
 
         const props = {};
 
@@ -963,7 +967,7 @@ export class KnoraService {
         const createResource = new CreateResource();
         createResource.label = data.label;
         createResource.type = this.wwOntology + 'person';
-        createResource.attachedToProject = KnoraService.PROJECT_IRI;
+        createResource.attachedToProject = this._projectIRI;
 
         const props = {};
         createResource.properties = props;
@@ -1169,7 +1173,7 @@ export class KnoraService {
         const createResource = new CreateResource();
         createResource.label = data.label;
         createResource.type = this.wwOntology + 'lexia';
-        createResource.attachedToProject = KnoraService.PROJECT_IRI;
+        createResource.attachedToProject = this._projectIRI;
 
         const props = {};
 
@@ -1245,7 +1249,7 @@ export class KnoraService {
         const createResource = new CreateResource();
         createResource.label = data.label;
         createResource.type = this.wwOntology + 'passage';
-        createResource.attachedToProject = KnoraService.PROJECT_IRI;
+        createResource.attachedToProject = this._projectIRI;
 
         const props = {};
 
@@ -1432,7 +1436,7 @@ export class KnoraService {
         const createResource = new CreateResource();
         createResource.label = data.label;
         createResource.type = this.wwOntology + 'book';
-        createResource.attachedToProject = KnoraService.PROJECT_IRI;
+        createResource.attachedToProject = this._projectIRI;
 
         const props = {};
 
@@ -1754,7 +1758,7 @@ export class KnoraService {
         const createResource = new CreateResource();
         createResource.label = data.label;
         createResource.type = this.wwOntology + 'venue';
-        createResource.attachedToProject = KnoraService.PROJECT_IRI;
+        createResource.attachedToProject = this._projectIRI;
 
         const props = {};
 

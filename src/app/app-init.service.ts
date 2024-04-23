@@ -46,11 +46,13 @@ export class AppInitService {
 
             this._gsBuilder.apiURL = AppInitService.settings.apiURL;
 
+            this._knoraService.projectIRI = AppInitService.settings.projectIRI;
+
             this._knoraService.knoraApiConnection = AppInitService.settings.apiURL;
 
-            this._knoraService.appLogin('app@wordweb.ch', '2bon2btitq')
+            this._knoraService.appLogin(AppInitService.settings.email, AppInitService.settings.pwd)
                 .pipe(
-                    mergeMap(() => this._knoraService.getAllLists('http://rdfh.ch/projects/qhOve-cKTmSkiIU81W0lDQ')),
+                    mergeMap(() => this._knoraService.getAllLists(AppInitService.settings.projectIRI)),
                     mergeMap((lists: ListNodeInfo[]) => forkJoin<Observable<List>>(lists.map((list: ListNodeInfo) => this._knoraService.getList(list.id))))
                 )
                 .subscribe((fullList: List[]) => {
