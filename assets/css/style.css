@@ -2044,8 +2044,9 @@ a.post-title:hover,
 /* copyright */
 .copyright {
   border-top: 2px solid #f9f8f8;
-  padding: 0 15px;
+  padding: 25px 15px;
   text-align: center;
+  margin-bottom: 0;
 }
 
 .copyright p {
