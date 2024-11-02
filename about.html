@@ -87,6 +87,7 @@
                 <div class="section-item" onclick="myFunction('section-team')">The Team</div>
                 <div class="section-item" onclick="myFunction('section-project-history')">Project History</div>
                 <div class="section-item" onclick="myFunction('section-sister-projects')">Sister Projects</div>
+                <div class="section-item" onclick="myFunction('section-acknowledgments')">Acknowledgments</div>
             </section>
 
             <section id="section-who-we-are" class="site-section-small">
@@ -420,12 +421,32 @@
                 </div>
             </section>
 
+            <section id="section-acknowledgments" class="site-section-small">
+                <div class="container">
+                    <h2 class="section-title text-center pb-40">Libraries and archives</h2>
+                    <p style="text-align: center;">Some of the more obscure texts which are part of the early modern web of words <br>
+                        could only be added to the our corpus thanks to the generosity and expertise library staff.<br><br>
+                        <b>Thank you so much to...</b><br><br>
+                        <a href="https://www.bodleian.ox.ac.uk/libraries/weston" target="_blank">Bodleian Library, Oxford (Special Collections at the Weston Library)</a><br>
+                        <a href="https://ub.unibas.ch/de/historische-bestaende/" target="_blank">Universitätsbibliothek Basel</a><br><br><br>
+                        <h2 class="section-title text-center">Individuals</h2>
+    
+                        <p style="text-align: center;">Critical friends, students and colleagues have contributed entries, <br>shared information and continue to support us. <br><br>
+                            <b>Thank you so much to...</b><br><br>
+                            <a href="https://uzh.academia.edu/BeatriceMontedoro" target="_blank">Beatrice Montedoro</a><br>
+                            <a href="https://www.dal.ca/faculty/arts/school-of-performing-arts/faculty-staff/our-faculty/david-nicol.html" target="_blank">David Nicol</a><br>
+                            <a href="https://www.birmingham.ac.uk/staff/profiles/shakespeare/wiggins-martin" target="_blank">Martin Wiggins</a><br><br><br>
+                        </p>
+                </div>
+            </section>
+
             <script>
                 function myFunction(section) {
                     document.getElementById("section-who-we-are").style.display = "none";
                     document.getElementById("section-team").style.display = "none";
                     document.getElementById("section-project-history").style.display = "none";
                     document.getElementById("section-sister-projects").style.display = "none";
+                    document.getElementById("section-acknowledgments").style.display = "none";
 
                     document.getElementById(section).style.display = "block";
                 }
