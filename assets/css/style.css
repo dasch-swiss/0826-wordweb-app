@@ -1504,6 +1504,18 @@ display: none;
   bottom: -35px;
 }
 
+.about-tabs .active {
+  border-bottom: 2px solid #9f0b0b;
+  color: #9f0b0b;
+}
+
+.about-tabs {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 150px);
+  justify-content: center;
+}
+
 /*
  * PORTFOLIO
  */

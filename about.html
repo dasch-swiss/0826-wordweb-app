@@ -83,14 +83,16 @@
 
         <main id="main" class="site-main">
             <section class="container section-container">
-                <div class="section-item" onclick="myFunction('section-who-we-are')">The Project</div>
-                <div class="section-item" onclick="myFunction('section-team')">The Team</div>
-                <div class="section-item" onclick="myFunction('section-project-history')">Project History</div>
-                <div class="section-item" onclick="myFunction('section-sister-projects')">Sister Projects</div>
-                <div class="section-item" onclick="myFunction('section-acknowledgments')">Acknowledgments</div>
+                <menu class="about-tabs text-center">
+                    <li id="tab-project" class="section-item"><a href="about.html#project">The Project</a></li>
+                    <li id="tab-team" class="section-item"><a href="about.html#team">The Team</a></li>
+                    <li id="tab-project-history" class="section-item"><a href="about.html#project-history">Project History</a></li>
+                    <li id="tab-sister-projects" class="section-item"><a href="about.html#sister-projects">Sister Projects</a></li>
+                    <li id="tab-acknowledgments" class="section-item"><a href="about.html#acknowledgments">Acknowledgments</a></li>
+                </menu>
             </section>
 
-            <section id="section-who-we-are" class="site-section-small">
+            <section id="project" class="site-section-small" style="display: none;">
                 <div class="container">
                     <h2 class="section-title text-center pb-40">The Project</h2>
                     <div style="text-align: justify">
@@ -206,7 +208,7 @@
                 </div>
             </section>
 
-            <section id="section-team" class="site-section-small" style="display: none;">
+            <section id="team" class="site-section-small" style="display: none;">
                 <div class="container">
                     <div class="text-center">
                         <h2 class="section-title">The Team</h2>
@@ -360,7 +362,7 @@
                 </div>
             </section>
 
-            <section id="section-project-history" class="site-section-small" style="display: none;">
+            <section id="project-history" class="site-section-small" style="display: none;">
                 <div class="container">
                     <h2 class="section-title text-center pb-40">Project History</h2>
                     <div style="text-align: justify">
@@ -397,7 +399,7 @@
                 </div>
             </section>
 
-            <section id="section-sister-projects" class="site-section-small" style="display: none;">
+            <section id="sister-projects" class="site-section-small" style="display: none;">
                 <div class="container">
                     <h2 class="section-title text-center pb-40">Sister projects</h2>
 
@@ -419,7 +421,7 @@
                 </div>
             </section>
 
-            <section id="section-acknowledgments" class="site-section-small">
+            <section id="acknowledgments" class="site-section-small" style="display: none;">
                 <div class="container">
                     <h2 class="section-title text-center pb-40">Libraries and archives</h2>
                     <p style="text-align: center;">Some of the more obscure texts which are part of the early modern web of words <br>
@@ -439,15 +441,37 @@
             </section>
 
             <script>
-                function myFunction(section) {
-                    document.getElementById("section-who-we-are").style.display = "none";
-                    document.getElementById("section-team").style.display = "none";
-                    document.getElementById("section-project-history").style.display = "none";
-                    document.getElementById("section-sister-projects").style.display = "none";
-                    document.getElementById("section-acknowledgments").style.display = "none";
+                const tabs = ["project", "team", "project-history", "sister-projects", "acknowledgments"];
+                window.addEventListener('hashchange', showContent);
 
-                    document.getElementById(section).style.display = "block";
+                function showContent() {
+                    for (let i = 0; i < tabs.length; i++) {
+                        document.getElementById(tabs[i]).style.display = "none";
+                        document.getElementById("tab-" + tabs[i]).classList.remove("active");
+                    }
+
+                    if (location.hash === "#project") {
+                        document.getElementById("project").style.display = "block";
+                        document.getElementById("tab-project").classList.add("active");
+                    } else if (location.hash === "#team") {
+                        document.getElementById("team").style.display = "block";
+                        document.getElementById("tab-team").classList.add("active");
+                    } else if (location.hash === "#project-history") {
+                        document.getElementById("project-history").style.display = "block";
+                        document.getElementById("tab-project-history").classList.add("active");
+                    } else if (location.hash === "#sister-projects") {
+                        document.getElementById("sister-projects").style.display = "block";
+                        document.getElementById("tab-sister-projects").classList.add("active");
+                    } else if (location.hash === "#acknowledgments") {
+                        document.getElementById("acknowledgments").style.display = "block";
+                        document.getElementById("tab-acknowledgments").classList.add("active");
+                    } else {
+                        document.getElementById("project").style.display = "block";
+                        document.getElementById("tab-project").classList.add("active");
+                    }
                 }
+
+                showContent();
             </script>
 
         </main>
