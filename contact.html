@@ -133,7 +133,7 @@
             fetch('templates/footer.html')
                 .then(response => response.text())
                 .then(footer => {
-                    const main = document.getElementById('main').innerHTML = data;
+                    const main = document.getElementById('main').innerHTML;
                     main.insertAdjacentElement('afterend', footer);
                 });
         </script>
