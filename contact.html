@@ -127,15 +127,18 @@
             <p class="copyright">&copy; 2019-2025 WordWeb-IDEM | Made by WordWeb at <a href="https://dhlab.philhist.unibas.ch/en/research" class="yellow-text" target="_blank"><abbr title="Digital Humanities Lab">DHLab</abbr> Basel</a></p>
         </footer>-->
 
+        <div id="test"></div>
         <!-- Custom script -->
         <script>
             console.log("hello world");
             fetch('templates/footer.html')
                 .then(response => response.text())
                 .then(footer => {
-                    const main = document.getElementById('main').innerHTML;
+                    const main = document.getElementById('main');
                     main.insertAdjacentElement('afterend', footer);
                 });
+            // document.getElementById('test').innerHTML = footer;
+
         </script>
 
         <!-- Bootstrap core JavaScript
