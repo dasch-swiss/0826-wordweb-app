@@ -123,10 +123,6 @@
             </section>
         </main>
 
-<!--        <footer class="site-footer">
-            <p class="copyright">&copy; 2019-2025 WordWeb-IDEM | Made by WordWeb at <a href="https://dhlab.philhist.unibas.ch/en/research" class="yellow-text" target="_blank"><abbr title="Digital Humanities Lab">DHLab</abbr> Basel</a></p>
-        </footer>-->
-
         <!-- footer placeholder -->
         <div id="footer-placeholder"></div>
 
@@ -135,23 +131,8 @@
             fetch('templates/footer.html')
                 .then(response => response.text())
                 .then(footer => {
-                    console.log(footer);
-                    console.log(typeof footer);
                     document.getElementById('footer-placeholder').innerHTML = footer;
-
-/*                    const doc = parser.parseFromString('<br>ylkjlkjlj</br>', "text/html")
-
-                    const main = document.getElementById('main');
-                    main.insertAdjacentElement('afterend', doc);*/
                 });
-/*            const parser = new DOMParser()
-            const doc = parser.parseFromString('<strong>ylkjlkjlj</strong>', "text/html")
-            console.log(doc);
-
-            const main = document.getElementById('main');
-            main.insertAdjacentElement('afterend', doc);
-            document.getElementById('footer-placeholder').innerHTML = '<strong>ylkjlkjlj</strong>';*/
-
         </script>
 
         <!-- Bootstrap core JavaScript
